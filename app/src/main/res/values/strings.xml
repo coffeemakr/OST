@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">OST</string>
+    <string name="navigation_start">Start</string>
+    <string name="navigation_destination">Destination</string>
+
+    <string name="action_search_route">Search</string>
+    <string name="error_failed_to_load_connection">Failed to load connections</string>
+
+    <item name="visible" type="id" />
+    <item name="masked" type="id" />
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="description_invert_direction">Reverse direction</string>
+    <string name="departure_time">Departure time</string>
+    <string name="request_choose_to">Choose destination</string>
+    <string name="request_choose_from">Choose start</string>
+    <string name="title_activity_choose_station">ChooseStationActivity</string>
+    <string name="request_choose_station">Choose station</string>
+    <string name="clearInput">Clear input</string>
+</resources>

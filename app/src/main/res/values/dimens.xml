@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="form_icon_margin">16dp</dimen>
+    <dimen name="form_icon_width">24dp</dimen>
+    <dimen name="app_bar_heigth">256dp</dimen>
+</resources>

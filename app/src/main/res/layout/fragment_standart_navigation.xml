@@ -1,0 +1,117 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="2">
+
+    <ImageView
+        android:id="@+id/iconFrom"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/toContainer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fromContainer"
+        app:srcCompat="@drawable/ic_my_location_white_24dp"
+        tools:layout_constraintTop_creator="1" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/fromContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/form_icon_margin"
+        android:layout_marginStart="@dimen/form_icon_margin"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/iconFrom"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1">
+
+        <android.support.v7.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/navigation_start"
+            android:imeOptions="actionSearch"
+            android:inputType="text|textAutoComplete"
+            android:lines="1" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <ImageView
+        android:id="@+id/iconTo"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/toContainer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toContainer"
+        app:layout_constraintVertical_bias="0.517"
+        app:srcCompat="@drawable/ic_target_white_24dp"
+        tools:layout_constraintTop_creator="1" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/toContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/form_icon_margin"
+        android:layout_marginStart="@dimen/form_icon_margin"
+        app:layout_constraintLeft_toRightOf="@+id/iconTo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fromContainer"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1">
+
+        <android.support.v7.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/destination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/navigation_destination"
+            android:imeOptions="actionSearch"
+            android:inputType="text|textAutoComplete"
+            android:lines="1" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/iconTime"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/timeContainer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timeContainer"
+        app:srcCompat="@drawable/ic_access_time_white_24dp"
+        tools:layout_constraintTop_creator="1" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/timeContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/form_icon_margin"
+        android:layout_marginStart="@dimen/form_icon_margin"
+        app:layout_constraintLeft_toRightOf="@+id/iconTime"
+        app:layout_constraintRight_toRightOf="@+id/toContainer"
+        app:layout_constraintTop_toBottomOf="@+id/toContainer">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_arrow_drop_down_white_24dp"
+            android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_seach_route"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/action_search_route"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toContainer"
+        android:layout_marginTop="272dp"
+        android:layout_marginRight="184dp"
+        android:layout_marginEnd="184dp" />
+
+
+</android.support.constraint.ConstraintLayout>
