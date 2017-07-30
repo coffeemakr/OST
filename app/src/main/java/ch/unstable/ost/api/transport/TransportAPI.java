@@ -29,6 +29,7 @@ import ch.unstable.ost.api.transport.types.EmptyNumberTypeAdapter;
 
 public class TransportAPI {
 
+    public static final int HTTP_CODE_TOO_MANY_REQUESTS = 429;
     private static final String USER_AGENT = "OST/0.1";
     private static final Uri BASE_URL = Uri.parse("https://transport.opendata.ch/v1/");
     private static final String TAG = "TransportAPI";
@@ -80,6 +81,10 @@ public class TransportAPI {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("User-Agent", USER_AGENT);
+        int code = urlConnection.getResponseCode();
+        if(code == HTTP_CODE_TOO_MANY_REQUESTS) {
+            throw new TooManyRequestsException();
+        }
         InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
         try {
             return gson.fromJson(inputStreamReader, jsonClass);
@@ -96,10 +101,18 @@ public class TransportAPI {
         return loadJson(builder, StationsList.class).stations;
     }
 
+
     public List<Location> getLocationsByQuery(String query) throws IOException {
+        return getLocationsByQuery(query, null);
+    }
+
+    public List<Location> getLocationsByQuery(String query, @Nullable LocationTypeFilter typeFilter) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("locations")
                 .appendQueryParameter("query", query);
+        if(typeFilter != null) {
+            builder.appendQueryParameter("type", typeFilter.getIdentifier());
+        }
         return loadLocations(builder);
     }
 
@@ -129,6 +142,12 @@ public class TransportAPI {
     private static class ConnectionList {
         @SerializedName("connections")
         List<Connection> connections;
+    }
+
+    public static class TooManyRequestsException extends IOException {
+        public TooManyRequestsException() {
+            super();
+        }
     }
 
 }

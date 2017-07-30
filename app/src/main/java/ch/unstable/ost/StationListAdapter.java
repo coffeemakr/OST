@@ -1,11 +1,13 @@
 package ch.unstable.ost;
 
+import android.os.Handler;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,16 +21,29 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
 class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHolder> {
 
+    private final Handler mHandler;
+
+    @MainThread
+    public StationListAdapter() {
+        mHandler = new Handler();
+    }
+
     private Location[] mLocations = new Location[0];
     private View.OnClickListener mOnItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(mOnStationClickListener != null) {
+            final OnStationClickListener listener = mOnStationClickListener;
+            if(listener != null) {
                 ViewHolder viewHolder = (ViewHolder) v.getTag();
                 int position = viewHolder.getAdapterPosition();
                 if(position != NO_POSITION) {
-                    Location location = mLocations[position];
-                    mOnStationClickListener.onStationClicked(location);
+                    final Location location = mLocations[position];
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onStationClicked(location);
+                        }
+                    });
                 }
             }
         }
@@ -49,6 +64,9 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
         holder.stationName.setText(location.getName());
         holder.itemView.setTag(holder);
         holder.itemView.setOnClickListener(mOnItemClickListener);
+        if(Location.Type.STATION == location.getType()) {
+            holder.transportationIcon.setImageResource(R.drawable.ic_train_white_24dp);
+        }
     }
 
     @Override
@@ -56,6 +74,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
         super.onViewRecycled(holder);
         holder.itemView.setTag(null);
         holder.itemView.setOnClickListener(null);
+        holder.itemView.setClickable(true);
     }
 
     @MainThread
@@ -75,10 +94,12 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final TextView stationName;
+        private final ImageView transportationIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
             stationName = (TextView) itemView.findViewById(R.id.stationName);
+            transportationIcon = (ImageView) itemView.findViewById(R.id.transportationIcon);
         }
     }
 

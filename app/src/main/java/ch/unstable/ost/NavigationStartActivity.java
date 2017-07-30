@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.Date;
 
-public class NavigationStartActivity extends AppCompatActivity  implements BaseNavigationFragment.OnRouteSelectionListener {
+import ch.unstable.ost.api.transport.model.ConnectionQuery;
+
+public class NavigationStartActivity extends AppCompatActivity
+        implements BaseNavigationFragment.OnRouteSelectionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,19 +17,18 @@ public class NavigationStartActivity extends AppCompatActivity  implements BaseN
         setContentView(R.layout.activity_timetable);
         if(getSupportFragmentManager().getBackStackEntryCount() == 0) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new StandardNavigationFragmentN())
+                    .add(R.id.fragment_container, new StandardNavigationFragment())
                     .addToBackStack(null)
                     .commit();
         }
     }
 
     @Override
-    public void onRouteSelected(String start, String destination) {
+    public void onRouteSelected(ConnectionQuery query) {
         Intent intent = new Intent(this, ConnectionListActivity.class);
         intent.setAction(Intent.ACTION_SEARCH);
-        intent.putExtra(ConnectionListActivity.EXTRA_START, start);
-        intent.putExtra(ConnectionListActivity.EXTRA_DESTINATION, destination);
-        intent.putExtra(ConnectionListActivity.EXTRA_START_TIME, new Date().getTime());
+        intent.putExtra(ConnectionListActivity.EXTRA_QUERY, query);
         startActivity(intent);
+        finish();
     }
 }

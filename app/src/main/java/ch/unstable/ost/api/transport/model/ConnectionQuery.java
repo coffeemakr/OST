@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import ch.unstable.ost.utils.ParcelUtils;
+
 public class ConnectionQuery implements Parcelable {
     @NonNull
     private final String from;
@@ -92,7 +94,7 @@ public class ConnectionQuery implements Parcelable {
     }
 
 
-    public static class Builder {
+    public static class Builder implements Parcelable{
         @NonNull
         private List<String> via = new ArrayList<>();
         private String from = null;
@@ -109,6 +111,38 @@ public class ConnectionQuery implements Parcelable {
             this.to = connectionQuery.to;
             this.starTime = connectionQuery.starTime;
         }
+
+        protected Builder(Parcel in) {
+            via = in.createStringArrayList();
+            from = in.readString();
+            to = in.readString();
+            starTime = ParcelUtils.readDate(in);
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeStringList(via);
+            dest.writeString(from);
+            dest.writeString(to);
+            ParcelUtils.writeDate(dest, starTime);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
+            @Override
+            public Builder createFromParcel(Parcel in) {
+                return new Builder(in);
+            }
+
+            @Override
+            public Builder[] newArray(int size) {
+                return new Builder[size];
+            }
+        };
 
         public Builder setFrom(String from) {
             this.from = from;
