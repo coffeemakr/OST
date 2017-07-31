@@ -1,8 +1,10 @@
 package ch.unstable.ost;
 
+import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import ch.unstable.ost.api.transport.model.Location;
+import ch.unstable.ost.theme.ThemeHelper;
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
 
@@ -64,9 +62,6 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
         holder.stationName.setText(location.getName());
         holder.itemView.setTag(holder);
         holder.itemView.setOnClickListener(mOnItemClickListener);
-        if(Location.Type.STATION == location.getType()) {
-            holder.transportationIcon.setImageResource(R.drawable.ic_train_white_24dp);
-        }
     }
 
     @Override

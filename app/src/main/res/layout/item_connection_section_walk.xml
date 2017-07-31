@@ -34,7 +34,7 @@
         android:layout_marginTop="0dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/departureStationName"
-        app:srcCompat="@drawable/ic_directions_walk_white_24dp"
+        app:srcCompat="?attr/ic_directions_walk_24dp"
         app:layout_constraintLeft_toRightOf="@+id/departureStationName"
         android:layout_marginLeft="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/departureStationName"

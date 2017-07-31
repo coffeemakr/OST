@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,8 +23,9 @@ import java.util.List;
 import ch.unstable.ost.api.transport.TransportAPI;
 import ch.unstable.ost.api.transport.model.Location;
 import ch.unstable.ost.api.transport.model.LocationTypeFilter;
+import ch.unstable.ost.theme.ThemedActivity;
 
-public class ChooseStationActivity extends AppCompatActivity {
+public class ChooseStationActivity extends ThemedActivity {
 
     public static final String EXTRA_CHOOSE_PROMPT = "EXTRA_CHOOSE_PROMPT";
     public static final String EXTRA_RESULT_STATION_NAME = "EXTRA_RESULT_STATION_NAME";
@@ -44,8 +46,15 @@ public class ChooseStationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_station);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
-        setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(toolbar == null) throw new NullPointerException("toolbar is null");
+        setSupportActionBar(toolbar);
+
+        if(getIntent() != null && getIntent().hasExtra(ChooseStationActivity.EXTRA_CHOOSE_PROMPT)) {
+            String hint = getIntent().getStringExtra(ChooseStationActivity.EXTRA_CHOOSE_PROMPT);
+            TextInputLayout stationNameLayout = (TextInputLayout) findViewById(R.id.stationNameLayout);
+            stationNameLayout.setHint(hint);
+        }
 
         mLocationResultAdapter = new StationListAdapter();
         mLocationResultAdapter.setOnStationClickListener(new StationListAdapter.OnStationClickListener() {
@@ -66,6 +75,7 @@ public class ChooseStationActivity extends AppCompatActivity {
         mSuggestionTextWatcher = new SuggestionTextWatcher(mBackgroundHandler);
         mStationEditText = (EditText) findViewById(R.id.stationName);
         mStationEditText.addTextChangedListener(mSuggestionTextWatcher);
+
 
         ImageButton clearInputButton = (ImageButton) findViewById(R.id.clearInputButton);
         clearInputButton.setOnClickListener(new View.OnClickListener() {

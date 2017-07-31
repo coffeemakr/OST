@@ -21,12 +21,16 @@ public class Journey implements Parcelable {
     private final String name;
     private final String category;
     private final String categoryCode;
-    private final int number;
+    private final String number;
     private final String operator;
     private final String to;
     private final Capacity capacity;
 
     Journey(String name, String category, String categoryCode, int number, String operator, String to, Capacity capacity) {
+        this(name, category, categoryCode, "" + number, operator, to, capacity);
+    }
+
+    Journey(String name, String category, String categoryCode, String number, String operator, String to, Capacity capacity) {
         this.name = name;
         this.category = category;
         this.categoryCode = categoryCode;
@@ -40,7 +44,7 @@ public class Journey implements Parcelable {
         name = in.readString();
         category = in.readString();
         categoryCode = in.readString();
-        number = in.readInt();
+        number = in.readString();
         operator = in.readString();
         to = in.readString();
         capacity = ParcelUtils.readNullableParcelable(in, Capacity.CREATOR);
@@ -51,7 +55,7 @@ public class Journey implements Parcelable {
         dest.writeString(name);
         dest.writeString(category);
         dest.writeString(categoryCode);
-        dest.writeInt(number);
+        dest.writeString(number);
         dest.writeString(operator);
         dest.writeString(to);
         ParcelUtils.writeNullableParcelable(dest, capacity, flags);
@@ -74,7 +78,7 @@ public class Journey implements Parcelable {
         return categoryCode;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
@@ -90,6 +94,10 @@ public class Journey implements Parcelable {
         return capacity;
     }
 
+    private static boolean equals(String first, String second) {
+        return first != null ? !first.equals(second) : second != null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,10 +105,9 @@ public class Journey implements Parcelable {
 
         Journey journey = (Journey) o;
 
-        if (number != journey.number) return false;
-        if (name != null ? !name.equals(journey.name) : journey.name != null) return false;
-        if (category != null ? !category.equals(journey.category) : journey.category != null)
-            return false;
+        if (!equals(number, journey.number)) return false;
+        if (!equals(name, journey.name)) return false;
+        if (!equals(category, journey.category)) return false;
         if (categoryCode != null ? !categoryCode.equals(journey.categoryCode) : journey.categoryCode != null)
             return false;
         if (operator != null ? !operator.equals(journey.operator) : journey.operator != null)
@@ -115,7 +122,7 @@ public class Journey implements Parcelable {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (categoryCode != null ? categoryCode.hashCode() : 0);
-        result = 31 * result + number;
+        result = 31 * result + (number != null ? number.hashCode() : 0);
         result = 31 * result + (operator != null ? operator.hashCode() : 0);
         result = 31 * result + (to != null ? to.hashCode() : 0);
         result = 31 * result + (capacity != null ? capacity.hashCode() : 0);

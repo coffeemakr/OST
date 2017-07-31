@@ -10,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import ch.unstable.ost.api.transport.model.Connection;
 import ch.unstable.ost.api.transport.model.Journey;
@@ -58,40 +57,30 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
     public ConnectionListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_connection, parent, false);
-        ConnectionListAdapter.ViewHolder vh = new ConnectionListAdapter.ViewHolder(view);
-        return vh;
-    }
-
-    public void onBindFirstSection(ConnectionListAdapter.ViewHolder viewHolder, Section section) {
-        if (section.getJourney() != null) {
-            onBindFirstJourney(viewHolder, section.getJourney());
-        }
-    }
-
-    private void onBindFirstJourney(ConnectionListAdapter.ViewHolder viewHolder, Journey journey) {
-        viewHolder.firstEndDestination.setText(journey.getTo());
-        viewHolder.firstTransportName.setText(journey.getName());
+        return new ViewHolder(view);
     }
 
 
     private static int[] getTravelTimes(Section[] sections) {
         int[] times = new int[sections.length * 2 - 1];
         int i = 0;
-        Section lastSection = null;
+        long lastEnd = 0;
         for(Section section: sections) {
-            long start;
-            long end;
-            if(lastSection != null) {
-                start = lastSection.getArrival().getArrival().getTime();
-                end = section.getDeparture().getDepartureTime().getTime();
-                times[i] = (int) (end - start);
+            // Walks can be ignored. They are added to the waiting time.
+            if(section.isJourney()) {
+                if(lastEnd != 0) {
+                    // Waiting time
+                    times[i] = (int) (section.getDeparture().getDepartureTime().getTime() - lastEnd);
+                    ++i;
+                }
+                // Travel time
+                lastEnd = section.getArrival().getArrival().getTime();
+                times[i] = (int) (lastEnd - section.getDeparture().getDepartureTime().getTime());
                 ++i;
             }
-            start = section.getDeparture().getDepartureTime().getTime();
-            end = section.getArrival().getArrival().getTime();
-            times[i] = (int) (end - start);
-            ++i;
-            lastSection = section;
+        }
+        if(i != times.length) {
+            times = Arrays.copyOf(times, i);
         }
         return times;
     }
@@ -99,9 +88,18 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
     @Override
     public void onBindViewHolder(ConnectionListAdapter.ViewHolder holder, int position) {
         Connection connection = mConnections.get(position);
-        if (connection.getSections().length > 0) {
-            Section section = connection.getSections()[0];
-            onBindFirstSection(holder, section);
+        Section[] sections = connection.getSections();
+        if (sections.length > 0) {
+            Section section = sections[0];
+            if(section.isWalk()) {
+                section = sections[1];
+            }
+            if(section.isJourney()) {
+                Journey journey = section.getJourney();
+                holder.firstEndDestination.setText(journey.getTo());
+                holder.firstTransportName.setText(journey.getName());
+            }
+
         } else {
             Log.e(TAG, "No sections");
         }

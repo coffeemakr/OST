@@ -10,12 +10,17 @@ import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import ch.unstable.ost.api.transport.model.ConnectionQuery;
 
 
 public class HeadNavigationFragment extends BaseNavigationFragment {
+
 
     private static final int REQUEST_CODE_CHOOSE_TO = 1;
     private static final int REQUEST_CODE_CHOOSE_FROM = 2;
@@ -24,16 +29,48 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     private ConnectionQuery.Builder mConnectionQueryBuilder;
     private Button mToButton;
     private Button mFromButton;
+    private ImageButton mReverseDirectionButton;
+
+    public HeadNavigationFragment() {
+        // Required empty public constructor
+    }
 
     @NonNull
     public static HeadNavigationFragment newInstance() {
         return new HeadNavigationFragment();
     }
 
-    public HeadNavigationFragment() {
-        // Required empty public constructor
-    }
+    private static void rotateText(Context context, final TextView view, final String text, boolean isFront) {
+        int inAnimation;
+        int outAnimation;
+        if (isFront) {
+            inAnimation = R.anim.fade_in_top;
+            outAnimation = R.anim.fade_out_top;
+        } else {
+            inAnimation = R.anim.fade_in_bottom;
+            outAnimation = R.anim.fade_out_bottom;
+        }
+        final Animation fadeIn = AnimationUtils.loadAnimation(context, inAnimation);
+        final Animation fadeOut = AnimationUtils.loadAnimation(context, outAnimation);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
 
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.setText(text);
+                view.startAnimation(fadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        view.startAnimation(fadeOut);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,12 +78,12 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         mOnButtonClickListener = new OnNavigationButtonsClickListener();
 
         mConnectionQueryBuilder = null;
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             mConnectionQueryBuilder = savedInstanceState.getParcelable(KEY_QUERYBUILDER);
         } else if (getArguments() != null) {
             mConnectionQueryBuilder = getArguments().getParcelable(KEY_QUERYBUILDER);
         }
-        if(mConnectionQueryBuilder == null) {
+        if (mConnectionQueryBuilder == null) {
             mConnectionQueryBuilder = new ConnectionQuery.Builder();
         }
     }
@@ -54,7 +91,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(mConnectionQueryBuilder != null) {
+        if (mConnectionQueryBuilder != null) {
             outState.putParcelable(KEY_QUERYBUILDER, mConnectionQueryBuilder);
         }
     }
@@ -70,13 +107,14 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFromButton = (Button) view.findViewById(R.id.fromButton);
+        mFromButton.setText(getFromButtonText());
         mToButton = (Button) view.findViewById(R.id.toButton);
+        mToButton.setText(getToButtonText());
+        mReverseDirectionButton = (ImageButton) view.findViewById(R.id.reverseDirectionButton);
+
         mFromButton.setOnClickListener(mOnButtonClickListener);
         mToButton.setOnClickListener(mOnButtonClickListener);
-    }
-
-    public interface OnNavigationChangeListener {
-        void onNavigationSelected(ConnectionQuery newQuery);
+        mReverseDirectionButton.setOnClickListener(mOnButtonClickListener);
     }
 
     private void startStationChooser(@StringRes int chooseRequest, int codeTo) {
@@ -104,23 +142,57 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         }
     }
 
-    private void setTo(String to) {
+
+    private String getToButtonText() {
+        String to = mConnectionQueryBuilder.getTo();
+        if(to == null) {
+            return getString(R.string.request_choose_to);
+        }
+        return to;
+    }
+
+    private void setTo(@Nullable String to) {
         mConnectionQueryBuilder.setTo(to);
-        mToButton.setText(to);
+        mToButton.setText(getToButtonText());
         onQueryChanged();
     }
 
-    private void setFrom(String from) {
+    private String getFromButtonText() {
+        String from = mConnectionQueryBuilder.getFrom();
+        if(from == null) {
+            return getString(R.string.request_choose_from);
+        }
+        return from;
+    }
+
+    private void setFrom(@Nullable String from) {
         mConnectionQueryBuilder.setFrom(from);
-        mFromButton.setText(from);
+        mFromButton.setText(getFromButtonText());
         onQueryChanged();
     }
 
     private void onQueryChanged() {
-        if(mConnectionQueryBuilder.getTo() != null && mConnectionQueryBuilder.getFrom() != null) {
+        if (mConnectionQueryBuilder.getTo() != null && mConnectionQueryBuilder.getFrom() != null) {
             selectRoute(mConnectionQueryBuilder.build());
         }
     }
+
+    private void onReverseDirectionRequested() {
+        mConnectionQueryBuilder.reverseDirection();
+        onQueryChanged();
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.half_rotation);
+        mReverseDirectionButton.startAnimation(animation);
+
+        rotateText(getContext(), mFromButton, getFromButtonText(), true);
+        rotateText(getContext(), mToButton, getToButtonText(), false);
+    }
+
+    public void updateQuery(ConnectionQuery query) {
+        mConnectionQueryBuilder = new ConnectionQuery.Builder(query);
+        setFrom(mConnectionQueryBuilder.getFrom());
+        setTo(mConnectionQueryBuilder.getTo());
+    }
+
 
     public class OnNavigationButtonsClickListener implements View.OnClickListener {
         @Override
@@ -131,6 +203,9 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                     break;
                 case R.id.fromButton:
                     startStationChooser(R.string.request_choose_from, REQUEST_CODE_CHOOSE_FROM);
+                    break;
+                case R.id.reverseDirectionButton:
+                    onReverseDirectionRequested();
                     break;
             }
         }

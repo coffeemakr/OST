@@ -14,10 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,20 +24,21 @@ import ch.unstable.ost.api.transport.model.ConnectionQuery;
 
 public class ConnectionListFragment extends Fragment {
 
+
+    private static final int MESSAGE_QUERY_CONNECTION = 1;
+    private static final int MESSAGE_ERROR = 2;
+    private static final int MESSAGE_CONNECTIONS_LOADED = 3;
+
     private static final String ARG_QUERY = "connection_query";
     private static final String KEY_CONNECTION_LIST = "connection_list";
     private static final String TAG = "ConnectionListFragment";
     private final OnConnectionClickListener mOnConnectionClickListener = new OnConnectionClickListener();
-    private final OnNavigationClickListener mOnNavigationButtonClickedListener = new OnNavigationClickListener();
     private final BackgroundCallback backgroundCallback = new BackgroundCallback();
     private final UICallback uiCallback = new UICallback();
     private ConnectionListAdapter mConnectionAdapter;
     private ConnectionQuery mConnectionQuery;
     private Handler backgroundHandler;
     private HandlerThread backgroundThread;
-    private Button mFromButton;
-    private Button mToButton;
-    private View mReverseDirectionButton;
     private TransportAPI transportAPI;
     private Handler uiHandler;
     private OnConnectionListInteractionListener mOnConnectionListInteractionListener;
@@ -52,85 +49,12 @@ public class ConnectionListFragment extends Fragment {
     }
 
 
-    private static void rotateText(Context context, final TextView view, final String text, boolean isFront) {
-        int inAnimation;
-        int outAnimation;
-        if (isFront) {
-            inAnimation = R.anim.fade_in_top;
-            outAnimation = R.anim.fade_out_top;
-        } else {
-            inAnimation = R.anim.fade_in_bottom;
-            outAnimation = R.anim.fade_out_bottom;
-        }
-        final Animation fadeIn = AnimationUtils.loadAnimation(context, inAnimation);
-        final Animation fadeOut = AnimationUtils.loadAnimation(context, outAnimation);
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setText(text);
-                view.startAnimation(fadeIn);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        view.startAnimation(fadeOut);
-    }
-
     public static ConnectionListFragment newInstance(ConnectionQuery query) {
         ConnectionListFragment connectionListFragment = new ConnectionListFragment();
         Bundle arguments = new Bundle();
         arguments.putParcelable(ARG_QUERY, query);
         connectionListFragment.setArguments(arguments);
         return connectionListFragment;
-    }
-
-    private void onReverseDirectionRequested() {
-        ConnectionQuery query = new ConnectionQuery.Builder(mConnectionQuery)
-                .reverseDirection()
-                .build();
-        updateQuery(query, true, true);
-    }
-
-    /**
-     * Sets a new query
-     *
-     * @param query the query
-     */
-    public void updateQuery(ConnectionQuery query) {
-        updateQuery(query, true, false);
-    }
-
-    private void updateQuery(ConnectionQuery query, boolean animate, boolean rotate) {
-        mConnectionQuery = query;
-        loadConnectionsAsync(query);
-
-        if (animate) {
-            if (rotate) {
-                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.half_rotation);
-                mReverseDirectionButton.startAnimation(animation);
-            }
-            rotateText(getContext(), mFromButton, query.getFrom(), true);
-            rotateText(getContext(), mToButton, query.getTo(), false);
-        } else {
-            mFromButton.setText(query.getFrom());
-            mToButton.setText(query.getTo());
-        }
-    }
-
-    private void onToChangeRequested() {
-        // TODO
-    }
-
-    private void onFromChangeRequested() {
-        // TODO
     }
 
     @Override
@@ -177,7 +101,7 @@ public class ConnectionListFragment extends Fragment {
 
     private void loadConnectionsAsync(final ConnectionQuery connectionQuery) {
         mConnectionAdapter.clearConnections();
-        Message message = backgroundHandler.obtainMessage(BackgroundCallback.MESSAGE_QUERY_CONNECTION, connectionQuery);
+        Message message = backgroundHandler.obtainMessage(MESSAGE_QUERY_CONNECTION, connectionQuery);
         backgroundHandler.sendMessage(message);
     }
 
@@ -199,38 +123,29 @@ public class ConnectionListFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        mFromButton = (Button) view.findViewById(R.id.fromButton);
-        mFromButton.setText(mConnectionQuery.getFrom());
-        mFromButton.setOnClickListener(mOnNavigationButtonClickedListener);
-        mToButton = (Button) view.findViewById(R.id.toButton);
-        mToButton.setText(mConnectionQuery.getTo());
-        mToButton.setOnClickListener(mOnNavigationButtonClickedListener);
-
-        mReverseDirectionButton = view.findViewById(R.id.reverseDirectionButton);
-        mReverseDirectionButton.setOnClickListener(mOnNavigationButtonClickedListener);
+    public interface OnConnectionListInteractionListener {
+        void onConnectionSelected(Connection connection);
     }
 
     private class OnConnectionClickListener implements ConnectionListAdapter.OnConnectionClickListener {
         @Override
         public void onConnectionClicked(Connection connection) {
-            if(mOnConnectionListInteractionListener != null) {
+            if (mOnConnectionListInteractionListener != null) {
                 mOnConnectionListInteractionListener.onConnectionSelected(connection);
             }
         }
     }
 
     private class UICallback implements Handler.Callback {
-        private static final int MESSAGE_CONNECTIONS_LOADED = 1;
+
 
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_CONNECTIONS_LOADED:
-                    mConnectionAdapter.setConnections((Connection[]) msg.obj);
+                    if (mConnectionAdapter != null) {
+                        mConnectionAdapter.setConnections((Connection[]) msg.obj);
+                    }
                     break;
                 default:
                     return false;
@@ -241,8 +156,6 @@ public class ConnectionListFragment extends Fragment {
 
     private class BackgroundCallback implements Handler.Callback {
 
-        private static final int MESSAGE_QUERY_CONNECTION = 1;
-        private static final int MESSAGE_ERROR = 2;
 
         @Override
         public boolean handleMessage(Message msg) {
@@ -276,29 +189,8 @@ public class ConnectionListFragment extends Fragment {
                 return;
             }
             Connection[] connectionsArray = connections.toArray(new Connection[connections.size()]);
-            Message message = uiHandler.obtainMessage(UICallback.MESSAGE_CONNECTIONS_LOADED, connectionsArray);
+            Message message = uiHandler.obtainMessage(MESSAGE_CONNECTIONS_LOADED, connectionsArray);
             uiHandler.sendMessage(message);
         }
-    }
-
-    private class OnNavigationClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.fromButton:
-                    onFromChangeRequested();
-                    break;
-                case R.id.toButton:
-                    onToChangeRequested();
-                    break;
-                case R.id.reverseDirectionButton:
-                    onReverseDirectionRequested();
-                    break;
-            }
-        }
-    }
-
-    public interface OnConnectionListInteractionListener {
-        void onConnectionSelected(Connection connection);
     }
 }

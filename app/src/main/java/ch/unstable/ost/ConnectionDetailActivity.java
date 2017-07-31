@@ -1,11 +1,12 @@
 package ch.unstable.ost;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import ch.unstable.ost.api.transport.model.Connection;
+import ch.unstable.ost.theme.ThemedActivity;
 
-public class ConnectionDetailActivity extends AppCompatActivity {
+public class ConnectionDetailActivity extends ThemedActivity {
 
     public static final String EXTRA_CONNECTION = "EXTRA_CONNECTION";
 
@@ -13,6 +14,10 @@ public class ConnectionDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection_detail);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
 
         if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             Connection connection = getIntent().getParcelableExtra(EXTRA_CONNECTION);

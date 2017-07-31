@@ -4,12 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="ch.unstable.ost.ConnectionDetailActivity">
+    tools:context="ch.unstable.ost.ConnectionListActivity">
 
     <include layout="@layout/default_toolbar" />
+    <fragment
+        android:id="@+id/head_fragment"
+        android:name="ch.unstable.ost.HeadNavigationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/navigation_buttons" />
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>

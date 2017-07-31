@@ -9,8 +9,6 @@
     <item name="visible" type="id" />
     <item name="masked" type="id" />
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description_invert_direction">Reverse direction</string>
     <string name="departure_time">Departure time</string>
     <string name="request_choose_to">Choose destination</string>
@@ -18,4 +16,28 @@
     <string name="title_activity_choose_station">ChooseStationActivity</string>
     <string name="request_choose_station">Choose station</string>
     <string name="clearInput">Clear input</string>
+    <string name="menu_settings">Settings</string>
+
+    <string translatable="false" name="DarkGreenTheme">DarkGreenTheme</string>
+    <string translatable="false" name="LightGreenTheme">LightGreenTheme</string>
+    <string translatable="false" name="DarkGrayGreenTheme">DarkGrayGreenTheme</string>
+    <string name="prefs_category_appearance">Appearance</string>
+    <string name="prefs_summ_appearance">Look and feel</string>
+
+    <string-array name="theme_names">
+        <item name="theme_dark_green">Dark green</item>
+        <item name="theme_light_green">Light green</item>
+        <item name="theme_dark_gray_green">Dark green gray</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item name="theme_dark_green">@string/DarkGreenTheme</item>
+        <item name="theme_light_green">@string/LightGreenTheme</item>
+        <item name="theme_dark_gray_green">@string/DarkGrayGreenTheme</item>
+    </string-array>
+    <array name="theme_styles">
+        <item name="theme_dark_green">@style/GreenDarkTheme</item>
+        <item name="theme_light_green">@style/GreenLightTheme</item>
+        <item name="theme_dark_gray_green">@style/GrayTealTheme</item>
+    </array>
+
 </resources>

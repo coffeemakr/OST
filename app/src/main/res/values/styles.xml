@@ -1,16 +1,78 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="GreenDarkTheme" parent="Dark">
+        <item name="colorAccent">@color/colorTealAccent</item>
+        <item name="colorPrimary">@color/colorTealPrimary</item>
+        <item name="colorPrimaryDark">@color/colorTealPrimaryDark</item>
     </style>
 
-    <style name="AppTheme.NoActionBar" parent="AppTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+
+    <style name="GreenLightTheme" parent="Light">
+        <item name="colorAccent">@color/colorTealAccent</item>
+        <item name="colorPrimary">@color/colorTealPrimary</item>
+        <item name="colorPrimaryDark">@color/colorTealPrimaryDark</item>
     </style>
 
+    <!--
+    <style name="ActionButtonOverflowStyle">
+
+    </style>
+
+    <style name="DrawerArrowStyle">
+
+    </style>
+
+    <style name="LightToolBarStyle" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="actionOverflowButtonStyle">?android:attr/actionOverflowButtonStyle</item>
+        <item name="drawerArrowStyle"></item>
+    </style>
+    -->
+
+    <style name="GrayTealTheme" parent="Dark">
+        <item name="colorAccent">@color/colorTealAccent</item>
+        <item name="colorPrimary">@color/colorDarkGrayPrimary</item>
+        <item name="colorPrimaryDark">@color/colorDarkGrayPrimaryDark</item>
+    </style>
+
+    <style name="Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="ic_access_time_24dp">@drawable/ic_access_time_black_24dp</item>
+        <item name="ic_arrow_drop_down_24dp">@drawable/ic_arrow_drop_down_black_24dp</item>
+        <item name="ic_chevron_right_24dp">@drawable/ic_chevron_right_black_24dp</item>
+        <item name="ic_clear_24dp">@drawable/ic_clear_black_24dp</item>
+        <item name="ic_directions_bus_24dp">@drawable/ic_directions_bus_black_24dp</item>
+        <item name="ic_directions_walk_24dp">@drawable/ic_directions_walk_black_24dp</item>
+        <item name="ic_dots_vert_24dp">@drawable/ic_dots_vert_black_24dp</item>
+        <item name="ic_my_location_24dp">@drawable/ic_my_location_black_24dp</item>
+        <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_black_24dp</item>
+        <item name="ic_target_24dp">@drawable/ic_target_black_24dp</item>
+        <item name="ic_train_24dp">@drawable/ic_train_black_24dp</item>
+        <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <style name="Light.LightActionBar">
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+
+    <style name="Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="ic_access_time_24dp">@drawable/ic_access_time_white_24dp</item>
+        <item name="ic_arrow_drop_down_24dp">@drawable/ic_arrow_drop_down_white_24dp</item>
+        <item name="ic_chevron_right_24dp">@drawable/ic_chevron_right_white_24dp</item>
+        <item name="ic_clear_24dp">@drawable/ic_clear_white_24dp</item>
+        <item name="ic_directions_bus_24dp">@drawable/ic_directions_bus_white_24dp</item>
+        <item name="ic_directions_walk_24dp">@drawable/ic_directions_walk_white_24dp</item>
+        <item name="ic_dots_vert_24dp">@drawable/ic_dots_vert_white_24dp</item>
+        <item name="ic_my_location_24dp">@drawable/ic_my_location_white_24dp</item>
+        <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_white_24dp</item>
+        <item name="ic_target_24dp">@drawable/ic_target_white_24dp</item>
+        <item name="ic_train_24dp">@drawable/ic_train_white_24dp</item>
+        <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+    </style>
 </resources>

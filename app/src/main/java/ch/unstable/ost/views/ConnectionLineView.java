@@ -21,7 +21,6 @@ public class ConnectionLineView extends View {
     private static final String TAG = "ConnectionLineView";
     private final Paint mWaitingLinePaint;
     private final Paint mTravellingLinePaint;
-    private int mHeight;
     private int[] lengths = new int[]{1};
     private int totalLength = 1;
 
@@ -35,7 +34,7 @@ public class ConnectionLineView extends View {
         DisplayMetrics dm = getResources().getDisplayMetrics() ;
 
 
-        int dpSizeWaiting =  4;
+        int dpSizeWaiting =  2;
         float waitingStrokeWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpSizeWaiting, dm);
         mWaitingLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mWaitingLinePaint.setStyle(Paint.Style.STROKE);
@@ -46,7 +45,7 @@ public class ConnectionLineView extends View {
         mTravellingLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTravellingLinePaint.setStyle(Paint.Style.STROKE);
 
-        int dpSizeTravelling =  2;
+        int dpSizeTravelling =  8;
         float travellingStroke = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpSizeTravelling, dm);
         int line2Color = ResourcesCompat.getColor(context.getResources(), R.color.colorConnectionLineTravelling, context.getTheme());
         mTravellingLinePaint.setStrokeWidth(travellingStroke);
