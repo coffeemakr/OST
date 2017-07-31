@@ -11,6 +11,8 @@
     <attr name="ic_my_location_24dp" format="reference"/>
     <attr name="ic_swap_vert_24dp" format="reference"/>
     <attr name="ic_target_24dp" format="reference"/>
+    <attr name="ic_direction_railway_24dp" format="reference"/>
+
 
     <attr name="toolbarStyle" format="reference" />
     <attr name="toolbarTheme" format="reference" />

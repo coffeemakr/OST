@@ -49,6 +49,7 @@
         <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_black_24dp</item>
         <item name="ic_target_24dp">@drawable/ic_target_black_24dp</item>
         <item name="ic_train_24dp">@drawable/ic_train_black_24dp</item>
+        <item name="ic_direction_railway_24dp">@drawable/ic_directions_railway_black_24dp</item>
         <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -71,6 +72,7 @@
         <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_white_24dp</item>
         <item name="ic_target_24dp">@drawable/ic_target_white_24dp</item>
         <item name="ic_train_24dp">@drawable/ic_train_white_24dp</item>
+        <item name="ic_direction_railway_24dp">@drawable/ic_directions_railway_white_24dp</item>
         <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>

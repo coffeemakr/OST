@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,11 +17,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import java.io.IOException;
-import java.util.List;
 
+import ch.unstable.ost.api.TimetableDAO;
+import ch.unstable.ost.api.model.Station;
+import ch.unstable.ost.api.search.SearchAPI;
 import ch.unstable.ost.api.transport.TransportAPI;
-import ch.unstable.ost.api.transport.model.Location;
-import ch.unstable.ost.api.transport.model.LocationTypeFilter;
 import ch.unstable.ost.theme.ThemedActivity;
 
 public class ChooseStationActivity extends ThemedActivity {
@@ -34,7 +33,8 @@ public class ChooseStationActivity extends ThemedActivity {
     private static final int MESSAGE_UI_SET_LOCATIONS = 2;
     private EditText mStationEditText;
     private TextWatcher mSuggestionTextWatcher;
-    private TransportAPI transportAPI = new TransportAPI();
+    //private TransportAPI transportAPI = new TransportAPI();
+    private TimetableDAO timetableDAO = new SearchAPI();
     private HandlerThread mBackgroundHandlerThread;
     private Handler mBackgroundHandler;
     private Handler mUIHandler;
@@ -56,10 +56,9 @@ public class ChooseStationActivity extends ThemedActivity {
             stationNameLayout.setHint(hint);
         }
 
-        mLocationResultAdapter = new StationListAdapter();
+        mLocationResultAdapter = new StationListAdapter(this);
         mLocationResultAdapter.setOnStationClickListener(new StationListAdapter.OnStationClickListener() {
-            @Override
-            public void onStationClicked(Location location) {
+            public void onStationClicked(Station location) {
                 onLocationSelected(location);
             }
         });
@@ -86,7 +85,7 @@ public class ChooseStationActivity extends ThemedActivity {
         });
     }
 
-    private void onLocationSelected(Location location) {
+    private void onLocationSelected(Station location) {
         Intent resultData = new Intent();
         resultData.putExtra(EXTRA_RESULT_STATION_NAME, location.getName());
         resultData.putExtra(EXTRA_RESULT_STATION_ID, location.getId());
@@ -132,7 +131,7 @@ public class ChooseStationActivity extends ThemedActivity {
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_UI_SET_LOCATIONS:
-                    mLocationResultAdapter.setLocations((Location[]) msg.obj);
+                    mLocationResultAdapter.setLocations((Station[]) msg.obj);
                     return true;
             }
             return false;
@@ -143,10 +142,9 @@ public class ChooseStationActivity extends ThemedActivity {
 
 
         private void handleLocationQuery(String query) {
-            List<Location> locationList;
-            Location[] locationArray;
+            Station[] locationList;
             try {
-                locationList = transportAPI.getLocationsByQuery(query, LocationTypeFilter.STATION);
+                locationList = timetableDAO.getStationsByQuery(query, new Station.StationType[]{Station.StationType.BUS, Station.StationType.TRAIN});
             } catch (TransportAPI.TooManyRequestsException e) {
                 Message message = mBackgroundHandler.obtainMessage(MESSAGE_QUERY_LOCATIONS, query);
                 mBackgroundHandler.sendMessageDelayed(message, 300);
@@ -156,8 +154,7 @@ public class ChooseStationActivity extends ThemedActivity {
                 e.printStackTrace();
                 return;
             }
-            locationArray = locationList.toArray(new Location[locationList.size()]);
-            Message message = mUIHandler.obtainMessage(MESSAGE_UI_SET_LOCATIONS, locationArray);
+            Message message = mUIHandler.obtainMessage(MESSAGE_UI_SET_LOCATIONS, locationList);
             mUIHandler.sendMessage(message);
         }
 

@@ -5,19 +5,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.os.ParcelableCompat;
 
 import ch.unstable.ost.utils.ParcelCompat;
 import ch.unstable.ost.utils.ParcelUtils;
 
-public class Location implements Parcelable {
+public class OSLocation implements Parcelable {
     private final String id;
     private final String name;
     private final Coordinates coordinates;
     @Nullable
     private final Type type;
 
-    public Location(@NonNull String id, @Nullable Type type, String name, Coordinates coordinates) {
+    public OSLocation(@NonNull String id, @Nullable Type type, String name, Coordinates coordinates) {
         if(id == null) throw new NullPointerException("id is null");
         this.id = id;
         this.type = type;
@@ -25,7 +24,7 @@ public class Location implements Parcelable {
         this.coordinates = coordinates;
     }
 
-    protected Location(Parcel in) {
+    protected OSLocation(Parcel in) {
         id = in.readString();
         if(id == null) {
             throw new IllegalStateException("id is null");
@@ -48,15 +47,15 @@ public class Location implements Parcelable {
         return 0;
     }
 
-    public static final Creator<Location> CREATOR = new Creator<Location>() {
+    public static final Creator<OSLocation> CREATOR = new Creator<OSLocation>() {
         @Override
-        public Location createFromParcel(Parcel in) {
-            return new Location(in);
+        public OSLocation createFromParcel(Parcel in) {
+            return new OSLocation(in);
         }
 
         @Override
-        public Location[] newArray(int size) {
-            return new Location[size];
+        public OSLocation[] newArray(int size) {
+            return new OSLocation[size];
         }
     };
 
@@ -82,7 +81,7 @@ public class Location implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Location location = (Location) o;
+        OSLocation location = (OSLocation) o;
 
         if (!id.equals(location.id)) return false;
         if (name != null ? !name.equals(location.name) : location.name != null) return false;
@@ -94,7 +93,8 @@ public class Location implements Parcelable {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = 0;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (coordinates != null ? coordinates.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);

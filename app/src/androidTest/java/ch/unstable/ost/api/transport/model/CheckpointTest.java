@@ -1,7 +1,5 @@
 package ch.unstable.ost.api.transport.model;
 
-import android.support.annotation.Nullable;
-
 import org.junit.Test;
 
 import java.util.Date;
@@ -14,10 +12,10 @@ public class CheckpointTest {
     @Test
     public void writeToParcel() throws Exception {
         String id = "321i312";
-        Location.Type type = null;
+        OSLocation.Type type = null;
         String name = "name";
         Coordinates coordinates = new Coordinates(10, 10);
-        Location location = new Location(id, type, name, coordinates);
+        OSLocation location = new OSLocation(id, type, name, coordinates);
         Checkpoint checkpoint = new Checkpoint(location);
 
         Checkpoint readCheckPoint = writeAndRead(checkpoint, Checkpoint.CREATOR);
@@ -36,10 +34,10 @@ public class CheckpointTest {
         Integer delay = 10;
         String platform = "13/21";
         id = "321312";
-        type = Location.Type.ADDRESS;
+        type = OSLocation.Type.ADDRESS;
         name = "something";
         coordinates = new Coordinates(200, 100);
-        location = new Location(id, type, name, coordinates);
+        location = new OSLocation(id, type, name, coordinates);
         checkpoint = new Checkpoint(location, arrival, departure, delay, platform);
 
         readCheckPoint = writeAndRead(checkpoint, Checkpoint.CREATOR);

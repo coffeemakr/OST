@@ -2,9 +2,9 @@ package ch.unstable.ost;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ch.unstable.ost.api.transport.model.Location;
+import ch.unstable.ost.api.model.Station;
 import ch.unstable.ost.theme.ThemeHelper;
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
@@ -20,13 +20,18 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHolder> {
 
     private final Handler mHandler;
+    private final @DrawableRes int trainIcon;
+    private final @DrawableRes int busIcon;
 
     @MainThread
-    public StationListAdapter() {
+    public StationListAdapter(Context context) {
         mHandler = new Handler();
+        trainIcon = ThemeHelper.getThemedDrawable(context, R.attr.ic_direction_railway_24dp);
+        busIcon = ThemeHelper.getThemedDrawable(context, R.attr.ic_directions_bus_24dp);
+
     }
 
-    private Location[] mLocations = new Location[0];
+    private Station[] mLocations = new Station[0];
     private View.OnClickListener mOnItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -35,7 +40,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
                 ViewHolder viewHolder = (ViewHolder) v.getTag();
                 int position = viewHolder.getAdapterPosition();
                 if(position != NO_POSITION) {
-                    final Location location = mLocations[position];
+                    final Station location = mLocations[position];
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -58,10 +63,23 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
 
     @Override
     public void onBindViewHolder(StationListAdapter.ViewHolder holder, int position) {
-        Location location = mLocations[position];
+        Station location = mLocations[position];
         holder.stationName.setText(location.getName());
         holder.itemView.setTag(holder);
         holder.itemView.setOnClickListener(mOnItemClickListener);
+        switch (location.getType()) {
+            case TRAIN:
+                holder.transportationIcon.setImageResource(trainIcon);
+                break;
+            case BUS:
+                holder.transportationIcon.setImageResource(busIcon);
+                break;
+            case POI:
+            case ADDRESS:
+            case UNKNOWN:
+            default:
+                holder.transportationIcon.setImageDrawable(null);
+        }
     }
 
     @Override
@@ -73,7 +91,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
     }
 
     @MainThread
-    public void setLocations(Location[] locations) {
+    public void setLocations(Station[] locations) {
         mLocations = locations;
         notifyDataSetChanged();
     }
@@ -99,6 +117,6 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
     }
 
     public interface OnStationClickListener {
-        void onStationClicked(Location location);
+        void onStationClicked(Station location);
     }
 }

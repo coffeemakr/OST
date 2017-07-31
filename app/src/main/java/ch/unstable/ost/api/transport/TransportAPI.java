@@ -3,43 +3,37 @@ package ch.unstable.ost.api.transport;
 
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import ch.unstable.ost.api.base.BaseHttpJsonAPI;
 import ch.unstable.ost.api.transport.model.Connection;
 import ch.unstable.ost.api.transport.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.model.Coordinates;
-import ch.unstable.ost.api.transport.model.Location;
+import ch.unstable.ost.api.transport.model.OSLocation;
 import ch.unstable.ost.api.transport.model.LocationTypeFilter;
 import ch.unstable.ost.api.transport.types.EmptyNumberTypeAdapter;
 
-public class TransportAPI {
+public class TransportAPI extends BaseHttpJsonAPI {
 
-    public static final int HTTP_CODE_TOO_MANY_REQUESTS = 429;
-    private static final String USER_AGENT = "OST/0.1";
     private static final Uri BASE_URL = Uri.parse("https://transport.opendata.ch/v1/");
     private static final String TAG = "TransportAPI";
-    private final Gson gson;
 
     public TransportAPI() {
+    }
+
+    @Override
+    protected void onBuildGsonCreated(GsonBuilder gsonBuilder) {
         final TypeAdapter<Number> numberTypeAdapter = new EmptyNumberTypeAdapter();
-        gson = new GsonBuilder()
-                .registerTypeAdapter(Integer.class, numberTypeAdapter)
-                .create();
+        gsonBuilder.registerTypeAdapter(Integer.class, numberTypeAdapter);
     }
 
     private static void addTransportationFilter(Uri.Builder builder, Transportation[] transportations) {
@@ -75,38 +69,20 @@ public class TransportAPI {
         return loadConnections(builder);
     }
 
-    private <T> T loadJson(Uri.Builder builder, Class<T> jsonClass) throws IOException {
-        URL url = new URL(builder.build().toString());
-        Log.d(TAG, "loading JSON " + url);
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestMethod("GET");
-        urlConnection.setRequestProperty("User-Agent", USER_AGENT);
-        int code = urlConnection.getResponseCode();
-        if(code == HTTP_CODE_TOO_MANY_REQUESTS) {
-            throw new TooManyRequestsException();
-        }
-        InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
-        try {
-            return gson.fromJson(inputStreamReader, jsonClass);
-        } catch (JsonSyntaxException e) {
-            throw new IOException(e);
-        }
-    }
-
     private List<Connection> loadConnections(Uri.Builder builder) throws IOException {
         return loadJson(builder, ConnectionList.class).connections;
     }
 
-    private List<Location> loadLocations(Uri.Builder builder) throws IOException {
+    private List<OSLocation> loadLocations(Uri.Builder builder) throws IOException {
         return loadJson(builder, StationsList.class).stations;
     }
 
 
-    public List<Location> getLocationsByQuery(String query) throws IOException {
+    public List<OSLocation> getLocationsByQuery(String query) throws IOException {
         return getLocationsByQuery(query, null);
     }
 
-    public List<Location> getLocationsByQuery(String query, @Nullable LocationTypeFilter typeFilter) throws IOException {
+    public List<OSLocation> getLocationsByQuery(String query, @Nullable LocationTypeFilter typeFilter) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("locations")
                 .appendQueryParameter("query", query);
@@ -116,13 +92,13 @@ public class TransportAPI {
         return loadLocations(builder);
     }
 
-    public List<Location> getLocationsByPosition(Coordinates coordinates) throws IOException {
+    public List<OSLocation> getLocationsByPosition(Coordinates coordinates) throws IOException {
         return getLocationsByPosition(coordinates, null, null);
     }
 
-    public List<Location> getLocationsByPosition(Coordinates coordinates,
-                                                 @Nullable LocationTypeFilter type,
-                                                 @Nullable Transportation[] transportationFilter) throws IOException {
+    public List<OSLocation> getLocationsByPosition(Coordinates coordinates,
+                                                   @Nullable LocationTypeFilter type,
+                                                   @Nullable Transportation[] transportationFilter) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("locations")
                 .appendQueryParameter("x", String.valueOf(coordinates.x))
@@ -136,18 +112,12 @@ public class TransportAPI {
 
     private static class StationsList {
         @SerializedName("stations")
-        List<Location> stations;
+        List<OSLocation> stations;
     }
 
     private static class ConnectionList {
         @SerializedName("connections")
         List<Connection> connections;
-    }
-
-    public static class TooManyRequestsException extends IOException {
-        public TooManyRequestsException() {
-            super();
-        }
     }
 
 }

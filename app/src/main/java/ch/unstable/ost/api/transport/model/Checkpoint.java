@@ -24,7 +24,7 @@ public class Checkpoint implements Parcelable {
             return new Checkpoint[size];
         }
     };
-    private final Location station;
+    private final OSLocation station;
     @Nullable
     @SerializedName("arrival")
     private final Date arrival;
@@ -42,12 +42,12 @@ public class Checkpoint implements Parcelable {
     @Nullable
     private final String platform;
 
-    Checkpoint(Location station) {
+    Checkpoint(OSLocation station) {
         this(station, null, null, null, null);
     }
 
 
-    Checkpoint(Location station, @Nullable Date arrival, @Nullable Date departureTime, @Nullable Integer delay, @Nullable String platform) {
+    Checkpoint(OSLocation station, @Nullable Date arrival, @Nullable Date departureTime, @Nullable Integer delay, @Nullable String platform) {
         if(station == null) throw new NullPointerException("station is null");
         this.station = station;
         this.platform = platform;
@@ -57,7 +57,7 @@ public class Checkpoint implements Parcelable {
     }
 
     protected Checkpoint(Parcel in) {
-        this.station = ParcelCompat.readTypeObject(in, Location.CREATOR);
+        this.station = ParcelCompat.readTypeObject(in, OSLocation.CREATOR);
         this.platform = in.readString();
         this.departureTime = ParcelUtils.readDate(in);
         this.arrival = ParcelUtils.readDate(in);
@@ -78,7 +78,7 @@ public class Checkpoint implements Parcelable {
         return station.getName() + "@" + arrival + " -> " + departureTime;
     }
 
-    public Location getStation() {
+    public OSLocation getStation() {
         return station;
     }
 

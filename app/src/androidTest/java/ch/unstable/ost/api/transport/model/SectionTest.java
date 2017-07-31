@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class SectionTest {
 
     public static Checkpoint generateRandomCheckpoint() {
-        Location station = generateRandomLocation();
+        OSLocation station = generateRandomLocation();
         Random random = new Random();
         long date1 = random.nextLong();
         long date2 = random.nextLong();
@@ -30,13 +30,13 @@ public class SectionTest {
         return values[i];
     }
 
-    private static Location generateRandomLocation() {
+    private static OSLocation generateRandomLocation() {
         Random random = new Random();
         String id = "idsaoja" + random.nextInt();
-        Location.Type type = getRandomValue(Location.Type.values());
+        OSLocation.Type type = getRandomValue(OSLocation.Type.values());
         String name = "name" + random.nextInt();
         Coordinates coordinates = new Coordinates(random.nextDouble(), random.nextDouble());
-        return new Location(id, type, name, coordinates);
+        return new OSLocation(id, type, name, coordinates);
     }
 
     @Test
