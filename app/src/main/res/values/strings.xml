@@ -18,9 +18,9 @@
     <string name="clearInput">Clear input</string>
     <string name="menu_settings">Settings</string>
 
-    <string translatable="false" name="DarkGreenTheme">DarkGreenTheme</string>
-    <string translatable="false" name="LightGreenTheme">LightGreenTheme</string>
-    <string translatable="false" name="DarkGrayGreenTheme">DarkGrayGreenTheme</string>
+    <string name="DarkGreenTheme" translatable="false">DarkGreenTheme</string>
+    <string name="LightGreenTheme" translatable="false">LightGreenTheme</string>
+    <string name="DarkGrayGreenTheme" translatable="false">DarkGrayGreenTheme</string>
     <string name="prefs_category_appearance">Appearance</string>
     <string name="prefs_summ_appearance">Look and feel</string>
 
@@ -39,5 +39,7 @@
         <item name="theme_light_green">@style/GreenLightTheme</item>
         <item name="theme_dark_gray_green">@style/GrayTealTheme</item>
     </array>
+    <string name="title_activity_error_report">Error Report</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

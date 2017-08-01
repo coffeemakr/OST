@@ -26,6 +26,10 @@
         <activity
             android:name=".ChooseStationActivity"
             android:label="@string/title_activity_choose_station" />
+        <activity
+            android:name=".error.ErrorReportActivity"
+            android:label="@string/title_activity_error_report"
+            android:theme="@style/GreenDarkTheme"></activity>
     </application>
 
 </manifest>

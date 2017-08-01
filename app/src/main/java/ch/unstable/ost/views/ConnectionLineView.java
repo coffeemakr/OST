@@ -69,7 +69,7 @@ public class ConnectionLineView extends View {
         float x = 0;
         boolean isTravelling = true;
         long width = getWidth();
-        Log.d(TAG, "Lengths: " + Arrays.toString(lengths) + " totalLength: " + totalLength);
+        //Log.d(TAG, "Lengths: " + Arrays.toString(lengths) + " totalLength: " + totalLength);
         for(int length: lengths) {
             Paint paint;
             if(isTravelling) {
@@ -79,7 +79,6 @@ public class ConnectionLineView extends View {
             }
             isTravelling = !isTravelling;
             float lineWidth = ((float) (width * length)) / totalLength;
-            Log.d(TAG, "line width: " + lineWidth);
             canvas.drawLine(x, middleY, x + lineWidth, middleY, paint);
             mWaitingLinePaint.getStrokeWidth();
             x += lineWidth;

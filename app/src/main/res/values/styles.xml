@@ -77,4 +77,8 @@
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
     </style>
+
+    <style name="GreenDarkTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="GreenDarkTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

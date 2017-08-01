@@ -28,6 +28,7 @@ public class ConnectionListFragment extends Fragment {
     private static final int MESSAGE_QUERY_CONNECTION = 1;
     private static final int MESSAGE_ERROR = 2;
     private static final int MESSAGE_CONNECTIONS_LOADED = 3;
+    private static final int MESSAGE_CONNECTIONS_LOADING_STARTED = 4;
 
     private static final String ARG_QUERY = "connection_query";
     private static final String KEY_CONNECTION_LIST = "connection_list";
@@ -42,6 +43,8 @@ public class ConnectionListFragment extends Fragment {
     private TransportAPI transportAPI;
     private Handler uiHandler;
     private OnConnectionListInteractionListener mOnConnectionListInteractionListener;
+    private View mLoadingIndicator;
+    private RecyclerView mConnectionsList;
 
     public ConnectionListFragment() {
         // Empty constructor
@@ -67,8 +70,8 @@ public class ConnectionListFragment extends Fragment {
 
         uiHandler = new Handler(uiCallback);
 
-
         mConnectionAdapter = new ConnectionListAdapter();
+
         mConnectionAdapter.setOnConnectionClickListener(mOnConnectionClickListener);
         if (savedInstanceState != null) {
             mConnectionQuery = savedInstanceState.getParcelable(ARG_QUERY);
@@ -99,6 +102,7 @@ public class ConnectionListFragment extends Fragment {
         outState.putParcelable(ARG_QUERY, mConnectionQuery);
     }
 
+
     private void loadConnectionsAsync(final ConnectionQuery connectionQuery) {
         mConnectionAdapter.clearConnections();
         Message message = backgroundHandler.obtainMessage(MESSAGE_QUERY_CONNECTION, connectionQuery);
@@ -115,12 +119,18 @@ public class ConnectionListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_connection_list, container, false);
-        RecyclerView connectionsList = (RecyclerView) view.findViewById(R.id.connections_list);
-        connectionsList.setAdapter(mConnectionAdapter);
-        connectionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        return inflater.inflate(R.layout.fragment_connection_list, container, false);
+    }
 
-        return view;
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mConnectionsList = (RecyclerView) view.findViewById(R.id.connections_list);
+        mConnectionsList.setAdapter(mConnectionAdapter);
+        mConnectionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        mLoadingIndicator = view.findViewById(R.id.loadingIndicator);
+
     }
 
     public interface OnConnectionListInteractionListener {
@@ -136,13 +146,26 @@ public class ConnectionListFragment extends Fragment {
         }
     }
 
+
+    private void onLoadingStarted() {
+        mConnectionsList.setVisibility(View.GONE);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    private void onLoadingFinished() {
+        mLoadingIndicator.setVisibility(View.GONE);
+        mConnectionsList.setVisibility(View.VISIBLE);
+    }
+
     private class UICallback implements Handler.Callback {
-
-
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
+                case MESSAGE_CONNECTIONS_LOADING_STARTED:
+                    onLoadingStarted();
+                    break;
                 case MESSAGE_CONNECTIONS_LOADED:
+                    onLoadingFinished();
                     if (mConnectionAdapter != null) {
                         mConnectionAdapter.setConnections((Connection[]) msg.obj);
                     }
@@ -178,6 +201,7 @@ public class ConnectionListFragment extends Fragment {
         }
 
         private void handleConnectionQuery(ConnectionQuery connectionQuery) {
+            uiHandler.sendEmptyMessage(MESSAGE_CONNECTIONS_LOADING_STARTED);
             List<Connection> connections;
             try {
                 connections = transportAPI.getConnections(connectionQuery);
