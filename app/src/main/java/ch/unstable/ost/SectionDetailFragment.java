@@ -7,14 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.text.DateFormat;
 
 import ch.unstable.ost.api.transport.model.Checkpoint;
 import ch.unstable.ost.api.transport.model.Section;
@@ -113,7 +110,7 @@ public class SectionDetailFragment extends Fragment {
                     time = TimeDateUtils.formatTime(stop.getDepartureTime());
                 } catch (RuntimeException e2) {
                     Log.e(TAG, "Failed to get departure date", e2);
-                    time = "?:??";
+                    time = "??:??";
                 }
             }
             holder.departureTime.setText(time);
