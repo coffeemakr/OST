@@ -3,6 +3,8 @@ package ch.unstable.ost.api.transport.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Objects;
+
 public class Coordinates implements Parcelable {
     public static final Creator<Coordinates> CREATOR = new Creator<Coordinates>() {
         @Override
@@ -43,22 +45,13 @@ public class Coordinates implements Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Coordinates that = (Coordinates) o;
-
-        if (Double.compare(that.x, x) != 0) return false;
-        return Double.compare(that.y, y) == 0;
-
+        return Double.compare(that.x, x) == 0 &&
+                Double.compare(that.y, y) == 0;
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(x);
-        result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(y);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        return Objects.hashCode(x, y);
     }
 }

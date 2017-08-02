@@ -1,7 +1,10 @@
 package ch.unstable.ost;
 
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +18,26 @@ import ch.unstable.ost.api.transport.model.Section;
 import ch.unstable.ost.utils.TimeDateUtils;
 
 class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.SectionViewHolder> {
-
+    public static final String TAG = "SectionListAdapters";
     private static final int JOURNEY_VIEW_TYPE = 1;
     private static final int WALK_VIEW_TYPE = 2;
     private Section[] sections = new Section[0];
+    @Nullable
+    private OnSectionClickedListener onJourneyClickedListener;
+
+    private View.OnClickListener onJourneyItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final Section section = (Section) v.getTag();
+            if(section == null) {
+                if(BuildConfig.DEBUG) Log.w(TAG, "Got tag null for view: " + v);
+                return;
+            }
+            if(onJourneyClickedListener != null) {
+                onJourneyClickedListener.onSectionClicked(section);
+            }
+        }
+    };
 
     @Override
     public SectionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,10 +63,11 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
         holder.arrivalTime.setText(TimeDateUtils.formatTime(arrival.getArrival()));
         holder.departureTime.setText(TimeDateUtils.formatTime(departure.getDepartureTime()));
         holder.productName.setText(journey.getName());
-        System.out.println("Journey: " + journey);
         holder.endDestination.setText(journey.getTo());
         holder.departurePlatform.setText(section.getDeparture().getPlatform());
         holder.arrivalPlatform.setText(section.getArrival().getPlatform());
+        holder.itemView.setTag(section);
+        holder.itemView.setOnClickListener(onJourneyItemClickListener);
     }
 
     private void onBindWalkViewHolder(WalkSectionViewHolder holder, Section section) {
@@ -86,6 +106,15 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
     @Override
     public int getItemCount() {
         return sections.length;
+    }
+
+    @Nullable
+    public OnSectionClickedListener getOnJourneyClickedListener() {
+        return onJourneyClickedListener;
+    }
+
+    public void setOnJourneyClickedListener(@Nullable OnSectionClickedListener onJourneyClickedListener) {
+        this.onJourneyClickedListener = onJourneyClickedListener;
     }
 
 
@@ -128,5 +157,9 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
         public SectionViewHolder(View itemView) {
             super(itemView);
         }
+    }
+
+    public interface OnSectionClickedListener {
+        void onSectionClicked(@NonNull Section section);
     }
 }

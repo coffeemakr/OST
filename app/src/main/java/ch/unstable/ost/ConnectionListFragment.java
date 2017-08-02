@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -128,7 +129,8 @@ public class ConnectionListFragment extends Fragment {
         mConnectionsList = (RecyclerView) view.findViewById(R.id.connections_list);
         mConnectionsList.setAdapter(mConnectionAdapter);
         mConnectionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        mConnectionsList.addItemDecoration(dividerItemDecoration);
         mLoadingIndicator = view.findViewById(R.id.loadingIndicator);
 
     }

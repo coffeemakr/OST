@@ -20,7 +20,7 @@ public class JourneyTest {
         String to = null;
         Capacity capacity = null;
 
-        Journey journey = new Journey(name, category, categoryCode, number, operator, to, capacity);
+        Journey journey = new Journey(name, category, categoryCode, number, operator, to, capacity, passList);
 
         Journey readJourney = writeAndRead(journey, Journey.CREATOR);
 
@@ -41,7 +41,7 @@ public class JourneyTest {
         to = "to";
         capacity = new Capacity(10, 2);
 
-        journey = new Journey(name, category, categoryCode, number, operator, to, capacity);
+        journey = new Journey(name, category, categoryCode, number, operator, to, capacity, passList);
 
         readJourney = writeAndRead(journey, Journey.CREATOR);
 

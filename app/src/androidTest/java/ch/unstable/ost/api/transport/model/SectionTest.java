@@ -50,7 +50,7 @@ public class SectionTest {
         String to = "Zürich HB";
         Capacity capacity = new Capacity(10, 10);
 
-        Journey journey = new Journey(name, category, categoryCode, number, operator, to, capacity);
+        Journey journey = new Journey(name, category, categoryCode, number, operator, to, capacity, passList);
 
         Checkpoint arrival = generateRandomCheckpoint();
         Checkpoint departure = generateRandomCheckpoint();

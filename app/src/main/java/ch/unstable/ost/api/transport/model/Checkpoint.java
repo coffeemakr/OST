@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -110,26 +111,17 @@ public class Checkpoint implements Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Checkpoint that = (Checkpoint) o;
-
-        if (!station.equals(that.station)) return false;
-        if (arrival != null ? !arrival.equals(that.arrival) : that.arrival != null) return false;
-        if (departureTime != null ? !departureTime.equals(that.departureTime) : that.departureTime != null)
-            return false;
-        if (delay != null ? !delay.equals(that.delay) : that.delay != null) return false;
-        return platform != null ? platform.equals(that.platform) : that.platform == null;
-
+        return Objects.equal(station, that.station) &&
+                Objects.equal(arrival, that.arrival) &&
+                Objects.equal(departureTime, that.departureTime) &&
+                Objects.equal(delay, that.delay) &&
+                Objects.equal(platform, that.platform);
     }
 
     @Override
     public int hashCode() {
-        int result = station.hashCode();
-        result = 31 * result + (arrival != null ? arrival.hashCode() : 0);
-        result = 31 * result + (departureTime != null ? departureTime.hashCode() : 0);
-        result = 31 * result + (delay != null ? delay.hashCode() : 0);
-        result = 31 * result + (platform != null ? platform.hashCode() : 0);
-        return result;
+        return Objects.hashCode(station, arrival, departureTime, delay, platform);
     }
 }
 

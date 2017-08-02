@@ -1,9 +1,12 @@
 package ch.unstable.ost;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ch.unstable.ost.api.transport.model.Connection;
+import ch.unstable.ost.api.transport.model.Section;
 
 
 public class ConnectionDetailFragment extends Fragment {
@@ -20,11 +24,12 @@ public class ConnectionDetailFragment extends Fragment {
     private Connection mConnection;
     private RecyclerView mSectionsList;
     private SectionListAdapter mSectionListAdapter;
+    private SectionListAdapter.OnSectionClickedListener mOnJourneyClickedListener;
+    private OnConnectionDetailInteractionListener mOnConnectionDetailInteractionListener;
 
     public ConnectionDetailFragment() {
         // Required empty public constructor
     }
-
 
     public static ConnectionDetailFragment newInstance(Connection connection) {
         if (connection == null) {
@@ -38,6 +43,18 @@ public class ConnectionDetailFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mOnConnectionDetailInteractionListener = (OnConnectionDetailInteractionListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mOnConnectionDetailInteractionListener = null;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -45,8 +62,17 @@ public class ConnectionDetailFragment extends Fragment {
         } else {
             mConnection = getArguments().getParcelable(KEY_CONNECTION);
         }
-        mSectionListAdapter = new SectionListAdapter();
 
+        mOnJourneyClickedListener = new SectionListAdapter.OnSectionClickedListener() {
+            @Override
+            public void onSectionClicked(@NonNull Section section) {
+                if(mOnConnectionDetailInteractionListener != null) {
+                    mOnConnectionDetailInteractionListener.onSectionSelected(section);
+                }
+            }
+        };
+        mSectionListAdapter = new SectionListAdapter();
+        mSectionListAdapter.setOnJourneyClickedListener(mOnJourneyClickedListener);
         mSectionListAdapter.setSections(mConnection.getSections());
     }
 
@@ -69,5 +95,11 @@ public class ConnectionDetailFragment extends Fragment {
         mSectionsList = (RecyclerView) view.findViewById(R.id.sectionsList);
         mSectionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mSectionsList.setAdapter(mSectionListAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        mSectionsList.addItemDecoration(dividerItemDecoration);
+    }
+
+    public interface OnConnectionDetailInteractionListener {
+        void onSectionSelected(@NonNull Section section);
     }
 }

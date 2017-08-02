@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.common.base.Objects;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -89,6 +91,22 @@ public class ConnectionQuery implements Parcelable {
     @Nullable
     public Date getStarTime() {
         return starTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConnectionQuery that = (ConnectionQuery) o;
+        return Objects.equal(from, that.from) &&
+                Objects.equal(to, that.to) &&
+                Objects.equal(via, that.via) &&
+                Objects.equal(starTime, that.starTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(from, to, via, starTime);
     }
 
 

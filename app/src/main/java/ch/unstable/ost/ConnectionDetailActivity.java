@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import ch.unstable.ost.api.transport.model.Connection;
+import ch.unstable.ost.api.transport.model.Section;
 import ch.unstable.ost.theme.ThemedActivity;
 
-public class ConnectionDetailActivity extends ThemedActivity {
+public class ConnectionDetailActivity extends ThemedActivity implements ConnectionDetailFragment.OnConnectionDetailInteractionListener {
 
     public static final String EXTRA_CONNECTION = "EXTRA_CONNECTION";
 
@@ -26,5 +27,14 @@ public class ConnectionDetailActivity extends ThemedActivity {
                     .add(R.id.fragment_container, fragment)
                     .commit();
         }
+    }
+
+    @Override
+    public void onSectionSelected(Section section) {
+        SectionDetailFragment fragment = SectionDetailFragment.newInstance(section);
+        getSupportFragmentManager().beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 }

@@ -4,6 +4,8 @@ package ch.unstable.ost.api.transport.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Objects;
+
 import ch.unstable.ost.utils.ParcelUtils;
 
 public class Journey implements Parcelable {
@@ -25,12 +27,14 @@ public class Journey implements Parcelable {
     private final String operator;
     private final String to;
     private final Capacity capacity;
+    private final Checkpoint[] passList;
 
-    Journey(String name, String category, String categoryCode, int number, String operator, String to, Capacity capacity) {
-        this(name, category, categoryCode, "" + number, operator, to, capacity);
+    Journey(String name, String category, String categoryCode, int number, String operator, String to, Capacity capacity, Checkpoint[] passList) {
+        this(name, category, categoryCode, "" + number, operator, to, capacity, passList);
     }
 
-    Journey(String name, String category, String categoryCode, String number, String operator, String to, Capacity capacity) {
+
+    Journey(String name, String category, String categoryCode, String number, String operator, String to, Capacity capacity, Checkpoint[] passList) {
         this.name = name;
         this.category = category;
         this.categoryCode = categoryCode;
@@ -38,6 +42,7 @@ public class Journey implements Parcelable {
         this.operator = operator;
         this.to = to;
         this.capacity = capacity;
+        this.passList = passList;
     }
 
     protected Journey(Parcel in) {
@@ -48,10 +53,15 @@ public class Journey implements Parcelable {
         operator = in.readString();
         to = in.readString();
         capacity = ParcelUtils.readNullableParcelable(in, Capacity.CREATOR);
+        passList = in.createTypedArray(Checkpoint.CREATOR);
     }
 
     private static boolean equals(String first, String second) {
         return first != null ? !first.equals(second) : second != null;
+    }
+
+    public Checkpoint[] getPassList() {
+        return passList;
     }
 
     @Override
@@ -63,6 +73,7 @@ public class Journey implements Parcelable {
         dest.writeString(operator);
         dest.writeString(to);
         ParcelUtils.writeNullableParcelable(dest, capacity, flags);
+        dest.writeTypedArray(passList, flags);
     }
 
     @Override
@@ -102,30 +113,19 @@ public class Journey implements Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Journey journey = (Journey) o;
-
-        if (!equals(number, journey.number)) return false;
-        if (!equals(name, journey.name)) return false;
-        if (!equals(category, journey.category)) return false;
-        if (categoryCode != null ? !categoryCode.equals(journey.categoryCode) : journey.categoryCode != null)
-            return false;
-        if (operator != null ? !operator.equals(journey.operator) : journey.operator != null)
-            return false;
-        if (to != null ? !to.equals(journey.to) : journey.to != null) return false;
-        return capacity != null ? capacity.equals(journey.capacity) : journey.capacity == null;
-
+        return Objects.equal(name, journey.name) &&
+                Objects.equal(category, journey.category) &&
+                Objects.equal(categoryCode, journey.categoryCode) &&
+                Objects.equal(number, journey.number) &&
+                Objects.equal(operator, journey.operator) &&
+                Objects.equal(to, journey.to) &&
+                Objects.equal(capacity, journey.capacity) &&
+                Objects.equal(passList, journey.passList);
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (categoryCode != null ? categoryCode.hashCode() : 0);
-        result = 31 * result + (number != null ? number.hashCode() : 0);
-        result = 31 * result + (operator != null ? operator.hashCode() : 0);
-        result = 31 * result + (to != null ? to.hashCode() : 0);
-        result = 31 * result + (capacity != null ? capacity.hashCode() : 0);
-        return result;
+        return Objects.hashCode(name, category, categoryCode, number, operator, to, capacity, passList);
     }
 }

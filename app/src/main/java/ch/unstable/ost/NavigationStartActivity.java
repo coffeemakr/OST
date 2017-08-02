@@ -32,9 +32,6 @@ public class NavigationStartActivity extends ThemedActivity
                     .addToBackStack(null)
                     .commit();
         }
-        if (true) {
-            throw new NullPointerException("hi");
-        }
     }
 
     @Override

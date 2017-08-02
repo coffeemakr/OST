@@ -3,6 +3,8 @@ package ch.unstable.ost.api.transport.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Objects;
+
 class Capacity implements Parcelable {
 
     public static final Creator<Capacity> CREATOR = new Creator<Capacity>() {
@@ -52,18 +54,13 @@ class Capacity implements Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Capacity capacity = (Capacity) o;
-
-        if (firstClass != capacity.firstClass) return false;
-        return secondClass == capacity.secondClass;
-
+        return firstClass == capacity.firstClass &&
+                secondClass == capacity.secondClass;
     }
 
     @Override
     public int hashCode() {
-        int result = firstClass;
-        result = 31 * result + secondClass;
-        return result;
+        return Objects.hashCode(firstClass, secondClass);
     }
 }

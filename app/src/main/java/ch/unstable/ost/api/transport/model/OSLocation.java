@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.common.base.Objects;
+
 import ch.unstable.ost.utils.ParcelCompat;
 import ch.unstable.ost.utils.ParcelUtils;
 
@@ -79,26 +81,18 @@ public class OSLocation implements Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        OSLocation location = (OSLocation) o;
-
-        if (!id.equals(location.id)) return false;
-        if (name != null ? !name.equals(location.name) : location.name != null) return false;
-        if (coordinates != null ? !coordinates.equals(location.coordinates) : location.coordinates != null)
-            return false;
-        return type == location.type;
-
+        OSLocation that = (OSLocation) o;
+        return Objects.equal(id, that.id) &&
+                Objects.equal(name, that.name) &&
+                Objects.equal(coordinates, that.coordinates) &&
+                type == that.type;
     }
 
     @Override
     public int hashCode() {
-        int result = 0;
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (coordinates != null ? coordinates.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        return result;
+        return Objects.hashCode(id, name, coordinates, type);
     }
+
 
     public enum Type {
         STATION, POI, ADDRESS, REFINE;
