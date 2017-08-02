@@ -48,7 +48,7 @@ public class Checkpoint implements Parcelable {
 
 
     Checkpoint(OSLocation station, @Nullable Date arrival, @Nullable Date departureTime, @Nullable Integer delay, @Nullable String platform) {
-        if(station == null) throw new NullPointerException("station is null");
+        if (station == null) throw new NullPointerException("station is null");
         this.station = station;
         this.platform = platform;
         this.departureTime = departureTime;

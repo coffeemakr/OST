@@ -47,10 +47,10 @@ public class ChooseStationActivity extends ThemedActivity {
         setContentView(R.layout.activity_choose_station);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar == null) throw new NullPointerException("toolbar is null");
+        if (toolbar == null) throw new NullPointerException("toolbar is null");
         setSupportActionBar(toolbar);
 
-        if(getIntent() != null && getIntent().hasExtra(ChooseStationActivity.EXTRA_CHOOSE_PROMPT)) {
+        if (getIntent() != null && getIntent().hasExtra(ChooseStationActivity.EXTRA_CHOOSE_PROMPT)) {
             String hint = getIntent().getStringExtra(ChooseStationActivity.EXTRA_CHOOSE_PROMPT);
             TextInputLayout stationNameLayout = (TextInputLayout) findViewById(R.id.stationNameLayout);
             stationNameLayout.setHint(hint);
@@ -106,6 +106,7 @@ public class ChooseStationActivity extends ThemedActivity {
         public SuggestionTextWatcher(Handler backgroundHandler) {
             this.mBackgroundHandler = backgroundHandler;
         }
+
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -118,7 +119,7 @@ public class ChooseStationActivity extends ThemedActivity {
         @Override
         public void afterTextChanged(Editable s) {
             String query = s.toString();
-            if(!query.isEmpty()) {
+            if (!query.isEmpty()) {
                 Message message = mBackgroundHandler.obtainMessage(MESSAGE_QUERY_LOCATIONS, query);
                 mBackgroundHandler.sendMessage(message);
             }

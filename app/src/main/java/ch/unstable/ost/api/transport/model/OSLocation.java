@@ -10,6 +10,17 @@ import ch.unstable.ost.utils.ParcelCompat;
 import ch.unstable.ost.utils.ParcelUtils;
 
 public class OSLocation implements Parcelable {
+    public static final Creator<OSLocation> CREATOR = new Creator<OSLocation>() {
+        @Override
+        public OSLocation createFromParcel(Parcel in) {
+            return new OSLocation(in);
+        }
+
+        @Override
+        public OSLocation[] newArray(int size) {
+            return new OSLocation[size];
+        }
+    };
     private final String id;
     private final String name;
     private final Coordinates coordinates;
@@ -17,7 +28,7 @@ public class OSLocation implements Parcelable {
     private final Type type;
 
     public OSLocation(@NonNull String id, @Nullable Type type, String name, Coordinates coordinates) {
-        if(id == null) throw new NullPointerException("id is null");
+        if (id == null) throw new NullPointerException("id is null");
         this.id = id;
         this.type = type;
         this.name = name;
@@ -26,7 +37,7 @@ public class OSLocation implements Parcelable {
 
     protected OSLocation(Parcel in) {
         id = in.readString();
-        if(id == null) {
+        if (id == null) {
             throw new IllegalStateException("id is null");
         }
         name = in.readString();
@@ -46,18 +57,6 @@ public class OSLocation implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<OSLocation> CREATOR = new Creator<OSLocation>() {
-        @Override
-        public OSLocation createFromParcel(Parcel in) {
-            return new OSLocation(in);
-        }
-
-        @Override
-        public OSLocation[] newArray(int size) {
-            return new OSLocation[size];
-        }
-    };
 
     @Nullable
     public Type getType() {
@@ -101,7 +100,7 @@ public class OSLocation implements Parcelable {
         return result;
     }
 
-    public enum Type{
+    public enum Type {
         STATION, POI, ADDRESS, REFINE;
     }
 }

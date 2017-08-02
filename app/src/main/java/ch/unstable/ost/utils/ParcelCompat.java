@@ -5,7 +5,6 @@ import android.os.Parcel;
 import android.os.ParcelFormatException;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.os.ParcelableCompat;
 
 
 public class ParcelCompat {
@@ -15,7 +14,7 @@ public class ParcelCompat {
         int exists = in.readInt();
         if (exists == 1) {
             return creator.createFromParcel(in);
-        } else if(exists == 0) {
+        } else if (exists == 0) {
             return null;
         } else {
             throw new ParcelFormatException("Expected exists to be 0 or 1!");

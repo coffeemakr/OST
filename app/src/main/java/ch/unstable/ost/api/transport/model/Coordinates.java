@@ -4,6 +4,17 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Coordinates implements Parcelable {
+    public static final Creator<Coordinates> CREATOR = new Creator<Coordinates>() {
+        @Override
+        public Coordinates createFromParcel(Parcel in) {
+            return new Coordinates(in);
+        }
+
+        @Override
+        public Coordinates[] newArray(int size) {
+            return new Coordinates[size];
+        }
+    };
     public double x;
     public double y;
 
@@ -27,18 +38,6 @@ public class Coordinates implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<Coordinates> CREATOR = new Creator<Coordinates>() {
-        @Override
-        public Coordinates createFromParcel(Parcel in) {
-            return new Coordinates(in);
-        }
-
-        @Override
-        public Coordinates[] newArray(int size) {
-            return new Coordinates[size];
-        }
-    };
 
     @Override
     public boolean equals(Object o) {

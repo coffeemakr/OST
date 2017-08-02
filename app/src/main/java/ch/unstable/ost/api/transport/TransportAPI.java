@@ -18,8 +18,8 @@ import ch.unstable.ost.api.base.BaseHttpJsonAPI;
 import ch.unstable.ost.api.transport.model.Connection;
 import ch.unstable.ost.api.transport.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.model.Coordinates;
-import ch.unstable.ost.api.transport.model.OSLocation;
 import ch.unstable.ost.api.transport.model.LocationTypeFilter;
+import ch.unstable.ost.api.transport.model.OSLocation;
 import ch.unstable.ost.api.transport.types.EmptyNumberTypeAdapter;
 
 public class TransportAPI extends BaseHttpJsonAPI {
@@ -28,12 +28,6 @@ public class TransportAPI extends BaseHttpJsonAPI {
     private static final String TAG = "TransportAPI";
 
     public TransportAPI() {
-    }
-
-    @Override
-    protected void onBuildGsonCreated(GsonBuilder gsonBuilder) {
-        final TypeAdapter<Number> numberTypeAdapter = new EmptyNumberTypeAdapter();
-        gsonBuilder.registerTypeAdapter(Integer.class, numberTypeAdapter);
     }
 
     private static void addTransportationFilter(Uri.Builder builder, Transportation[] transportations) {
@@ -52,6 +46,12 @@ public class TransportAPI extends BaseHttpJsonAPI {
                 .appendQueryParameter("date", dateFormat.format(date));
     }
 
+    @Override
+    protected void onBuildGsonCreated(GsonBuilder gsonBuilder) {
+        final TypeAdapter<Number> numberTypeAdapter = new EmptyNumberTypeAdapter();
+        gsonBuilder.registerTypeAdapter(Integer.class, numberTypeAdapter);
+    }
+
     public List<Connection> getConnections(ConnectionQuery connectionQuery) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("connections")
@@ -63,7 +63,7 @@ public class TransportAPI extends BaseHttpJsonAPI {
             }
         }
 
-        if(connectionQuery.getStarTime() != null) {
+        if (connectionQuery.getStarTime() != null) {
             addURLDate(builder, connectionQuery.getStarTime());
         }
         return loadConnections(builder);
@@ -86,7 +86,7 @@ public class TransportAPI extends BaseHttpJsonAPI {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("locations")
                 .appendQueryParameter("query", query);
-        if(typeFilter != null) {
+        if (typeFilter != null) {
             builder.appendQueryParameter("type", typeFilter.getIdentifier());
         }
         return loadLocations(builder);

@@ -9,14 +9,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 
-public class ThemedActivity extends AppCompatActivity{
+public class ThemedActivity extends AppCompatActivity {
 
     private boolean mPendingThemeChange;
     private boolean mResumed;
     private ThemeHelper.OnThemeChangeListener onThemeChangeListener = new ThemeHelper.OnThemeChangeListener() {
         @Override
         void onThemeChanged() {
-            if(mResumed) {
+            if (mResumed) {
                 recreate();
             } else {
                 mPendingThemeChange = true;
@@ -50,7 +50,7 @@ public class ThemedActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         mResumed = true;
-        if(mPendingThemeChange) {
+        if (mPendingThemeChange) {
             mPendingThemeChange = false;
             mHandler.post(new Runnable() {
                 @Override

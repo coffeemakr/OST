@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import java.io.IOException;
 
 import ch.unstable.ost.api.model.Station;
-import ch.unstable.ost.api.transport.model.LocationTypeFilter;
 
 public interface TimetableDAO {
     Station[] getStationsByQuery(String query) throws IOException;

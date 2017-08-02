@@ -145,7 +145,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     private String getToButtonText() {
         String to = mConnectionQueryBuilder.getTo();
-        if(to == null) {
+        if (to == null) {
             return getString(R.string.request_choose_to);
         }
         return to;
@@ -159,7 +159,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     private String getFromButtonText() {
         String from = mConnectionQueryBuilder.getFrom();
-        if(from == null) {
+        if (from == null) {
             return getString(R.string.request_choose_from);
         }
         return from;

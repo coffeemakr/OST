@@ -6,12 +6,9 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import ch.unstable.ost.utils.ParcelCompat;
 import ch.unstable.ost.utils.ParcelUtils;
 
 public class Section implements Parcelable {
-
-    private static final String TAG = "Section";
 
     public static final Creator<Section> CREATOR = new Creator<Section>() {
         @Override
@@ -24,7 +21,7 @@ public class Section implements Parcelable {
             return new Section[size];
         }
     };
-
+    private static final String TAG = "Section";
     @Nullable
     private final Journey journey;
 
@@ -41,9 +38,9 @@ public class Section implements Parcelable {
                    @Nullable Journey journey, @Nullable Walk walk) {
         this.journey = journey;
         this.walk = walk;
-        if(departure == null) throw new NullPointerException("departure is null");
+        if (departure == null) throw new NullPointerException("departure is null");
         this.departure = departure;
-        if(arrival == null) throw new NullPointerException("arrival is null");
+        if (arrival == null) throw new NullPointerException("arrival is null");
         this.arrival = arrival;
     }
 

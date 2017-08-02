@@ -50,9 +50,11 @@
         <item name="ic_target_24dp">@drawable/ic_target_black_24dp</item>
         <item name="ic_train_24dp">@drawable/ic_train_black_24dp</item>
         <item name="ic_direction_railway_24dp">@drawable/ic_directions_railway_black_24dp</item>
+        <item name="ic_send_24dp">@drawable/ic_send_black_24dp</item>
         <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="dividerColor">@android:color/black</item>
     </style>
 
     <style name="Light.LightActionBar">
@@ -73,12 +75,38 @@
         <item name="ic_target_24dp">@drawable/ic_target_white_24dp</item>
         <item name="ic_train_24dp">@drawable/ic_train_white_24dp</item>
         <item name="ic_direction_railway_24dp">@drawable/ic_directions_railway_white_24dp</item>
+        <item name="ic_send_24dp">@drawable/ic_send_white_24dp</item>
         <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
-        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item> <!-- AppBarOverlay -->
+        <!-- @style/GreenDarkTheme.PopupOverlay -->
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="dividerColor">@android:color/white</item>
     </style>
 
-    <style name="GreenDarkTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Divider">
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:minHeight">1px</item>
+        <item name="android:maxHeight">1dp</item>
+        <item name="android:background">?attr/dividerColor</item>
+        <item name="android:alpha">0.12</item>
+    </style>
 
-    <style name="GreenDarkTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="MyCardView" parent="CardView.Dark">
+        <item name="android:padding">8dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+    </style>
+
+
+    <style name="ErrorReportValue" parent="@style/TextAppearance.AppCompat.Body1">
+    </style>
+
+
+    <style name="ErrorReportSubtitle" parent="@style/TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="ErrorReportTitle" parent="@style/TextAppearance.AppCompat.Title" />
 </resources>

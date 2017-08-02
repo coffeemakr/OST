@@ -5,17 +5,14 @@ import android.os.ParcelFormatException;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.os.ParcelableCompat;
 
 import java.util.Date;
-
-import ch.unstable.ost.api.transport.model.Checkpoint;
 
 public class ParcelUtils {
     @Nullable
     public static Date readDate(Parcel in) {
         long timestamp = in.readLong();
-        if(timestamp == -1) {
+        if (timestamp == -1) {
             return null;
         } else {
             return new Date(timestamp);
@@ -23,7 +20,7 @@ public class ParcelUtils {
     }
 
     public static void writeDate(Parcel out, @Nullable Date date) {
-        if(date == null) {
+        if (date == null) {
             out.writeLong(-1);
         } else {
             out.writeLong(date.getTime());
@@ -31,7 +28,7 @@ public class ParcelUtils {
     }
 
     public static void writeNullableInteger(Parcel out, @Nullable Integer integer) {
-        if(integer == null) {
+        if (integer == null) {
             out.writeInt(Integer.MIN_VALUE);
         } else {
             out.writeInt(integer);
@@ -41,7 +38,7 @@ public class ParcelUtils {
     @Nullable
     public static Integer readNullableInteger(Parcel in) {
         int value = in.readInt();
-        if(value == Integer.MIN_VALUE) {
+        if (value == Integer.MIN_VALUE) {
             return null;
         } else {
             return value;
@@ -50,7 +47,7 @@ public class ParcelUtils {
 
     public static <E> E readEnum(E[] values, Parcel in) {
         int ordinal = in.readInt();
-        if(ordinal == -1) {
+        if (ordinal == -1) {
             return null;
         } else {
             return values[ordinal];
@@ -58,13 +55,12 @@ public class ParcelUtils {
     }
 
     public static void writeEnum(Parcel dest, @Nullable Enum enumeration) {
-        if(enumeration == null) {
+        if (enumeration == null) {
             dest.writeInt(-1);
         } else {
             dest.writeInt(enumeration.ordinal());
         }
     }
-
 
 
     public static <T extends Parcelable> T readNullableParcelable(Parcel in, Parcelable.Creator<T> creator) {
@@ -86,7 +82,7 @@ public class ParcelUtils {
     @Nullable
     public static Long readNullableLong(Parcel in) {
         long value = in.readLong();
-        if(value == Long.MIN_VALUE) {
+        if (value == Long.MIN_VALUE) {
             return null;
         } else {
             return value;
@@ -96,14 +92,14 @@ public class ParcelUtils {
     @NonNull
     public static <T extends Parcelable> T readNonNulTypedObject(Parcel in, Parcelable.Creator<T> creator) {
         T value = ParcelCompat.readTypeObject(in, creator);
-        if(value == null) {
+        if (value == null) {
             throw new ParcelFormatException("Read value can't be null");
         }
         return value;
     }
 
     public static <T extends Parcelable> void writeNonNullTypedObject(Parcel dest, T value, int flags) {
-        if(value == null) throw new NullPointerException("value is null");
+        if (value == null) throw new NullPointerException("value is null");
         ParcelCompat.writeTypeObject(dest, value, flags);
     }
 }

@@ -20,26 +20,23 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHolder> {
 
     private final Handler mHandler;
-    private final @DrawableRes int trainIcon;
-    private final @DrawableRes int busIcon;
-
-    @MainThread
-    public StationListAdapter(Context context) {
-        mHandler = new Handler();
-        trainIcon = ThemeHelper.getThemedDrawable(context, R.attr.ic_direction_railway_24dp);
-        busIcon = ThemeHelper.getThemedDrawable(context, R.attr.ic_directions_bus_24dp);
-
-    }
-
+    private final
+    @DrawableRes
+    int trainIcon;
+    private final
+    @DrawableRes
+    int busIcon;
     private Station[] mLocations = new Station[0];
+    @Nullable
+    private OnStationClickListener mOnStationClickListener;
     private View.OnClickListener mOnItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             final OnStationClickListener listener = mOnStationClickListener;
-            if(listener != null) {
+            if (listener != null) {
                 ViewHolder viewHolder = (ViewHolder) v.getTag();
                 int position = viewHolder.getAdapterPosition();
-                if(position != NO_POSITION) {
+                if (position != NO_POSITION) {
                     final Station location = mLocations[position];
                     mHandler.post(new Runnable() {
                         @Override
@@ -51,12 +48,17 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
             }
         }
     };
-    @Nullable
-    private OnStationClickListener mOnStationClickListener;
+    @MainThread
+    public StationListAdapter(Context context) {
+        mHandler = new Handler();
+        trainIcon = ThemeHelper.getThemedDrawable(context, R.attr.ic_direction_railway_24dp);
+        busIcon = ThemeHelper.getThemedDrawable(context, R.attr.ic_directions_bus_24dp);
+
+    }
 
     @Override
     public StationListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater  = LayoutInflater.from(parent.getContext());
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.item_station, parent, false);
         return new ViewHolder(itemView);
     }
@@ -105,7 +107,11 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
         return mLocations.length;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public interface OnStationClickListener {
+        void onStationClicked(Station location);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView stationName;
         private final ImageView transportationIcon;
 
@@ -114,9 +120,5 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
             stationName = (TextView) itemView.findViewById(R.id.stationName);
             transportationIcon = (ImageView) itemView.findViewById(R.id.transportationIcon);
         }
-    }
-
-    public interface OnStationClickListener {
-        void onStationClicked(Station location);
     }
 }

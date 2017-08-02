@@ -19,18 +19,21 @@ public class NavigationStartActivity extends ThemedActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_start);
 
-        if(getSupportActionBar() == null) {
+        if (getSupportActionBar() == null) {
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             if (toolbar == null) throw new NullPointerException("toolbar is null");
             setSupportActionBar(toolbar);
         }
 
 
-        if(getSupportFragmentManager().getBackStackEntryCount() == 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new StandardNavigationFragment())
                     .addToBackStack(null)
                     .commit();
+        }
+        if (true) {
+            throw new NullPointerException("hi");
         }
     }
 

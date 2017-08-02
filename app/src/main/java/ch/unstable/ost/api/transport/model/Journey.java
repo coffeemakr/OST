@@ -50,6 +50,10 @@ public class Journey implements Parcelable {
         capacity = ParcelUtils.readNullableParcelable(in, Capacity.CREATOR);
     }
 
+    private static boolean equals(String first, String second) {
+        return first != null ? !first.equals(second) : second != null;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
@@ -92,10 +96,6 @@ public class Journey implements Parcelable {
 
     public Capacity getCapacity() {
         return capacity;
-    }
-
-    private static boolean equals(String first, String second) {
-        return first != null ? !first.equals(second) : second != null;
     }
 
     @Override

@@ -9,11 +9,22 @@ import com.google.gson.annotations.JsonAdapter;
 import ch.unstable.ost.api.transport.types.DurationDeserializer;
 
 class Walk implements Parcelable {
+    public static final Creator<Walk> CREATOR = new Creator<Walk>() {
+        @Override
+        public Walk createFromParcel(Parcel in) {
+            return new Walk(in);
+        }
+
+        @Override
+        public Walk[] newArray(int size) {
+            return new Walk[size];
+        }
+    };
     @JsonAdapter(DurationDeserializer.class)
     private final long duration;
 
     public Walk(Long duration) {
-        if(duration == null) {
+        if (duration == null) {
             throw new NullPointerException("duration is null");
         }
         this.duration = duration;
@@ -32,18 +43,6 @@ class Walk implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<Walk> CREATOR = new Creator<Walk>() {
-        @Override
-        public Walk createFromParcel(Parcel in) {
-            return new Walk(in);
-        }
-
-        @Override
-        public Walk[] newArray(int size) {
-            return new Walk[size];
-        }
-    };
 
     public long getDuration() {
         return duration;

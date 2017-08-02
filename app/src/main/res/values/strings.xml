@@ -39,7 +39,55 @@
         <item name="theme_light_green">@style/GreenLightTheme</item>
         <item name="theme_dark_gray_green">@style/GrayTealTheme</item>
     </array>
-    <string name="title_activity_error_report">Error Report</string>
+    <string name="title_activity_error_report">App Crashed</string>
     <string name="action_settings">Settings</string>
+    <string name="dummy_stacktrace">java.io.FileNotFoundException: /data/data/at.bitfire.davdroid/app_KeyStore/KeyStore.bks: open failed: ENOENT (No such file or directory) \n
+    at libcore.io.IoBridge.open(IoBridge.java:409)\n
+    at java.io.FileInputStream.&lt;init&gt;(FileInputStream.java:78)\n
+    at at.bitfire.cert4android.CustomCertService.onCreate(CustomCertService.kt:69)\n
+    at android.app.ActivityThread.handleCreateService(ActivityThread.java:3021)\n
+    at android.app.ActivityThread.access$1800(ActivityThread.java:156)\n
+    at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1446)\n
+    at android.os.Handler.dispatchMessage(Handler.java:102)\n
+    at android.os.Looper.loop(Looper.java:157)\n
+    at android.app.ActivityThread.main(ActivityThread.java:5872)\n
+    at java.lang.reflect.Method.invokeNative(Native Method)\n
+    at java.lang.reflect.Method.invoke(Method.java:515)\n
+    at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:858)\n
+    at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:674)\n
+    at dalvik.system.NativeStart.main(Native Method)\n
+ Caused by: libcore.io.ErrnoException: open failed: ENOENT (No such file or directory)\n
+    at libcore.io.Posix.open(Native Method)\n
+    at libcore.io.BlockGuardOs.open(BlockGuardOs.java:110)\n
+    at libcore.io.IoBridge.open(IoBridge.java:393)\n
+    at java.io.FileInputStream.&lt;init&gt;(FileInputStream.java:78) \n
+    at at.bitfire.cert4android.CustomCertService.onCreate(CustomCertService.kt:69) \n
+    at android.app.ActivityThread.handleCreateService(ActivityThread.java:3021) \n
+    at android.app.ActivityThread.access$1800(ActivityThread.java:156) \n
+    at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1446) \n
+    at android.os.Handler.dispatchMessage(Handler.java:102) \n
+    at android.os.Looper.loop(Looper.java:157) \n
+    at android.app.ActivityThread.main(ActivityThread.java:5872) \n
+    at java.lang.reflect.Method.invokeNative(Native Method) \n
+    at java.lang.reflect.Method.invoke(Method.java:515) \n
+    at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:858) \n
+    at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:674) \n
+    at dalvik.system.NativeStart.main(Native Method) </string>
+    <string name="title_stacktrace">Stacktrace</string>
+    <string name="title_app_version">Version</string>
+    <string name="title_android_release">Release</string>
+    <string name="format_app_version" formatted="true">%1$s (%2$d)</string>
+    <string name="title_android">Android</string>
+    <string name="title_app">App</string>
+    <string name="title_app_signature">Signature</string>
+    <string name="title_build">Build</string>
+    <string name="title_build_id">Build ID</string>
+    <string name="build_id_format">%1$s (%2$s)</string>
+    <string name="title_android_sdk">SDK</string>
+    <string name="title_app_package">Package</string>
+    <string name="title_error">Error</string>
+    <string name="error_report_email">report@unstable.ch</string>
+    <string name="error_report_subject">Bug Report</string>
+    <string name="error_report_title">Send report...</string>
 
 </resources>

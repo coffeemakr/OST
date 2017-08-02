@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
@@ -23,8 +22,10 @@ public class ThemeHelper {
         context.setTheme(style);
     }
 
-    private static @StyleRes int getThemeStyle(Resources resources, String currentTheme) {
-        if(currentTheme == null) {
+    private static
+    @StyleRes
+    int getThemeStyle(Resources resources, String currentTheme) {
+        if (currentTheme == null) {
             throw new NullPointerException("currentTheme is null");
         }
         TypedArray styles = resources.obtainTypedArray(R.array.theme_styles);
@@ -33,21 +34,23 @@ public class ThemeHelper {
         int i = 0;
         @StyleRes
         int styleRes = 0;
-        for(String value: values) {
-            if(value.equals(currentTheme)) {
+        for (String value : values) {
+            if (value.equals(currentTheme)) {
                 styleRes = styles.getResourceId(i, 0);
                 break;
             }
             ++i;
         }
         styles.recycle();
-        if(styleRes == 0) {
+        if (styleRes == 0) {
             throw new IllegalStateException("style not found (currentTheme: " + currentTheme + ")");
         }
         return styleRes;
     }
 
-    public static @DrawableRes int getThemedDrawable(Context context, @AttrRes int attr) {
+    public static
+    @DrawableRes
+    int getThemedDrawable(Context context, @AttrRes int attr) {
         Resources.Theme theme = context.getTheme();
         TypedValue typedValue = new TypedValue();
         theme.resolveAttribute(attr, typedValue, true);
@@ -59,7 +62,7 @@ public class ThemeHelper {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if(key.equals(PreferenceKeys.KEY_THEME)) {
+            if (key.equals(PreferenceKeys.KEY_THEME)) {
                 onThemeChanged();
             }
         }

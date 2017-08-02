@@ -1,6 +1,5 @@
 package ch.unstable.ost.api.transport.types;
 
-import org.joda.time.Hours;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

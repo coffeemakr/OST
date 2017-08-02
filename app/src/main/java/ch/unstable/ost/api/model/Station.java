@@ -2,7 +2,7 @@ package ch.unstable.ost.api.model;
 
 import android.os.Parcelable;
 
-public interface Station extends Parcelable{
+public interface Station extends Parcelable {
     String getName();
 
     String getId();
@@ -20,7 +20,7 @@ public interface Station extends Parcelable{
 
         public static int getMask(StationType... types) {
             int mask = 0;
-            for(StationType type: types) {
+            for (StationType type : types) {
                 mask |= type.bit;
             }
             return mask;

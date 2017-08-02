@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        style="@style/ErrorReportSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_app_package" />
+
+    <TextView
+        android:id="@+id/appPackage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="0.1.10" />
+
+
+    <TextView
+        style="@style/ErrorReportSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_app_version" />
+
+    <TextView
+        android:id="@+id/appVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="0.1.10" />
+
+
+    <TextView
+        style="@style/ErrorReportSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_app_signature" />
+
+    <TextView
+        android:id="@+id/appSignature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="" />
+</LinearLayout>

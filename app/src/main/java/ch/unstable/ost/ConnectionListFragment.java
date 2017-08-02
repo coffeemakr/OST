@@ -133,6 +133,17 @@ public class ConnectionListFragment extends Fragment {
 
     }
 
+    private void onLoadingStarted() {
+        mConnectionsList.setVisibility(View.GONE);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    private void onLoadingFinished() {
+        mLoadingIndicator.setVisibility(View.GONE);
+        mConnectionsList.setVisibility(View.VISIBLE);
+    }
+
+
     public interface OnConnectionListInteractionListener {
         void onConnectionSelected(Connection connection);
     }
@@ -144,17 +155,6 @@ public class ConnectionListFragment extends Fragment {
                 mOnConnectionListInteractionListener.onConnectionSelected(connection);
             }
         }
-    }
-
-
-    private void onLoadingStarted() {
-        mConnectionsList.setVisibility(View.GONE);
-        mLoadingIndicator.setVisibility(View.VISIBLE);
-    }
-
-    private void onLoadingFinished() {
-        mLoadingIndicator.setVisibility(View.GONE);
-        mConnectionsList.setVisibility(View.VISIBLE);
     }
 
     private class UICallback implements Handler.Callback {

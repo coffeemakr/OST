@@ -11,10 +11,10 @@ import java.lang.reflect.Type;
 public class IntegerDeserializer implements JsonDeserializer<Integer> {
     @Override
     public Integer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        if(json.isJsonNull()) return null;
+        if (json.isJsonNull()) return null;
         String value = json.getAsJsonPrimitive().getAsString();
         value = value.trim();
-        if(value.isEmpty()) return null;
+        if (value.isEmpty()) return null;
         return json.getAsInt();
     }
 }

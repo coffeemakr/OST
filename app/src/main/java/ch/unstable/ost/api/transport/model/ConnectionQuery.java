@@ -1,7 +1,6 @@
 package ch.unstable.ost.api.transport.model;
 
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -15,6 +14,16 @@ import java.util.List;
 import ch.unstable.ost.utils.ParcelUtils;
 
 public class ConnectionQuery implements Parcelable {
+    public static final Parcelable.Creator<ConnectionQuery> CREATOR
+            = new Parcelable.Creator<ConnectionQuery>() {
+        public ConnectionQuery createFromParcel(Parcel in) {
+            return new ConnectionQuery(in);
+        }
+
+        public ConnectionQuery[] newArray(int size) {
+            return new ConnectionQuery[size];
+        }
+    };
     @NonNull
     private final String from;
     @NonNull
@@ -35,7 +44,7 @@ public class ConnectionQuery implements Parcelable {
         this.to = in.readString();
         this.via = in.createStringArray();
         long timestamp = in.readLong();
-        if(timestamp > 0) {
+        if (timestamp > 0) {
             this.starTime = new Date(in.readLong());
         } else {
             this.starTime = null;
@@ -62,23 +71,12 @@ public class ConnectionQuery implements Parcelable {
         out.writeString(from);
         out.writeString(to);
         out.writeStringArray(via);
-        if(starTime != null) {
+        if (starTime != null) {
             out.writeLong(starTime.getTime());
         } else {
             out.writeLong(0);
         }
     }
-
-    public static final Parcelable.Creator<ConnectionQuery> CREATOR
-            = new Parcelable.Creator<ConnectionQuery>() {
-        public ConnectionQuery createFromParcel(Parcel in) {
-            return new ConnectionQuery(in);
-        }
-
-        public ConnectionQuery[] newArray(int size) {
-            return new ConnectionQuery[size];
-        }
-    };
 
     public String[] getVia() {
         return via;
@@ -94,7 +92,18 @@ public class ConnectionQuery implements Parcelable {
     }
 
 
-    public static class Builder implements Parcelable{
+    public static class Builder implements Parcelable {
+        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
+            @Override
+            public Builder createFromParcel(Parcel in) {
+                return new Builder(in);
+            }
+
+            @Override
+            public Builder[] newArray(int size) {
+                return new Builder[size];
+            }
+        };
         @NonNull
         private List<String> via = new ArrayList<>();
         private String from = null;
@@ -132,30 +141,13 @@ public class ConnectionQuery implements Parcelable {
             return 0;
         }
 
-        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
-            @Override
-            public Builder createFromParcel(Parcel in) {
-                return new Builder(in);
-            }
-
-            @Override
-            public Builder[] newArray(int size) {
-                return new Builder[size];
-            }
-        };
-
-        public Builder setFrom(String from) {
-            this.from = from;
-            return this;
-        }
-
         @NonNull
         public List<String> getVia() {
             return via;
         }
 
         public Builder setVia(String... via) {
-            if(via == null || via.length == 1 && via[0] == null) {
+            if (via == null || via.length == 1 && via[0] == null) {
                 this.via.clear();
             } else {
                 this.via = Arrays.asList(via);
@@ -172,6 +164,11 @@ public class ConnectionQuery implements Parcelable {
             return from;
         }
 
+        public Builder setFrom(String from) {
+            this.from = from;
+            return this;
+        }
+
         public String getTo() {
             return to;
         }
@@ -182,10 +179,10 @@ public class ConnectionQuery implements Parcelable {
         }
 
         public ConnectionQuery build() {
-            if(from == null) throw new IllegalStateException("from is null");
-            if(to == null) throw new IllegalStateException("to is null");
-            if(from.isEmpty()) throw new IllegalStateException("from is empty");
-            if(to.isEmpty()) throw new IllegalStateException("to is empty");
+            if (from == null) throw new IllegalStateException("from is null");
+            if (to == null) throw new IllegalStateException("to is null");
+            if (from.isEmpty()) throw new IllegalStateException("from is empty");
+            if (to.isEmpty()) throw new IllegalStateException("to is empty");
             return new ConnectionQuery(this);
         }
 

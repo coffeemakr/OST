@@ -2,7 +2,6 @@ package ch.unstable.ost;
 
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +27,7 @@ public class ConnectionDetailFragment extends Fragment {
 
 
     public static ConnectionDetailFragment newInstance(Connection connection) {
-        if(connection == null) {
+        if (connection == null) {
             throw new NullPointerException("connection is null");
         }
         Bundle arguments = new Bundle();
@@ -41,7 +40,7 @@ public class ConnectionDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             mConnection = savedInstanceState.getParcelable(KEY_CONNECTION);
         } else {
             mConnection = getArguments().getParcelable(KEY_CONNECTION);

@@ -9,7 +9,7 @@ import java.util.List;
 import ch.unstable.ost.R;
 import ch.unstable.ost.theme.ThemeHelper;
 
-public class SettingsActivity extends PreferenceActivity implements AppearanceSettingsFragment.OnThemeChangedListener{
+public class SettingsActivity extends PreferenceActivity implements AppearanceSettingsFragment.OnThemeChangedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

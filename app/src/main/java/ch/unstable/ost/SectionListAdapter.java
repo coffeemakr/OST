@@ -57,7 +57,7 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
 
     @Override
     public int getItemViewType(int position) {
-        if(sections[position].isJourney()) {
+        if (sections[position].isJourney()) {
             return JOURNEY_VIEW_TYPE;
         } else {
             return WALK_VIEW_TYPE;
@@ -76,7 +76,6 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
                 break;
         }
     }
-
 
 
     public void setSections(Section[] sections) {

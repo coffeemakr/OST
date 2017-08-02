@@ -42,7 +42,7 @@ public class Connection implements Parcelable {
         this.from = from;
         this.to = to;
         this.duration = duration;
-        if(sections == null) {
+        if (sections == null) {
             sections = new Section[0];
         }
         this.sections = sections;

@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -31,10 +30,10 @@ public class ConnectionLineView extends View {
 
     public ConnectionLineView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        DisplayMetrics dm = getResources().getDisplayMetrics() ;
+        DisplayMetrics dm = getResources().getDisplayMetrics();
 
 
-        int dpSizeWaiting =  2;
+        int dpSizeWaiting = 2;
         float waitingStrokeWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpSizeWaiting, dm);
         mWaitingLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mWaitingLinePaint.setStyle(Paint.Style.STROKE);
@@ -45,7 +44,7 @@ public class ConnectionLineView extends View {
         mTravellingLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTravellingLinePaint.setStyle(Paint.Style.STROKE);
 
-        int dpSizeTravelling =  8;
+        int dpSizeTravelling = 8;
         float travellingStroke = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpSizeTravelling, dm);
         int line2Color = ResourcesCompat.getColor(context.getResources(), R.color.colorConnectionLineTravelling, context.getTheme());
         mTravellingLinePaint.setStrokeWidth(travellingStroke);
@@ -56,7 +55,7 @@ public class ConnectionLineView extends View {
     public void setLengths(int[] lengths) {
         this.lengths = Arrays.copyOf(lengths, lengths.length);
         this.totalLength = 0;
-        for(int length: lengths) {
+        for (int length : lengths) {
             this.totalLength += length;
         }
         invalidate();
@@ -70,9 +69,9 @@ public class ConnectionLineView extends View {
         boolean isTravelling = true;
         long width = getWidth();
         //Log.d(TAG, "Lengths: " + Arrays.toString(lengths) + " totalLength: " + totalLength);
-        for(int length: lengths) {
+        for (int length : lengths) {
             Paint paint;
-            if(isTravelling) {
+            if (isTravelling) {
                 paint = mTravellingLinePaint;
             } else {
                 paint = mWaitingLinePaint;

@@ -13,11 +13,20 @@ import ch.unstable.ost.utils.ParcelUtils;
 public class LocationCompletion implements Station, Parcelable {
 
 
-    private final String id;
+    public static final Creator<LocationCompletion> CREATOR = new Creator<LocationCompletion>() {
+        @Override
+        public LocationCompletion createFromParcel(Parcel in) {
+            return new LocationCompletion(in);
+        }
 
+        @Override
+        public LocationCompletion[] newArray(int size) {
+            return new LocationCompletion[size];
+        }
+    };
+    private final String id;
     @SerializedName("label")
     private final String name;
-
     @SerializedName("iconclass")
     @JsonAdapter(SearchCHIconClassDeserializer.class)
     private final StationType type;
@@ -45,18 +54,6 @@ public class LocationCompletion implements Station, Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<LocationCompletion> CREATOR = new Creator<LocationCompletion>() {
-        @Override
-        public LocationCompletion createFromParcel(Parcel in) {
-            return new LocationCompletion(in);
-        }
-
-        @Override
-        public LocationCompletion[] newArray(int size) {
-            return new LocationCompletion[size];
-        }
-    };
 
     @Override
     public String getName() {

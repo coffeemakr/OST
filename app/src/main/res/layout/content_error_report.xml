@@ -8,10 +8,21 @@
     tools:context="ch.unstable.ost.error.ErrorReportActivity"
     tools:showIn="@layout/activity_error_report">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="Hello" />
+        android:divider="@android:color/transparent"
+        android:dividerPadding="8dp"
+        android:orientation="vertical">
+
+        <include layout="@layout/content_error_error_info" />
+
+        <include layout="@layout/content_error_build_info" />
+
+        <include layout="@layout/content_error_app_info" />
+
+        <include layout="@layout/content_error_android_info" />
+
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

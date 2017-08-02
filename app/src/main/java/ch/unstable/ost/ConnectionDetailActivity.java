@@ -19,7 +19,7 @@ public class ConnectionDetailActivity extends ThemedActivity {
         setSupportActionBar(toolbar);
 
 
-        if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             Connection connection = getIntent().getParcelableExtra(EXTRA_CONNECTION);
             ConnectionDetailFragment fragment = ConnectionDetailFragment.newInstance(connection);
             getSupportFragmentManager().beginTransaction()

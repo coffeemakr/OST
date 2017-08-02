@@ -12,10 +12,10 @@ import ch.unstable.ost.theme.ThemedActivity;
 
 public class ConnectionListActivity extends ThemedActivity
         implements ConnectionListFragment.OnConnectionListInteractionListener,
-                   BaseNavigationFragment.OnRouteSelectionListener {
+        BaseNavigationFragment.OnRouteSelectionListener {
 
-    private static final String TAG = "ConnectionListActivity";
     public static final String EXTRA_QUERY = "EXTRA_QUERY";
+    private static final String TAG = "ConnectionListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +27,11 @@ public class ConnectionListActivity extends ThemedActivity
         setSupportActionBar(toolbar);
 
 
-        if(getIntent() == null) {
+        if (getIntent() == null) {
             finish();
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(fragmentManager.findFragmentById(R.id.fragment_container) == null) {
+        if (fragmentManager.findFragmentById(R.id.fragment_container) == null) {
             ConnectionQuery query = getIntent().getParcelableExtra(EXTRA_QUERY);
             ConnectionListFragment connectionListFragment = ConnectionListFragment.newInstance(query);
             getSupportFragmentManager()

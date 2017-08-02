@@ -24,11 +24,34 @@ import ch.unstable.ost.views.ConnectionLineView;
 
 
 public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAdapter.ViewHolder> {
-    private final List<Connection> mConnections = new ArrayList<>();
     public static final String TAG = "ConnectionListAdapter";
-
+    private final List<Connection> mConnections = new ArrayList<>();
     private final View.OnClickListener mOnViewHolderClickListener = new OnViewHolderClickListener();
     private OnConnectionClickListener mOnConnectionClickListener;
+
+    private static int[] getTravelTimes(Section[] sections) {
+        int[] times = new int[sections.length * 2 - 1];
+        int i = 0;
+        long lastEnd = 0;
+        for (Section section : sections) {
+            // Walks can be ignored. They are added to the waiting time.
+            if (section.isJourney()) {
+                if (lastEnd != 0) {
+                    // Waiting time
+                    times[i] = (int) (section.getDeparture().getDepartureTime().getTime() - lastEnd);
+                    ++i;
+                }
+                // Travel time
+                lastEnd = section.getArrival().getArrival().getTime();
+                times[i] = (int) (lastEnd - section.getDeparture().getDepartureTime().getTime());
+                ++i;
+            }
+        }
+        if (i != times.length) {
+            times = Arrays.copyOf(times, i);
+        }
+        return times;
+    }
 
     public void setConnections(@NonNull Collection<Connection> Connections) {
         mConnections.clear();
@@ -60,41 +83,16 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         return new ViewHolder(view);
     }
 
-
-    private static int[] getTravelTimes(Section[] sections) {
-        int[] times = new int[sections.length * 2 - 1];
-        int i = 0;
-        long lastEnd = 0;
-        for(Section section: sections) {
-            // Walks can be ignored. They are added to the waiting time.
-            if(section.isJourney()) {
-                if(lastEnd != 0) {
-                    // Waiting time
-                    times[i] = (int) (section.getDeparture().getDepartureTime().getTime() - lastEnd);
-                    ++i;
-                }
-                // Travel time
-                lastEnd = section.getArrival().getArrival().getTime();
-                times[i] = (int) (lastEnd - section.getDeparture().getDepartureTime().getTime());
-                ++i;
-            }
-        }
-        if(i != times.length) {
-            times = Arrays.copyOf(times, i);
-        }
-        return times;
-    }
-
     @Override
     public void onBindViewHolder(ConnectionListAdapter.ViewHolder holder, int position) {
         Connection connection = mConnections.get(position);
         Section[] sections = connection.getSections();
         if (sections.length > 0) {
             Section section = sections[0];
-            if(section.isWalk()) {
+            if (section.isWalk()) {
                 section = sections[1];
             }
-            if(section.isJourney()) {
+            if (section.isJourney()) {
                 Journey journey = section.getJourney();
                 holder.firstEndDestination.setText(journey.getTo());
                 holder.firstTransportName.setText(journey.getName());
@@ -138,6 +136,10 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
     }
 
 
+    public interface OnConnectionClickListener {
+        void onConnectionClicked(Connection connection);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView startTime;
         private final TextView endTime;
@@ -155,10 +157,6 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         }
     }
 
-    public interface OnConnectionClickListener {
-        void onConnectionClicked(Connection connection);
-    }
-
     public class OnViewHolderClickListener implements View.OnClickListener {
         public OnViewHolderClickListener() {
         }
@@ -173,7 +171,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
                 Log.e(TAG, "Failed to get connection", e);
                 return;
             }
-            if(mOnConnectionClickListener != null) {
+            if (mOnConnectionClickListener != null) {
                 mOnConnectionClickListener.onConnectionClicked(connection);
             }
         }

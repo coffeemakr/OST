@@ -5,6 +5,17 @@ import android.os.Parcelable;
 
 class Capacity implements Parcelable {
 
+    public static final Creator<Capacity> CREATOR = new Creator<Capacity>() {
+        @Override
+        public Capacity createFromParcel(Parcel in) {
+            return new Capacity(in);
+        }
+
+        @Override
+        public Capacity[] newArray(int size) {
+            return new Capacity[size];
+        }
+    };
     private final int firstClass;
     private final int secondClass;
 
@@ -28,18 +39,6 @@ class Capacity implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<Capacity> CREATOR = new Creator<Capacity>() {
-        @Override
-        public Capacity createFromParcel(Parcel in) {
-            return new Capacity(in);
-        }
-
-        @Override
-        public Capacity[] newArray(int size) {
-            return new Capacity[size];
-        }
-    };
 
     public int getFirstClass() {
         return firstClass;
