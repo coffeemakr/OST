@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.Locale;
+
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.R;
@@ -56,7 +58,7 @@ public class ErrorReportActivity extends AppCompatActivity {
     }
 
     private static void bindAndroidInfo(Context context, AndroidVersionViewHolder viewHolder, AndroidInfo androidInfo) {
-        viewHolder.androidSDK.setText(Integer.toString(androidInfo.getSdk()));
+        viewHolder.androidSDK.setText(String.format(Locale.getDefault(), "%d", androidInfo.getSdk()));
         viewHolder.androidRelease.setText(androidInfo.getRelease());
     }
 

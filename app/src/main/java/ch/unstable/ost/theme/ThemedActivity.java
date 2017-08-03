@@ -9,11 +9,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 
-public class ThemedActivity extends AppCompatActivity {
+public abstract class ThemedActivity extends AppCompatActivity {
 
     private boolean mPendingThemeChange;
     private boolean mResumed;
-    private ThemeHelper.OnThemeChangeListener onThemeChangeListener = new ThemeHelper.OnThemeChangeListener() {
+    private final ThemeHelper.OnThemeChangeListener onThemeChangeListener = new ThemeHelper.OnThemeChangeListener() {
         @Override
         void onThemeChanged() {
             if (mResumed) {

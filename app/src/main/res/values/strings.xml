@@ -24,10 +24,14 @@
     <string name="prefs_category_appearance">Appearance</string>
     <string name="prefs_summ_appearance">Look &amp; Feel</string>
 
-    <string-array name="theme_names">
-        <item name="theme_dark_green">Dark green</item>
-        <item name="theme_light_green">Light green</item>
-        <item name="theme_dark_gray_green">Dark green gray</item>
+    <string name="theme_dark_green_name">Dark green</string>
+    <string name="theme_light_green_name">Light green</string>
+    <string name="theme_dark_gray_green_name">Dark green gray</string>
+
+    <string-array name="theme_names" translatable="false">
+        <item name="theme_dark_green_name">@string/theme_dark_green_name</item>
+        <item name="theme_light_green_name">@string/theme_light_green_name</item>
+        <item name="theme_dark_gray_green_name">@string/theme_dark_gray_green_name</item>
     </string-array>
     <string-array name="theme_values">
         <item name="theme_dark_green">@string/DarkGreenTheme</item>
@@ -89,5 +93,7 @@
     <string name="error_report_email" translatable="false">bugreport@unstable.ch</string>
     <string name="error_report_subject">Bug Report</string>
     <string name="error_report_title">Send Bugreport</string>
+    <string name="contentDescription_iconWalk">Icon Walk</string>
+    <string name="contentDescription_iconTransportation">transportation icon</string>
 
 </resources>

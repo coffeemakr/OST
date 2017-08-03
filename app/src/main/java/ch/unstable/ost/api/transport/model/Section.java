@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 
 import ch.unstable.ost.utils.ParcelUtils;
 
-public class Section implements Parcelable {
+public class Section implements Parcelable, ch.unstable.ost.api.model.Section {
 
     public static final Creator<Section> CREATOR = new Creator<Section>() {
         @Override
@@ -21,7 +21,6 @@ public class Section implements Parcelable {
             return new Section[size];
         }
     };
-    private static final String TAG = "Section";
     @Nullable
     private final Journey journey;
 

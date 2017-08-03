@@ -2,15 +2,16 @@ package ch.unstable.ost.api.search.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
-import ch.unstable.ost.api.model.Station;
+import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.search.types.SearchCHIconClassDeserializer;
 import ch.unstable.ost.utils.ParcelUtils;
 
-public class LocationCompletion implements Station, Parcelable {
+public class LocationCompletion implements Location, Parcelable {
 
 
     public static final Creator<LocationCompletion> CREATOR = new Creator<LocationCompletion>() {
@@ -55,16 +56,19 @@ public class LocationCompletion implements Station, Parcelable {
         return 0;
     }
 
+    @NonNull
     @Override
     public String getName() {
         return name;
     }
 
+    @NonNull
     @Override
     public String getId() {
         return id;
     }
 
+    @NonNull
     @Override
     public StationType getType() {
         return type;

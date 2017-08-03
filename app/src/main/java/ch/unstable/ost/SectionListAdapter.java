@@ -25,7 +25,7 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
     @Nullable
     private OnSectionClickedListener onJourneyClickedListener;
 
-    private View.OnClickListener onJourneyItemClickListener = new View.OnClickListener() {
+    private final View.OnClickListener onJourneyItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             final Section section = (Section) v.getTag();
@@ -108,10 +108,6 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
         return sections.length;
     }
 
-    @Nullable
-    public OnSectionClickedListener getOnJourneyClickedListener() {
-        return onJourneyClickedListener;
-    }
 
     public void setOnJourneyClickedListener(@Nullable OnSectionClickedListener onJourneyClickedListener) {
         this.onJourneyClickedListener = onJourneyClickedListener;

@@ -9,4 +9,5 @@
     android:elevation="4dp"
 
     android:theme="?attr/toolbarTheme"
-    app:popupTheme="?attr/toolbarPopupTheme" />
+    app:popupTheme="?attr/toolbarPopupTheme"
+    tools:ignore="Overdraw" />

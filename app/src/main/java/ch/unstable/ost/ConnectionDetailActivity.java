@@ -1,6 +1,7 @@
 package ch.unstable.ost;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 
 import ch.unstable.ost.api.transport.model.Connection;
@@ -30,7 +31,7 @@ public class ConnectionDetailActivity extends ThemedActivity implements Connecti
     }
 
     @Override
-    public void onSectionSelected(Section section) {
+    public void onSectionSelected(@NonNull Section section) {
         SectionDetailFragment fragment = SectionDetailFragment.newInstance(section);
         getSupportFragmentManager().beginTransaction()
                 .addToBackStack(null)

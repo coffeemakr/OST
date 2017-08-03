@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import ch.unstable.ost.api.transport.model.Connection;
-import ch.unstable.ost.api.transport.model.ConnectionQuery;
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.theme.ThemedActivity;
 
 public class ConnectionListActivity extends ThemedActivity

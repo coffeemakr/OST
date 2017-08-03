@@ -12,7 +12,8 @@
         android:id="@+id/transportationIcon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        tools:src="?attr/ic_directions_bus_24dp" />
+        tools:src="?attr/ic_directions_bus_24dp"
+        android:contentDescription="@string/contentDescription_iconTransportation" />
 
     <TextView
         android:id="@+id/stationName"

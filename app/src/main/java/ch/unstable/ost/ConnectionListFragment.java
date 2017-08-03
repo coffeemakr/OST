@@ -21,7 +21,7 @@ import java.util.List;
 
 import ch.unstable.ost.api.transport.TransportAPI;
 import ch.unstable.ost.api.transport.model.Connection;
-import ch.unstable.ost.api.transport.model.ConnectionQuery;
+import ch.unstable.ost.api.model.ConnectionQuery;
 
 public class ConnectionListFragment extends Fragment {
 
@@ -41,7 +41,7 @@ public class ConnectionListFragment extends Fragment {
     private ConnectionQuery mConnectionQuery;
     private Handler backgroundHandler;
     private HandlerThread backgroundThread;
-    private TransportAPI transportAPI;
+    private final TransportAPI transportAPI;
     private Handler uiHandler;
     private OnConnectionListInteractionListener mOnConnectionListInteractionListener;
     private View mLoadingIndicator;

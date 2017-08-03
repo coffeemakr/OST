@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import ch.unstable.ost.api.transport.model.ConnectionQuery;
+import ch.unstable.ost.api.model.ConnectionQuery;
 
 
 public class HeadNavigationFragment extends BaseNavigationFragment {

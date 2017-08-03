@@ -17,8 +17,8 @@ public class Coordinates implements Parcelable {
             return new Coordinates[size];
         }
     };
-    public double x;
-    public double y;
+    public final double x;
+    public final double y;
 
     protected Coordinates(Parcel in) {
         x = in.readDouble();

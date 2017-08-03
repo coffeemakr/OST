@@ -12,22 +12,22 @@ import java.util.ArrayList;
 
 import ch.unstable.ost.api.TimetableDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
-import ch.unstable.ost.api.model.Station;
+import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.search.model.LocationCompletion;
 
 public class SearchAPI extends BaseHttpJsonAPI implements TimetableDAO {
 
-    Uri BASE_URI = Uri.parse("https://timetable.search.ch/api/");
+    final Uri BASE_URI = Uri.parse("https://timetable.search.ch/api/");
 
     @Override
-    public Station[] getStationsByQuery(String query) throws IOException {
+    public Location[] getStationsByQuery(String query) throws IOException {
         return getStationsByQuery(query, null);
     }
 
     @Override
     @NonNull
-    public Station[] getStationsByQuery(String query, @Nullable Station.StationType[] types) throws IOException {
-        if (types != null && types.length == 0) return new Station[0];
+    public Location[] getStationsByQuery(String query, @Nullable Location.StationType[] types) throws IOException {
+        if (types != null && types.length == 0) return new Location[0];
         Uri.Builder builder = BASE_URI.buildUpon()
                 .appendPath("completion.json")
                 .appendQueryParameter("show_ids", "1")
@@ -42,8 +42,8 @@ public class SearchAPI extends BaseHttpJsonAPI implements TimetableDAO {
     }
 
 
-    private ArrayList<LocationCompletion> filterResults(ArrayList<LocationCompletion> completions, final Station.StationType[] filter) {
-        final int mask = Station.StationType.getMask(filter);
+    private ArrayList<LocationCompletion> filterResults(ArrayList<LocationCompletion> completions, final Location.StationType[] filter) {
+        final int mask = Location.StationType.getMask(filter);
         ArrayList<LocationCompletion> filtered = new ArrayList<>(completions.size());
         for (LocationCompletion completion : completions) {
             if ((completion.getType().bit & mask) > 0) {

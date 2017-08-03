@@ -11,18 +11,18 @@ import com.google.gson.annotations.SerializedName;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
+import ch.unstable.ost.api.TimetableDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
 import ch.unstable.ost.api.transport.model.Connection;
-import ch.unstable.ost.api.transport.model.ConnectionQuery;
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.model.Coordinates;
 import ch.unstable.ost.api.transport.model.LocationTypeFilter;
-import ch.unstable.ost.api.transport.model.OSLocation;
+import ch.unstable.ost.api.transport.model.Location;
 import ch.unstable.ost.api.transport.types.EmptyNumberTypeAdapter;
 
-public class TransportAPI extends BaseHttpJsonAPI {
+public class TransportAPI extends BaseHttpJsonAPI implements TimetableDAO {
 
     private static final Uri BASE_URL = Uri.parse("https://transport.opendata.ch/v1/");
     private static final String TAG = "TransportAPI";
@@ -52,7 +52,7 @@ public class TransportAPI extends BaseHttpJsonAPI {
         gsonBuilder.registerTypeAdapter(Integer.class, numberTypeAdapter);
     }
 
-    public List<Connection> getConnections(ConnectionQuery connectionQuery) throws IOException {
+    public Connection[] getConnections(ConnectionQuery connectionQuery) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("connections")
                 .appendQueryParameter("from", connectionQuery.getFrom())
@@ -69,36 +69,54 @@ public class TransportAPI extends BaseHttpJsonAPI {
         return loadConnections(builder);
     }
 
-    private List<Connection> loadConnections(Uri.Builder builder) throws IOException {
+    private Connection[] loadConnections(Uri.Builder builder) throws IOException {
         return loadJson(builder, ConnectionList.class).connections;
     }
 
-    private List<OSLocation> loadLocations(Uri.Builder builder) throws IOException {
+    private Location[] loadLocations(Uri.Builder builder) throws IOException {
         return loadJson(builder, StationsList.class).stations;
     }
 
 
-    public List<OSLocation> getLocationsByQuery(String query) throws IOException {
-        return getLocationsByQuery(query, null);
+
+    @Override
+    public ch.unstable.ost.api.model.Location[] getStationsByQuery(String query) throws IOException {
+        return getStationsByQuery(query, null);
     }
 
-    public List<OSLocation> getLocationsByQuery(String query, @Nullable LocationTypeFilter typeFilter) throws IOException {
+    @Override
+    public ch.unstable.ost.api.model.Location[] getStationsByQuery(String query, @Nullable ch.unstable.ost.api.model.Location.StationType[] types) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("locations")
                 .appendQueryParameter("query", query);
-        if (typeFilter != null) {
-            builder.appendQueryParameter("type", typeFilter.getIdentifier());
+        if(types != null && types.length > 0) {
+            for(ch.unstable.ost.api.model.Location.StationType type: types) {
+                switch (type) {
+                    case TRAIN:
+                    case BUS:
+                        builder.appendQueryParameter("type", LocationTypeFilter.STATION.getIdentifier());
+                        break;
+                    case POI:
+                        builder.appendQueryParameter("type", LocationTypeFilter.POI.getIdentifier());
+                        break;
+                    case ADDRESS:
+                        builder.appendQueryParameter("type", LocationTypeFilter.ADDRESS.getIdentifier());
+                        break;
+                    case UNKNOWN:
+                        break;
+                }
+            }
         }
         return loadLocations(builder);
     }
 
-    public List<OSLocation> getLocationsByPosition(Coordinates coordinates) throws IOException {
+    public Location[] getLocationsByPosition(Coordinates coordinates) throws IOException {
         return getLocationsByPosition(coordinates, null, null);
     }
 
-    public List<OSLocation> getLocationsByPosition(Coordinates coordinates,
-                                                   @Nullable LocationTypeFilter type,
-                                                   @Nullable Transportation[] transportationFilter) throws IOException {
+    public Location[] getLocationsByPosition(Coordinates coordinates,
+                                             @Nullable LocationTypeFilter type,
+                                             @Nullable Transportation[] transportationFilter) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("locations")
                 .appendQueryParameter("x", String.valueOf(coordinates.x))
@@ -112,12 +130,12 @@ public class TransportAPI extends BaseHttpJsonAPI {
 
     private static class StationsList {
         @SerializedName("stations")
-        List<OSLocation> stations;
+        Location[] stations;
     }
 
     private static class ConnectionList {
         @SerializedName("connections")
-        List<Connection> connections;
+        Connection[] connections;
     }
 
 }

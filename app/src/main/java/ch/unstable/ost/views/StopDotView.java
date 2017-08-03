@@ -16,7 +16,7 @@ public class StopDotView extends View {
 
     private final Paint mCirclePaint;
     private Type mType;
-    private int mCirclePixelWidth;
+    private final int mCirclePixelWidth;
 
     public void setLineMode(Type type) {
         mType = type;
@@ -26,7 +26,7 @@ public class StopDotView extends View {
     public enum Type {
         TOP,
         BOTTOM,
-        BOTH;
+        BOTH
     }
 
     private final Paint mLinePaint;

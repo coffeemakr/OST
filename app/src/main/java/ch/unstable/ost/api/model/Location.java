@@ -1,16 +1,21 @@
 package ch.unstable.ost.api.model;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
-public interface Station extends Parcelable {
+public interface Location extends Parcelable {
+
+    @NonNull
     String getName();
 
+    @NonNull
     String getId();
 
+    @NonNull
     StationType getType();
 
     enum StationType {
-        TRAIN(1 << 0), BUS(1 << 1), POI(1 << 2), ADDRESS(1 << 3), UNKNOWN(1 << 4);
+        TRAIN(1), BUS(2), POI(4), ADDRESS(8), UNKNOWN(16);
 
         public final int bit;
 

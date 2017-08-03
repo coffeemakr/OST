@@ -8,21 +8,21 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import ch.unstable.ost.api.model.Station;
+import ch.unstable.ost.api.model.Location;
 
-public class SearchCHIconClassDeserializer implements JsonDeserializer<Station.StationType> {
+public class SearchCHIconClassDeserializer implements JsonDeserializer<Location.StationType> {
     @Override
-    public Station.StationType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Location.StationType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         String iconClass = json.getAsString();
         switch (iconClass) {
             case "sl-icon-type-zug":
-                return Station.StationType.TRAIN;
+                return Location.StationType.TRAIN;
             case "sl-icon-type-bus":
-                return Station.StationType.BUS;
+                return Location.StationType.BUS;
             case "sl-icon-type-adr":
-                return Station.StationType.ADDRESS;
+                return Location.StationType.ADDRESS;
             default:
-                return Station.StationType.UNKNOWN;
+                return Location.StationType.UNKNOWN;
         }
     }
 }

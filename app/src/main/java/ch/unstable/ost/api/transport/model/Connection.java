@@ -11,7 +11,7 @@ import java.util.Arrays;
 import ch.unstable.ost.api.transport.types.DurationDeserializer;
 import ch.unstable.ost.utils.ParcelUtils;
 
-public class Connection implements Parcelable {
+public class Connection implements Parcelable, ch.unstable.ost.api.model.Connection {
 
     public static final Creator<Connection> CREATOR = new Creator<Connection>() {
         @Override
@@ -78,6 +78,7 @@ public class Connection implements Parcelable {
     private final int ocupation2nd;
      */
 
+    @Override
     public Section[] getSections() {
         return sections;
     }

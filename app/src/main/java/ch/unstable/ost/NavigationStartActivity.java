@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import ch.unstable.ost.api.transport.model.ConnectionQuery;
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
 

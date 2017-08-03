@@ -31,4 +31,9 @@
     <string name="title_build_id">Build ID</string>
     <string name="title_error">Fehler</string>
     <string name="title_stacktrace">Stacktrace</string>
+    <string name="contentDescription_iconWalk">Fussweg Icon</string>
+    <string name="contentDescription_iconTransportation">Fortbewegungsmittel Icon</string>
+    <string name="theme_dark_gray_green_name">Dunkelgrau mit Grün</string>
+    <string name="theme_dark_green_name">Dunkel mit Grün</string>
+    <string name="theme_light_green_name">Hell mit Grün</string>
 </resources>

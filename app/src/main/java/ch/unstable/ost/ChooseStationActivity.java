@@ -19,7 +19,7 @@ import android.widget.ImageButton;
 import java.io.IOException;
 
 import ch.unstable.ost.api.TimetableDAO;
-import ch.unstable.ost.api.model.Station;
+import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.search.SearchAPI;
 import ch.unstable.ost.api.transport.TransportAPI;
 import ch.unstable.ost.theme.ThemedActivity;
@@ -34,7 +34,7 @@ public class ChooseStationActivity extends ThemedActivity {
     private EditText mStationEditText;
     private TextWatcher mSuggestionTextWatcher;
     //private TransportAPI transportAPI = new TransportAPI();
-    private TimetableDAO timetableDAO = new SearchAPI();
+    private final TimetableDAO timetableDAO = new SearchAPI();
     private HandlerThread mBackgroundHandlerThread;
     private Handler mBackgroundHandler;
     private Handler mUIHandler;
@@ -58,7 +58,7 @@ public class ChooseStationActivity extends ThemedActivity {
 
         mLocationResultAdapter = new StationListAdapter(this);
         mLocationResultAdapter.setOnStationClickListener(new StationListAdapter.OnStationClickListener() {
-            public void onStationClicked(Station location) {
+            public void onStationClicked(Location location) {
                 onLocationSelected(location);
             }
         });
@@ -85,7 +85,7 @@ public class ChooseStationActivity extends ThemedActivity {
         });
     }
 
-    private void onLocationSelected(Station location) {
+    private void onLocationSelected(Location location) {
         Intent resultData = new Intent();
         resultData.putExtra(EXTRA_RESULT_STATION_NAME, location.getName());
         resultData.putExtra(EXTRA_RESULT_STATION_ID, location.getId());
@@ -132,7 +132,7 @@ public class ChooseStationActivity extends ThemedActivity {
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_UI_SET_LOCATIONS:
-                    mLocationResultAdapter.setLocations((Station[]) msg.obj);
+                    mLocationResultAdapter.setLocations((Location[]) msg.obj);
                     return true;
             }
             return false;
@@ -143,9 +143,9 @@ public class ChooseStationActivity extends ThemedActivity {
 
 
         private void handleLocationQuery(String query) {
-            Station[] locationList;
+            Location[] locationList;
             try {
-                locationList = timetableDAO.getStationsByQuery(query, new Station.StationType[]{Station.StationType.BUS, Station.StationType.TRAIN});
+                locationList = timetableDAO.getStationsByQuery(query, new Location.StationType[]{Location.StationType.BUS, Location.StationType.TRAIN});
             } catch (TransportAPI.TooManyRequestsException e) {
                 Message message = mBackgroundHandler.obtainMessage(MESSAGE_QUERY_LOCATIONS, query);
                 mBackgroundHandler.sendMessageDelayed(message, 300);

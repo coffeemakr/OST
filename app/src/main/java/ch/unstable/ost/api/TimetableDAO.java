@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 
 import java.io.IOException;
 
-import ch.unstable.ost.api.model.Station;
+import ch.unstable.ost.api.model.Location;
 
 public interface TimetableDAO {
-    Station[] getStationsByQuery(String query) throws IOException;
+    Location[] getStationsByQuery(String query) throws IOException;
 
-    Station[] getStationsByQuery(String query, @Nullable Station.StationType types[]) throws IOException;
+    Location[] getStationsByQuery(String query, @Nullable Location.StationType types[]) throws IOException;
 }

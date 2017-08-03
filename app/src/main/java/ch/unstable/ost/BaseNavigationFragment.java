@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
 
-import ch.unstable.ost.api.transport.model.ConnectionQuery;
+import ch.unstable.ost.api.model.ConnectionQuery;
 
 
 public abstract class BaseNavigationFragment extends Fragment {
@@ -27,14 +27,6 @@ public abstract class BaseNavigationFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public void selectRoute(String start, String destination) {
-        ConnectionQuery query = new ConnectionQuery.Builder()
-                .setFrom(start)
-                .setTo(destination)
-                .build();
-        selectRoute(query);
     }
 
     public void selectRoute(ConnectionQuery query) {

@@ -8,12 +8,8 @@ public class AndroidInfo {
     private final String release;
 
     public AndroidInfo() {
-        this(Build.VERSION.SDK_INT, Build.VERSION.RELEASE);
-    }
-
-    public AndroidInfo(int sdk, String release) {
-        this.sdk = sdk;
-        this.release = release;
+        this.sdk = Build.VERSION.SDK_INT;
+        this.release = Build.VERSION.RELEASE;
     }
 
     public int getSdk() {

@@ -63,14 +63,16 @@ public class ConnectionDetailFragment extends Fragment {
             mConnection = getArguments().getParcelable(KEY_CONNECTION);
         }
 
-        mOnJourneyClickedListener = new SectionListAdapter.OnSectionClickedListener() {
-            @Override
-            public void onSectionClicked(@NonNull Section section) {
-                if(mOnConnectionDetailInteractionListener != null) {
-                    mOnConnectionDetailInteractionListener.onSectionSelected(section);
+        if(mOnJourneyClickedListener == null) {
+            mOnJourneyClickedListener = new SectionListAdapter.OnSectionClickedListener() {
+                @Override
+                public void onSectionClicked(@NonNull Section section) {
+                    if (mOnConnectionDetailInteractionListener != null) {
+                        mOnConnectionDetailInteractionListener.onSectionSelected(section);
+                    }
                 }
-            }
-        };
+            };
+        }
         mSectionListAdapter = new SectionListAdapter();
         mSectionListAdapter.setOnJourneyClickedListener(mOnJourneyClickedListener);
         mSectionListAdapter.setSections(mConnection.getSections());

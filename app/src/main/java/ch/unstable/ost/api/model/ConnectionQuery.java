@@ -1,4 +1,4 @@
-package ch.unstable.ost.api.transport.model;
+package ch.unstable.ost.api.model;
 
 
 import android.os.Parcel;
@@ -38,7 +38,7 @@ public class ConnectionQuery implements Parcelable {
         this.from = builder.from;
         this.to = builder.to;
         this.via = builder.via.toArray(new String[builder.via.size()]);
-        this.starTime = builder.starTime;
+        this.starTime = builder.startTime;
     }
 
     private ConnectionQuery(Parcel in) {
@@ -110,6 +110,7 @@ public class ConnectionQuery implements Parcelable {
     }
 
 
+    @SuppressWarnings("UnusedReturnValue")
     public static class Builder implements Parcelable {
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
             @Override
@@ -126,7 +127,7 @@ public class ConnectionQuery implements Parcelable {
         private List<String> via = new ArrayList<>();
         private String from = null;
         private String to = null;
-        private Date starTime;
+        private Date startTime;
 
         public Builder() {
 
@@ -136,14 +137,14 @@ public class ConnectionQuery implements Parcelable {
             this.via = Arrays.asList(connectionQuery.via);
             this.from = connectionQuery.from;
             this.to = connectionQuery.to;
-            this.starTime = connectionQuery.starTime;
+            this.startTime = connectionQuery.starTime;
         }
 
         protected Builder(Parcel in) {
             via = in.createStringArrayList();
             from = in.readString();
             to = in.readString();
-            starTime = ParcelUtils.readDate(in);
+            startTime = ParcelUtils.readDate(in);
         }
 
         @Override
@@ -151,7 +152,7 @@ public class ConnectionQuery implements Parcelable {
             dest.writeStringList(via);
             dest.writeString(from);
             dest.writeString(to);
-            ParcelUtils.writeDate(dest, starTime);
+            ParcelUtils.writeDate(dest, startTime);
         }
 
         @Override
@@ -204,8 +205,8 @@ public class ConnectionQuery implements Parcelable {
             return new ConnectionQuery(this);
         }
 
-        public Builder setStarTime(@Nullable Date starTime) {
-            this.starTime = starTime;
+        public Builder setStartTime(@Nullable Date startTime) {
+            this.startTime = startTime;
             return this;
         }
 

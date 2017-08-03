@@ -6,7 +6,6 @@
     <color name="colorConnectionLineWaiting">@color/colorTealAccent</color>
     <color name="colorConnectionLineTravelling">@color/colorTealAccent</color>
     <color name="colorBackgroundFaded">#616161</color>
-    <color name="colorLight">#FFFFFF</color>
 
     <!-- Grey 500 -->
     <color name="colorDarkGrayPrimary">#455A64</color>

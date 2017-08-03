@@ -53,27 +53,10 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         return times;
     }
 
-    public void setConnections(@NonNull Collection<Connection> Connections) {
-        mConnections.clear();
-        mConnections.addAll(Connections);
-        notifyDataSetChanged();
-    }
-
     public void setConnections(@NonNull Connection... Connections) {
         mConnections.clear();
         Collections.addAll(mConnections, Connections);
         notifyDataSetChanged();
-    }
-
-    public void appendConnections(@NonNull Collection<Connection> Connections) {
-        int size = mConnections.size();
-        mConnections.addAll(Connections);
-        notifyItemRangeInserted(size, Connections.size());
-    }
-
-    public void prependConnections(@NonNull Collection<Connection> Connections) {
-        mConnections.addAll(0, Connections);
-        notifyItemRangeInserted(0, Connections.size());
     }
 
     @Override

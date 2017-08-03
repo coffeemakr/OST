@@ -12,10 +12,10 @@ public class CheckpointTest {
     @Test
     public void writeToParcel() throws Exception {
         String id = "321i312";
-        OSLocation.Type type = null;
+        Location.Type type = null;
         String name = "name";
         Coordinates coordinates = new Coordinates(10, 10);
-        OSLocation location = new OSLocation(id, type, name, coordinates);
+        Location location = new Location(id, type, name, coordinates);
         Checkpoint checkpoint = new Checkpoint(location);
 
         Checkpoint readCheckPoint = writeAndRead(checkpoint, Checkpoint.CREATOR);
@@ -34,10 +34,10 @@ public class CheckpointTest {
         Integer delay = 10;
         String platform = "13/21";
         id = "321312";
-        type = OSLocation.Type.ADDRESS;
+        type = Location.Type.ADDRESS;
         name = "something";
         coordinates = new Coordinates(200, 100);
-        location = new OSLocation(id, type, name, coordinates);
+        location = new Location(id, type, name, coordinates);
         checkpoint = new Checkpoint(location, arrival, departure, delay, platform);
 
         readCheckPoint = writeAndRead(checkpoint, Checkpoint.CREATOR);
