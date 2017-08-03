@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 
-import ch.unstable.ost.api.transport.model.Connection;
-import ch.unstable.ost.api.transport.model.Section;
+import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.theme.ThemedActivity;
 
 public class ConnectionDetailActivity extends ThemedActivity implements ConnectionDetailFragment.OnConnectionDetailInteractionListener {
@@ -30,7 +30,6 @@ public class ConnectionDetailActivity extends ThemedActivity implements Connecti
         }
     }
 
-    @Override
     public void onSectionSelected(@NonNull Section section) {
         SectionDetailFragment fragment = SectionDetailFragment.newInstance(section);
         getSupportFragmentManager().beginTransaction()

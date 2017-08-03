@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 import ch.unstable.ost.api.transport.TransportAPI;
-import ch.unstable.ost.api.transport.model.Connection;
+import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 
 public class ConnectionListFragment extends Fragment {
@@ -204,7 +204,7 @@ public class ConnectionListFragment extends Fragment {
 
         private void handleConnectionQuery(ConnectionQuery connectionQuery) {
             uiHandler.sendEmptyMessage(MESSAGE_CONNECTIONS_LOADING_STARTED);
-            List<Connection> connections;
+            Connection[] connections;
             try {
                 connections = transportAPI.getConnections(connectionQuery);
                 for (Connection connection : connections) {
@@ -214,8 +214,7 @@ public class ConnectionListFragment extends Fragment {
                 handleError(R.string.error_failed_to_load_connection, e);
                 return;
             }
-            Connection[] connectionsArray = connections.toArray(new Connection[connections.size()]);
-            Message message = uiHandler.obtainMessage(MESSAGE_CONNECTIONS_LOADED, connectionsArray);
+            Message message = uiHandler.obtainMessage(MESSAGE_CONNECTIONS_LOADED, connections);
             uiHandler.sendMessage(message);
         }
     }

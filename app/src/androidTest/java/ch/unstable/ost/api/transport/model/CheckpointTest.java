@@ -12,7 +12,7 @@ public class CheckpointTest {
     @Test
     public void writeToParcel() throws Exception {
         String id = "321i312";
-        Location.Type type = null;
+        Location.InternalType type = null;
         String name = "name";
         Coordinates coordinates = new Coordinates(10, 10);
         Location location = new Location(id, type, name, coordinates);
@@ -34,7 +34,7 @@ public class CheckpointTest {
         Integer delay = 10;
         String platform = "13/21";
         id = "321312";
-        type = Location.Type.ADDRESS;
+        type = Location.InternalType.ADDRESS;
         name = "something";
         coordinates = new Coordinates(200, 100);
         location = new Location(id, type, name, coordinates);

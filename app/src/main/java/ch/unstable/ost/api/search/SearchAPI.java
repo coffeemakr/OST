@@ -12,21 +12,25 @@ import java.util.ArrayList;
 
 import ch.unstable.ost.api.TimetableDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
+import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.Location;
+import ch.unstable.ost.api.search.model.ConnectionsResult;
 import ch.unstable.ost.api.search.model.LocationCompletion;
 
 public class SearchAPI extends BaseHttpJsonAPI implements TimetableDAO {
 
     final Uri BASE_URI = Uri.parse("https://timetable.search.ch/api/");
 
+    @NonNull
     @Override
-    public Location[] getStationsByQuery(String query) throws IOException {
+    public Location[] getStationsByQuery(@NonNull String query) throws IOException {
         return getStationsByQuery(query, null);
     }
 
     @Override
     @NonNull
-    public Location[] getStationsByQuery(String query, @Nullable Location.StationType[] types) throws IOException {
+    public Location[] getStationsByQuery(@NonNull String query, @Nullable Location.StationType[] types) throws IOException {
         if (types != null && types.length == 0) return new Location[0];
         Uri.Builder builder = BASE_URI.buildUpon()
                 .appendPath("completion.json")
@@ -39,6 +43,13 @@ public class SearchAPI extends BaseHttpJsonAPI implements TimetableDAO {
             locationCompletions = filterResults(locationCompletions, types);
         }
         return locationCompletions.toArray(new LocationCompletion[locationCompletions.size()]);
+    }
+
+    @NonNull
+    @Override
+    public Connection[] getConnections(@NonNull ConnectionQuery connectionQuery) throws IOException {
+        Uri.Builder builder = BASE_URI.buildUpon();
+        return loadJson(builder, ConnectionsResult.class).connections;
     }
 
 

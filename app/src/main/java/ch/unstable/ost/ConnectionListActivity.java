@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import ch.unstable.ost.api.transport.model.Connection;
+import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.theme.ThemedActivity;
 

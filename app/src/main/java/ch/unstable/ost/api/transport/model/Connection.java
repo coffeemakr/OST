@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import ch.unstable.ost.api.transport.types.DurationDeserializer;
 import ch.unstable.ost.utils.ParcelUtils;
@@ -81,6 +82,16 @@ public class Connection implements Parcelable, ch.unstable.ost.api.model.Connect
     @Override
     public Section[] getSections() {
         return sections;
+    }
+
+    @Override
+    public Date getDepartureTime() {
+        return getFrom().getDepartureTime();
+    }
+
+    @Override
+    public Date getArrivalTime() {
+        return getTo().getArrival();
     }
 
     @Override

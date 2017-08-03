@@ -2,6 +2,7 @@ package ch.unstable.ost.api.transport;
 
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.GsonBuilder;
@@ -52,7 +53,9 @@ public class TransportAPI extends BaseHttpJsonAPI implements TimetableDAO {
         gsonBuilder.registerTypeAdapter(Integer.class, numberTypeAdapter);
     }
 
-    public Connection[] getConnections(ConnectionQuery connectionQuery) throws IOException {
+    @NonNull
+    @Override
+    public ch.unstable.ost.api.model.Connection[] getConnections(@NonNull ConnectionQuery connectionQuery) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("connections")
                 .appendQueryParameter("from", connectionQuery.getFrom())
@@ -79,13 +82,15 @@ public class TransportAPI extends BaseHttpJsonAPI implements TimetableDAO {
 
 
 
+    @NonNull
     @Override
-    public ch.unstable.ost.api.model.Location[] getStationsByQuery(String query) throws IOException {
+    public ch.unstable.ost.api.model.Location[] getStationsByQuery(@NonNull String query) throws IOException {
         return getStationsByQuery(query, null);
     }
 
+    @NonNull
     @Override
-    public ch.unstable.ost.api.model.Location[] getStationsByQuery(String query, @Nullable ch.unstable.ost.api.model.Location.StationType[] types) throws IOException {
+    public ch.unstable.ost.api.model.Location[] getStationsByQuery(@NonNull String query, @Nullable ch.unstable.ost.api.model.Location.StationType[] types) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("locations")
                 .appendQueryParameter("query", query);

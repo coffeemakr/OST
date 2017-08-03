@@ -12,9 +12,7 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 
-import ch.unstable.ost.api.transport.model.Checkpoint;
-import ch.unstable.ost.api.transport.model.Journey;
-import ch.unstable.ost.api.transport.model.Section;
+import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.utils.TimeDateUtils;
 
 class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.SectionViewHolder> {
@@ -55,24 +53,21 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
     }
 
     public void onBindJourneyViewHolder(JourneyViewHolder holder, Section section) {
-        Journey journey = section.getJourney();
-        Checkpoint arrival = section.getArrival();
-        Checkpoint departure = section.getDeparture();
-        holder.arrivalStationName.setText(arrival.getStation().getName());
-        holder.departureStationName.setText(departure.getStation().getName());
-        holder.arrivalTime.setText(TimeDateUtils.formatTime(arrival.getArrival()));
-        holder.departureTime.setText(TimeDateUtils.formatTime(departure.getDepartureTime()));
-        holder.productName.setText(journey.getName());
-        holder.endDestination.setText(journey.getTo());
-        holder.departurePlatform.setText(section.getDeparture().getPlatform());
-        holder.arrivalPlatform.setText(section.getArrival().getPlatform());
+        holder.arrivalStationName.setText(section.getArrivalStationName());
+        holder.departureStationName.setText(section.getDepartureStationName());
+        holder.arrivalTime.setText(TimeDateUtils.formatTime(section.getArrivalTime()));
+        holder.departureTime.setText(TimeDateUtils.formatTime(section.getDepartureTime()));
+        holder.productName.setText(section.getMoTShortName());
+        holder.endDestination.setText(section.getEndDestination());
+        holder.departurePlatform.setText(section.getDeparturePlatform());
+        holder.arrivalPlatform.setText(section.getArrivalPlatform());
         holder.itemView.setTag(section);
         holder.itemView.setOnClickListener(onJourneyItemClickListener);
     }
 
     private void onBindWalkViewHolder(WalkSectionViewHolder holder, Section section) {
-        holder.departureStationName.setText(section.getDeparture().getStation().getName());
-        holder.departureTime.setText(TimeDateUtils.formatTime(section.getDeparture().getDepartureTime()));
+        holder.departureStationName.setText(section.getDepartureStationName());
+        holder.departureTime.setText(TimeDateUtils.formatTime(section.getDepartureTime()));
     }
 
     @Override

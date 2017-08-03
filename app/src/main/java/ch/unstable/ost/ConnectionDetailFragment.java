@@ -13,8 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ch.unstable.ost.api.transport.model.Connection;
-import ch.unstable.ost.api.transport.model.Section;
+import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.Section;
 
 
 public class ConnectionDetailFragment extends Fragment {

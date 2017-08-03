@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Date;
+
+import ch.unstable.ost.api.model.Stops;
 import ch.unstable.ost.utils.ParcelUtils;
 
 public class Section implements Parcelable, ch.unstable.ost.api.model.Section {
@@ -79,8 +82,51 @@ public class Section implements Parcelable, ch.unstable.ost.api.model.Section {
         return walk != null;
     }
 
+    @Override
+    public String getEndDestination() {
+        if (!isJourney()) {
+            return null;
+        }
+        return getJourney().getTo();
+    }
+
+    @Override
+    public String getArrivalStationName() {
+        return getArrival().getStation().getName();
+    }
+
+    @Override
+    public String getDepartureStationName() {
+        return getDeparture().getStation().getName();
+    }
+
+    @Override
+    public String getDeparturePlatform() {
+        return getDeparture().getPlatform();
+    }
+
+    @Override
+    public String getArrivalPlatform() {
+        return getArrival().getPlatform();
+    }
+
+    @Override
+    public Stops[] getStops() {
+        return getJourney().getPassList();
+    }
+
     public boolean isJourney() {
         return journey != null;
+    }
+
+    @Override
+    public Date getDepartureTime() {
+        return getDeparture().getDepartureTime();
+    }
+
+    @Override
+    public Date getArrivalTime() {
+        return getArrival().getArrival();
     }
 
     @Override
@@ -108,5 +154,21 @@ public class Section implements Parcelable, ch.unstable.ost.api.model.Section {
     @Nullable
     public Walk getWalk() {
         return walk;
+    }
+
+    @Override
+    public String getMoTFullName() {
+        if(isJourney()) {
+            return getJourney().getName();
+        }
+        return null;
+    }
+
+    @Override
+    public String getMoTShortName() {
+        if(isJourney()) {
+            return getJourney().getNumber();
+        }
+        return null;
     }
 }

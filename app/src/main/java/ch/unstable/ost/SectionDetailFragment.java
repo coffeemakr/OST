@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import java.util.Date;
 
-import ch.unstable.ost.api.transport.model.Checkpoint;
-import ch.unstable.ost.api.transport.model.Section;
+import ch.unstable.ost.api.model.Section;
+import ch.unstable.ost.api.model.Stops;
 import ch.unstable.ost.utils.TimeDateUtils;
 import ch.unstable.ost.views.StopDotView;
 
@@ -50,7 +50,7 @@ public class SectionDetailFragment extends Fragment {
             throw new IllegalStateException("section not set");
         }
         mStopsListAdapter = new StopsListAdapter();
-        mStopsListAdapter.setStops(mSection.getJourney().getPassList());
+        mStopsListAdapter.setStops(mSection.getStops());
     }
 
     @Override
@@ -88,9 +88,9 @@ public class SectionDetailFragment extends Fragment {
     }
 
     private class StopsListAdapter extends RecyclerView.Adapter<ViewHolder> {
-        private Checkpoint stops[];
+        private Stops stops[];
 
-        public void setStops(Checkpoint[] stops) {
+        public void setStops(Stops[] stops) {
             this.stops = stops;
             notifyDataSetChanged();
         }
@@ -110,8 +110,8 @@ public class SectionDetailFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Checkpoint stop = stops[position];
-            holder.stationName.setText(stop.getStation().getName());
+            Stops stop = stops[position];
+            holder.stationName.setText(stop.getStationName());
             if(position == 0) {
                 holder.stopDotView.setLineMode(StopDotView.Type.TOP);
             } else if(position == stops.length - 1) {
@@ -119,9 +119,6 @@ public class SectionDetailFragment extends Fragment {
             }
             String time = null;
             Date shownDate = stop.getDepartureTime();
-            if(shownDate == null) {
-                shownDate = stop.getArrival();
-            }
             if(shownDate != null) {
                 try {
                     time = TimeDateUtils.formatTime(shownDate);

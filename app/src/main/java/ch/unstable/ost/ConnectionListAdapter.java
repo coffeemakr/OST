@@ -12,13 +12,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import ch.unstable.ost.api.transport.model.Connection;
-import ch.unstable.ost.api.transport.model.Journey;
-import ch.unstable.ost.api.transport.model.Section;
+import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.utils.TimeDateUtils;
 import ch.unstable.ost.views.ConnectionLineView;
 
@@ -38,12 +36,12 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
             if (section.isJourney()) {
                 if (lastEnd != 0) {
                     // Waiting time
-                    times[i] = (int) (section.getDeparture().getDepartureTime().getTime() - lastEnd);
+                    times[i] = (int) (section.getDepartureTime().getTime() - lastEnd);
                     ++i;
                 }
                 // Travel time
-                lastEnd = section.getArrival().getArrival().getTime();
-                times[i] = (int) (lastEnd - section.getDeparture().getDepartureTime().getTime());
+                lastEnd = section.getArrivalTime().getTime();
+                times[i] = (int) (lastEnd - section.getArrivalTime().getTime());
                 ++i;
             }
         }
@@ -76,9 +74,8 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
                 section = sections[1];
             }
             if (section.isJourney()) {
-                Journey journey = section.getJourney();
-                holder.firstEndDestination.setText(journey.getTo());
-                holder.firstTransportName.setText(journey.getName());
+                holder.firstEndDestination.setText(section.getEndDestination());
+                holder.firstTransportName.setText(section.getMoTShortName());
             }
 
         } else {
@@ -86,8 +83,8 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         }
 
 
-        holder.startTime.setText(TimeDateUtils.formatTime(connection.getFrom().getDepartureTime()));
-        holder.endTime.setText(TimeDateUtils.formatTime(connection.getTo().getArrival()));
+        holder.startTime.setText(TimeDateUtils.formatTime(connection.getDepartureTime()));
+        holder.endTime.setText(TimeDateUtils.formatTime(connection.getArrivalTime()));
 
         int times[] = getTravelTimes(connection.getSections());
         holder.connectionLineView.setLengths(times);
