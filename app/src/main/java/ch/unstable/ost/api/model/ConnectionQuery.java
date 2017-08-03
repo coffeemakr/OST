@@ -88,6 +88,10 @@ public class ConnectionQuery implements Parcelable {
         return via.length == 0;
     }
 
+    public boolean hasStartTime() {
+        return starTime != null;
+    }
+
     @Nullable
     public Date getStarTime() {
         return starTime;

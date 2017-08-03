@@ -3,6 +3,7 @@ package ch.unstable.ost.api.search.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -12,7 +13,9 @@ import ch.unstable.ost.utils.ParcelUtils;
 
 class Connection implements ch.unstable.ost.api.model.Connection, Parcelable {
 
+    @JsonAdapter(MinusDateDeserializer.class)
     private final Date arrival;
+    @JsonAdapter(MinusDateDeserializer.class)
     private final Date departure;
     private final String from;
     private final String to;

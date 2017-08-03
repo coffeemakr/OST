@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import java.io.IOException;
 import java.util.List;
 
+import ch.unstable.ost.api.TimetableDAO;
+import ch.unstable.ost.api.search.SearchAPI;
 import ch.unstable.ost.api.transport.TransportAPI;
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
@@ -41,7 +43,7 @@ public class ConnectionListFragment extends Fragment {
     private ConnectionQuery mConnectionQuery;
     private Handler backgroundHandler;
     private HandlerThread backgroundThread;
-    private final TransportAPI transportAPI;
+    private final TimetableDAO transportAPI;
     private Handler uiHandler;
     private OnConnectionListInteractionListener mOnConnectionListInteractionListener;
     private View mLoadingIndicator;
@@ -49,7 +51,7 @@ public class ConnectionListFragment extends Fragment {
 
     public ConnectionListFragment() {
         // Empty constructor
-        transportAPI = new TransportAPI();
+        transportAPI = new SearchAPI();
     }
 
 

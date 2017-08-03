@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -15,7 +16,6 @@ class Stop implements Stops, Parcelable{
 
     private final String stopid;
 
-    // "27.10.2016 20:02"
     private final Date departure;
 
     @SerializedName("name")
@@ -67,4 +67,5 @@ class Stop implements Stops, Parcelable{
     public Date getDepartureTime() {
         return departure;
     }
+
 }

@@ -37,6 +37,7 @@ public class BaseHttpJsonAPI {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("User-Agent", USER_AGENT);
+        urlConnection.setRequestProperty("Accept", "application/json");
         int code = urlConnection.getResponseCode();
         if (code == HTTP_CODE_TOO_MANY_REQUESTS) {
             throw new TooManyRequestsException();

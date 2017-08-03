@@ -8,7 +8,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import ch.unstable.ost.api.TimetableDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
@@ -45,10 +48,26 @@ public class SearchAPI extends BaseHttpJsonAPI implements TimetableDAO {
         return locationCompletions.toArray(new LocationCompletion[locationCompletions.size()]);
     }
 
+    private static void addStartDateToUrl(Uri.Builder uriBuilder, Date date) {
+        if(date == null) return;
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ROOT);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+        uriBuilder
+                .appendQueryParameter("time", timeFormat.format(date))
+                .appendQueryParameter("date", dateFormat.format(date));
+    }
+
     @NonNull
     @Override
     public Connection[] getConnections(@NonNull ConnectionQuery connectionQuery) throws IOException {
         Uri.Builder builder = BASE_URI.buildUpon();
+        builder.appendPath("route.json")
+                .appendQueryParameter("from", connectionQuery.getFrom())
+                .appendQueryParameter("to", connectionQuery.getTo());
+        for(String via: connectionQuery.getVia()) {
+            builder.appendQueryParameter("via[]", via);
+        }
+        addStartDateToUrl(builder, connectionQuery.getStarTime());
         return loadJson(builder, ConnectionsResult.class).connections;
     }
 
