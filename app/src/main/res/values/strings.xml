@@ -86,7 +86,7 @@
     <string name="title_android_sdk">SDK</string>
     <string name="title_app_package">Package</string>
     <string name="title_error">Error</string>
-    <string name="error_report_email">report@unstable.ch</string>
+    <string name="error_report_email">bugreport@unstable.ch</string>
     <string name="error_report_subject">Bug Report</string>
     <string name="error_report_title">Send report...</string>
 
