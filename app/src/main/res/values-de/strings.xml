@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OST</string>
+    <string name="action_search_route">Suchen</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="build_id_format">%1$s (%2$s)</string>
+    <string name="clearInput">Eingabe löschen</string>
+    <string name="departure_time">Abfahrtszeit</string>
+    <string name="description_invert_direction">Richtung umkehren</string>
+    <string name="error_failed_to_load_connection">Verbindung konnte nicht geladen werden</string>
+    <string name="error_report_subject">Fehlermeldung</string>
+    <string name="error_report_title">Fehler senden</string>
+    <string name="format_app_version">%1$s (%2$d)</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="navigation_destination">Ziel</string>
+    <string name="navigation_start">Start</string>
+    <string name="prefs_category_appearance">Aussehen</string>
+    <string name="prefs_summ_appearance">Aussehen</string>
+    <string name="request_choose_from">Start auswählen</string>
+    <string name="request_choose_station">Station auswählen</string>
+    <string name="request_choose_to">Ziel auswählen</string>
+    <string name="title_activity_error_report">App-Absturz</string>
+    <string name="title_android">Android</string>
+    <string name="title_android_release">Android Release</string>
+    <string name="title_android_sdk">SDK</string>
+    <string name="title_app">App</string>
+    <string name="title_app_package">Paket</string>
+    <string name="title_app_signature">Signatur</string>
+    <string name="title_app_version">Version</string>
+    <string name="title_build">Build</string>
+    <string name="title_build_id">Build ID</string>
+    <string name="title_error">Fehler</string>
+    <string name="title_stacktrace">Stacktrace</string>
+</resources>

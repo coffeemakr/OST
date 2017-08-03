@@ -13,7 +13,7 @@
     <string name="departure_time">Departure time</string>
     <string name="request_choose_to">Choose destination</string>
     <string name="request_choose_from">Choose start</string>
-    <string name="title_activity_choose_station">ChooseStationActivity</string>
+    <string name="title_activity_choose_station" translatable="false">@string/request_choose_station</string>
     <string name="request_choose_station">Choose station</string>
     <string name="clearInput">Clear input</string>
     <string name="menu_settings">Settings</string>
@@ -22,7 +22,7 @@
     <string name="LightGreenTheme" translatable="false">LightGreenTheme</string>
     <string name="DarkGrayGreenTheme" translatable="false">DarkGrayGreenTheme</string>
     <string name="prefs_category_appearance">Appearance</string>
-    <string name="prefs_summ_appearance">Look and feel</string>
+    <string name="prefs_summ_appearance">Look &amp; Feel</string>
 
     <string-array name="theme_names">
         <item name="theme_dark_green">Dark green</item>
@@ -41,7 +41,7 @@
     </array>
     <string name="title_activity_error_report">App Crashed</string>
     <string name="action_settings">Settings</string>
-    <string name="dummy_stacktrace">java.io.FileNotFoundException: /data/data/at.bitfire.davdroid/app_KeyStore/KeyStore.bks: open failed: ENOENT (No such file or directory) \n
+    <string name="dummy_stacktrace" translatable="false">java.io.FileNotFoundException: /data/data/at.bitfire.davdroid/app_KeyStore/KeyStore.bks: open failed: ENOENT (No such file or directory) \n
     at libcore.io.IoBridge.open(IoBridge.java:409)\n
     at java.io.FileInputStream.&lt;init&gt;(FileInputStream.java:78)\n
     at at.bitfire.cert4android.CustomCertService.onCreate(CustomCertService.kt:69)\n
@@ -75,7 +75,7 @@
     at dalvik.system.NativeStart.main(Native Method) </string>
     <string name="title_stacktrace">Stacktrace</string>
     <string name="title_app_version">Version</string>
-    <string name="title_android_release">Release</string>
+    <string name="title_android_release">Android Release</string>
     <string name="format_app_version" formatted="true">%1$s (%2$d)</string>
     <string name="title_android">Android</string>
     <string name="title_app">App</string>
@@ -86,8 +86,8 @@
     <string name="title_android_sdk">SDK</string>
     <string name="title_app_package">Package</string>
     <string name="title_error">Error</string>
-    <string name="error_report_email">bugreport@unstable.ch</string>
+    <string name="error_report_email" translatable="false">bugreport@unstable.ch</string>
     <string name="error_report_subject">Bug Report</string>
-    <string name="error_report_title">Send report...</string>
+    <string name="error_report_title">Send Bugreport</string>
 
 </resources>
