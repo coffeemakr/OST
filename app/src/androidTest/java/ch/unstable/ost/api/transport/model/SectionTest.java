@@ -49,7 +49,7 @@ public class SectionTest {
         String operator = "SBB";
         String to = "Zürich HB";
         Capacity capacity = new Capacity(10, 10);
-
+        Checkpoint[] passList = new Checkpoint[0];
         Journey journey = new Journey(name, category, categoryCode, number, operator, to, capacity, passList);
 
         Checkpoint arrival = generateRandomCheckpoint();

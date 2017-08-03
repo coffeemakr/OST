@@ -19,4 +19,18 @@
     <attr name="toolbarTheme" format="reference" />
     <attr name="toolbarPopupTheme" format="reference" />
     <attr name="dividerColor" format="reference" />
+
+    <declare-styleable name="StopDotView">
+        <attr name="lineColor" format="color" />
+        <attr name="lineWidth" format="dimension" />
+        <attr name="lineMode" />
+        <attr name="circleColor" format="color" />
+        <attr name="circleWidth" format="dimension"/>
+    </declare-styleable>
+
+    <attr name="lineMode" format="enum">
+        <enum name="top" value="1"/>
+        <enum name="bottom" value="2"/>
+        <enum name="both" value="3"/>
+    </attr>
 </resources>

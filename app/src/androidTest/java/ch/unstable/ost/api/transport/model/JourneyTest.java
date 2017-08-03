@@ -19,7 +19,7 @@ public class JourneyTest {
         String operator = null;
         String to = null;
         Capacity capacity = null;
-
+        Checkpoint[] passList = new Checkpoint[0];
         Journey journey = new Journey(name, category, categoryCode, number, operator, to, capacity, passList);
 
         Journey readJourney = writeAndRead(journey, Journey.CREATOR);

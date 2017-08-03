@@ -40,9 +40,11 @@ public class ConnectionLineView extends View {
         mWaitingLinePaint.setStrokeWidth(waitingStrokeWidth);
         int line_color = ResourcesCompat.getColor(context.getResources(), R.color.colorConnectionLineWaiting, context.getTheme());
         mWaitingLinePaint.setColor(line_color);
+        mWaitingLinePaint.setStrokeCap(Paint.Cap.ROUND);
 
         mTravellingLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTravellingLinePaint.setStyle(Paint.Style.STROKE);
+        mTravellingLinePaint.setStrokeCap(Paint.Cap.ROUND);
 
         int dpSizeTravelling = 8;
         float travellingStroke = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpSizeTravelling, dm);

@@ -109,4 +109,12 @@
     </style>
 
     <style name="ErrorReportTitle" parent="@style/TextAppearance.AppCompat.Title" />
+
+    <style name="DefaultStopDotsView">
+        <item name="circleWidth">10dp</item>
+        <item name="lineWidth">16dp</item>
+        <item name="lineColor">?attr/colorPrimary</item>
+        <item name="circleColor">@android:color/white</item>
+        <item name="android:minWidth">16dp</item>
+    </style>
 </resources>
