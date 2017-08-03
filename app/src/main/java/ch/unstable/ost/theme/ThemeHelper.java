@@ -18,13 +18,17 @@ public class ThemeHelper {
     public static void setTheme(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String currentTheme = preferences.getString(PreferenceKeys.KEY_THEME, null);
-        int style = getThemeStyle(context.getResources(), currentTheme);
+        int style;
+        if(currentTheme == null) {
+            style = R.style.GreenDarkTheme;
+        } else {
+            style = getThemeStyle(context.getResources(), currentTheme);
+        }
         context.setTheme(style);
     }
 
-    private static
     @StyleRes
-    int getThemeStyle(Resources resources, String currentTheme) {
+    private static int getThemeStyle(Resources resources, String currentTheme) {
         if (currentTheme == null) {
             throw new NullPointerException("currentTheme is null");
         }
@@ -32,7 +36,6 @@ public class ThemeHelper {
         String[] values = resources.getStringArray(R.array.theme_values);
 
         int i = 0;
-        @StyleRes
         int styleRes = 0;
         for (String value : values) {
             if (value.equals(currentTheme)) {
@@ -48,9 +51,8 @@ public class ThemeHelper {
         return styleRes;
     }
 
-    public static
     @DrawableRes
-    int getThemedDrawable(Context context, @AttrRes int attr) {
+    public static int getThemedDrawable(Context context, @AttrRes int attr) {
         Resources.Theme theme = context.getTheme();
         TypedValue typedValue = new TypedValue();
         theme.resolveAttribute(attr, typedValue, true);
