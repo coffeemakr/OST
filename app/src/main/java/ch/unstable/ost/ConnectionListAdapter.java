@@ -41,7 +41,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
                 }
                 // Travel time
                 lastEnd = section.getArrivalTime().getTime();
-                times[i] = (int) (lastEnd - section.getArrivalTime().getTime());
+                times[i] = (int) (lastEnd - section.getDepartureTime().getTime());
                 ++i;
             }
         }
