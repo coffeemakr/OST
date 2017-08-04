@@ -114,7 +114,7 @@ public class Location implements Parcelable, ch.unstable.ost.api.model.Location 
     }
 
 
-    private enum InternalType {
+    public enum InternalType {
         STATION, POI, ADDRESS, REFINE
     }
 }

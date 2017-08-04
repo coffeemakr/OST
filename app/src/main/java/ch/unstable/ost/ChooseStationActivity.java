@@ -12,6 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -22,6 +25,7 @@ import ch.unstable.ost.api.TimetableDAO;
 import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.search.SearchAPI;
 import ch.unstable.ost.api.transport.TransportAPI;
+import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
 
 public class ChooseStationActivity extends ThemedActivity {
@@ -31,10 +35,10 @@ public class ChooseStationActivity extends ThemedActivity {
     public static final String EXTRA_RESULT_STATION_ID = "EXTRA_RESULT_STATION_ID";
     private static final int MESSAGE_QUERY_LOCATIONS = 1;
     private static final int MESSAGE_UI_SET_LOCATIONS = 2;
-    private EditText mStationEditText;
-    private TextWatcher mSuggestionTextWatcher;
     //private TransportAPI transportAPI = new TransportAPI();
     private final TimetableDAO timetableDAO = new SearchAPI();
+    private EditText mStationEditText;
+    private TextWatcher mSuggestionTextWatcher;
     private HandlerThread mBackgroundHandlerThread;
     private Handler mBackgroundHandler;
     private Handler mUIHandler;
@@ -97,6 +101,24 @@ public class ChooseStationActivity extends ThemedActivity {
     protected void onDestroy() {
         super.onDestroy();
         mBackgroundHandlerThread.quit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return false;
     }
 
     private static class SuggestionTextWatcher implements TextWatcher {
