@@ -1,9 +1,13 @@
+
+group: edge
 language: android
 android:
   components:
   - build-tools-25.0.3
   - android-25
+  - android-22
   - extra-android-m2repository
+  - sys-img-armeabi-v7a-android-22
   licenses:
   - android-sdk-preview-license-.+
   - android-sdk-license-.+
@@ -14,8 +18,14 @@ before_install:
 - mkdir "$ANDROID_HOME/licenses" | echo "ok"
 - echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 - echo "84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+before_script:
+- android list targets
+- echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+- emulator -avd test -no-audio -no-window &
+- android-wait-for-emulator
+- adb shell input keyevent 82 &
 script:
-- "./gradlew build"
+- "./gradlew build connectedCheck"
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -24,18 +34,22 @@ cache:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  
 env:
   global:
   - secure: WtkpCZEBbm6WJ/h6TBoZEebsvcDgX5cW1hpPxZb2JCf00soDUvehhGOUgoMMcwlwqNzhb5D14sbvg9E3Xk9aYm0MODWnlz5NewG7ZWnjCo/RNi6w43WLb8ZwS43pXOIfoXxipKtccuIQKYlRFPvIx7uRDBsRJpJPg3ZDWRmu+j78qGBEIyUEJNb4Lng+Er1hfn+rH/CB5+XmAOIm55vlkoXxZdLYYIr7yeNMtnBmUYsUc9j8k6PN3imSuTPvCT/hrKsg5wN+RzzwVm0MhStf1tM6m11nFhvAMOeE+Wx6jTfleOQkC7K/nVYBs2vcQpaNg/c7DxHudk1t7zDvk+x8ifuc7UK6pce8SgYFMvlivDspsQR0C9Lsf93H7XkV2fva3ZuATyIxsS94fnwWzTFCGqvaeDQpGQmb9qojjd6Njjw5+gopepkWAUX1VsxgecjvlHo2MMpzMa7cnKCciOVhkjn02VVm5OG7Suleu8BzjyF0UaaN/NNEWn/KssYoxuEGcnxFmHHPVogkymN8LLeLvZViDBocAbMn5TZMOESfWLflrW2Ka0vlbNZJl5vDke2gv1pBU4YUi/La2ImQ3bnuLY3crbUK8Q0uXDP2FhJvujSh11sbjQHaZg3WXa0jgUO2JlEOv9aBFJskQbkrMHILUX/ot7HR35OgzV9EaarPLgM=
   - secure: z00nWRuMqDvh/Ajet9EhPvyw2nVz2mNu+4LikfarPh2EJIq0843ioLscdA8+O5Y07ilZzTl5EpzjphR1Bhv0dRvVnb6kPzjSJ4uR51D9oI+385BjyP5z+3RtxzsPMpsVHpTMocwarNZCM7+VRky/H0NUBDzuNctD5NH9hCO6XnwGGFcFiIoKSYjiueqKz4DiUv5HwLO2T0t9b0zkkvHPkIzIkJLvZ8Rj86s41IMVtH34hZXGB/618J6UK82kYs6x8ICrBFq+oxSv0hDwMsOsvCKpbXOIkF6ueXs6U3KQQebn4WbvPWYOPG5+EMXlDRLUDZJF1aRnZVffArd4x6hQ50xVJ/xD20TgE/3LUrbTn89wlu8v+3jOLioMA3TJinr0iZJk/oEBzsbpj1cj0cYmeWeGRGF4/B6E1XjhdC1Xc+G/Ch7Vm7+nf69jaB799/vkwDkncNoH0kbXyaQSKLnnVZ6aiHv6qaC7RLjaQESy12K4RzLInKEgaKm0DI3U+aAcdaU/6GXIdCL0P0IdhbeimKTWUr7d8436xzlGtAtwtxeKEIY/SKk64DPURfp22E3wLBMlTkKWlKQwgjrKk+U0Sl/Op79D70oD3wQdBwP33bTNRXar8+JWjRH9CpLvIGga7NEQLIl7ifII/F9EgNvQo9AVKxaQSlxt9OckViy4Ds8=
+  - secure: IEFhaxES4N6yPOPEFOWyTLv/DCbRXbIeTsHBiiua/SMKauF54x/KH0nJe9i122z9tHm6kN20SjU+pNmC9qzlSI8vqSE1uaFSHXKkX6q8TJoIt13Eqo13P10FKMPoYBLugiN6tNfoHW9/LJ+o92wJNE1ewtee/0VxqYggnxGV9aMIQYjKor+dldeWHiez4k7a6QjuRwi5lBiq8QoTPoBsms8FjSgU8PzvHxPBrj0r+nAqwjctMnNkB8OKKmUdLo0Zi25m5mZbf62/WKdT4eRHbyFpEKw6GgCuQi7D3MoKeaEGlFXwgfyfrlPnGerbblMWI4Ln9EX/Skg41TTSv3YTXceg8wmkhjrPEJ02siKXB8oh9+PlSRxHzjUx4ck6/BmxoHYjKkCCn4tuwVpCsMhetTd4/O/gST1pIQ+F/WTe02KdQAGjUVp2+dXsZUSWXvAjc/1rkFNUF7buxjtGzuGvaWr/qaUUwC2ZKVU0XtNkSzULVwMZwKvsNQXhmvfhvpkxNCDouDwCLxqt0LlPaFG9lH7wUmmb5aCEXrCqKs2ShZp/WeKxwzfYkggun4nR54eo9sxXS25ksyTbsoHUUp/MTlOAhXbZN9A2WgQTVHuGhYb9C2r+g46010Z2g2OH/EB8c/5NzIOpVAJ39Ztd+C2yx/4ybTYpNyHggEzabqd0BBU=
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
     secure: D5dviU7f2k5HC1WSNNlm8KRfachZhLry5SvHdf0eZ3ynCB4eBPsax/tjwIry6GZMtYkBLiCS+C2hdiZmzeemywPgV0i/dkjpX1/iPJC1XOyM3nz69ybgHrkYpOMm4Gn05gu9WDvARonM9EWtjwRNtKxDEC7JPTV3+f3Yd0hm5s9LUXD4NjBlwVocXw/vwNztjFjuKtgNg6nCk6F/BQfxQXrtHRBWkXm5Tc/KtCjJk4blDOyub1Hix8ymTkh8CZ2dStXn6Ckv215KWdSqubonzYeL7z5fudcFwgEDLQB7YJpAdQzepwZL6GkC6c6cr0zYTcWR1gUGEgo31tCkMq+cGZZPtv4omcuuWxy0U7u0Ckuk4HLleAP4muibhNAs1yU+4dE5n/0sxjmCgHKMvzpVShWWvGAqHdfnQbsOs1TNN2QPfYvIPGrSC7nzxCtGVmspYsoop0OC7Hw0CuNwDAt1jkc8jTWgkc41p+6jkxAevUCmsNi09oL9luYWm3OobtYUpZVptxA8GehLl1ATCImPHRgDfhwaaLCJLseXTJcq8VyT553y4eX254mA8/E2TkNf8FtzABtk53asjAEC+cz1u9YNaZ7JhU3klMuoaFCM9G/mZyuhUxpfFhzbtF7B2Hgm62HQW872IbuVqUAcQgFFLSXFSGBN9RhnL9FBh4y/aBk=
   file:
-    - app/build/outputs/apk/app-debug.apk
-    - app/build/outputs/apk/app-release.apk 
+  - app/build/outputs/apk/app-debug.apk
+  - app/build/outputs/apk/app-release.apk
   on:
     repo: coffeemakr/OST
     tags: true
