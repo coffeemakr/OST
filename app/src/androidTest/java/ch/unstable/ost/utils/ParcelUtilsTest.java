@@ -30,7 +30,10 @@ public class ParcelUtilsTest {
         parcel.setDataPosition(0);
         assertNull(ParcelUtils.readDate(parcel));
 
+        parcel.setDataPosition(0);
+
         Date date  = new Date();
+        assertNotEquals(-1, date.getTime());
         parcel.writeLong(date.getTime());
         parcel.setDataPosition(0);
         assertEquals(date, ParcelUtils.readDate(parcel));

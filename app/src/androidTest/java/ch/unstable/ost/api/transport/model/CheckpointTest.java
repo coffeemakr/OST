@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import ch.unstable.ost.api.model.Location.StationType;
+
 import static ch.unstable.ost.api.transport.model.CapacityTest.writeAndRead;
 import static org.junit.Assert.*;
 
@@ -21,7 +23,7 @@ public class CheckpointTest {
         Checkpoint readCheckPoint = writeAndRead(checkpoint, Checkpoint.CREATOR);
 
         assertEquals(id, readCheckPoint.getStation().getId());
-        assertEquals(type, readCheckPoint.getStation().getType());
+        assertEquals(StationType.UNKNOWN, readCheckPoint.getStation().getType());
         assertEquals(name, readCheckPoint.getStation().getName());
         assertEquals(coordinates, readCheckPoint.getStation().getCoordinates());
         assertNull(readCheckPoint.getArrival());
@@ -42,7 +44,7 @@ public class CheckpointTest {
 
         readCheckPoint = writeAndRead(checkpoint, Checkpoint.CREATOR);
         assertEquals(id, readCheckPoint.getStation().getId());
-        assertEquals(type, readCheckPoint.getStation().getType());
+        assertEquals(StationType.ADDRESS, readCheckPoint.getStation().getType());
         assertEquals(name, readCheckPoint.getStation().getName());
         assertEquals(coordinates, readCheckPoint.getStation().getCoordinates());
         assertEquals("Arrival", arrival, readCheckPoint.getArrival());

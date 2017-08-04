@@ -12,22 +12,22 @@ import static org.junit.Assert.*;
 public class JourneyTest {
     @Test
     public void writeToParcel() throws Exception {
-        String name = null;
-        String category = null;
-        String categoryCode = null;
-        int number = 0;
-        String operator = null;
-        String to = null;
-        Capacity capacity = null;
+        String name;
+        String category;
+        String categoryCode;
+        String operator;
+        String to;
+        Capacity capacity;
         Checkpoint[] passList = new Checkpoint[0];
-        Journey journey = new Journey(name, category, categoryCode, number, operator, to, capacity, passList);
+        String number;
+        Journey journey = new Journey(null, null, null, "0", null, null, null, passList);
 
         Journey readJourney = writeAndRead(journey, Journey.CREATOR);
 
         assertNull(readJourney.getName());
         assertNull(readJourney.getCategory());
         assertNull(readJourney.getCategoryCode());
-        assertEquals(0, readJourney.getNumber());
+        assertEquals("0", readJourney.getNumber());
         assertNull(readJourney.getOperator());
         assertNull(readJourney.getTo());
         assertNull(readJourney.getCapacity());
@@ -36,7 +36,7 @@ public class JourneyTest {
         name = "journey name";
         category = "category";
         categoryCode = "e29w1q03";
-        number = 321;
+        number = "321";
         operator = "OPWER";
         to = "to";
         capacity = new Capacity(10, 2);

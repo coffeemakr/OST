@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 import com.google.common.base.Objects;
 
+import java.util.Arrays;
+
 import ch.unstable.ost.utils.ParcelUtils;
 
 public class Journey implements Parcelable {
@@ -121,11 +123,25 @@ public class Journey implements Parcelable {
                 Objects.equal(operator, journey.operator) &&
                 Objects.equal(to, journey.to) &&
                 Objects.equal(capacity, journey.capacity) &&
-                Objects.equal(passList, journey.passList);
+                Arrays.equals(passList, journey.passList);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(name, category, categoryCode, number, operator, to, capacity, passList);
+    }
+
+    @Override
+    public String toString() {
+        return "Journey{" +
+                "name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", categoryCode='" + categoryCode + '\'' +
+                ", number='" + number + '\'' +
+                ", operator='" + operator + '\'' +
+                ", to='" + to + '\'' +
+                ", capacity=" + capacity +
+                ", passList=" + Arrays.toString(passList) +
+                '}';
     }
 }
