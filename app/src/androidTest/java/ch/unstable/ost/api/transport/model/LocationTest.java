@@ -10,7 +10,7 @@ public class LocationTest {
     @Test
     public void writeToParcel() throws Exception {
         String id = "nuuds";
-        Location.Type type = Location.Type.POI;
+        Location.InternalType type = Location.InternalType.POI;
         String name = "name";
         Coordinates coordinates = new Coordinates(10, 20);
         Location location = new Location(id, type, name, coordinates);

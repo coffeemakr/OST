@@ -33,7 +33,7 @@ public class SectionTest {
     private static Location generateRandomLocation() {
         Random random = new Random();
         String id = "idsaoja" + random.nextInt();
-        Location.Type type = getRandomValue(Location.Type.values());
+        Location.InternalType type = getRandomValue(Location.InternalType.values());
         String name = "name" + random.nextInt();
         Coordinates coordinates = new Coordinates(random.nextDouble(), random.nextDouble());
         return new Location(id, type, name, coordinates);
