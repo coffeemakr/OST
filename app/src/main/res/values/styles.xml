@@ -2,15 +2,17 @@
 
     <style name="GreenDarkTheme" parent="Dark">
         <item name="colorAccent">@color/colorTealAccent</item>
-        <item name="colorPrimary">@color/colorTealPrimary</item>
-        <item name="colorPrimaryDark">@color/colorTealPrimaryDark</item>
+        <item name="colorPrimary">@color/colorTeal500</item>
+        <item name="colorPrimaryDark">@color/colorTeal800</item>
+        <item name="colorButtonInPrimary">@color/colorTeal700</item>
     </style>
 
 
     <style name="GreenLightTheme" parent="Light">
         <item name="colorAccent">@color/colorTealAccent</item>
-        <item name="colorPrimary">@color/colorTealPrimary</item>
-        <item name="colorPrimaryDark">@color/colorTealPrimaryDark</item>
+        <item name="colorPrimary">@color/colorTeal500</item>
+        <item name="colorPrimaryDark">@color/colorTeal800</item>
+        <item name="colorButtonInPrimary">@color/colorTeal300</item>
     </style>
 
     <!--
@@ -33,8 +35,9 @@
 
     <style name="GrayTealTheme" parent="Dark">
         <item name="colorAccent">@color/colorTealAccent</item>
-        <item name="colorPrimary">@color/colorDarkGrayPrimary</item>
-        <item name="colorPrimaryDark">@color/colorDarkGrayPrimaryDark</item>
+        <item name="colorPrimary">@color/colorBlueGray500</item>
+        <item name="colorPrimaryDark">@color/colorBlueGray700</item>
+        <item name="colorButtonInPrimary">@color/colorBlueGray400</item>
     </style>
 
     <style name="Light" parent="Theme.AppCompat.Light.NoActionBar">
@@ -116,5 +119,14 @@
         <item name="lineColor">?attr/colorPrimary</item>
         <item name="circleColor">@android:color/white</item>
         <item name="android:minWidth">16dp</item>
+    </style>
+
+    <style name="HeadButton" parent="Widget.AppCompat.Button">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="HeadButtonTheme" parent="ThemeOverlay.AppCompat">
+        <item name="colorButtonNormal">?attr/colorButtonInPrimary</item>
     </style>
 </resources>

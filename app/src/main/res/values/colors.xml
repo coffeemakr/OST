@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorTealPrimary">#009688</color>
-    <color name="colorTealPrimaryDark">#00695C</color>
-    <color name="colorTealAccent">#64FFDA</color>
+
+    <color name="colorTealAccent">@color/colorTealA400</color>
+
     <color name="colorConnectionLineWaiting">@color/colorTealAccent</color>
     <color name="colorConnectionLineTravelling">@color/colorTealAccent</color>
+
     <color name="colorBackgroundFaded">#616161</color>
 
-    <!-- Grey 500 -->
-    <color name="colorDarkGrayPrimary">#455A64</color>
-    <color name="colorDarkGrayPrimaryDark">#263238</color>
+
+    <!-- Material colors -->
+
+    <!-- Blue Gray -->
+    <color name="colorBlueGray400">#78909C</color>
+    <color name="colorBlueGray500">#607D8B</color>
+    <color name="colorBlueGray700">#455A64</color>
+    <color name="colorBlueGray900">#263238</color>
+
+
+    <!-- Teal -->
+    <color name="colorTeal300">#4DB6AC</color>
+    <color name="colorTeal500">#009688</color>
+    <color name="colorTeal600">#00897B</color>
+    <color name="colorTeal700">#00796B</color>
+    <color name="colorTeal800">#00695C</color>
+    <color name="colorTealA200">#64FFDA</color>
+    <color name="colorTealA400">#1DE9B6</color>
 </resources>

@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,12 +20,13 @@
 
     <Button
         android:id="@+id/fromButton"
-        style="@style/Widget.AppCompat.Button.Small"
+        style="@style/HeadButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="0dp"
         android:text="@string/request_choose_from"
+        android:theme="@style/HeadButtonTheme"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/fromIcon"
         app:layout_constraintRight_toLeftOf="@+id/reverseDirectionButton"
@@ -58,11 +60,12 @@
 
     <Button
         android:id="@+id/toButton"
-        style="@style/Widget.AppCompat.Button.Small"
+        style="@style/HeadButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:text="@string/request_choose_to"
+        android:theme="@style/HeadButtonTheme"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/toIcon"
         app:layout_constraintRight_toLeftOf="@+id/reverseDirectionButton"

@@ -20,6 +20,12 @@
     <attr name="toolbarPopupTheme" format="reference" />
     <attr name="dividerColor" format="reference" />
 
+    <!--
+    Color of the button in ?attr/primaryColor
+    This is used for the navigation buttons in the toolbar
+    -->
+    <attr name="colorButtonInPrimary" format="color" />
+
     <declare-styleable name="StopDotView">
         <attr name="lineColor" format="color" />
         <attr name="lineWidth" format="dimension" />
