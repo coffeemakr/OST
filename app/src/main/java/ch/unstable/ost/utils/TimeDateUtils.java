@@ -1,6 +1,9 @@
 package ch.unstable.ost.utils;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,5 +36,9 @@ public class TimeDateUtils {
         } else {
             return resources.getString(R.string.duration_format_minutes, durationMillies / MINUTES);
         }
+    }
+
+    public static String formatDate(Context context, Date date) {
+        return DateFormat.getDateFormat(context).format(date);
     }
 }

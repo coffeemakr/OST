@@ -7,6 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="ch.unstable.ost.HeadNavigationFragment"
-        tools:layout="@layout/navigation_buttons"
+        tools:layout="@layout/fragment_head_navigation"
         android:id="@+id/head_fragment" />
 </LinearLayout>

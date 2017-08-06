@@ -25,7 +25,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
-
         signingConfig file('../travis-release-key.jks').exists() ? signingConfigs.travisSigningConfig : null
 
     }

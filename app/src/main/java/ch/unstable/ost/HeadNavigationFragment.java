@@ -15,8 +15,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
+import ch.unstable.ost.utils.TimeDateUtils;
 
 
 public class HeadNavigationFragment extends BaseNavigationFragment {
@@ -30,6 +35,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     private Button mToButton;
     private Button mFromButton;
     private ImageButton mReverseDirectionButton;
+    private TextView mTime;
 
     public HeadNavigationFragment() {
         // Required empty public constructor
@@ -74,6 +80,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         mOnButtonClickListener = new OnNavigationButtonsClickListener();
 
@@ -100,7 +107,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.navigation_buttons, container, false);
+        return inflater.inflate(R.layout.fragment_head_navigation, container, false);
     }
 
     @Override
@@ -111,7 +118,10 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         mToButton = (Button) view.findViewById(R.id.toButton);
         mToButton.setText(getToButtonText());
         mReverseDirectionButton = (ImageButton) view.findViewById(R.id.reverseDirectionButton);
-
+        mTime = (TextView) view.findViewById(R.id.timeView);
+        mTime.setText(getTimeString());
+        View timeSettingsContainer = view.findViewById(R.id.timeSettingsContainer);
+        timeSettingsContainer.setOnClickListener(mOnButtonClickListener);
         mFromButton.setOnClickListener(mOnButtonClickListener);
         mToButton.setOnClickListener(mOnButtonClickListener);
         mReverseDirectionButton.setOnClickListener(mOnButtonClickListener);
@@ -142,6 +152,36 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         }
     }
 
+
+    private static boolean isSameDay(Date first, Date second) {
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(first);
+        cal2.setTime(second);
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+
+    }
+
+    private String getTimeString(Date date, @StringRes int sameDayFormat, @StringRes int otherDayFormat) {
+        Date today = new Date();
+        if(isSameDay(today, date)) {
+            return getString(sameDayFormat, TimeDateUtils.formatTime(date));
+        } else {
+            return getString(sameDayFormat, TimeDateUtils.formatTime(date), TimeDateUtils.formatDate(getContext(), date));
+        }
+    }
+
+    private String getTimeString() {
+        Date time;
+        if((time = mConnectionQueryBuilder.getDepartureTime()) != null) {
+            return getTimeString(time, R.string.departure_time_same_day, R.string.departure_time_other_day);
+        } else if((time = mConnectionQueryBuilder.getArrivalTime()) != null) {
+            return getTimeString(time, R.string.arrival_time_same_day, R.string.arrival_time_other_day);
+        } else {
+            return getString(R.string.departure_time_now);
+        }
+    }
 
     private String getToButtonText() {
         String to = mConnectionQueryBuilder.getTo();
@@ -193,6 +233,9 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         setTo(mConnectionQueryBuilder.getTo());
     }
 
+    private void onOpenTimeSettings() {
+        Toast.makeText(getContext(), "Time settings clicked", Toast.LENGTH_LONG).show();
+    }
 
     public class OnNavigationButtonsClickListener implements View.OnClickListener {
         @Override
@@ -206,6 +249,9 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                     break;
                 case R.id.reverseDirectionButton:
                     onReverseDirectionRequested();
+                    break;
+                case R.id.timeSettingsContainer:
+                    onOpenTimeSettings();
                     break;
             }
         }

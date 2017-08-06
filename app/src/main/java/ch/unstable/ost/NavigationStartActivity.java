@@ -2,6 +2,7 @@ package ch.unstable.ost;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +14,10 @@ import ch.unstable.ost.theme.ThemedActivity;
 
 public class NavigationStartActivity extends ThemedActivity
         implements BaseNavigationFragment.OnRouteSelectionListener {
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +31,9 @@ public class NavigationStartActivity extends ThemedActivity
         }
 
 
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+        if (getSupportFragmentManager().findFragmentById(R.id.head_fragment) == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new StandardNavigationFragment())
-                    .addToBackStack(null)
+                    .add(R.id.head_fragment, HeadNavigationFragment.newInstance())
                     .commit();
         }
     }

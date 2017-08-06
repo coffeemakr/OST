@@ -32,25 +32,24 @@ public class ConnectionQuery implements Parcelable {
     private final String to;
     private final String[] via;
     @Nullable
-    private final Date starTime;
+    private final Date departureTime;
+    @Nullable
+    private final Date arrivalTime;
 
     private ConnectionQuery(Builder builder) {
         this.from = builder.from;
         this.to = builder.to;
         this.via = builder.via.toArray(new String[builder.via.size()]);
-        this.starTime = builder.startTime;
+        this.departureTime = builder.departureTime;
+        this.arrivalTime = builder.arrivalTime;
     }
 
     private ConnectionQuery(Parcel in) {
         this.from = in.readString();
         this.to = in.readString();
         this.via = in.createStringArray();
-        long timestamp = in.readLong();
-        if (timestamp > 0) {
-            this.starTime = new Date(in.readLong());
-        } else {
-            this.starTime = null;
-        }
+        this.departureTime = ParcelUtils.readDate(in);
+        this.arrivalTime = ParcelUtils.readDate(in);
     }
 
     @NonNull
@@ -73,11 +72,8 @@ public class ConnectionQuery implements Parcelable {
         out.writeString(from);
         out.writeString(to);
         out.writeStringArray(via);
-        if (starTime != null) {
-            out.writeLong(starTime.getTime());
-        } else {
-            out.writeLong(0);
-        }
+        ParcelUtils.writeDate(out, departureTime);
+        ParcelUtils.writeDate(out, arrivalTime);
     }
 
     public String[] getVia() {
@@ -89,8 +85,8 @@ public class ConnectionQuery implements Parcelable {
     }
 
     @Nullable
-    public Date getStarTime() {
-        return starTime;
+    public Date getDepartureTime() {
+        return departureTime;
     }
 
     @Override
@@ -101,17 +97,22 @@ public class ConnectionQuery implements Parcelable {
         return Objects.equal(from, that.from) &&
                 Objects.equal(to, that.to) &&
                 Objects.equal(via, that.via) &&
-                Objects.equal(starTime, that.starTime);
+                Objects.equal(departureTime, that.departureTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(from, to, via, starTime);
+        return Objects.hashCode(from, to, via, departureTime);
     }
 
 
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder implements Parcelable {
+
+        private static final int RESTRICTION_TYPE_ARRIVAL = 1;
+        private static final int RESTRICTION_TYPE_DEPARTURE = 0;
+
+
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
             @Override
             public Builder createFromParcel(Parcel in) {
@@ -127,7 +128,8 @@ public class ConnectionQuery implements Parcelable {
         private List<String> via = new ArrayList<>();
         private String from = null;
         private String to = null;
-        private Date startTime;
+        private Date departureTime;
+        private Date arrivalTime;
 
         public Builder() {
 
@@ -137,14 +139,16 @@ public class ConnectionQuery implements Parcelable {
             this.via = Arrays.asList(connectionQuery.via);
             this.from = connectionQuery.from;
             this.to = connectionQuery.to;
-            this.startTime = connectionQuery.starTime;
+            this.departureTime = connectionQuery.departureTime;
+            this.arrivalTime = connectionQuery.arrivalTime;
         }
 
         protected Builder(Parcel in) {
             via = in.createStringArrayList();
             from = in.readString();
             to = in.readString();
-            startTime = ParcelUtils.readDate(in);
+            departureTime = ParcelUtils.readDate(in);
+            arrivalTime = ParcelUtils.readDate(in);
         }
 
         @Override
@@ -152,7 +156,8 @@ public class ConnectionQuery implements Parcelable {
             dest.writeStringList(via);
             dest.writeString(from);
             dest.writeString(to);
-            ParcelUtils.writeDate(dest, startTime);
+            ParcelUtils.writeDate(dest, departureTime);
+            ParcelUtils.writeDate(dest, arrivalTime);
         }
 
         @Override
@@ -205,8 +210,15 @@ public class ConnectionQuery implements Parcelable {
             return new ConnectionQuery(this);
         }
 
-        public Builder setStartTime(@Nullable Date startTime) {
-            this.startTime = startTime;
+        public Builder setDepartureTime(@Nullable Date departureTime) {
+            this.departureTime = departureTime;
+            this.arrivalTime = null;
+            return this;
+        }
+
+        public Builder setArrivalTime(@Nullable Date arrivalTime) {
+            this.departureTime = null;
+            this.arrivalTime = arrivalTime;
             return this;
         }
 
@@ -216,6 +228,14 @@ public class ConnectionQuery implements Parcelable {
             from = temp;
             return this;
         }
-    }
 
+        @Nullable
+        public Date getDepartureTime() {
+            return departureTime;
+        }
+
+        public Date getArrivalTime() {
+            return arrivalTime;
+        }
+    }
 }

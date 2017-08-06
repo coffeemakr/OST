@@ -10,4 +10,5 @@
 
     android:theme="?attr/toolbarTheme"
     app:popupTheme="?attr/toolbarPopupTheme"
-    tools:ignore="Overdraw" />
+    tools:ignore="Overdraw"
+    app:layout_scrollFlags="scroll|enterAlways"/>

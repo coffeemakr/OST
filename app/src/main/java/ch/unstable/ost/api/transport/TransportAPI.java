@@ -63,8 +63,8 @@ public class TransportAPI extends BaseHttpJsonAPI implements TimetableDAO {
             }
         }
 
-        if (connectionQuery.getStarTime() != null) {
-            addURLDate(builder, connectionQuery.getStarTime());
+        if (connectionQuery.getDepartureTime() != null) {
+            addURLDate(builder, connectionQuery.getDepartureTime());
         }
         return loadConnections(builder);
     }

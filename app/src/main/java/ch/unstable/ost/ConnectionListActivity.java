@@ -3,6 +3,7 @@ package ch.unstable.ost;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -20,6 +21,10 @@ public class ConnectionListActivity extends ThemedActivity
 
     public static final String EXTRA_QUERY = "EXTRA_QUERY";
     private static final String TAG = "ConnectionListActivity";
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

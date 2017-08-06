@@ -39,4 +39,9 @@
     <string name="duration_format_days">%1$dd %2$dh %3$02d\'</string>
     <string name="duration_format_hours">%1$dh %2$02d\'</string>
     <string name="duration_format_minutes">%1$d\'</string>
+    <string name="arrival_time_other_day">Ankunft am %2$s um %1$s Uhr</string>
+    <string name="arrival_time_same_day">Ankunft um %1$s Uhr</string>
+    <string name="departure_time_now">Jetzt</string>
+    <string name="departure_time_other_day">Abfahrt am %2$s um %1$s Uhr</string>
+    <string name="departure_time_same_day">Abfahrt um %1$s Uhr</string>
 </resources>

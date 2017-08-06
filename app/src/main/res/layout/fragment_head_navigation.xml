@@ -24,13 +24,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="0dp"
         android:text="@string/request_choose_from"
         android:theme="@style/HeadButtonTheme"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/fromIcon"
         app:layout_constraintRight_toLeftOf="@+id/reverseDirectionButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp" />
 
     <ImageButton
         android:id="@+id/reverseDirectionButton"
@@ -44,8 +44,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/toButton"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/fromButton"
-        app:srcCompat="?attr/ic_swap_vert_24dp"
-        android:layout_marginRight="0dp" />
+        app:srcCompat="?attr/ic_swap_vert_24dp" />
 
     <ImageView
         android:id="@+id/toIcon"
@@ -69,17 +68,45 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/toIcon"
         app:layout_constraintRight_toLeftOf="@+id/reverseDirectionButton"
-        app:layout_constraintTop_toBottomOf="@+id/fromButton" />
+        app:layout_constraintTop_toBottomOf="@+id/fromButton"
+        android:layout_marginStart="8dp" />
 
     <ImageView
         android:id="@+id/fromToConnectorIcon"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         app:layout_constraintBottom_toTopOf="@+id/toIcon"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fromIcon"
         app:srcCompat="?attr/ic_dots_vert_24dp"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        android:layout_marginStart="8dp" />
+
+    <LinearLayout
+        android:id="@+id/timeSettingsContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:background="?colorPrimaryDark"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toButton">
+
+        <ImageView
+            android:id="@+id/timeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="?attr/ic_tune_24dp_no_vector" />
+
+        <TextView
+            android:id="@+id/timeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Departure 11:23" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
