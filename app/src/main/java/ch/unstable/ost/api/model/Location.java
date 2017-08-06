@@ -15,7 +15,7 @@ public interface Location extends Parcelable {
     StationType getType();
 
     enum StationType {
-        TRAIN(1), BUS(2), POI(4), ADDRESS(8), UNKNOWN(16);
+        TRAIN(1), BUS(2), TRAM(4), POI(8), ADDRESS(16), UNKNOWN(32);
 
         public final int bit;
 

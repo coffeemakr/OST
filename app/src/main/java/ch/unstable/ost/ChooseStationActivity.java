@@ -36,6 +36,10 @@ public class ChooseStationActivity extends ThemedActivity {
     public static final String EXTRA_CHOOSE_PROMPT = "EXTRA_CHOOSE_PROMPT";
     public static final String EXTRA_RESULT_STATION_NAME = "EXTRA_RESULT_STATION_NAME";
     public static final String EXTRA_RESULT_STATION_ID = "EXTRA_RESULT_STATION_ID";
+    public static final Location.StationType[] STATION_TYPES = {
+            Location.StationType.BUS,
+            Location.StationType.TRAIN,
+            Location.StationType.TRAM};
     private static final int MESSAGE_QUERY_LOCATIONS = 1;
     private static final int MESSAGE_UI_SET_LOCATIONS = 2;
     //private TransportAPI transportAPI = new TransportAPI();
@@ -84,9 +88,9 @@ public class ChooseStationActivity extends ThemedActivity {
         mStationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String location = v.getText().toString();
-                    if(location.isEmpty()) {
+                    if (location.isEmpty()) {
                         return false;
                     }
                     onLocationSelected(location);
@@ -192,7 +196,7 @@ public class ChooseStationActivity extends ThemedActivity {
         private void handleLocationQuery(String query) {
             Location[] locationList;
             try {
-                locationList = timetableDAO.getStationsByQuery(query, new Location.StationType[]{Location.StationType.BUS, Location.StationType.TRAIN});
+                locationList = timetableDAO.getStationsByQuery(query, STATION_TYPES);
             } catch (TransportAPI.TooManyRequestsException e) {
                 Message message = mBackgroundHandler.obtainMessage(MESSAGE_QUERY_LOCATIONS, query);
                 mBackgroundHandler.sendMessageDelayed(message, 300);

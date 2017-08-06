@@ -20,12 +20,12 @@ import static android.support.v7.widget.RecyclerView.NO_POSITION;
 class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHolder> {
 
     private final Handler mHandler;
-    private final
     @DrawableRes
-    int trainIcon;
-    private final
+    private final int trainIcon;
     @DrawableRes
-    int busIcon;
+    private final int busIcon;
+    @DrawableRes
+    private final int tramIcon;
     private Location[] mLocations = new Location[0];
     @Nullable
     private OnStationClickListener mOnStationClickListener;
@@ -48,12 +48,14 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
             }
         }
     };
+
+
     @MainThread
     public StationListAdapter(Context context) {
         mHandler = new Handler();
         trainIcon = ThemeHelper.getThemedDrawable(context, R.attr.ic_direction_railway_24dp);
         busIcon = ThemeHelper.getThemedDrawable(context, R.attr.ic_directions_bus_24dp);
-
+        tramIcon = ThemeHelper.getThemedDrawable(context, R.attr.ic_direction_tram_24dp);
     }
 
     @Override
@@ -75,6 +77,9 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
                 break;
             case BUS:
                 holder.transportationIcon.setImageResource(busIcon);
+                break;
+            case TRAM:
+                holder.transportationIcon.setImageResource(tramIcon);
                 break;
             case POI:
             case ADDRESS:

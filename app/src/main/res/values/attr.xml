@@ -12,6 +12,7 @@
     <attr name="ic_swap_vert_24dp" format="reference"/>
     <attr name="ic_target_24dp" format="reference"/>
     <attr name="ic_direction_railway_24dp" format="reference"/>
+    <attr name="ic_direction_tram_24dp" format="reference"/>
     <attr name="ic_send_24dp" format="reference" />
 
 
