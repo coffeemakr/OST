@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +22,7 @@ import ch.unstable.ost.utils.TimeDateUtils;
 import ch.unstable.ost.views.ConnectionLineView;
 
 
-public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAdapter.ViewHolder> {
+public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAdapter.ConnectionViewHolder> {
     public static final String TAG = "ConnectionListAdapter";
     private final List<Connection> mConnections = new ArrayList<>();
     private final View.OnClickListener mOnViewHolderClickListener = new OnViewHolderClickListener();
@@ -60,14 +59,14 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
     }
 
     @Override
-    public ConnectionListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ConnectionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_connection, parent, false);
-        return new ViewHolder(view);
+        return new ConnectionViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ConnectionListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ConnectionViewHolder holder, int position) {
         Connection connection = mConnections.get(position);
         Section[] sections = connection.getSections();
         if (sections.length > 0) {
@@ -86,6 +85,10 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         }
 
 
+        String duration = TimeDateUtils.formatDuration(holder.itemView.getResources(),
+                connection.getFrom().getDepartureTime(),
+                connection.getTo().getArrival());
+        holder.duration.setText(duration);
         holder.startTime.setText(TimeDateUtils.formatTime(connection.getFrom().getDepartureTime()));
         holder.endTime.setText(TimeDateUtils.formatTime(connection.getTo().getArrival()));
 
@@ -97,7 +100,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
     }
 
     @Override
-    public void onViewRecycled(ViewHolder holder) {
+    public void onViewRecycled(ConnectionViewHolder holder) {
         super.onViewRecycled(holder);
         holder.itemView.setTag(null);
         holder.itemView.setOnClickListener(null);
@@ -123,20 +126,22 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         void onConnectionClicked(Connection connection);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ConnectionViewHolder extends RecyclerView.ViewHolder {
         private final TextView startTime;
         private final TextView endTime;
         private final TextView firstEndDestination;
         private final ConnectionLineView connectionLineView;
         private final TextView firstTransportName;
+        private final TextView duration;
 
-        public ViewHolder(View itemView) {
+        public ConnectionViewHolder(View itemView) {
             super(itemView);
             startTime = (TextView) itemView.findViewById(R.id.startTime);
             endTime = (TextView) itemView.findViewById(R.id.endTime);
             firstEndDestination = (TextView) itemView.findViewById(R.id.firstSectionEndDestination);
             connectionLineView = (ConnectionLineView) itemView.findViewById(R.id.connectionLineView);
             firstTransportName = (TextView) itemView.findViewById(R.id.firstTransportName);
+            duration = (TextView) itemView.findViewById(R.id.duration);
         }
     }
 
@@ -146,10 +151,14 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
 
         @Override
         public void onClick(View v) {
-            ViewHolder viewHolder = (ViewHolder) v.getTag();
+            ConnectionViewHolder connectionViewHolder = (ConnectionViewHolder) v.getTag();
+            int position = connectionViewHolder.getAdapterPosition();
+            if(position == RecyclerView.NO_POSITION) {
+                return;
+            }
             Connection connection;
             try {
-                connection = mConnections.get(viewHolder.getAdapterPosition());
+                connection = mConnections.get(position);
             } catch (RuntimeException e) {
                 Log.e(TAG, "Failed to get connection", e);
                 return;
