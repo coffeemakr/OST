@@ -36,4 +36,7 @@
     <string name="theme_dark_gray_green_name">Dunkelgrau mit Grün</string>
     <string name="theme_dark_green_name">Dunkel mit Grün</string>
     <string name="theme_light_green_name">Hell mit Grün</string>
+    <string name="duration_format_days">%1$dd %2$dh %3$02d\'</string>
+    <string name="duration_format_hours">%1$dh %2$02d\'</string>
+    <string name="duration_format_minutes">%1$d\'</string>
 </resources>
