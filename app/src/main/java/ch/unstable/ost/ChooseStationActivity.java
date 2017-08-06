@@ -12,12 +12,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -78,7 +81,20 @@ public class ChooseStationActivity extends ThemedActivity {
         mSuggestionTextWatcher = new SuggestionTextWatcher(mBackgroundHandler);
         mStationEditText = (EditText) findViewById(R.id.stationName);
         mStationEditText.addTextChangedListener(mSuggestionTextWatcher);
-
+        mStationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String location = v.getText().toString();
+                    if(location.isEmpty()) {
+                        return false;
+                    }
+                    onLocationSelected(location);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         ImageButton clearInputButton = (ImageButton) findViewById(R.id.clearInputButton);
         clearInputButton.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +103,15 @@ public class ChooseStationActivity extends ThemedActivity {
                 mStationEditText.setText(null);
             }
         });
+    }
+
+    private void onLocationSelected(String location) {
+        Intent resultData = new Intent();
+        resultData.putExtra(EXTRA_RESULT_STATION_NAME, location);
+        resultData.putExtra(EXTRA_RESULT_STATION_ID, location);
+        setResult(Activity.RESULT_OK, resultData);
+        finish();
+
     }
 
     private void onLocationSelected(Location location) {

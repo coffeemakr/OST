@@ -34,8 +34,12 @@
 
                 <EditText
                     android:id="@+id/stationName"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionSearch"
                     android:hint="@string/request_choose_station" />
             </android.support.design.widget.TextInputLayout>
 
