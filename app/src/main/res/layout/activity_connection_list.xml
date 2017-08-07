@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context="ch.unstable.ost.ConnectionListActivity">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="ch.unstable.ost.NavigationStartActivity">
 
-    <include layout="@layout/default_toolbar" />
+
     <fragment
         android:id="@+id/head_fragment"
         android:name="ch.unstable.ost.HeadNavigationFragment"
@@ -14,8 +15,16 @@
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_head_navigation" />
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -22,7 +22,7 @@ public class NavigationStartActivity extends ThemedActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation_start);
+        setContentView(R.layout.activity_connection_list);
 
         if (getSupportActionBar() == null) {
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
