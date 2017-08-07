@@ -21,9 +21,9 @@ import java.util.Date;
 import ch.unstable.ost.utils.TimeDateUtils;
 
 
-public class TimePickerFragment extends AlertDialog implements DialogInterface.OnClickListener {
+public class TimePickerDialog extends AlertDialog implements DialogInterface.OnClickListener {
 
-    private static final String TAG = "TimePickerFragment";
+    private static final String TAG = TimePickerDialog.class.getSimpleName();
     @Nullable
     private final OnTimeSelected mOnTimeSelectedListener;
     private final TimeRestrictionType mDefaultTimeRestrictionType;
@@ -46,16 +46,16 @@ public class TimePickerFragment extends AlertDialog implements DialogInterface.O
     };
     private TabLayout arrivalDepartureSwitcher;
 
-    public TimePickerFragment(@NonNull Context context, TimeRestrictionType timeRestrictionType, @Nullable Date date, @Nullable OnTimeSelected onTimeSelectedListener) {
+    public TimePickerDialog(@NonNull Context context, TimeRestrictionType timeRestrictionType, @Nullable Date date, @Nullable OnTimeSelected onTimeSelectedListener) {
         this(context, 0, timeRestrictionType, date, onTimeSelectedListener);
     }
 
-    public TimePickerFragment(@NonNull Context context, int themeResId, TimeRestrictionType timeRestrictionType, @Nullable Date date, @Nullable OnTimeSelected onTimeSelectedListener) {
+    public TimePickerDialog(@NonNull Context context, int themeResId, TimeRestrictionType timeRestrictionType, @Nullable Date date, @Nullable OnTimeSelected onTimeSelectedListener) {
         super(context, themeResId);
 
         final Context themeContext = getContext();
         final LayoutInflater inflater = LayoutInflater.from(themeContext);
-        final View view = inflater.inflate(R.layout.fragment_time_picker, null);
+        final View view = inflater.inflate(R.layout.dialog_time_picker, null);
         setView(view);
         setButton(BUTTON_POSITIVE, themeContext.getString(android.R.string.ok), this);
         setButton(BUTTON_NEGATIVE, themeContext.getString(android.R.string.cancel), this);
@@ -95,6 +95,7 @@ public class TimePickerFragment extends AlertDialog implements DialogInterface.O
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(23);
         hourPicker.setValue(calendar.get(Calendar.HOUR_OF_DAY));
+
         minutePicker = (NumberPicker) view.findViewById(R.id.minutePicker);
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(59);

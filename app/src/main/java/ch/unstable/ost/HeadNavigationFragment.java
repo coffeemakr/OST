@@ -15,7 +15,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -236,13 +235,13 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     private void onOpenTimeSettings() {
 
         Date date = mConnectionQueryBuilder.getDepartureTime();
-        TimePickerFragment.TimeRestrictionType restrictionType = TimePickerFragment.TimeRestrictionType.DEPARTURE;
+        TimePickerDialog.TimeRestrictionType restrictionType = TimePickerDialog.TimeRestrictionType.DEPARTURE;
         if(date == null && mConnectionQueryBuilder.getArrivalTime() != null) {
-            restrictionType = TimePickerFragment.TimeRestrictionType.ARRIVAL;
+            restrictionType = TimePickerDialog.TimeRestrictionType.ARRIVAL;
             date = mConnectionQueryBuilder.getArrivalTime();
         }
 
-        TimePickerFragment timePickerFragment = new TimePickerFragment(getContext(), restrictionType, date, new TimePickerFragment.OnTimeSelected() {
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), restrictionType, date, new TimePickerDialog.OnTimeSelected() {
             @Override
             public void onArrivalTimeSelected(@NonNull Date date) {
                 mConnectionQueryBuilder.setArrivalTime(date);
@@ -257,7 +256,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                 onQueryChanged();
             }
         });
-        timePickerFragment.show();
+        timePickerDialog.show();
     }
 
     public class OnNavigationButtonsClickListener implements View.OnClickListener {
