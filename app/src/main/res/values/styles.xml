@@ -56,6 +56,7 @@
         <item name="ic_direction_tram_24dp">@drawable/ic_directions_tram_black_24dp</item>
         <item name="ic_send_24dp">@drawable/ic_send_black_24dp</item>
         <item name="ic_tune_24dp_no_vector">@drawable/ic_tune_black_24dp_no_vector</item>
+        <item name="ic_restore_24dp">@drawable/ic_restore_black_24dp</item>
         <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -83,6 +84,7 @@
         <item name="ic_direction_tram_24dp">@drawable/ic_directions_tram_white_24dp</item>
         <item name="ic_send_24dp">@drawable/ic_send_white_24dp</item>
         <item name="ic_tune_24dp_no_vector">@drawable/ic_tune_white_24dp_no_vector</item>
+        <item name="ic_restore_24dp">@drawable/ic_restore_white_24dp</item>
         <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item> <!-- AppBarOverlay -->
         <!-- @style/GreenDarkTheme.PopupOverlay -->

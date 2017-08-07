@@ -29,7 +29,8 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     private static final int REQUEST_CODE_CHOOSE_TO = 1;
     private static final int REQUEST_CODE_CHOOSE_FROM = 2;
-    private static final String KEY_QUERYBUILDER = "KEY_QUERY";
+    private static final int REQUEST_CODE_TIME_PICKER = 3;
+    private static final String KEY_QUERYBUILDER = "KEY_QUERYBUILDER";
     private View.OnClickListener mOnButtonClickListener;
     private ConnectionQuery.Builder mConnectionQueryBuilder;
     private Button mToButton;
@@ -148,6 +149,17 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
                     setTo(name);
                     break;
+                case REQUEST_CODE_TIME_PICKER:
+                    long arrivalTime = data.getLongExtra(TimePickerFragment.EXTRA_RESULT_ARRIVAL_TIME, 0);
+                    long departureTime = data.getLongExtra(TimePickerFragment.EXTRA_RESULT_DEPARTURE_TIME, 0);
+                    if(arrivalTime > 0) {
+                        mConnectionQueryBuilder.setArrivalTime(new Date(arrivalTime));
+                    } else if(departureTime > 0){
+                        mConnectionQueryBuilder.setDepartureTime(new Date(departureTime));
+                    } else {
+                        mConnectionQueryBuilder.setDepartureTime(null);
+                    }
+                    mTime.setText(getTimeString());
             }
         }
     }
@@ -168,7 +180,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         if(isSameDay(today, date)) {
             return getString(sameDayFormat, TimeDateUtils.formatTime(date));
         } else {
-            return getString(sameDayFormat, TimeDateUtils.formatTime(date), TimeDateUtils.formatDate(getContext(), date));
+            return getString(otherDayFormat, TimeDateUtils.formatTime(date), TimeDateUtils.formatDate(getContext(), date));
         }
     }
 
@@ -235,6 +247,13 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     private void onOpenTimeSettings() {
         Toast.makeText(getContext(), "Time settings clicked", Toast.LENGTH_LONG).show();
+        Date date = mConnectionQueryBuilder.getDepartureTime();
+        if(date == null)  {
+            date = new Date();
+        }
+        TimePickerFragment timePickerFragment = TimePickerFragment.newInstance(date);
+        timePickerFragment.setTargetFragment(this, REQUEST_CODE_TIME_PICKER);
+        timePickerFragment.show(getFragmentManager(), "dialog");
     }
 
     public class OnNavigationButtonsClickListener implements View.OnClickListener {
