@@ -247,12 +247,14 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
             public void onArrivalTimeSelected(@NonNull Date date) {
                 mConnectionQueryBuilder.setArrivalTime(date);
                 mTime.setText(getTimeString());
+                onQueryChanged();
             }
 
             @Override
             public void onDepartureTimeSelected(@NonNull Date date) {
                 mConnectionQueryBuilder.setDepartureTime(date);
                 mTime.setText(getTimeString());
+                onQueryChanged();
             }
         });
         timePickerFragment.show();
