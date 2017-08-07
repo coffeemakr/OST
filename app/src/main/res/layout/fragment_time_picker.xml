@@ -5,19 +5,17 @@
     android:layout_height="wrap_content"
     tools:context="ch.unstable.ost.TimePickerFragment">
 
-
-
     <NumberPicker
         android:id="@+id/minutePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="64dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintLeft_toRightOf="@+id/hourPicker"
         app:layout_constraintStart_toEndOf="@+id/hourPicker"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/arrivalDepartureSwitcher" />
 
 
@@ -25,12 +23,12 @@
         android:id="@+id/hourPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/minutePicker"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteX="120dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/arrivalDepartureSwitcher" />
+        app:layout_constraintTop_toBottomOf="@+id/arrivalDepartureSwitcher"
+        tools:layout_editor_absoluteX="120dp" />
 
 
     <Button
@@ -38,14 +36,18 @@
         style="@style/Widget.AppCompat.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/minutePicker"
         app:layout_constraintStart_toStartOf="@+id/hourPicker"
         app:layout_constraintTop_toBottomOf="@+id/hourPicker"
-        tools:text="17.8.2017"
-        tools:layout_editor_absoluteX="92dp" />
+        tools:layout_editor_absoluteX="92dp"
+        tools:text="17.8.2017" />
 
     <ImageView
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="8dp"
         android:id="@+id/resetTimeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,12 +64,12 @@
         android:id="@+id/arrivalDepartureSwitcher"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent">
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
