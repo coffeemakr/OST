@@ -1,17 +1,16 @@
 package ch.unstable.ost;
 
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.text.format.DateFormat;
+import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
@@ -22,68 +21,54 @@ import java.util.Date;
 import ch.unstable.ost.utils.TimeDateUtils;
 
 
-public class TimePickerFragment extends DialogFragment {
+public class TimePickerFragment extends AlertDialog implements DialogInterface.OnClickListener {
 
-    public static final String EXTRA_RESULT_ARRIVAL_TIME = "TimePickerFragment.EXTRA_RESULT_ARRIVAL_TIME";
-    public static final String EXTRA_RESULT_DEPARTURE_TIME = "TimePickerFragment.EXTRA_RESULT_DEPARTURE_TIME";
     private static final String TAG = "TimePickerFragment";
-    private static final String KEY_TIME = "TimePickerFragment.KEY_TIME";
+    @Nullable
+    private final OnTimeSelected mOnTimeSelectedListener;
+    private final TimeRestrictionType mDefaultTimeRestrictionType;
     private NumberPicker hourPicker;
     private NumberPicker minutePicker;
     private Calendar calendar;
     private Button dateButton;
-
-
-    public static TimePickerFragment newInstance(Date date) {
-        Bundle bundle = new Bundle();
-        bundle.putLong(KEY_TIME, date.getTime());
-        TimePickerFragment timePickerFragment = new TimePickerFragment();
-        timePickerFragment.setArguments(bundle);
-        return timePickerFragment;
-    }
-
-
-    public TimePickerFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, 0);
-
-        Date date = null;
-        if(savedInstanceState != null) {
-            long dateTime = savedInstanceState.getLong(KEY_TIME, -1);
-            if(dateTime > 0) {
-                date = new Date(dateTime);
-            }
-        } else if(getArguments() != null){
-            long dateTime = getArguments().getLong(KEY_TIME, -1);
-            if(dateTime > 0) {
-                date = new Date(dateTime);
+    private final View.OnClickListener mOnclickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.dateButton:
+                    showDateDialog();
+                    break;
+                case R.id.resetTimeButton:
+                    onResetTime();
+                    break;
             }
         }
+    };
+    private TabLayout arrivalDepartureSwitcher;
 
+    public TimePickerFragment(@NonNull Context context, TimeRestrictionType timeRestrictionType, @Nullable Date date, @Nullable OnTimeSelected onTimeSelectedListener) {
+        this(context, 0, timeRestrictionType, date, onTimeSelectedListener);
+    }
+
+    public TimePickerFragment(@NonNull Context context, int themeResId, TimeRestrictionType timeRestrictionType, @Nullable Date date, @Nullable OnTimeSelected onTimeSelectedListener) {
+        super(context, themeResId);
+
+        final Context themeContext = getContext();
+        final LayoutInflater inflater = LayoutInflater.from(themeContext);
+        final View view = inflater.inflate(R.layout.fragment_time_picker, null);
+        setView(view);
+        setButton(BUTTON_POSITIVE, themeContext.getString(android.R.string.ok), this);
+        setButton(BUTTON_NEGATIVE, themeContext.getString(android.R.string.cancel), this);
+
+        this.mOnTimeSelectedListener = onTimeSelectedListener;
         calendar = Calendar.getInstance();
-        if(date != null) {
+        if (date != null) {
             calendar.setTime(date);
         } else {
             calendar.setTimeInMillis(System.currentTimeMillis());
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putLong(KEY_TIME, calendar.getTimeInMillis());
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_time_picker, container, false);
+        mDefaultTimeRestrictionType = timeRestrictionType;
+        onViewCreated(view);
     }
 
     private void updateDateView() {
@@ -91,9 +76,18 @@ public class TimePickerFragment extends DialogFragment {
         dateButton.setText(date);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+
+    private void onViewCreated(View view) {
+
+        arrivalDepartureSwitcher = (TabLayout) view.findViewById(R.id.arrivalDepartureSwitcher);
+        switch (mDefaultTimeRestrictionType) {
+            case DEPARTURE:
+                arrivalDepartureSwitcher.getTabAt(0).select();
+                break;
+            case ARRIVAL:
+                arrivalDepartureSwitcher.getTabAt(1).select();
+                break;
+        }
         dateButton = (Button) view.findViewById(R.id.dateButton);
         dateButton.setOnClickListener(mOnclickListener);
         updateDateView();
@@ -109,9 +103,6 @@ public class TimePickerFragment extends DialogFragment {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 calendar.set(Calendar.MINUTE, newVal);
-                if(BuildConfig.DEBUG) {
-                    Log.d(TAG, "Minute changed: " + DateFormat.getDateFormat(getContext()).format(calendar.getTime()));
-                }
             }
         });
 
@@ -119,42 +110,11 @@ public class TimePickerFragment extends DialogFragment {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 calendar.set(Calendar.HOUR_OF_DAY, newVal);
-                if(BuildConfig.DEBUG) {
-                    Log.d(TAG, "Hour changed: " + DateFormat.getDateFormat(getContext()).format(calendar.getTime()));
-                }
             }
         });
-        Button okButton = (Button) view.findViewById(R.id.okButton);
-        Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
         View resetTimeButton = view.findViewById(R.id.resetTimeButton);
-        okButton.setOnClickListener(mOnclickListener);
-        cancelButton.setOnClickListener(mOnclickListener);
         resetTimeButton.setOnClickListener(mOnclickListener);
     }
-
-    private final View.OnClickListener mOnclickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.okButton:
-                    Intent intent = new Intent();
-                    intent.putExtra(EXTRA_RESULT_DEPARTURE_TIME, calendar.getTime().getTime());
-                    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-                    dismiss();
-                    break;
-                case R.id.cancelButton:
-                    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_CANCELED, new Intent());
-                    dismiss();
-                    break;
-                case R.id.dateButton:
-                    showDateDialog();
-                    break;
-                case R.id.resetTimeButton:
-                    onResetTime();
-                    break;
-            }
-        }
-    };
 
     private void onResetTime() {
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -176,5 +136,39 @@ public class TimePickerFragment extends DialogFragment {
                 updateDateView();
             }
         }, year, month, day).show();
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case BUTTON_POSITIVE:
+                int selectedTab = arrivalDepartureSwitcher.getSelectedTabPosition();
+                if (mOnTimeSelectedListener != null) {
+                    switch (selectedTab) {
+                        case 0:
+                            mOnTimeSelectedListener.onDepartureTimeSelected(calendar.getTime());
+                            break;
+                        case 1:
+                            mOnTimeSelectedListener.onArrivalTimeSelected(calendar.getTime());
+                            break;
+                        default:
+                            Log.e(TAG, "Invalid or no arrival/departure tab selected: " + selectedTab);
+                    }
+                }
+                break;
+            case BUTTON_NEGATIVE:
+                cancel();
+                break;
+        }
+    }
+
+    public enum TimeRestrictionType {
+        DEPARTURE, ARRIVAL;
+    }
+
+    public interface OnTimeSelected {
+        void onArrivalTimeSelected(@NonNull Date date);
+
+        void onDepartureTimeSelected(@NonNull Date date);
     }
 }
