@@ -12,14 +12,18 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -42,6 +46,9 @@ public class ChooseStationActivity extends ThemedActivity {
             Location.StationType.TRAM};
     private static final int MESSAGE_QUERY_LOCATIONS = 1;
     private static final int MESSAGE_UI_SET_LOCATIONS = 2;
+    private static final int MESSAGE_ERROR = 3;
+    private static final String TAG = ChooseStationActivity.class.getSimpleName();
+    private static final int MESSAGE_LOADING_STARTED = 4;
     //private TransportAPI transportAPI = new TransportAPI();
     private final TimetableDAO timetableDAO = new SearchAPI();
     private EditText mStationEditText;
@@ -50,6 +57,7 @@ public class ChooseStationActivity extends ThemedActivity {
     private Handler mBackgroundHandler;
     private Handler mUIHandler;
     private StationListAdapter mLocationResultAdapter;
+    private ProgressBar mProgressBar;
 
 
     @Override
@@ -73,6 +81,11 @@ public class ChooseStationActivity extends ThemedActivity {
                 onLocationSelected(location);
             }
         });
+
+
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar.setIndeterminate(true);
+
         RecyclerView searchedStationView = (RecyclerView) findViewById(R.id.searchedStationView);
         searchedStationView.setAdapter(mLocationResultAdapter);
         searchedStationView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -177,23 +190,60 @@ public class ChooseStationActivity extends ThemedActivity {
         }
     }
 
-    private class UIHandlerCallback implements Handler.Callback {
+    private void showProgressBar() {
+        final Animation currentAnimation = mProgressBar.getAnimation();
+        if(currentAnimation != null) {
+            currentAnimation.cancel();
+        }
+        if(mProgressBar.getVisibility() != View.VISIBLE) {
+            mProgressBar.setAlpha(0);
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+        mProgressBar.animate()
+                .setDuration(500)
+                .alpha(1f)
+                .start();
+    }
 
+    private void hideProgressBar() {
+        final Animation currentAnimation = mProgressBar.getAnimation();
+        if(currentAnimation != null) {
+            currentAnimation.cancel();
+        }
+
+        if(mProgressBar.getAlpha() == 0f || mProgressBar.getVisibility() != View.VISIBLE) {
+            return;
+        }
+        mProgressBar.animate()
+                .setDuration(500)
+                .alpha(0f)
+                .start();
+    }
+
+    private class UIHandlerCallback implements Handler.Callback {
         @Override
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_UI_SET_LOCATIONS:
+                    hideProgressBar();
                     mLocationResultAdapter.setLocations((Location[]) msg.obj);
                     return true;
+                case MESSAGE_ERROR:
+                    // TODO: show error message
+                    hideProgressBar();
+                    return true;
+                case MESSAGE_LOADING_STARTED:
+                    showProgressBar();
+                    return true;
+
             }
             return false;
         }
     }
 
     private class BackgroundHandlerCallback implements Handler.Callback {
-
-
         private void handleLocationQuery(String query) {
+            mUIHandler.sendEmptyMessage(MESSAGE_LOADING_STARTED);
             Location[] locationList;
             try {
                 locationList = timetableDAO.getStationsByQuery(query, STATION_TYPES);
@@ -202,8 +252,8 @@ public class ChooseStationActivity extends ThemedActivity {
                 mBackgroundHandler.sendMessageDelayed(message, 300);
                 return;
             } catch (IOException e) {
-                // TODO: error handling
-                e.printStackTrace();
+                mUIHandler.sendEmptyMessage(MESSAGE_ERROR);
+                Log.e(TAG, "Failed to get suggestions", e);
                 return;
             }
             Message message = mUIHandler.obtainMessage(MESSAGE_UI_SET_LOCATIONS, locationList);

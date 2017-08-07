@@ -34,13 +34,13 @@
 
                 <EditText
                     android:id="@+id/stationName"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:singleLine="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/request_choose_station"
                     android:imeOptions="actionSearch"
-                    android:hint="@string/request_choose_station" />
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <ImageButton
@@ -53,9 +53,14 @@
                 android:padding="8dp"
                 app:srcCompat="?attr/ic_clear_24dp" />
         </LinearLayout>
-
-
     </android.support.v7.widget.Toolbar>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/searchedStationView"
