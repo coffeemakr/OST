@@ -2,3 +2,10 @@
 An Open Swiss Transport (OST) android app.
 
 [![Build Status](https://travis-ci.org/coffeemakr/OST.svg?branch=master)](https://travis-ci.org/coffeemakr/OST)
+
+## Values
+
+ * **Offline friendly**: 
+    Let the user store connections offline to use them en route without internet.
+ * **Privacy-enhanced**: 
+    Don't send tracking information unnecesary information to tracking servers. Also send all requests encrypted.
