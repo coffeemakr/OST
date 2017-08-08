@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.AttrRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StyleRes;
+import android.util.Log;
 import android.util.TypedValue;
 
 import ch.unstable.ost.R;
@@ -15,12 +16,17 @@ import ch.unstable.ost.preference.PreferenceKeys;
 
 public class ThemeHelper {
 
+    private static final String TAG = "ThemeHelper";
+
+    @StyleRes
+    private static final int DEFAULT_THEME = R.style.GreenDarkTheme;
+
     public static void setTheme(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String currentTheme = preferences.getString(PreferenceKeys.KEY_THEME, null);
         int style;
         if(currentTheme == null) {
-            style = R.style.GreenDarkTheme;
+            style = DEFAULT_THEME;
         } else {
             style = getThemeStyle(context.getResources(), currentTheme);
         }
@@ -46,7 +52,8 @@ public class ThemeHelper {
         }
         styles.recycle();
         if (styleRes == 0) {
-            throw new IllegalStateException("style not found (currentTheme: " + currentTheme + ")");
+            Log.e(TAG, "style not found (currentTheme: " + currentTheme + ")");
+            return DEFAULT_THEME;
         }
         return styleRes;
     }

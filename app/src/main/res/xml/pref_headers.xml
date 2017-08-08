@@ -2,6 +2,13 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
     <header
         android:fragment="ch.unstable.ost.preference.AppearanceSettingsFragment"
+        android:icon="?attr/ic_color_lens_24dp_no_vector"
         android:title="@string/prefs_category_appearance"
         android:summary="@string/prefs_summ_appearance" />
+
+    <header
+        android:fragment="ch.unstable.ost.preference.ContentSettingsFragment"
+        android:title="@string/prefs_category_content">
+
+    </header>
 </preference-headers>

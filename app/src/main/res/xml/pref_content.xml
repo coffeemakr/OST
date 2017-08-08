@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ListPreference
+        android:title="@string/pref_station_dao_factory_title"
+        android:summary="@string/pref_station_dao_factory_summary"
+        android:key="pref_station_dao"
+        android:defaultValue="@string/prefs_station_dao_factory_default"
+        android:entryValues="@array/prefs_station_dao_factory_values"
+        android:entries="@array/prefs_station_dao_factory_names">
+    </ListPreference>
+</PreferenceScreen>

@@ -46,4 +46,6 @@
     <string name="departure_time_same_day">Abfahrt um %1$s Uhr</string>
     <string name="time_restriction_arrival">Ankunft</string>
     <string name="time_restriction_departure">Abfahrt</string>
+    <string name="prefs_category_content">Inhalt</string>
+    <string name="station_dao_offline">Offline</string>
 </resources>

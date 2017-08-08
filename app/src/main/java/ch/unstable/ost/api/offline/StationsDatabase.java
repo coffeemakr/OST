@@ -9,7 +9,7 @@ import ch.unstable.ost.api.offline.model.LocationEntityFTS;
 
 @TypeConverters(value = {StationTypeConverter.class})
 @Database(entities = {LocationEntity.class, LocationEntityFTS.class}, version = 1)
-public abstract class StationsDatabase extends RoomDatabase{
+public abstract class StationsDatabase extends RoomDatabase {
 
     public abstract OfflineStationsDAO getStationsDAO();
 }

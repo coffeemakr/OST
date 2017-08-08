@@ -24,6 +24,16 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keepclassmembers class ch.unstable.ost.api.offline.StationsDAOFactory {
+    pubic *;
+}
+-keepclassmembers class ch.unstable.ost.api.search.StationsDAOFactory {
+    pubic *;
+}
+-keepclassmembers class ch.unstable.ost.api.transport.StationsDAOFactory {
+    pubic *;
+}
+
 -dontobfuscate
 
 

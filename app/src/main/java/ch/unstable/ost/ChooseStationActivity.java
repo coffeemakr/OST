@@ -35,6 +35,7 @@ import ch.unstable.ost.api.search.SearchAPI;
 import ch.unstable.ost.api.transport.TransportAPI;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.preference.SettingsActivity;
+import ch.unstable.ost.preference.StationDaoLoader;
 import ch.unstable.ost.theme.ThemedActivity;
 
 public class ChooseStationActivity extends ThemedActivity {
@@ -78,8 +79,7 @@ public class ChooseStationActivity extends ThemedActivity {
         }
 
         if(stationsDAO == null) {
-            StationsDatabase database = Databases.getStationsDatabase(this);
-            stationsDAO = database.getStationsDAO();
+            stationsDAO = StationDaoLoader.createStationDAO(this);
         }
         mLocationResultAdapter = new StationListAdapter(this);
         mLocationResultAdapter.setOnStationClickListener(new StationListAdapter.OnStationClickListener() {

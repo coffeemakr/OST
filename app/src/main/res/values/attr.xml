@@ -16,7 +16,7 @@
     <attr name="ic_send_24dp" format="reference" />
     <attr name="ic_tune_24dp_no_vector" format="reference" />
     <attr name="ic_restore_24dp" format="reference" />
-
+    <attr name="ic_color_lens_24dp_no_vector" format="reference" />
 
     <attr name="toolbarStyle" format="reference" />
     <attr name="toolbarTheme" format="reference" />

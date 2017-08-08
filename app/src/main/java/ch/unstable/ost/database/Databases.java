@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import ch.unstable.ost.api.offline.StationsDatabase;
+import ch.unstable.ost.preference.StationDaoLoader;
 
 public class Databases {
     private static final boolean FORCE_OVERRIDE = true;

@@ -107,4 +107,27 @@
     <string name="time_restriction_arrival">Arrival</string>
     <string name="time_restriction_departure">Departure</string>
 
+
+    <string name="pref_station_dao_factory_title">Station Datasource</string>
+    <string name="pref_station_dao_factory_summary">The data source for station autocompletion</string>
+
+    <string name="station_dao_factory_offline" translatable="false">ch.unstable.ost.api.offline.StationsDAOFactory</string>
+    <string name="station_dao_factory_search_ch" translatable="false">ch.unstable.ost.api.search.StationsDAOFactory</string>
+    <string name="station_dao_factory_transport_ch" translatable="false">ch.unstable.ost.api.transport.StationsDAOFactory</string>
+    <string-array name="prefs_station_dao_factory_values">
+        <item>@string/station_dao_factory_offline</item>
+        <item>@string/station_dao_factory_search_ch</item>
+        <item>@string/station_dao_factory_transport_ch</item>
+    </string-array>
+    <string-array name="prefs_station_dao_factory_names">
+        <item>@string/station_dao_offline</item>
+        <item>@string/station_dao_search_ch</item>
+        <item>@string/station_dao_transport_opendata_ch</item>
+    </string-array>
+    <string name="prefs_station_dao_factory_default" translatable="false">@string/station_dao_factory_offline</string>
+    <string name="prefs_category_content">Content</string>
+    <string name="station_dao_offline">Offline</string>
+    <string name="station_dao_search_ch" translatable="false">timetable.search.ch</string>
+    <string name="station_dao_transport_opendata_ch" translatable="false">transport.opendata.ch</string>
+
 </resources>
