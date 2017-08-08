@@ -30,8 +30,10 @@ def read_csv(csv_file):
 def write_stations(stations, sqlite_filename):
     conn = sqlite3.connect(sqlite_filename)
     c = conn.cursor();
+    c.execute('''CREATE TABLE "android_metadata" ("locale" TEXT DEFAULT 'en_US')''')
+    c.execute('''INSERT INTO "android_metadata" VALUES ('en_US')''')
     c.execute('''CREATE TABLE stations
-    (id text NOT NULL, name text NOT NULL)''')
+    (_id TEXT PRIMARY KEY NOT NULL, name text NOT NULL)''')
     for station in stations:
         conn.execute('''INSERT INTO stations VALUES (?, ?)''', (station.id, station.name))
     conn.commit()
