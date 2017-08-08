@@ -6,12 +6,7 @@ import os.path
 from collections import namedtuple
 import csv
 import sqlite3
-import gzip
 import shutil
-
-def gzip_file(source, destination):
-    with open(source, 'rb') as f_in, gzip.open(destination, 'wb', 9) as f_out:
-        shutil.copyfileobj(f_in, f_out)
 
 Station = namedtuple('Station', ['id', 'name'])
 
@@ -44,8 +39,7 @@ url =  'http://data.geo.admin.ch/ch.bav.haltestellen-oev/data.zip'
 data_file="data.zip"
 csv_zip_file_name='HST_MGMD_2017-05-01_CSV.ZIP'
 csv_file_name='HST_MGMD_2017-05-01/Betriebspunkt.csv'
-sqlite_filename='stations.db'
-gzip_sqlite_filename='app/src/main/assets/stations.db.gz'
+sqlite_filename='app/src/main/assets/stations.db'
 if not os.path.isfile(data_file):
     urllib.request.urlretrieve(url,data_file) 
 
@@ -56,4 +50,3 @@ if not os.path.isfile(csv_zip_file_name):
 with zipfile.ZipFile(csv_zip_file_name) as csv_zip:
     with csv_zip.open(csv_file_name, 'r') as csv_file:
         write_stations(read_csv(csv_file), sqlite_filename)
-gzip_file(sqlite_filename, gzip_sqlite_filename)
