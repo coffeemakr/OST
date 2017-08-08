@@ -3,6 +3,9 @@ package ch.unstable.ost.api.offline.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+/**
+ * Dummy to make room library happy
+ */
 @Entity(tableName = "fts_stations")
 public class LocationEntityFTS {
 
