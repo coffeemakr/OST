@@ -129,5 +129,8 @@
     <string name="station_dao_offline">Offline</string>
     <string name="station_dao_search_ch" translatable="false">timetable.search.ch</string>
     <string name="station_dao_transport_opendata_ch" translatable="false">transport.opendata.ch</string>
+    <string name="format_train_platform">Pl. %1$s</string>
+    <string name="format_bus_platform">Pl. %1$s</string>
+    <string name="connection_direction">Direction %1$s</string>
 
 </resources>

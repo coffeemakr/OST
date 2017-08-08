@@ -48,4 +48,9 @@
     <string name="time_restriction_departure">Abfahrt</string>
     <string name="prefs_category_content">Inhalt</string>
     <string name="station_dao_offline">Offline</string>
+    <string name="format_bus_platform">Kt. %1$s</string>
+    <string name="format_train_platform">Gl. %1$s</string>
+    <string name="pref_station_dao_factory_summary">Datenquelle die für die Stationsvorschläge verwendet wird.</string>
+    <string name="pref_station_dao_factory_title">Datenquelle für Stationen</string>
+    <string name="connection_direction">Richtung %1$s</string>
 </resources>

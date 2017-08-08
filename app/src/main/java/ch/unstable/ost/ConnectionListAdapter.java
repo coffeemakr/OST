@@ -1,5 +1,6 @@
 package ch.unstable.ost;
 
+import android.content.Context;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -67,6 +68,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
 
     @Override
     public void onBindViewHolder(ConnectionViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         Connection connection = mConnections.get(position);
         Section[] sections = connection.getSections();
         if (sections.length > 0) {
@@ -76,8 +78,9 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
             }
             if (section.isJourney()) {
                 Journey journey = section.getJourney();
-                holder.firstEndDestination.setText(journey.getTo());
+                holder.firstEndDestination.setText(formatEndDestination(context, journey.getTo()));
                 holder.firstTransportName.setText(journey.getName());
+                holder.platform.setText(formatPlatform(context, section.getDeparture().getPlatform()));
             }
 
         } else {
@@ -97,6 +100,24 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
 
         holder.itemView.setTag(holder);
         holder.itemView.setOnClickListener(mOnViewHolderClickListener);
+    }
+
+    @Nullable
+    private String formatPlatform(Context context, @Nullable String platform) {
+        if (platform == null) return null;
+        if (platform.matches("^[0-9]+$")) {
+            return context.getString(R.string.format_train_platform, platform);
+        } else if (platform.matches("^[A-z]+$")) {
+            return context.getString(R.string.format_bus_platform, platform);
+        } else {
+            return platform;
+        }
+    }
+
+    @Nullable
+    private String formatEndDestination(Context context, @Nullable String endDestination) {
+        if(endDestination == null) return null;
+        return context.getString(R.string.connection_direction, endDestination);
     }
 
     @Override
@@ -133,6 +154,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         private final ConnectionLineView connectionLineView;
         private final TextView firstTransportName;
         private final TextView duration;
+        private final TextView platform;
 
         public ConnectionViewHolder(View itemView) {
             super(itemView);
@@ -142,6 +164,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
             connectionLineView = (ConnectionLineView) itemView.findViewById(R.id.connectionLineView);
             firstTransportName = (TextView) itemView.findViewById(R.id.firstTransportName);
             duration = (TextView) itemView.findViewById(R.id.duration);
+            platform = (TextView) itemView.findViewById(R.id.platform);
         }
     }
 
@@ -153,7 +176,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         public void onClick(View v) {
             ConnectionViewHolder connectionViewHolder = (ConnectionViewHolder) v.getTag();
             int position = connectionViewHolder.getAdapterPosition();
-            if(position == RecyclerView.NO_POSITION) {
+            if (position == RecyclerView.NO_POSITION) {
                 return;
             }
             Connection connection;
