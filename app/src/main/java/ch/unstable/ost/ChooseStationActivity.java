@@ -19,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,10 +27,13 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
-import ch.unstable.ost.api.TimetableDAO;
+import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.model.Location;
+import ch.unstable.ost.api.offline.OfflineStationsDAO;
+import ch.unstable.ost.api.offline.StationsDatabase;
 import ch.unstable.ost.api.search.SearchAPI;
 import ch.unstable.ost.api.transport.TransportAPI;
+import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
 
@@ -50,7 +52,7 @@ public class ChooseStationActivity extends ThemedActivity {
     private static final String TAG = ChooseStationActivity.class.getSimpleName();
     private static final int MESSAGE_LOADING_STARTED = 4;
     //private TransportAPI transportAPI = new TransportAPI();
-    private final TimetableDAO timetableDAO = new SearchAPI();
+    private StationsDAO stationsDAO;
     private EditText mStationEditText;
     private TextWatcher mSuggestionTextWatcher;
     private HandlerThread mBackgroundHandlerThread;
@@ -75,6 +77,10 @@ public class ChooseStationActivity extends ThemedActivity {
             stationNameLayout.setHint(hint);
         }
 
+        if(stationsDAO == null) {
+            StationsDatabase database = Databases.getStationsDatabase(this);
+            stationsDAO = database.getStationsDAO();
+        }
         mLocationResultAdapter = new StationListAdapter(this);
         mLocationResultAdapter.setOnStationClickListener(new StationListAdapter.OnStationClickListener() {
             public void onStationClicked(Location location) {
@@ -246,7 +252,7 @@ public class ChooseStationActivity extends ThemedActivity {
             mUIHandler.sendEmptyMessage(MESSAGE_LOADING_STARTED);
             Location[] locationList;
             try {
-                locationList = timetableDAO.getStationsByQuery(query, STATION_TYPES);
+                locationList = stationsDAO.getStationsByQuery(query, STATION_TYPES);
             } catch (TransportAPI.TooManyRequestsException e) {
                 Message message = mBackgroundHandler.obtainMessage(MESSAGE_QUERY_LOCATIONS, query);
                 mBackgroundHandler.sendMessageDelayed(message, 300);

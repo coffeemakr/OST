@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import ch.unstable.ost.api.TimetableDAO;
+import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
 import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.search.model.LocationCompletion;
 
-public class SearchAPI extends BaseHttpJsonAPI implements TimetableDAO {
+public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO {
 
     final Uri BASE_URI = Uri.parse("https://timetable.search.ch/api/");
 

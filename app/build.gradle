@@ -56,6 +56,10 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     })
 
+    compile "android.arch.persistence.room:runtime:1.0.0-alpha5"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha5"
+
+    compile 'commons-io:commons-io:2.5'
 
     compile 'cat.ereza:customactivityoncrash:2.1.0'
     compile 'com.google.code.gson:gson:2.8.1'

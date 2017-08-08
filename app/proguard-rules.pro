@@ -24,6 +24,9 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keepclassmembers class ch.unstable.ost.api.offline.StationTypeConverter {
+    public *;
+}
 -dontobfuscate
 
 

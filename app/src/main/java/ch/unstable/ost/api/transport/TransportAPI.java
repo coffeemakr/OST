@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import ch.unstable.ost.api.TimetableDAO;
+import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
 import ch.unstable.ost.api.transport.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
@@ -22,7 +22,7 @@ import ch.unstable.ost.api.transport.model.LocationTypeFilter;
 import ch.unstable.ost.api.transport.model.Location;
 import ch.unstable.ost.api.transport.types.EmptyNumberTypeAdapter;
 
-public class TransportAPI extends BaseHttpJsonAPI implements TimetableDAO {
+public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
 
     private static final Uri BASE_URL = Uri.parse("https://transport.opendata.ch/v1/");
     private static final String TAG = "TransportAPI";

@@ -8,6 +8,7 @@ import ch.unstable.ost.error.ErrorReportActivity;
 public class OSTApplication extends Application {
     private static final String TAG = "OSTApplication";
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -15,5 +16,4 @@ public class OSTApplication extends Application {
                 .errorActivity(ErrorReportActivity.class)
                 .apply();
     }
-
 }

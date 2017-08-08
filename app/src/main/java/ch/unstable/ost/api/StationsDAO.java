@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import ch.unstable.ost.api.model.Location;
 
-public interface TimetableDAO {
+public interface StationsDAO {
     Location[] getStationsByQuery(String query) throws IOException;
 
     Location[] getStationsByQuery(String query, @Nullable Location.StationType types[]) throws IOException;
