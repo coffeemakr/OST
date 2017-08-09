@@ -45,6 +45,16 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         return new HeadNavigationFragment();
     }
 
+    @NonNull
+    public static HeadNavigationFragment newInstance(@Nullable ConnectionQuery query) {
+        if(query == null) return newInstance();
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(KEY_QUERYBUILDER, new ConnectionQuery.Builder(query));
+        HeadNavigationFragment fragment = new HeadNavigationFragment();
+        fragment.setArguments(arguments);
+        return fragment;
+    }
+
     private static void rotateText(Context context, final TextView view, final String text, boolean isFront) {
         int inAnimation;
         int outAnimation;
@@ -76,6 +86,18 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         });
         view.startAnimation(fadeOut);
     }
+
+    private static boolean isSameDay(Date first, Date second) {
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(first);
+        cal2.setTime(second);
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+
+    }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,17 +135,21 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFromButton = (Button) view.findViewById(R.id.fromButton);
-        mFromButton.setText(getFromButtonText());
+        updateFromView();
         mToButton = (Button) view.findViewById(R.id.toButton);
-        mToButton.setText(getToButtonText());
+        updateToView();
         mReverseDirectionButton = (ImageButton) view.findViewById(R.id.reverseDirectionButton);
         mTime = (TextView) view.findViewById(R.id.timeView);
-        mTime.setText(getTimeString());
+        updateTimeView();
         View timeSettingsContainer = view.findViewById(R.id.timeSettingsContainer);
         timeSettingsContainer.setOnClickListener(mOnButtonClickListener);
         mFromButton.setOnClickListener(mOnButtonClickListener);
         mToButton.setOnClickListener(mOnButtonClickListener);
         mReverseDirectionButton.setOnClickListener(mOnButtonClickListener);
+    }
+
+    private void updateTimeView() {
+        mTime.setText(getTimeString());
     }
 
     private void startStationChooser(@StringRes int chooseRequest, int codeTo) {
@@ -141,30 +167,19 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
             switch (requestCode) {
                 case REQUEST_CODE_CHOOSE_FROM:
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
-                    setFrom(name);
+                    setFrom(name, true);
                     break;
                 case REQUEST_CODE_CHOOSE_TO:
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
-                    setTo(name);
+                    setTo(name, true);
                     break;
             }
         }
     }
 
-
-    private static boolean isSameDay(Date first, Date second) {
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal1.setTime(first);
-        cal2.setTime(second);
-        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-
-    }
-
     private String getTimeString(Date date, @StringRes int sameDayFormat, @StringRes int otherDayFormat) {
         Date today = new Date();
-        if(isSameDay(today, date)) {
+        if (isSameDay(today, date)) {
             return getString(sameDayFormat, TimeDateUtils.formatTime(date));
         } else {
             return getString(otherDayFormat, TimeDateUtils.formatTime(date), TimeDateUtils.formatDate(getContext(), date));
@@ -173,9 +188,9 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     private String getTimeString() {
         Date time;
-        if((time = mConnectionQueryBuilder.getDepartureTime()) != null) {
+        if ((time = mConnectionQueryBuilder.getDepartureTime()) != null) {
             return getTimeString(time, R.string.departure_time_same_day, R.string.departure_time_other_day);
-        } else if((time = mConnectionQueryBuilder.getArrivalTime()) != null) {
+        } else if ((time = mConnectionQueryBuilder.getArrivalTime()) != null) {
             return getTimeString(time, R.string.arrival_time_same_day, R.string.arrival_time_other_day);
         } else {
             return getString(R.string.departure_time_now);
@@ -190,10 +205,12 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         return to;
     }
 
-    private void setTo(@Nullable String to) {
+    private void setTo(@Nullable String to, boolean notifyListener) {
         mConnectionQueryBuilder.setTo(to);
-        mToButton.setText(getToButtonText());
-        onQueryChanged();
+        updateToView();
+        if(notifyListener) {
+            onQueryChanged();
+        }
     }
 
     private String getFromButtonText() {
@@ -204,10 +221,12 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         return from;
     }
 
-    private void setFrom(@Nullable String from) {
+    private void setFrom(@Nullable String from, boolean notifyListener) {
         mConnectionQueryBuilder.setFrom(from);
         mFromButton.setText(getFromButtonText());
-        onQueryChanged();
+        if(notifyListener) {
+            onQueryChanged();
+        }
     }
 
     private void onQueryChanged() {
@@ -228,15 +247,29 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     public void updateQuery(ConnectionQuery query) {
         mConnectionQueryBuilder = new ConnectionQuery.Builder(query);
-        setFrom(mConnectionQueryBuilder.getFrom());
-        setTo(mConnectionQueryBuilder.getTo());
+        updateFromView();
+        updateToView();
     }
+
+    private void updateToView() {
+        mToButton.setText(getToButtonText());
+    }
+
+    private void updateFromView() {
+        mFromButton.setText(getFromButtonText());
+    }
+
+    public void clearQuery() {
+        setFrom(null, false);
+        setTo(null, false);
+    }
+
 
     private void onOpenTimeSettings() {
 
         Date date = mConnectionQueryBuilder.getDepartureTime();
         TimePickerDialog.TimeRestrictionType restrictionType = TimePickerDialog.TimeRestrictionType.DEPARTURE;
-        if(date == null && mConnectionQueryBuilder.getArrivalTime() != null) {
+        if (date == null && mConnectionQueryBuilder.getArrivalTime() != null) {
             restrictionType = TimePickerDialog.TimeRestrictionType.ARRIVAL;
             date = mConnectionQueryBuilder.getArrivalTime();
         }
@@ -245,14 +278,14 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
             @Override
             public void onArrivalTimeSelected(@NonNull Date date) {
                 mConnectionQueryBuilder.setArrivalTime(date);
-                mTime.setText(getTimeString());
+                updateTimeView();
                 onQueryChanged();
             }
 
             @Override
             public void onDepartureTimeSelected(@NonNull Date date) {
                 mConnectionQueryBuilder.setDepartureTime(date);
-                mTime.setText(getTimeString());
+                updateTimeView();
                 onQueryChanged();
             }
         });

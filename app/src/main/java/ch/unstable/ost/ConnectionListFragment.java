@@ -144,6 +144,10 @@ public class ConnectionListFragment extends Fragment {
         mConnectionsList.setVisibility(View.VISIBLE);
     }
 
+    public ConnectionQuery getConnectionQuery() {
+        return mConnectionQuery;
+    }
+
 
     public interface OnConnectionListInteractionListener {
         void onConnectionSelected(Connection connection);

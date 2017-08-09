@@ -1,10 +1,12 @@
 package ch.unstable.ost;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
@@ -84,6 +86,31 @@ public class ConnectionListActivity extends ThemedActivity
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)
                 .commit();
+        updateHeadQuery(query);
+    }
+
+    private void updateHeadQuery(@Nullable ConnectionQuery query) {
+        HeadNavigationFragment headNavigationFragment = (HeadNavigationFragment) getSupportFragmentManager().findFragmentById(R.id.head_fragment);
+        if(headNavigationFragment != null) {
+            if(query == null) {
+                headNavigationFragment.clearQuery();
+            } else {
+                headNavigationFragment.updateQuery(query);
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(fragment != null && (fragment instanceof ConnectionListFragment)) {
+            ConnectionListFragment connectionListFragment = (ConnectionListFragment) fragment;
+            ConnectionQuery query = connectionListFragment.getConnectionQuery();
+            updateHeadQuery(query);
+        } else {
+            updateHeadQuery(null);
+        }
     }
 
     @Override
