@@ -14,14 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/GreenDarkTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".NavigationStartActivity">
+        <activity android:name=".ConnectionListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConnectionListActivity" />
         <activity android:name=".ConnectionDetailActivity" />
         <activity android:name=".preference.SettingsActivity" />
         <activity

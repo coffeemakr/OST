@@ -31,8 +31,8 @@ public abstract class ThemedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         ThemeHelper.setTheme(this);
-        mHandler = new Handler();
         super.onCreate(savedInstanceState);
+        mHandler = new Handler();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(onThemeChangeListener);
     }

@@ -2,13 +2,18 @@ package ch.unstable.ost;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.model.Connection;
@@ -28,7 +33,6 @@ public class ConnectionListActivity extends ThemedActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection_list);
 
@@ -36,20 +40,31 @@ public class ConnectionListActivity extends ThemedActivity
         setSupportActionBar(toolbar);
 
 
-        if (getIntent() == null) {
-            finish();
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.findFragmentById(R.id.fragment_container) == null) {
-            ConnectionQuery query = getIntent().getParcelableExtra(EXTRA_QUERY);
-            ConnectionListFragment connectionListFragment = ConnectionListFragment.newInstance(query);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fragment_container, connectionListFragment)
+        if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, new EmptyConnectionListFragment())
                     .commit();
+        }
 
-            HeadNavigationFragment fragment = (HeadNavigationFragment) getSupportFragmentManager().findFragmentById(R.id.head_fragment);
-            fragment.updateQuery(query);
+        if(getIntent() != null) {
+            handleIntent(getIntent());
+        }
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(@NonNull Intent intent) {
+        if(!Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            return;
+        }
+        ConnectionQuery query = intent.getParcelableExtra(EXTRA_QUERY);
+        if(query != null) {
+            onRouteSelected(query);
         }
     }
 
@@ -66,6 +81,7 @@ public class ConnectionListActivity extends ThemedActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, connectionListFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)
                 .commit();
     }
@@ -88,4 +104,10 @@ public class ConnectionListActivity extends ThemedActivity
         return false;
     }
 
+    public static class EmptyConnectionListFragment extends Fragment {
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fragment_empty_connection_list, container, false);
+        }
+    }
 }

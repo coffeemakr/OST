@@ -53,9 +53,9 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         return times;
     }
 
-    public void setConnections(@NonNull Connection... Connections) {
+    public void setConnections(@NonNull Connection... connections) {
         mConnections.clear();
-        Collections.addAll(mConnections, Connections);
+        Collections.addAll(mConnections, connections);
         notifyDataSetChanged();
     }
 
@@ -79,7 +79,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
             if (section.isJourney()) {
                 Journey journey = section.getJourney();
                 holder.firstEndDestination.setText(formatEndDestination(context, journey.getTo()));
-                holder.firstTransportName.setText(journey.getName());
+                holder.firstTransportName.setText(section.getShortName());
                 holder.platform.setText(formatPlatform(context, section.getDeparture().getPlatform()));
             }
 

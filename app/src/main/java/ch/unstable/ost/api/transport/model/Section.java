@@ -109,4 +109,17 @@ public class Section implements Parcelable, ch.unstable.ost.api.model.Section {
     public Walk getWalk() {
         return walk;
     }
+
+    @Nullable
+    @Override
+    public String getShortName() {
+        if(journey != null) {
+            if(journey.getNumber() == null || journey.getCategory() == null) {
+                return journey.getName();
+            } else {
+                return journey.getCategory() + " " + journey.getNumber();
+            }
+        }
+        return null;
+    }
 }
