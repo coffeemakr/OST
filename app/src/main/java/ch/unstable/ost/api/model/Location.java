@@ -7,9 +7,17 @@ import java.util.Arrays;
 
 public interface Location extends Parcelable {
 
+    /**
+     * Get the name of the location
+     * @return the name
+     */
     @NonNull
     String getName();
 
+    /**
+     * Get the unique identifier of the location
+     * @return the identifier
+     */
     @NonNull
     String getId();
 

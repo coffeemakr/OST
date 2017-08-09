@@ -7,21 +7,23 @@ import android.os.Parcelable;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.util.Arrays;
+import java.util.Date;
 
+import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.api.transport.types.DurationDeserializer;
 import ch.unstable.ost.utils.ParcelUtils;
 
-public class Connection implements Parcelable, ch.unstable.ost.api.model.Connection {
+public class JsonConnection implements Parcelable, ch.unstable.ost.api.model.Connection {
 
-    public static final Creator<Connection> CREATOR = new Creator<Connection>() {
+    public static final Creator<JsonConnection> CREATOR = new Creator<JsonConnection>() {
         @Override
-        public Connection createFromParcel(Parcel in) {
-            return new Connection(in);
+        public JsonConnection createFromParcel(Parcel in) {
+            return new JsonConnection(in);
         }
 
         @Override
-        public Connection[] newArray(int size) {
-            return new Connection[size];
+        public JsonConnection[] newArray(int size) {
+            return new JsonConnection[size];
         }
     };
 
@@ -31,17 +33,23 @@ public class Connection implements Parcelable, ch.unstable.ost.api.model.Connect
     private final Long duration;
     private final Section[] sections;
 
-    protected Connection(Parcel in) {
+    protected JsonConnection(Parcel in) {
         this.from = ParcelUtils.readNullableParcelable(in, Checkpoint.CREATOR);
         this.to = ParcelUtils.readNullableParcelable(in, Checkpoint.CREATOR);
         this.duration = ParcelUtils.readNullableLong(in);
         this.sections = in.createTypedArray(Section.CREATOR);
     }
 
-    public Connection(Checkpoint from, Checkpoint to, Long duration, Section[] sections) {
+    public JsonConnection(Checkpoint from, Checkpoint to, Long duration, Section[] sections) {
         this.from = from;
         this.to = to;
         this.duration = duration;
+        if(true || BuildConfig.DEBUG) {
+            long expectedDuration = (getArrivalDate().getTime() - getDepartureDate().getTime()) / 60000;
+            if(true || this.duration != expectedDuration) {
+                throw new AssertionError("Duration is " + duration + " but expected " + expectedDuration );
+            }
+        }
         if (sections == null) {
             sections = new Section[0];
         }
@@ -81,6 +89,16 @@ public class Connection implements Parcelable, ch.unstable.ost.api.model.Connect
     @Override
     public Section[] getSections() {
         return sections;
+    }
+
+    @Override
+    public Date getDepartureDate() {
+        return getFrom().getDepartureTime();
+    }
+
+    @Override
+    public Date getArrivalDate() {
+        return getTo().getArrival();
     }
 
     @Override

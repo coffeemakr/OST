@@ -4,10 +4,8 @@ package ch.unstable.ost;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +14,8 @@ import android.widget.TextView;
 
 import java.util.Date;
 
-import ch.unstable.ost.api.transport.model.Checkpoint;
-import ch.unstable.ost.api.transport.model.Section;
+import ch.unstable.ost.api.model.Section;
+import ch.unstable.ost.api.model.StopTime;
 import ch.unstable.ost.utils.TimeDateUtils;
 import ch.unstable.ost.views.StopDotView;
 
@@ -50,7 +48,7 @@ public class SectionDetailFragment extends Fragment {
             throw new IllegalStateException("section not set");
         }
         mStopsListAdapter = new StopsListAdapter();
-        mStopsListAdapter.setStops(mSection.getJourney().getPassList());
+        mStopsListAdapter.setStops(mSection.getStops());
     }
 
     @Override
@@ -88,9 +86,9 @@ public class SectionDetailFragment extends Fragment {
     }
 
     private class StopsListAdapter extends RecyclerView.Adapter<ViewHolder> {
-        private Checkpoint stops[];
+        private StopTime[] stops;
 
-        public void setStops(Checkpoint[] stops) {
+        public void setStops(StopTime[] stops) {
             this.stops = stops;
             notifyDataSetChanged();
         }
@@ -110,19 +108,16 @@ public class SectionDetailFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            Checkpoint stop = stops[position];
-            holder.stationName.setText(stop.getStation().getName());
-            if(position == 0) {
+            StopTime stop = stops[position];
+            holder.stationName.setText(stop.getLocation().getName());
+            if (position == 0) {
                 holder.stopDotView.setLineMode(StopDotView.Type.TOP);
-            } else if(position == stops.length - 1) {
+            } else if (position == stops.length - 1) {
                 holder.stopDotView.setLineMode(StopDotView.Type.BOTTOM);
             }
             String time = null;
-            Date shownDate = stop.getDepartureTime();
-            if(shownDate == null) {
-                shownDate = stop.getArrival();
-            }
-            if(shownDate != null) {
+            Date shownDate = stop.getTime();
+            if (shownDate != null) {
                 try {
                     time = TimeDateUtils.formatTime(shownDate);
                 } catch (RuntimeException e) {

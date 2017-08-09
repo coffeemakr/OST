@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import java.io.IOException;
 
 import ch.unstable.ost.api.transport.TransportAPI;
-import ch.unstable.ost.api.transport.model.Connection;
+import ch.unstable.ost.api.transport.model.JsonConnection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 
 public class ConnectionListFragment extends Fragment {
@@ -75,7 +75,7 @@ public class ConnectionListFragment extends Fragment {
         mConnectionAdapter.setOnConnectionClickListener(mOnConnectionClickListener);
         if (savedInstanceState != null) {
             mConnectionQuery = savedInstanceState.getParcelable(ARG_QUERY);
-            Connection[] Connections = (Connection[]) savedInstanceState.getParcelableArray(KEY_CONNECTION_LIST);
+            JsonConnection[] Connections = (JsonConnection[]) savedInstanceState.getParcelableArray(KEY_CONNECTION_LIST);
             if (Connections == null) {
                 loadConnectionsAsync(mConnectionQuery);
             } else {
@@ -150,12 +150,12 @@ public class ConnectionListFragment extends Fragment {
 
 
     public interface OnConnectionListInteractionListener {
-        void onConnectionSelected(Connection connection);
+        void onConnectionSelected(JsonConnection connection);
     }
 
     private class OnConnectionClickListener implements ConnectionListAdapter.OnConnectionClickListener {
         @Override
-        public void onConnectionClicked(Connection connection) {
+        public void onConnectionClicked(JsonConnection connection) {
             if (mOnConnectionListInteractionListener != null) {
                 mOnConnectionListInteractionListener.onConnectionSelected(connection);
             }
@@ -172,7 +172,7 @@ public class ConnectionListFragment extends Fragment {
                 case MESSAGE_CONNECTIONS_LOADED:
                     onLoadingFinished();
                     if (mConnectionAdapter != null) {
-                        mConnectionAdapter.setConnections((Connection[]) msg.obj);
+                        mConnectionAdapter.setConnections((JsonConnection[]) msg.obj);
                     }
                     break;
                 default:
@@ -207,10 +207,10 @@ public class ConnectionListFragment extends Fragment {
 
         private void handleConnectionQuery(ConnectionQuery connectionQuery) {
             uiHandler.sendEmptyMessage(MESSAGE_CONNECTIONS_LOADING_STARTED);
-            Connection[] connections;
+            JsonConnection[] connections;
             try {
                 connections = transportAPI.getConnections(connectionQuery);
-                for (Connection connection : connections) {
+                for (JsonConnection connection : connections) {
                     Log.d(TAG, connection.toString());
                 }
             } catch (IOException e) {

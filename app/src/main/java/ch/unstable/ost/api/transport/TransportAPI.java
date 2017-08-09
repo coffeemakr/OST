@@ -15,7 +15,7 @@ import java.util.Locale;
 
 import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
-import ch.unstable.ost.api.transport.model.Connection;
+import ch.unstable.ost.api.transport.model.JsonConnection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.model.Coordinates;
 import ch.unstable.ost.api.transport.model.LocationTypeFilter;
@@ -52,7 +52,7 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
         gsonBuilder.registerTypeAdapter(Integer.class, numberTypeAdapter);
     }
 
-    public Connection[] getConnections(ConnectionQuery connectionQuery) throws IOException {
+    public JsonConnection[] getConnections(ConnectionQuery connectionQuery) throws IOException {
         Uri.Builder builder = BASE_URL.buildUpon()
                 .appendPath("connections")
                 .appendQueryParameter("from", connectionQuery.getFrom())
@@ -69,7 +69,7 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
         return loadConnections(builder);
     }
 
-    private Connection[] loadConnections(Uri.Builder builder) throws IOException {
+    private JsonConnection[] loadConnections(Uri.Builder builder) throws IOException {
         return loadJson(builder, ConnectionList.class).connections;
     }
 
@@ -135,7 +135,7 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
 
     private static class ConnectionList {
         @SerializedName("connections")
-        Connection[] connections;
+        JsonConnection[] connections;
     }
 
 }

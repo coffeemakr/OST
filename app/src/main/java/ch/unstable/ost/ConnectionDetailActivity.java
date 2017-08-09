@@ -8,8 +8,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import ch.unstable.ost.api.transport.model.Connection;
-import ch.unstable.ost.api.transport.model.Section;
+import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
 

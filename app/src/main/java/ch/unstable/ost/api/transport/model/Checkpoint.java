@@ -9,10 +9,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
+import ch.unstable.ost.api.model.StopTime;
 import ch.unstable.ost.utils.ParcelCompat;
 import ch.unstable.ost.utils.ParcelUtils;
 
-public class Checkpoint implements Parcelable {
+public class Checkpoint implements StopTime, Parcelable {
 
     public static final Creator<Checkpoint> CREATOR = new Creator<Checkpoint>() {
         @Override
@@ -83,6 +84,7 @@ public class Checkpoint implements Parcelable {
         return station;
     }
 
+    @Nullable
     public Date getArrival() {
         return arrival;
     }
@@ -95,6 +97,20 @@ public class Checkpoint implements Parcelable {
     @Nullable
     public Integer getDelay() {
         return delay;
+    }
+
+    @Override
+    public Location getLocation() {
+        return station;
+    }
+
+    @Override
+    public Date getTime() {
+        if(departureTime != null) {
+            return departureTime;
+        } else {
+            return arrival;
+        }
     }
 
     @Nullable
