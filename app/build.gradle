@@ -20,8 +20,8 @@ android {
         applicationId "ch.unstable.ost"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "0.2.0"
+        versionCode 4
+        versionName "0.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
