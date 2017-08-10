@@ -16,16 +16,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import ch.unstable.ost.api.transport.model.JsonConnection;
-import ch.unstable.ost.api.transport.model.Journey;
-import ch.unstable.ost.api.transport.model.Section;
+import ch.unstable.ost.api.model.impl.Connection;
+import ch.unstable.ost.api.model.impl.Section;
 import ch.unstable.ost.utils.TimeDateUtils;
 import ch.unstable.ost.views.ConnectionLineView;
 
 
 public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAdapter.ConnectionViewHolder> {
     public static final String TAG = "ConnectionListAdapter";
-    private final List<JsonConnection> mConnections = new ArrayList<>();
+    private final List<Connection> mConnections = new ArrayList<>();
     private final View.OnClickListener mOnViewHolderClickListener = new OnViewHolderClickListener();
     private OnConnectionClickListener mOnConnectionClickListener;
 
@@ -35,7 +34,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         long lastEnd = 0;
         for (Section section : sections) {
             // Walks can be ignored. They are added to the waiting time.
-            if (section.isJourney()) {
+            if (true) {
                 if (lastEnd != 0) {
                     // Waiting time
                     times[i] = (int) (section.getDepartureDate().getTime() - lastEnd);
@@ -53,7 +52,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         return times;
     }
 
-    public void setConnections(@NonNull JsonConnection... connections) {
+    public void setConnections(@NonNull Connection... connections) {
         mConnections.clear();
         Collections.addAll(mConnections, connections);
         notifyDataSetChanged();
@@ -69,28 +68,21 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
     @Override
     public void onBindViewHolder(ConnectionViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
-        JsonConnection connection = mConnections.get(position);
+        Connection connection = mConnections.get(position);
         Section[] sections = connection.getSections();
         if (sections.length > 0) {
             Section section = sections[0];
-            if (section.isWalk()) {
-                section = sections[1];
-            }
-            if (section.isJourney()) {
-                Journey journey = section.getJourney();
-                holder.firstEndDestination.setText(formatEndDestination(context, journey.getTo()));
-                holder.firstTransportName.setText(section.getLineShortName());
-                holder.platform.setText(formatPlatform(context, section.getDeparture().getPlatform()));
-            }
-
+            holder.firstEndDestination.setText(formatEndDestination(context, section.getHeadsign()));
+            holder.firstTransportName.setText(section.getLineShortName());
+            holder.platform.setText(formatPlatform(context, section.getDeparturePlatform()));
         } else {
             Log.e(TAG, "No sections");
         }
 
 
         String duration = TimeDateUtils.formatDuration(holder.itemView.getResources(),
-                connection.getFrom().getDepartureTime(),
-                connection.getTo().getArrival());
+                connection.getDepartureDate(),
+                connection.getArrivalDate());
         holder.duration.setText(duration);
         holder.startTime.setText(TimeDateUtils.formatTime(connection.getDepartureDate()));
         holder.endTime.setText(TimeDateUtils.formatTime(connection.getArrivalDate()));
@@ -144,7 +136,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
 
 
     public interface OnConnectionClickListener {
-        void onConnectionClicked(JsonConnection connection);
+        void onConnectionClicked(Connection connection);
     }
 
     public static class ConnectionViewHolder extends RecyclerView.ViewHolder {
@@ -179,7 +171,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
             if (position == RecyclerView.NO_POSITION) {
                 return;
             }
-            JsonConnection connection;
+            Connection connection;
             try {
                 connection = mConnections.get(position);
             } catch (RuntimeException e) {

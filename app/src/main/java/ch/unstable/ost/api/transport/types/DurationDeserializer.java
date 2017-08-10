@@ -1,5 +1,7 @@
 package ch.unstable.ost.api.transport.types;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -10,8 +12,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DurationDeserializer implements JsonDeserializer<Long> {
-    static Long fromString(String value) {
-        if (value.isEmpty()) {
+
+    @Nullable
+    public static Long fromString(String value) {
+        if (value == null || value.isEmpty()) {
             return null;
         }
         Pattern pattern = Pattern.compile("^(?:([0-9]{2})d)?([0-9]{2}):([0-9]{2}):([0-9]{2})$");

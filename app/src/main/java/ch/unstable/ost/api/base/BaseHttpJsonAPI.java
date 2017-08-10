@@ -13,6 +13,8 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import ch.unstable.ost.api.transport.TransportAPI;
+
 
 public class BaseHttpJsonAPI {
     public static final int HTTP_CODE_TOO_MANY_REQUESTS = 429;
@@ -31,8 +33,7 @@ public class BaseHttpJsonAPI {
     }
 
 
-    private InputStreamReader open(Uri.Builder builder) throws IOException {
-        URL url = new URL(builder.build().toString());
+    private InputStreamReader open(URL url) throws IOException {
         Log.d(TAG, "loading JSON " + url);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
@@ -44,8 +45,8 @@ public class BaseHttpJsonAPI {
         return new InputStreamReader(urlConnection.getInputStream());
     }
 
-    protected <T> T loadJson(Uri.Builder builder, Type typeOfT) throws IOException {
-        InputStreamReader inputStreamReader = open(builder);
+    protected <T> T loadJson(URL url, Type typeOfT) throws IOException {
+        InputStreamReader inputStreamReader = open(url);
         try {
             return gson.fromJson(inputStreamReader, typeOfT);
         } catch (JsonSyntaxException e) {
@@ -53,8 +54,8 @@ public class BaseHttpJsonAPI {
         }
     }
 
-    protected <T> T loadJson(Uri.Builder builder, Class<T> jsonClass) throws IOException {
-        InputStreamReader inputStreamReader = open(builder);
+    protected <T> T loadJson(URL url, Class<T> jsonClass) throws IOException {
+        InputStreamReader inputStreamReader = open(url);
         try {
             return gson.fromJson(inputStreamReader, jsonClass);
         } catch (JsonSyntaxException e) {

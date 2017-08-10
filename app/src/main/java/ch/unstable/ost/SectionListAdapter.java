@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.Arrays;
-import ch.unstable.ost.api.model.Section;
+
+import ch.unstable.ost.api.model.impl.Section;
 import ch.unstable.ost.utils.TimeDateUtils;
 
 class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.SectionViewHolder> {
@@ -71,11 +72,7 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
 
     @Override
     public int getItemViewType(int position) {
-        if (sections[position].isJourney()) {
-            return JOURNEY_VIEW_TYPE;
-        } else {
-            return WALK_VIEW_TYPE;
-        }
+        return JOURNEY_VIEW_TYPE;
     }
 
     @Override

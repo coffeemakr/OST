@@ -25,7 +25,8 @@ before_script:
 - android-wait-for-emulator
 - adb shell input keyevent 82 &
 script:
-- "./gradlew build connectedCheck"
+  - ./gradlew build connectedCheck
+  - ./gradlew sonarqube
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -36,7 +37,12 @@ cache:
   - "$HOME/.android/build-cache"
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  
+
+addons:
+  sonarcloud:
+    organization: "coffeemakr-github"
+    token:
+      secure: "BdtjXgD8McQYbW/AbeuxkdfaSOE3tQL+oOpN5QqhdK5b37bkZ6KTJTcWoyEteO0RtoExMTnIlLyKpgpylC35+7i8sw0vEcsPgZ6zX7pWunjs2XRSQNlFEeehz75Tz/5Dhg7LsnyitScIm6IhkFxOZy+ozZ0cjbe4lwmNdasaJOeeMOoYj524xYxqOz/ByhM1wZvA1keVV33pqT5oVxKuwVdoSSOFHjIKS2sSqKEm3TSYFCGR2rh1+VvlZ3K/4ly8mSue6jxlK7eIs7bFOPGcJuBNyxjd6nKZKit25DivhwQqjExvV7P3bdlagKeJsVI2NW8IBjTr7PGIvz/kAM8uxh52iSEI7dlAFYoQaltWOiHqmbipsk6/kVPi6iHIR+cIiX7z4vdBAX8F7dJAWfQAzXf48z2lKDIWYW+aws+0WAuEet7gZjzle1GnnWpa1LlYf3wY+coUe2Ynwdpv4XiXRokRHYqEZJdyahz7ITgciH7pIOrOSgHNx9jh6tEYPQDpjiqG2ol5jkoqJ2BI/8kFpYH1buITdLpBgkucwagdcba5tmM5+yethPLvpvhdCkHBG9EMK5gTXdHxaridIrY5ppV0TLmsbNVh9vTIe6ADmLM/9itLnqHmv5438FN9kDZLI8lv+XlY3sqeXFnLwtFdf1PKkXaM9IWZ45svHX8IQBQ="
 env:
   global:
   - secure: WtkpCZEBbm6WJ/h6TBoZEebsvcDgX5cW1hpPxZb2JCf00soDUvehhGOUgoMMcwlwqNzhb5D14sbvg9E3Xk9aYm0MODWnlz5NewG7ZWnjCo/RNi6w43WLb8ZwS43pXOIfoXxipKtccuIQKYlRFPvIx7uRDBsRJpJPg3ZDWRmu+j78qGBEIyUEJNb4Lng+Er1hfn+rH/CB5+XmAOIm55vlkoXxZdLYYIr7yeNMtnBmUYsUc9j8k6PN3imSuTPvCT/hrKsg5wN+RzzwVm0MhStf1tM6m11nFhvAMOeE+Wx6jTfleOQkC7K/nVYBs2vcQpaNg/c7DxHudk1t7zDvk+x8ifuc7UK6pce8SgYFMvlivDspsQR0C9Lsf93H7XkV2fva3ZuATyIxsS94fnwWzTFCGqvaeDQpGQmb9qojjd6Njjw5+gopepkWAUX1VsxgecjvlHo2MMpzMa7cnKCciOVhkjn02VVm5OG7Suleu8BzjyF0UaaN/NNEWn/KssYoxuEGcnxFmHHPVogkymN8LLeLvZViDBocAbMn5TZMOESfWLflrW2Ka0vlbNZJl5vDke2gv1pBU4YUi/La2ImQ3bnuLY3crbUK8Q0uXDP2FhJvujSh11sbjQHaZg3WXa0jgUO2JlEOv9aBFJskQbkrMHILUX/ot7HR35OgzV9EaarPLgM=

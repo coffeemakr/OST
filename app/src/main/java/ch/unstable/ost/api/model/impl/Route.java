@@ -3,27 +3,34 @@ package ch.unstable.ost.api.model.impl;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
 
 public class Route implements Parcelable {
+    @NonNull
     private final String shortName;
-    private final String headsign;
+    @NonNull
+    private final String longName;
+    private final PassingCheckpoint[] stops;
 
-    public Route(String shortname, String headsign) {
+    public Route(String shortname, String longName, PassingCheckpoint[] stops) {
         this.shortName = requireNonNull(shortname, "shortname");
-        this.headsign = requireNonNull(headsign, "headsign");
+        this.longName = requireNonNull(longName, "longName");
+        this.stops = requireNonNull(stops, "stops");
     }
 
     protected Route(Parcel in) {
         shortName = in.readString();
-        headsign = in.readString();
+        longName = in.readString();
+        stops = in.createTypedArray(PassingCheckpoint.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(shortName);
-        dest.writeString(headsign);
+        dest.writeString(longName);
+        dest.writeTypedArray(stops, flags);
     }
 
     @Override
@@ -43,11 +50,17 @@ public class Route implements Parcelable {
         }
     };
 
+    @NonNull
     public String getShortName() {
         return shortName;
     }
 
-    public String getHeadsign() {
-        return headsign;
+    @NonNull
+    public String getLongName() {
+        return longName;
+    }
+
+    public PassingCheckpoint[] getStops() {
+        return stops;
     }
 }

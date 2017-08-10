@@ -1,3 +1,8 @@
+plugins {
+    id "org.sonarqube" version "2.5"
+}
+
+
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 
@@ -61,6 +66,8 @@ dependencies {
     compile('com.google.guava:guava:22.0-android', {
         exclude group: 'com.google.code.findbugs'
     })
+
+    compile "io.mikael:urlbuilder:2.0.9"
 
     compile "android.arch.persistence.room:runtime:1.0.0-alpha5"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha5"

@@ -1,40 +1,52 @@
 package ch.unstable.ost.api.model.impl;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.Date;
 
-import ch.unstable.ost.api.model.Location;
-import ch.unstable.ost.api.model.StopTime;
-import ch.unstable.ost.utils.ParcelUtils;
-
 import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
+import static ch.unstable.ost.utils.ParcelUtils.readParcelable;
+import static ch.unstable.ost.utils.ParcelUtils.writeParcelable;
 
-public class Section implements ch.unstable.ost.api.model.Section, Parcelable {
-    private final StopTime arrival;
-    private final StopTime departure;
+
+public class Section implements Parcelable{
+
+    @NonNull
+    private final DepartureCheckpoint departure;
+    @NonNull
+    private final ArrivalCheckpoint arrival;
+    @NonNull
+    private final String headsign;
+    private final long walkTime;
+    @NonNull
     private final Route route;
 
-    public Section(StopTime arrival, StopTime departure, Route route) {
-        this.arrival = requireNonNull(arrival, "arrival");
-        this.departure = requireNonNull(departure, "departure");
+    public Section(Route route, DepartureCheckpoint departure, ArrivalCheckpoint arrival, String headsign, long walkTime) {
         this.route = requireNonNull(route, "route");
+        this.departure = requireNonNull(departure, "departure");
+        this.arrival = requireNonNull(arrival, "arrival");
+        this.headsign = requireNonNull(headsign, "headsign");
+        this.walkTime = walkTime;
     }
 
     protected Section(Parcel in) {
-        arrival = in.readParcelable(StopTime.class.getClassLoader());
-        departure = in.readParcelable(StopTime.class.getClassLoader());
-        route = ParcelUtils.readNullableParcelable(in, Route.CREATOR);
+        route = readParcelable(in, Route.CREATOR);
+        departure = readParcelable(in, DepartureCheckpoint.CREATOR);
+        arrival = readParcelable(in, ArrivalCheckpoint.CREATOR);
+        headsign = in.readString();
+        walkTime = in.readLong();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(arrival, flags);
-        dest.writeParcelable(departure, flags);
-        ParcelUtils.writeNullableParcelable(dest, route, flags);
+        writeParcelable(dest, route, flags);
+        writeParcelable(dest, departure, flags);
+        writeParcelable(dest, arrival, flags);
+        dest.writeString(headsign);
+        dest.writeLong(walkTime);
     }
 
     @Override
@@ -55,53 +67,45 @@ public class Section implements ch.unstable.ost.api.model.Section, Parcelable {
     };
 
     @Nullable
-    @Override
     public String getLineShortName() {
         return route.getShortName();
     }
 
-    @Override
     public Date getDepartureDate() {
-        return departure.getTime();
+        return departure.getDepartureTime();
     }
 
-    @Override
     public Date getArrivalDate() {
-        return arrival.getTime();
+        return arrival.getArrivalTime();
     }
 
-    @Override
     public Location getArrivalLocation() {
         return arrival.getLocation();
     }
 
-    @Override
     public Location getDepartureLocation() {
         return departure.getLocation();
     }
 
-    @Override
+    @NonNull
     public String getHeadsign() {
-        return route.getHeadsign();
+        return headsign;
     }
 
-    @Override
     public String getDeparturePlatform() {
         return departure.getPlatform();
     }
 
-    @Override
     public String getArrivalPlatform() {
         return arrival.getPlatform();
     }
 
-    @Override
-    public boolean isJourney() {
-        return true;
+    public PassingCheckpoint[] getStops() {
+        return route.getStops();
     }
 
-    @Override
-    public StopTime[] getStops() {
-        return new StopTime[0];
+    @NonNull
+    public String getRouteLongName() {
+        return route.getLongName();
     }
 }

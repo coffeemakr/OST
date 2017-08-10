@@ -63,11 +63,11 @@ public class ParcelUtils {
     }
 
 
-    public static <T extends Parcelable> T readNullableParcelable(Parcel in, Parcelable.Creator<T> creator) {
+    public static <T extends Parcelable> T readParcelable(Parcel in, Parcelable.Creator<T> creator) {
         return ParcelCompat.readTypeObject(in, creator);
     }
 
-    public static void writeNullableParcelable(Parcel dest, Parcelable parcelable, int flags) {
+    public static void writeParcelable(Parcel dest, Parcelable parcelable, int flags) {
         ParcelCompat.writeTypeObject(dest, parcelable, flags);
     }
 

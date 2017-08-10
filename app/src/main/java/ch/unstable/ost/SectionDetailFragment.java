@@ -14,8 +14,9 @@ import android.widget.TextView;
 
 import java.util.Date;
 
-import ch.unstable.ost.api.model.Section;
-import ch.unstable.ost.api.model.StopTime;
+import ch.unstable.ost.api.model.impl.ArrivalCheckpoint;
+import ch.unstable.ost.api.model.impl.PassingCheckpoint;
+import ch.unstable.ost.api.model.impl.Section;
 import ch.unstable.ost.utils.TimeDateUtils;
 import ch.unstable.ost.views.StopDotView;
 
@@ -26,9 +27,6 @@ public class SectionDetailFragment extends Fragment {
     private StopsListAdapter mStopsListAdapter;
 
     public static SectionDetailFragment newInstance(Section section) {
-        if (!section.isJourney()) {
-            throw new IllegalArgumentException("section must me a journey");
-        }
         Bundle arguments = new Bundle();
         arguments.putParcelable(KEY_SECTION, section);
         SectionDetailFragment fragment = new SectionDetailFragment();
@@ -86,9 +84,9 @@ public class SectionDetailFragment extends Fragment {
     }
 
     private class StopsListAdapter extends RecyclerView.Adapter<ViewHolder> {
-        private StopTime[] stops;
+        private PassingCheckpoint[] stops;
 
-        public void setStops(StopTime[] stops) {
+        public void setStops(PassingCheckpoint[] stops) {
             this.stops = stops;
             notifyDataSetChanged();
         }
@@ -108,7 +106,7 @@ public class SectionDetailFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            StopTime stop = stops[position];
+            PassingCheckpoint stop = stops[position];
             holder.stationName.setText(stop.getLocation().getName());
             if (position == 0) {
                 holder.stopDotView.setLineMode(StopDotView.Type.TOP);
@@ -116,7 +114,7 @@ public class SectionDetailFragment extends Fragment {
                 holder.stopDotView.setLineMode(StopDotView.Type.BOTTOM);
             }
             String time = null;
-            Date shownDate = stop.getTime();
+            Date shownDate = stop.getArrivalTime();
             if (shownDate != null) {
                 try {
                     time = TimeDateUtils.formatTime(shownDate);
