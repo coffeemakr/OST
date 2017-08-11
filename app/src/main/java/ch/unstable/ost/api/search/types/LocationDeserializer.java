@@ -17,7 +17,6 @@ public enum LocationDeserializer implements JsonDeserializer<Location> {
     @Override
     public Location deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject locationObj = json.getAsJsonObject();
-        System.out.println(locationObj);
         String name = locationObj.get("label").getAsString();
         String id = locationObj.get("id").getAsString();
         Location.StationType stationType = context.deserialize(locationObj.get("iconclass"), Location.StationType.class);

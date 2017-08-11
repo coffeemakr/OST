@@ -25,7 +25,6 @@ public class ConnectionListActivity extends ThemedActivity
         BaseNavigationFragment.OnRouteSelectionListener {
 
     public static final String EXTRA_QUERY = "EXTRA_QUERY";
-    private static final String TAG = "ConnectionListActivity";
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -125,8 +124,9 @@ public class ConnectionListActivity extends ThemedActivity
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     public static class EmptyConnectionListFragment extends Fragment {

@@ -35,7 +35,7 @@ abstract class Checkpoint {
     }
 
     @NonNull
-    abstract public Date getDisplayDate();
+    public abstract Date getDisplayDate();
 
     @Nullable
     public String getPlatform() {

@@ -161,8 +161,9 @@ public class ChooseStationActivity extends ThemedActivity {
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     private void showProgressBar() {

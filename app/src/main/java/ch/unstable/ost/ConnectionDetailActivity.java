@@ -58,7 +58,8 @@ public class ConnectionDetailActivity extends ThemedActivity implements Connecti
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 }

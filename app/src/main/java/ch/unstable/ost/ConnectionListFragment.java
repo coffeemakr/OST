@@ -18,8 +18,8 @@ import android.view.ViewGroup;
 
 import java.io.IOException;
 
-import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.TransportAPI;
 
 public class ConnectionListFragment extends Fragment {
@@ -33,7 +33,7 @@ public class ConnectionListFragment extends Fragment {
     private static final String ARG_QUERY = "connection_query";
     private static final String KEY_CONNECTION_LIST = "connection_list";
     private static final String TAG = "ConnectionListFragment";
-    private final OnConnectionClickListener mOnConnectionClickListener = new OnConnectionClickListener();
+    private final OnConnectionSelectedCaller mOnConnectionClickListener = new OnConnectionSelectedCaller();
     private final BackgroundCallback backgroundCallback = new BackgroundCallback();
     private final UICallback uiCallback = new UICallback();
     private final TransportAPI transportAPI;
@@ -134,16 +134,6 @@ public class ConnectionListFragment extends Fragment {
 
     }
 
-    private void onLoadingStarted() {
-        mConnectionsList.setVisibility(View.GONE);
-        mLoadingIndicator.setVisibility(View.VISIBLE);
-    }
-
-    private void onLoadingFinished() {
-        mLoadingIndicator.setVisibility(View.GONE);
-        mConnectionsList.setVisibility(View.VISIBLE);
-    }
-
     public ConnectionQuery getConnectionQuery() {
         return mConnectionQuery;
     }
@@ -153,7 +143,7 @@ public class ConnectionListFragment extends Fragment {
         void onConnectionSelected(Connection connection);
     }
 
-    private class OnConnectionClickListener implements ConnectionListAdapter.OnConnectionClickListener {
+    private class OnConnectionSelectedCaller implements ConnectionListAdapter.OnConnectionClickListener {
         @Override
         public void onConnectionClicked(Connection connection) {
             if (mOnConnectionListInteractionListener != null) {
@@ -179,6 +169,17 @@ public class ConnectionListFragment extends Fragment {
                     return false;
             }
             return true;
+        }
+
+
+        private void onLoadingStarted() {
+            mConnectionsList.setVisibility(View.GONE);
+            mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        private void onLoadingFinished() {
+            mLoadingIndicator.setVisibility(View.GONE);
+            mConnectionsList.setVisibility(View.VISIBLE);
         }
     }
 

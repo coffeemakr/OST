@@ -34,17 +34,15 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         long lastEnd = 0;
         for (Section section : sections) {
             // Walks can be ignored. They are added to the waiting time.
-            if (true) {
-                if (lastEnd != 0) {
-                    // Waiting time
-                    times[i] = (int) (section.getDepartureDate().getTime() - lastEnd);
-                    ++i;
-                }
-                // Travel time
-                lastEnd = section.getArrivalDate().getTime();
-                times[i] = (int) (lastEnd - section.getDepartureDate().getTime());
+            if (lastEnd != 0) {
+                // Waiting time
+                times[i] = (int) (section.getDepartureDate().getTime() - lastEnd);
                 ++i;
             }
+            // Travel time
+            lastEnd = section.getArrivalDate().getTime();
+            times[i] = (int) (lastEnd - section.getDepartureDate().getTime());
+            ++i;
         }
         if (i != times.length) {
             times = Arrays.copyOf(times, i);
@@ -87,7 +85,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
         holder.startTime.setText(TimeDateUtils.formatTime(connection.getDepartureDate()));
         holder.endTime.setText(TimeDateUtils.formatTime(connection.getArrivalDate()));
 
-        int times[] = getTravelTimes(connection.getSections());
+        int[] times = getTravelTimes(connection.getSections());
         holder.connectionLineView.setLengths(times);
 
         holder.itemView.setTag(holder);
@@ -161,9 +159,6 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
     }
 
     public class OnViewHolderClickListener implements View.OnClickListener {
-        public OnViewHolderClickListener() {
-        }
-
         @Override
         public void onClick(View v) {
             ConnectionViewHolder connectionViewHolder = (ConnectionViewHolder) v.getTag();

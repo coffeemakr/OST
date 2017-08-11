@@ -70,7 +70,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         fadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                // Not interested in this event
             }
 
             @Override
@@ -81,7 +81,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                // Not interested in this event
             }
         });
         view.startAnimation(fadeOut);
@@ -172,6 +172,8 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
                     setTo(name, true);
                     break;
+                default:
+                    // Unknown result
             }
         }
     }
@@ -264,33 +266,6 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     }
 
 
-    private void onOpenTimeSettings() {
-
-        Date date = mConnectionQueryBuilder.getDepartureTime();
-        TimePickerDialog.TimeRestrictionType restrictionType = TimePickerDialog.TimeRestrictionType.DEPARTURE;
-        if (date == null && mConnectionQueryBuilder.getArrivalTime() != null) {
-            restrictionType = TimePickerDialog.TimeRestrictionType.ARRIVAL;
-            date = mConnectionQueryBuilder.getArrivalTime();
-        }
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), restrictionType, date, new TimePickerDialog.OnTimeSelected() {
-            @Override
-            public void onArrivalTimeSelected(@NonNull Date date) {
-                mConnectionQueryBuilder.setArrivalTime(date);
-                updateTimeView();
-                onQueryChanged();
-            }
-
-            @Override
-            public void onDepartureTimeSelected(@NonNull Date date) {
-                mConnectionQueryBuilder.setDepartureTime(date);
-                updateTimeView();
-                onQueryChanged();
-            }
-        });
-        timePickerDialog.show();
-    }
-
     public class OnNavigationButtonsClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -308,6 +283,33 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                     onOpenTimeSettings();
                     break;
             }
+        }
+
+        private void onOpenTimeSettings() {
+
+            Date date = mConnectionQueryBuilder.getDepartureTime();
+            TimePickerDialog.TimeRestrictionType restrictionType = TimePickerDialog.TimeRestrictionType.DEPARTURE;
+            if (date == null && mConnectionQueryBuilder.getArrivalTime() != null) {
+                restrictionType = TimePickerDialog.TimeRestrictionType.ARRIVAL;
+                date = mConnectionQueryBuilder.getArrivalTime();
+            }
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), restrictionType, date, new TimePickerDialog.OnTimeSelected() {
+                @Override
+                public void onArrivalTimeSelected(@NonNull Date date) {
+                    mConnectionQueryBuilder.setArrivalTime(date);
+                    updateTimeView();
+                    onQueryChanged();
+                }
+
+                @Override
+                public void onDepartureTimeSelected(@NonNull Date date) {
+                    mConnectionQueryBuilder.setDepartureTime(date);
+                    updateTimeView();
+                    onQueryChanged();
+                }
+            });
+            timePickerDialog.show();
         }
     }
 }
