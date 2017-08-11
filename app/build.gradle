@@ -43,8 +43,18 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
-
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            testLogging {
+                events 'skipped', 'failed', 'standardOut', 'standardError'
+                exceptionFormat "short"
+            }
+        }
+    }
+
     buildTypes {
         release {
             shrinkResources false
@@ -62,6 +72,7 @@ jacocoAndroidUnitTestReport {
     html.enabled true
     xml.enabled true
 }
+
 
 dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

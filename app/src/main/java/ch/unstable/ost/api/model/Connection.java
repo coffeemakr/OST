@@ -3,6 +3,8 @@ package ch.unstable.ost.api.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Arrays;
 import java.util.Date;
 
@@ -24,26 +26,18 @@ public class Connection implements Parcelable {
         }
     };
     private final Section[] sections;
-    private DepartureCheckpoint departure;
-    private ArrivalCheckpoint arrival;
 
-    public Connection(Section[] sections, DepartureCheckpoint departure, ArrivalCheckpoint arrival) {
+    public Connection(Section[] sections) {
         this.sections = requireNonNull(sections, "sections");
-        this.departure = requireNonNull(departure, "departure");
-        this.arrival = requireNonNull(arrival, "arrival");
     }
 
     protected Connection(Parcel in) {
         sections = in.createTypedArray(Section.CREATOR);
-        departure = ParcelUtils.readParcelable(in, DepartureCheckpoint.CREATOR);
-        arrival = ParcelUtils.readParcelable(in, ArrivalCheckpoint.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedArray(sections, flags);
-        ParcelUtils.writeParcelable(dest, departure, flags);
-        ParcelUtils.writeParcelable(dest, arrival, flags);
     }
 
     @Override
@@ -56,10 +50,26 @@ public class Connection implements Parcelable {
     }
 
     public Date getDepartureDate() {
-        return departure.getDepartureTime();
+        return sections[0].getDepartureDate();
     }
 
     public Date getArrivalDate() {
-        return arrival.getArrivalTime();
+        return sections[sections.length - 1].getArrivalDate();
+    }
+
+
+    public DepartureCheckpoint getDeparture() {
+        return sections[0].getDeparture();
+    }
+
+    public ArrivalCheckpoint getArrival() {
+        return sections[sections.length - 1].getArrival();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("sections", sections)
+                .toString();
     }
 }

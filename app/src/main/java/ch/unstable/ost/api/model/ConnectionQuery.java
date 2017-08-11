@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.common.base.Objects;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,7 +81,7 @@ public class ConnectionQuery implements Parcelable {
     }
 
     public boolean hasVia() {
-        return via.length == 0;
+        return via.length > 0;
     }
 
     @Nullable
@@ -110,7 +111,6 @@ public class ConnectionQuery implements Parcelable {
     }
 
 
-    @SuppressWarnings("UnusedReturnValue")
     public static class Builder implements Parcelable {
 
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
@@ -137,6 +137,7 @@ public class ConnectionQuery implements Parcelable {
 
         /**
          * Create builder from an existing connection query
+         *
          * @param connectionQuery the connection query to build upon
          */
         public Builder(ConnectionQuery connectionQuery) {
@@ -170,6 +171,7 @@ public class ConnectionQuery implements Parcelable {
         }
 
         @NonNull
+        @CanIgnoreReturnValue
         public Builder setVia(String... via) {
             if (via == null || via.length == 1 && via[0] == null) {
                 this.via.clear();
@@ -180,6 +182,7 @@ public class ConnectionQuery implements Parcelable {
         }
 
         @NonNull
+        @CanIgnoreReturnValue
         public Builder addVia(String via) {
             this.via.add(via);
             return this;
@@ -191,6 +194,7 @@ public class ConnectionQuery implements Parcelable {
         }
 
         @NonNull
+        @CanIgnoreReturnValue
         public Builder setFrom(String from) {
             this.from = from;
             return this;
@@ -202,6 +206,7 @@ public class ConnectionQuery implements Parcelable {
         }
 
         @NonNull
+        @CanIgnoreReturnValue
         public Builder setTo(String to) {
             this.to = to;
             return this;
@@ -217,6 +222,7 @@ public class ConnectionQuery implements Parcelable {
         }
 
         @NonNull
+        @CanIgnoreReturnValue
         public Builder reverseDirection() {
             String temp = to;
             to = from;
@@ -230,6 +236,7 @@ public class ConnectionQuery implements Parcelable {
         }
 
         @NonNull
+        @CanIgnoreReturnValue
         public Builder setDepartureTime(@Nullable Date departureTime) {
             this.departureTime = departureTime;
             this.arrivalTime = null;
@@ -242,6 +249,7 @@ public class ConnectionQuery implements Parcelable {
         }
 
         @NonNull
+        @CanIgnoreReturnValue
         public Builder setArrivalTime(@Nullable Date arrivalTime) {
             this.departureTime = null;
             this.arrivalTime = arrivalTime;

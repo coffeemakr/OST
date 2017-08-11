@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import java.util.Date;
@@ -67,5 +68,14 @@ public class ArrivalCheckpoint extends Checkpoint implements Parcelable {
     @Override
     public int hashCode() {
         return Objects.hashCode(super.hashCode(), arrivalTime);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("arrivalTime", arrivalTime)
+                .add("location", getLocation())
+                .add("platform", getPlatform())
+                .toString();
     }
 }

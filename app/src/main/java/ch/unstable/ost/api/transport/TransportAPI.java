@@ -12,6 +12,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
@@ -30,13 +31,25 @@ import ch.unstable.ost.api.transport.types.PassingCheckpointDeserializer;
 import ch.unstable.ost.api.transport.types.SectionListDeserializer;
 import io.mikael.urlbuilder.UrlBuilder;
 
+import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
+
 public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
 
     private static final String BASE_URL = "https://transport.opendata.ch/v1/";
     private static final String LOCATION_URL = BASE_URL + "locations";
     private static final String CONNECTIONS_URL = BASE_URL + "connections";
 
+    private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Europe/Berlin");
+
     private static final String TAG = "TransportAPI";
+    /**
+     * From the documentation:
+     * <blockquote>
+     * 0 - 3. Allows pagination of connections. Zero-based,
+     * so first page is 0, second is 1, third is 2 and so on.
+     * </blockquote>
+     */
+    private static final String URL_PARAMETER_PAGE = "page";
 
     public TransportAPI() {
     }
@@ -49,10 +62,14 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
         }
     }
 
-    private static void addURLDate(UrlBuilder uriBuilder, Date date) {
+    private static UrlBuilder addURLDate(UrlBuilder uriBuilder, Date date) {
+        requireNonNull(uriBuilder, "uriBuilder");
+        requireNonNull(date, "date");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ROOT);
+        timeFormat.setTimeZone(TIME_ZONE);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
-        uriBuilder
+        dateFormat.setTimeZone(TIME_ZONE);
+        return uriBuilder
                 .addParameter("time", timeFormat.format(date))
                 .addParameter("date", dateFormat.format(date));
     }
@@ -69,28 +86,33 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
         gsonBuilder.registerTypeAdapter(Connection.class, ConnectionDeserializer.INSTANCE);
     }
 
-    public Connection[] getConnections(ConnectionQuery connectionQuery) throws IOException {
+    public Connection[] getConnections(ConnectionQuery connectionQuery, int page) throws IOException {
         UrlBuilder builder = UrlBuilder.fromString(CONNECTIONS_URL)
                 .addParameter("from", connectionQuery.getFrom())
-                .addParameter("to", connectionQuery.getTo());
+                .addParameter("to", connectionQuery.getTo())
+                .addParameter("limit", "6")
+                .addParameter(URL_PARAMETER_PAGE, Integer.toString(page));
         if (connectionQuery.hasVia()) {
             for (String via : connectionQuery.getVia()) {
-                builder.addParameter("via[]", via);
+                builder = builder.addParameter("via[]", via);
             }
         }
 
         if (connectionQuery.getDepartureTime() != null) {
-            addURLDate(builder, connectionQuery.getDepartureTime());
+            builder = addURLDate(builder, connectionQuery.getDepartureTime());
+        } else if (connectionQuery.getArrivalTime() != null) {
+            builder = builder.setParameter("isArrivalTime", "1");
+            builder = addURLDate(builder, connectionQuery.getArrivalTime());
         }
         return loadConnections(builder.toUrl());
     }
 
-    private Connection[] loadConnections(URL builder) throws IOException {
-        return loadJson(builder, ConnectionList.class).connections;
+    private Connection[] loadConnections(URL url) throws IOException {
+        return loadJson(url, ConnectionList.class).connections;
     }
 
-    private Location[] loadLocations(URL builder) throws IOException {
-        return loadJson(builder, StationsList.class).stations;
+    private Location[] loadLocations(URL url) throws IOException {
+        return loadJson(url, StationsList.class).stations;
     }
 
 
@@ -109,13 +131,13 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
                     case TRAIN:
                     case BUS:
                     case TRAM:
-                        builder.addParameter("type", "station");
+                        builder = builder.addParameter("type", "station");
                         break;
                     case POI:
-                        builder.addParameter("type", "poi");
+                        builder = builder.addParameter("type", "poi");
                         break;
                     case ADDRESS:
-                        builder.addParameter("type", "address");
+                        builder = builder.addParameter("type", "address");
                         break;
                     case UNKNOWN:
                     default:

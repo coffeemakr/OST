@@ -107,4 +107,14 @@ public class Section implements Parcelable {
     public String getRouteLongName() {
         return route.getLongName();
     }
+
+    @NonNull
+    public ArrivalCheckpoint getArrival() {
+        return arrival;
+    }
+
+    @NonNull
+    public DepartureCheckpoint getDeparture() {
+        return departure;
+    }
 }

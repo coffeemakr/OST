@@ -1,6 +1,8 @@
 package ch.unstable.ost.api.base;
 
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -10,6 +12,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ch.unstable.ost.BuildConfig;
 
@@ -19,6 +23,8 @@ public class BaseHttpJsonAPI {
     private static final String TAG = "BaseHttpJsonAPI";
     private static final String USER_AGENT = "OST/" + BuildConfig.VERSION_NAME;
     protected final Gson gson;
+
+    private static final Logger logger = Logger.getLogger(TAG);
 
     public BaseHttpJsonAPI() {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -33,12 +39,11 @@ public class BaseHttpJsonAPI {
 
     private InputStreamReader open(URL url) throws IOException {
         if(BuildConfig.DEBUG) {
-            try {
-                android.util.Log.d(TAG, "loading JSON " + url);
-            }catch (RuntimeException ignore) {
-
-            }
+            Log.d(TAG, "loading JSON " + url);
         }
+        logger.log(Level.INFO, "loading JSON " + url);
+
+
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("User-Agent", USER_AGENT);

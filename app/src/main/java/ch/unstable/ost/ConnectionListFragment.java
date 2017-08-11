@@ -232,7 +232,7 @@ public class ConnectionListFragment extends Fragment {
             uiHandler.sendEmptyMessage(MESSAGE_CONNECTIONS_LOADING_STARTED);
             Connection[] connections;
             try {
-                connections = transportAPI.getConnections(connectionQuery);
+                connections = transportAPI.getConnections(connectionQuery, 0);
                 for (Connection connection : connections) {
                     Log.d(TAG, connection.toString());
                 }
