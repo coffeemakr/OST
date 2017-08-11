@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import ch.unstable.ost.api.model.PassingCheckpoint;
@@ -86,7 +87,7 @@ public class SectionDetailFragment extends Fragment {
         private PassingCheckpoint[] stops;
 
         public void setStops(PassingCheckpoint[] stops) {
-            this.stops = stops;
+            this.stops = Arrays.copyOf(stops, stops.length);
             notifyDataSetChanged();
         }
 

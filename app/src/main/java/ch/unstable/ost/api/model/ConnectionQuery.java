@@ -16,8 +16,7 @@ import java.util.List;
 import ch.unstable.ost.utils.ParcelUtils;
 
 public class ConnectionQuery implements Parcelable {
-    public static final Parcelable.Creator<ConnectionQuery> CREATOR
-            = new Parcelable.Creator<ConnectionQuery>() {
+    public static final Parcelable.Creator<ConnectionQuery> CREATOR = new Parcelable.Creator<ConnectionQuery>() {
         public ConnectionQuery createFromParcel(Parcel in) {
             return new ConnectionQuery(in);
         }
@@ -134,9 +133,12 @@ public class ConnectionQuery implements Parcelable {
         private Date arrivalTime;
 
         public Builder() {
-
         }
 
+        /**
+         * Create builder from an existing connection query
+         * @param connectionQuery the connection query to build upon
+         */
         public Builder(ConnectionQuery connectionQuery) {
             this.via = Arrays.asList(connectionQuery.via);
             this.from = connectionQuery.from;
@@ -145,7 +147,7 @@ public class ConnectionQuery implements Parcelable {
             this.arrivalTime = connectionQuery.arrivalTime;
         }
 
-        protected Builder(Parcel in) {
+        private Builder(Parcel in) {
             via = in.createStringArrayList();
             from = in.readString();
             to = in.readString();
@@ -167,6 +169,7 @@ public class ConnectionQuery implements Parcelable {
             return 0;
         }
 
+        @NonNull
         public Builder setVia(String... via) {
             if (via == null || via.length == 1 && via[0] == null) {
                 this.via.clear();
@@ -176,29 +179,35 @@ public class ConnectionQuery implements Parcelable {
             return this;
         }
 
+        @NonNull
         public Builder addVia(String via) {
             this.via.add(via);
             return this;
         }
 
+        @Nullable
         public String getFrom() {
             return from;
         }
 
+        @NonNull
         public Builder setFrom(String from) {
             this.from = from;
             return this;
         }
 
+        @Nullable
         public String getTo() {
             return to;
         }
 
+        @NonNull
         public Builder setTo(String to) {
             this.to = to;
             return this;
         }
 
+        @NonNull
         public ConnectionQuery build() {
             if (from == null) throw new IllegalStateException("from is null");
             if (to == null) throw new IllegalStateException("to is null");
@@ -207,6 +216,7 @@ public class ConnectionQuery implements Parcelable {
             return new ConnectionQuery(this);
         }
 
+        @NonNull
         public Builder reverseDirection() {
             String temp = to;
             to = from;
@@ -219,16 +229,19 @@ public class ConnectionQuery implements Parcelable {
             return departureTime;
         }
 
+        @NonNull
         public Builder setDepartureTime(@Nullable Date departureTime) {
             this.departureTime = departureTime;
             this.arrivalTime = null;
             return this;
         }
 
+        @Nullable
         public Date getArrivalTime() {
             return arrivalTime;
         }
 
+        @NonNull
         public Builder setArrivalTime(@Nullable Date arrivalTime) {
             this.departureTime = null;
             this.arrivalTime = arrivalTime;

@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.theme.ThemeHelper;
 
@@ -99,7 +101,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
 
     @MainThread
     public void setLocations(Location[] locations) {
-        mLocations = locations;
+        mLocations = Arrays.copyOf(locations, locations.length);
         notifyDataSetChanged();
     }
 

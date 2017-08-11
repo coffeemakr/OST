@@ -3,6 +3,7 @@ package ch.unstable.ost.api.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import ch.unstable.ost.utils.ParcelUtils;
@@ -51,7 +52,7 @@ public class Connection implements Parcelable {
     }
 
     public Section[] getSections() {
-        return sections;
+        return Arrays.copyOf(sections, sections.length);
     }
 
     public Date getDepartureDate() {
