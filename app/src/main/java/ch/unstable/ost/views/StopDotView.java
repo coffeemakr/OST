@@ -66,16 +66,16 @@ public class StopDotView extends View {
         float stopY = getHeight();
         switch (mType) {
             case TOP:
-                startY = getHeight() / 2;
+                startY = getHeight() / 2f;
                 break;
             case BOTH:
                 break;
             case BOTTOM:
-                stopY = getHeight() / 2;
+                stopY = getHeight() / 2f;
                 break;
         }
         canvas.drawLine(x, startY, x, stopY, mLinePaint);
-        canvas.drawCircle(x, getHeight() / 2, mCirclePixelWidth / 2, mCirclePaint);
+        canvas.drawCircle(x, getHeight() / 2f, mCirclePixelWidth / 2f, mCirclePaint);
     }
 
     protected Paint getLinePaint() {
