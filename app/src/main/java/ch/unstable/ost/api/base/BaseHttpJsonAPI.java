@@ -17,7 +17,7 @@ import ch.unstable.ost.BuildConfig;
 public class BaseHttpJsonAPI {
     public static final int HTTP_CODE_TOO_MANY_REQUESTS = 429;
     private static final String TAG = "BaseHttpJsonAPI";
-    private static final String USER_AGENT = "OST/0.1";
+    private static final String USER_AGENT = "OST/" + BuildConfig.VERSION_NAME;
     protected final Gson gson;
 
     public BaseHttpJsonAPI() {
