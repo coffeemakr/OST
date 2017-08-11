@@ -45,6 +45,18 @@ public class ConnectionListFragment extends Fragment {
     private OnConnectionListInteractionListener mOnConnectionListInteractionListener;
     private View mLoadingIndicator;
     private RecyclerView mConnectionsList;
+    private OverscrollListener.Listener mOverScrollListener = new OverscrollListener.Listener() {
+        @Override
+        public void onScrolledBelow(RecyclerView recyclerView) {
+            Log.d(TAG, "on scrolled below");
+        }
+
+        @Override
+        public void onScrolledAbove(RecyclerView recyclerView) {
+            Log.d(TAG, "on scrolled above");
+        }
+    };
+    private OverscrollListener mConnectionListScrollListener;
 
     public ConnectionListFragment() {
         // Empty constructor
@@ -130,8 +142,18 @@ public class ConnectionListFragment extends Fragment {
         mConnectionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         mConnectionsList.addItemDecoration(dividerItemDecoration);
+        mConnectionListScrollListener = new OverscrollListener(mOverScrollListener);
+        mConnectionsList.addOnScrollListener(mConnectionListScrollListener);
         mLoadingIndicator = view.findViewById(R.id.loadingIndicator);
 
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mConnectionsList.removeOnScrollListener(mConnectionListScrollListener);
+        mConnectionListScrollListener = null;
     }
 
     public ConnectionQuery getConnectionQuery() {
@@ -220,6 +242,40 @@ public class ConnectionListFragment extends Fragment {
             }
             Message message = uiHandler.obtainMessage(MESSAGE_CONNECTIONS_LOADED, connections);
             uiHandler.sendMessage(message);
+        }
+    }
+
+    private static class OverscrollListener extends RecyclerView.OnScrollListener {
+
+        @Nullable
+        private Listener mListener;
+
+        public OverscrollListener() {
+            this(null);
+        }
+
+        public OverscrollListener(@Nullable Listener listener) {
+            setOnScrollPastItemListener(listener);
+        }
+
+        public void setOnScrollPastItemListener(@Nullable Listener listener) {
+            this.mListener = listener;
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            if(mListener == null) return;
+            LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            if(layoutManager.getItemCount() == layoutManager.findFirstCompletelyVisibleItemPosition() && dy > 0) {
+                mListener.onScrolledBelow(recyclerView);
+            } else if(0 == layoutManager.findFirstCompletelyVisibleItemPosition() && dy < 0) {
+                mListener.onScrolledAbove(recyclerView);
+            }
+        }
+
+        public interface Listener {
+            void onScrolledBelow(RecyclerView recyclerView);
+            void onScrolledAbove(RecyclerView recyclerView);
         }
     }
 }
