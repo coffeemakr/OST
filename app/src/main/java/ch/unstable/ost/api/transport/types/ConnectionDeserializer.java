@@ -27,22 +27,22 @@ public enum ConnectionDeserializer implements JsonDeserializer<Connection> {
     public Connection deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject connectionObj = json.getAsJsonObject();
         Section[] sections = context.deserialize(connectionObj.get("sections"), Section[].class);
-        if(sections == null) {
-            if(BuildConfig.DEBUG) {
+        if (sections == null) {
+            if (BuildConfig.DEBUG) {
                 Log.e(TAG, "sections is null in \n" + LogUtils.prettyJson(json));
             }
             throw new JsonParseException("sections is null");
         }
         DepartureCheckpoint departure = context.deserialize(connectionObj.get("from"), DepartureCheckpoint.class);
-        if(departure == null) {
-            if(BuildConfig.DEBUG) {
+        if (departure == null) {
+            if (BuildConfig.DEBUG) {
                 Log.e(TAG, "from is null in \n" + LogUtils.prettyJson(json));
             }
             throw new JsonParseException("from is null");
         }
         ArrivalCheckpoint arrival = context.deserialize(connectionObj.get("to"), ArrivalCheckpoint.class);
-        if(arrival == null) {
-            if(BuildConfig.DEBUG) Log.e(TAG, "to is null in \n" + LogUtils.prettyJson(json));
+        if (arrival == null) {
+            if (BuildConfig.DEBUG) Log.e(TAG, "to is null in \n" + LogUtils.prettyJson(json));
             throw new JsonParseException("to is null");
         }
         return new Connection(sections, departure, arrival);

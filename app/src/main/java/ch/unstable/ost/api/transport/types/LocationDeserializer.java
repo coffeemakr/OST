@@ -20,7 +20,7 @@ public enum LocationDeserializer implements JsonDeserializer<Location> {
     @Nullable
     public static String getNullableString(JsonObject parent, String field) {
         JsonElement value = parent.get(field);
-        if(value.isJsonNull()) {
+        if (value.isJsonNull()) {
             return null;
         } else {
             return value.getAsString();
@@ -32,18 +32,18 @@ public enum LocationDeserializer implements JsonDeserializer<Location> {
         JsonObject location = json.getAsJsonObject();
         String id = getNullableString(location, "id");
         String name = location.get("name").getAsString();
-        ch.unstable.ost.api.model.Location.StationType type = ch.unstable.ost.api.model.Location.StationType.UNKNOWN;
-        if(location.has("type")) {
+        Location.StationType type = Location.StationType.UNKNOWN;
+        if (location.has("type")) {
             String typeName = location.get("type").getAsString();
             switch (typeName.toLowerCase(Locale.ROOT)) {
                 case "station":
-                    type = ch.unstable.ost.api.model.Location.StationType.TRAIN;
+                    type = Location.StationType.TRAIN;
                     break;
                 case "poi":
-                    type = ch.unstable.ost.api.model.Location.StationType.POI;
+                    type = Location.StationType.POI;
                     break;
                 case "address":
-                    type = ch.unstable.ost.api.model.Location.StationType.ADDRESS;
+                    type = Location.StationType.ADDRESS;
                     break;
                 default:
                     throw new JsonParseException("Unknown type: " + typeName);

@@ -15,7 +15,8 @@ import java.security.cert.X509Certificate;
 public class ErrorUtils {
     private final String TAG = "ErrorUtils";
 
-    private ErrorUtils() {}
+    private ErrorUtils() {
+    }
 
     /*
     * Get the X.509 certificate.

@@ -25,7 +25,7 @@ public class ThemeHelper {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String currentTheme = preferences.getString(PreferenceKeys.KEY_THEME, null);
         int style;
-        if(currentTheme == null) {
+        if (currentTheme == null) {
             style = DEFAULT_THEME;
         } else {
             style = getThemeStyle(context.getResources(), currentTheme);

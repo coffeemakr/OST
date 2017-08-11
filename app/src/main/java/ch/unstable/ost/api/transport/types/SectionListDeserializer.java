@@ -33,7 +33,7 @@ public enum SectionListDeserializer implements JsonDeserializer<Section[]> {
         String headsign = getHeadsign(journey);
         String routeShortName = getRouteShortname(journey);
         String routeLongName = getRouteLongName(journey);
-        if(routeShortName == null) {
+        if (routeShortName == null) {
             routeShortName = routeLongName;
         }
         DepartureCheckpoint departure = context.deserialize(sectionObj.get("departure"), DepartureCheckpoint.class);
@@ -64,6 +64,11 @@ public enum SectionListDeserializer implements JsonDeserializer<Section[]> {
         return journey.get("to").getAsString();
     }
 
+    private static long getWalkDuration(JsonObject walkObj) {
+        Long duration = DurationDeserializer.fromString(getNullableString(walkObj, "duration"));
+        if (duration == null) return 0;
+        return duration;
+    }
 
     @Override
     public Section[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -83,11 +88,5 @@ public enum SectionListDeserializer implements JsonDeserializer<Section[]> {
             }
         }
         return sections.toArray(new Section[sections.size()]);
-    }
-
-    private static long getWalkDuration(JsonObject walkObj) {
-        Long duration =  DurationDeserializer.fromString(getNullableString(walkObj, "duration"));
-        if(duration == null) return 0;
-        return duration;
     }
 }

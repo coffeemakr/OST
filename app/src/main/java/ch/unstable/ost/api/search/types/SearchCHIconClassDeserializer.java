@@ -10,26 +10,24 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import ch.unstable.ost.api.model.Location;
-
-public class SearchCHIconClassDeserializer implements JsonDeserializer<Location.StationType> {
+public class SearchCHIconClassDeserializer implements JsonDeserializer<ch.unstable.ost.api.model.impl.Location.StationType> {
     private static final String TAG = SearchCHIconClassDeserializer.class.getSimpleName();
 
     @Override
-    public Location.StationType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public ch.unstable.ost.api.model.impl.Location.StationType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         String iconClass = json.getAsString();
         switch (iconClass) {
             case "sl-icon-type-zug":
-                return Location.StationType.TRAIN;
+                return ch.unstable.ost.api.model.impl.Location.StationType.TRAIN;
             case "sl-icon-type-bus":
-                return Location.StationType.BUS;
+                return ch.unstable.ost.api.model.impl.Location.StationType.BUS;
             case "sl-icon-type-tram":
-                return Location.StationType.TRAM;
+                return ch.unstable.ost.api.model.impl.Location.StationType.TRAM;
             case "sl-icon-type-adr":
-                return Location.StationType.ADDRESS;
+                return ch.unstable.ost.api.model.impl.Location.StationType.ADDRESS;
             default:
                 Log.w(TAG, "Unknown class: " + iconClass);
-                return Location.StationType.UNKNOWN;
+                return ch.unstable.ost.api.model.impl.Location.StationType.UNKNOWN;
         }
     }
 }

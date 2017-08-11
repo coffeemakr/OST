@@ -15,19 +15,19 @@ import java.util.Locale;
 
 import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.impl.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.impl.Connection;
 import ch.unstable.ost.api.model.impl.DepartureCheckpoint;
 import ch.unstable.ost.api.model.impl.Location;
 import ch.unstable.ost.api.model.impl.PassingCheckpoint;
 import ch.unstable.ost.api.model.impl.Section;
-import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.types.ArrivalStopDeserializer;
 import ch.unstable.ost.api.transport.types.ConnectionDeserializer;
 import ch.unstable.ost.api.transport.types.DepartureCheckpointDeserializer;
 import ch.unstable.ost.api.transport.types.LocationDeserializer;
-import ch.unstable.ost.api.transport.types.SectionListDeserializer;
 import ch.unstable.ost.api.transport.types.PassingCheckpointDeserializer;
+import ch.unstable.ost.api.transport.types.SectionListDeserializer;
 import io.mikael.urlbuilder.UrlBuilder;
 
 public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
@@ -94,18 +94,17 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
     }
 
 
-
     @Override
-    public ch.unstable.ost.api.model.Location[] getStationsByQuery(String query) throws IOException {
+    public Location[] getStationsByQuery(String query) throws IOException {
         return getStationsByQuery(query, null);
     }
 
     @Override
-    public ch.unstable.ost.api.model.Location[] getStationsByQuery(String query, @Nullable ch.unstable.ost.api.model.Location.StationType[] types) throws IOException {
+    public Location[] getStationsByQuery(String query, @Nullable Location.StationType[] types) throws IOException {
         UrlBuilder builder = UrlBuilder.fromString(LOCATION_URL)
                 .addParameter("query", query);
-        if(types != null && types.length > 0) {
-            for(ch.unstable.ost.api.model.Location.StationType type: types) {
+        if (types != null && types.length > 0) {
+            for (Location.StationType type : types) {
                 switch (type) {
                     case TRAIN:
                     case BUS:

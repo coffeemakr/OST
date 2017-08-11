@@ -24,7 +24,7 @@ public enum PassingCheckpointDeserializer implements JsonDeserializer<PassingChe
     @Nullable
     private static Date getNullableDate(JsonObject jsonObject, String field) {
         JsonElement value = jsonObject.get(field);
-        if(value.isJsonNull()) {
+        if (value.isJsonNull()) {
             return null;
         } else {
             return new Date(value.getAsLong() * 1000);
@@ -37,18 +37,18 @@ public enum PassingCheckpointDeserializer implements JsonDeserializer<PassingChe
         Location location = LocationDeserializer.INSTANCE.deserialize(passObj.get("station"), null, context);
 
         Date arrival = getNullableDate(passObj, "arrivalTimestamp");
-        if(arrival == null) {
+        if (arrival == null) {
             Log.w(TAG, "arrivalTimestamp is null: " + passObj.toString());
         }
         Date departure = getNullableDate(passObj, "departureTimestamp");
-        if(departure == null) {
+        if (departure == null) {
             Log.w(TAG, "departureTime is null: " + passObj.toString());
         }
-        if(arrival == null && departure != null) {
+        if (arrival == null && departure != null) {
             arrival = departure;
-        } else if(arrival != null && departure == null) {
+        } else if (arrival != null && departure == null) {
             departure = arrival;
-        } else if(arrival == null && departure == null){
+        } else if (arrival == null && departure == null) {
             Log.e(TAG, "departure and arrival is null");
             arrival = departure = new Date(0);
         }

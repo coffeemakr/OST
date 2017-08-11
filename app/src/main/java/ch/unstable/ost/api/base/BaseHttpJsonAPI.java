@@ -1,6 +1,5 @@
 package ch.unstable.ost.api.base;
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -12,8 +11,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import ch.unstable.ost.api.transport.TransportAPI;
 
 
 public class BaseHttpJsonAPI {

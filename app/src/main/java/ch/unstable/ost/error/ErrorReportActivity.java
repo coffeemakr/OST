@@ -108,26 +108,26 @@ public class ErrorReportActivity extends AppCompatActivity {
 
     @NonNull
     private ErrorInfo getErrorInfoFromIntent(Intent intent) {
-        if(intent != null) {
+        if (intent != null) {
             String stackTrace = CustomActivityOnCrash.getStackTraceFromIntent(intent);
             // getStackTrace can return null but is annotated as NonNull
             //noinspection ConstantConditions
-            if(stackTrace != null) {
-                if(BuildConfig.DEBUG) {
+            if (stackTrace != null) {
+                if (BuildConfig.DEBUG) {
                     Log.d(TAG, "Got stacktrace from stacktrace: " + stackTrace);
                 }
                 return new ErrorInfo(stackTrace);
             }
 
             Throwable exception = (Throwable) intent.getSerializableExtra(EXTRA_EXCEPTION);
-            if(exception != null) {
-                if(BuildConfig.DEBUG) {
+            if (exception != null) {
+                if (BuildConfig.DEBUG) {
                     Log.d(TAG, "Got stacktrace from exception");
                 }
                 return new ErrorInfo(exception);
             }
         }
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.w(TAG, "No stacktrace/throwable provided");
         }
         return ErrorInfo.EMPTY;
@@ -143,7 +143,7 @@ public class ErrorReportActivity extends AppCompatActivity {
 
     public void onSendErrorReport() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO,
-                Uri.fromParts("mailto",getString(R.string.error_report_email), null));
+                Uri.fromParts("mailto", getString(R.string.error_report_email), null));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.error_report_subject));
         emailIntent.putExtra(Intent.EXTRA_TEXT, getErrorReportJson());
         startActivity(Intent.createChooser(emailIntent, getString(R.string.error_report_title)));

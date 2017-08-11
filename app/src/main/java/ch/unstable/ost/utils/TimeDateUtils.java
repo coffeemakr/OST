@@ -3,7 +3,6 @@ package ch.unstable.ost.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,9 +28,9 @@ public class TimeDateUtils {
 
 
     private static String formatDuration(Resources resources, final long durationMillies) {
-        if(durationMillies >= DAYS) {
+        if (durationMillies >= DAYS) {
             return resources.getString(R.string.duration_format_days, durationMillies / DAYS, (durationMillies % DAYS) / HOURS, (durationMillies % HOURS) / MINUTES);
-        } else if(durationMillies >= HOURS){
+        } else if (durationMillies >= HOURS) {
             return resources.getString(R.string.duration_format_hours, durationMillies / HOURS, (durationMillies % HOURS) / MINUTES);
         } else {
             return resources.getString(R.string.duration_format_minutes, durationMillies / MINUTES);

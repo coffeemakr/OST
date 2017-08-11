@@ -18,9 +18,9 @@ import android.view.ViewGroup;
 
 import java.io.IOException;
 
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.impl.Connection;
 import ch.unstable.ost.api.transport.TransportAPI;
-import ch.unstable.ost.api.model.ConnectionQuery;
 
 public class ConnectionListFragment extends Fragment {
 
@@ -36,11 +36,11 @@ public class ConnectionListFragment extends Fragment {
     private final OnConnectionClickListener mOnConnectionClickListener = new OnConnectionClickListener();
     private final BackgroundCallback backgroundCallback = new BackgroundCallback();
     private final UICallback uiCallback = new UICallback();
+    private final TransportAPI transportAPI;
     private ConnectionListAdapter mConnectionAdapter;
     private ConnectionQuery mConnectionQuery;
     private Handler backgroundHandler;
     private HandlerThread backgroundThread;
-    private final TransportAPI transportAPI;
     private Handler uiHandler;
     private OnConnectionListInteractionListener mOnConnectionListInteractionListener;
     private View mLoadingIndicator;

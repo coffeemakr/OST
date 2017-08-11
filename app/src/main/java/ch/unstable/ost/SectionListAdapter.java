@@ -27,11 +27,11 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
         @Override
         public void onClick(View v) {
             final Section section = (Section) v.getTag();
-            if(section == null) {
-                if(BuildConfig.DEBUG) Log.w(TAG, "Got tag null for view: " + v);
+            if (section == null) {
+                if (BuildConfig.DEBUG) Log.w(TAG, "Got tag null for view: " + v);
                 return;
             }
-            if(onJourneyClickedListener != null) {
+            if (onJourneyClickedListener != null) {
                 onJourneyClickedListener.onSectionClicked(section);
             }
         }
@@ -105,6 +105,10 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
     }
 
 
+    public interface OnSectionClickedListener {
+        void onSectionClicked(@NonNull Section section);
+    }
+
     public static class WalkSectionViewHolder extends SectionViewHolder {
         final TextView departureTime;
         final TextView departureStationName;
@@ -144,9 +148,5 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
         public SectionViewHolder(View itemView) {
             super(itemView);
         }
-    }
-
-    public interface OnSectionClickedListener {
-        void onSectionClicked(@NonNull Section section);
     }
 }

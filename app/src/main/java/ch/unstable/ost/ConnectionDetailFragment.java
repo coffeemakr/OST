@@ -63,7 +63,7 @@ public class ConnectionDetailFragment extends Fragment {
             mConnection = getArguments().getParcelable(KEY_CONNECTION);
         }
 
-        if(mOnJourneyClickedListener == null) {
+        if (mOnJourneyClickedListener == null) {
             mOnJourneyClickedListener = new SectionListAdapter.OnSectionClickedListener() {
                 @Override
                 public void onSectionClicked(@NonNull Section section) {

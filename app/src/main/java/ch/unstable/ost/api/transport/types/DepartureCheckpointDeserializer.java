@@ -25,13 +25,18 @@ public enum DepartureCheckpointDeserializer implements JsonDeserializer<Departur
 
     @Nullable
     public static String getPlatform(JsonObject object) {
-        if(object.has(FIELD_PLATFORM)) return null;
+        if (object.has(FIELD_PLATFORM)) return null;
         JsonElement platform = object.get(FIELD_PLATFORM);
-        if(platform.isJsonNull()) {
+        if (platform.isJsonNull()) {
             return null;
         } else {
             return platform.getAsString().trim();
         }
+    }
+
+    @NonNull
+    public static Date getDate(JsonObject obj, String fieldName) {
+        return new Date(obj.get(fieldName).getAsLong() * 1000);
     }
 
     @Override
@@ -43,10 +48,5 @@ public enum DepartureCheckpointDeserializer implements JsonDeserializer<Departur
         Date departure = getDate(passObj, FIELD_DEPARTURE_TIMESTAMP);
         String platform = getPlatform(passObj);
         return new DepartureCheckpoint(departure, platform, location);
-    }
-
-    @NonNull
-    public static Date getDate(JsonObject obj, String fieldName) {
-        return new Date(obj.get(fieldName).getAsLong() * 1000);
     }
 }

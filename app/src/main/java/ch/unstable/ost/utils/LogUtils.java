@@ -6,7 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
 public class LogUtils {
-    private LogUtils() {}
+    private LogUtils() {
+    }
 
     public static String prettyJson(JsonElement element) {
         Gson gson = new GsonBuilder()

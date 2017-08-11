@@ -47,7 +47,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     @NonNull
     public static HeadNavigationFragment newInstance(@Nullable ConnectionQuery query) {
-        if(query == null) return newInstance();
+        if (query == null) return newInstance();
         Bundle arguments = new Bundle();
         arguments.putParcelable(KEY_QUERYBUILDER, new ConnectionQuery.Builder(query));
         HeadNavigationFragment fragment = new HeadNavigationFragment();
@@ -96,7 +96,6 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
 
     }
-
 
 
     @Override
@@ -208,7 +207,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     private void setTo(@Nullable String to, boolean notifyListener) {
         mConnectionQueryBuilder.setTo(to);
         updateToView();
-        if(notifyListener) {
+        if (notifyListener) {
             onQueryChanged();
         }
     }
@@ -224,7 +223,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     private void setFrom(@Nullable String from, boolean notifyListener) {
         mConnectionQueryBuilder.setFrom(from);
         mFromButton.setText(getFromButtonText());
-        if(notifyListener) {
+        if (notifyListener) {
             onQueryChanged();
         }
     }

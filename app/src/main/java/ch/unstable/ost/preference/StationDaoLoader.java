@@ -10,11 +10,6 @@ import ch.unstable.ost.R;
 import ch.unstable.ost.api.StationsDAO;
 
 public class StationDaoLoader {
-    public interface StationDAOFactory {
-        @NonNull
-        StationsDAO getStationsDAO(@NonNull Context context);
-    }
-
     @NonNull
     public static StationsDAO createStationDAO(final Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -27,5 +22,10 @@ public class StationDaoLoader {
         } catch (Exception e) {
             throw new IllegalStateException("Couldn't get factory for StationsDAO", e);
         }
+    }
+
+    public interface StationDAOFactory {
+        @NonNull
+        StationsDAO getStationsDAO(@NonNull Context context);
     }
 }

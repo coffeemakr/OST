@@ -40,13 +40,13 @@ public class ConnectionListActivity extends ThemedActivity
         setSupportActionBar(toolbar);
 
 
-        if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new EmptyConnectionListFragment())
                     .commit();
         }
 
-        if(getIntent() != null) {
+        if (getIntent() != null) {
             handleIntent(getIntent());
         }
     }
@@ -59,11 +59,11 @@ public class ConnectionListActivity extends ThemedActivity
     }
 
     private void handleIntent(@NonNull Intent intent) {
-        if(!Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        if (!Intent.ACTION_SEARCH.equals(intent.getAction())) {
             return;
         }
         ConnectionQuery query = intent.getParcelableExtra(EXTRA_QUERY);
-        if(query != null) {
+        if (query != null) {
             onRouteSelected(query);
         }
     }
@@ -89,8 +89,8 @@ public class ConnectionListActivity extends ThemedActivity
 
     private void updateHeadQuery(@Nullable ConnectionQuery query) {
         HeadNavigationFragment headNavigationFragment = (HeadNavigationFragment) getSupportFragmentManager().findFragmentById(R.id.head_fragment);
-        if(headNavigationFragment != null) {
-            if(query == null) {
+        if (headNavigationFragment != null) {
+            if (query == null) {
                 headNavigationFragment.clearQuery();
             } else {
                 headNavigationFragment.updateQuery(query);
@@ -102,7 +102,7 @@ public class ConnectionListActivity extends ThemedActivity
     public void onBackPressed() {
         super.onBackPressed();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if(fragment != null && (fragment instanceof ConnectionListFragment)) {
+        if (fragment != null && (fragment instanceof ConnectionListFragment)) {
             ConnectionListFragment connectionListFragment = (ConnectionListFragment) fragment;
             ConnectionQuery query = connectionListFragment.getConnectionQuery();
             updateHeadQuery(query);

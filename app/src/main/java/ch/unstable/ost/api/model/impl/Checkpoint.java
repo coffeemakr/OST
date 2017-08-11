@@ -1,11 +1,9 @@
 package ch.unstable.ost.api.model.impl;
 
-import android.arch.persistence.room.Database;
 import android.os.Parcel;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.text.TextUtilsCompat;
 
 import com.google.common.base.Strings;
 

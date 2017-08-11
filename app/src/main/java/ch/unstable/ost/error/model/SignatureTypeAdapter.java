@@ -7,7 +7,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class SignatureTypeAdapter extends com.google.gson.TypeAdapter<Signature> {
     @Override

@@ -11,6 +11,17 @@ import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
 
 public class Connection implements Parcelable {
 
+    public static final Creator<Connection> CREATOR = new Creator<Connection>() {
+        @Override
+        public Connection createFromParcel(Parcel in) {
+            return new Connection(in);
+        }
+
+        @Override
+        public Connection[] newArray(int size) {
+            return new Connection[size];
+        }
+    };
     private final Section[] sections;
     private DepartureCheckpoint departure;
     private ArrivalCheckpoint arrival;
@@ -38,18 +49,6 @@ public class Connection implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<Connection> CREATOR = new Creator<Connection>() {
-        @Override
-        public Connection createFromParcel(Parcel in) {
-            return new Connection(in);
-        }
-
-        @Override
-        public Connection[] newArray(int size) {
-            return new Connection[size];
-        }
-    };
 
     public Section[] getSections() {
         return sections;

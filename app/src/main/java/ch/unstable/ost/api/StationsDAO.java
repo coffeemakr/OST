@@ -5,10 +5,8 @@ import android.support.annotation.Nullable;
 
 import java.io.IOException;
 
-import ch.unstable.ost.api.model.Location;
-
 public interface StationsDAO {
-    Location[] getStationsByQuery(String query) throws IOException;
+    ch.unstable.ost.api.model.impl.Location[] getStationsByQuery(String query) throws IOException;
 
-    Location[] getStationsByQuery(String query, @Nullable Location.StationType types[]) throws IOException;
+    ch.unstable.ost.api.model.impl.Location[] getStationsByQuery(String query, @Nullable ch.unstable.ost.api.model.impl.Location.StationType types[]) throws IOException;
 }

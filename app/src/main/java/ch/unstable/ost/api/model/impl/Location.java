@@ -5,12 +5,14 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Arrays;
+
 import ch.unstable.ost.utils.ParcelUtils;
 
 import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
 
 
-public class Location implements ch.unstable.ost.api.model.Location, Parcelable {
+public class Location implements Parcelable {
     public static final Creator<Location> CREATOR = new Creator<Location>() {
         @Override
         public Location createFromParcel(Parcel in) {
@@ -52,15 +54,13 @@ public class Location implements ch.unstable.ost.api.model.Location, Parcelable 
     }
 
     @NonNull
-    @Override
     public String getName() {
         return name;
     }
 
     @NonNull
-    @Override
     public String getId() {
-        if(id == null) {
+        if (id == null) {
             return name;
         } else {
             return id;
@@ -68,8 +68,49 @@ public class Location implements ch.unstable.ost.api.model.Location, Parcelable 
     }
 
     @NonNull
-    @Override
     public StationType getType() {
         return type;
+    }
+
+    public enum StationType {
+        TRAIN(1),
+        BUS(2),
+        TRAM(4),
+        SHIP(8),
+        METRO(16),
+        CABLEWAY(32),
+        COG_RAILWAY(64),
+        /// German: Standseilbahn
+        FUNICULAR(128),
+        ELEVATOR(256),
+        POI(512),
+        ADDRESS(1024),
+        UNKNOWN(2048);
+
+        public final int bit;
+
+        StationType(int i) {
+            this.bit = i;
+        }
+
+        public static int getMask(StationType... types) {
+            int mask = 0;
+            for (StationType type : types) {
+                mask |= type.bit;
+            }
+            return mask;
+        }
+
+        public static StationType[] fromMask(int mask) {
+            StationType[] types = new StationType[values().length];
+            int length = 0;
+            for (StationType type : values()) {
+                if ((mask & type.bit) > 0) {
+                    types[length] = type;
+                    ++length;
+                }
+            }
+            return Arrays.copyOf(types, length);
+        }
     }
 }

@@ -8,6 +8,17 @@ import android.support.annotation.NonNull;
 import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
 
 public class Route implements Parcelable {
+    public static final Creator<Route> CREATOR = new Creator<Route>() {
+        @Override
+        public Route createFromParcel(Parcel in) {
+            return new Route(in);
+        }
+
+        @Override
+        public Route[] newArray(int size) {
+            return new Route[size];
+        }
+    };
     @NonNull
     private final String shortName;
     @NonNull
@@ -37,18 +48,6 @@ public class Route implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<Route> CREATOR = new Creator<Route>() {
-        @Override
-        public Route createFromParcel(Parcel in) {
-            return new Route(in);
-        }
-
-        @Override
-        public Route[] newArray(int size) {
-            return new Route[size];
-        }
-    };
 
     @NonNull
     public String getShortName() {

@@ -36,7 +36,7 @@ public class ErrorInfo {
     public String getStackTrace() {
         if (exception == null && stackTrace == null) {
             return "";
-        } else if(stackTrace != null) {
+        } else if (stackTrace != null) {
             return stackTrace;
         } else {
             StringWriter sw = new StringWriter();

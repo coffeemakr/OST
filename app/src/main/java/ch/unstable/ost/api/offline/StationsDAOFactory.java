@@ -3,7 +3,6 @@ package ch.unstable.ost.api.offline;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import ch.unstable.ost.api.transport.TransportAPI;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.preference.StationDaoLoader;
 

@@ -108,7 +108,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
 
     @Nullable
     private String formatEndDestination(Context context, @Nullable String endDestination) {
-        if(endDestination == null) return null;
+        if (endDestination == null) return null;
         return context.getString(R.string.connection_direction, endDestination);
     }
 

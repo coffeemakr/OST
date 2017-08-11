@@ -15,21 +15,10 @@ import ch.unstable.ost.R;
 public class StopDotView extends View {
 
     private final Paint mCirclePaint;
-    private Type mType;
     private final int mCirclePixelWidth;
-
-    public void setLineMode(Type type) {
-        mType = type;
-        invalidate();
-    }
-
-    public enum Type {
-        TOP,
-        BOTTOM,
-        BOTH
-    }
-
     private final Paint mLinePaint;
+    private Type mType;
+
     public StopDotView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -64,6 +53,11 @@ public class StopDotView extends View {
         style.recycle();
     }
 
+    public void setLineMode(Type type) {
+        mType = type;
+        invalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -94,5 +88,11 @@ public class StopDotView extends View {
 
     protected int getCirclePixelWidth() {
         return mCirclePixelWidth;
+    }
+
+    public enum Type {
+        TOP,
+        BOTTOM,
+        BOTH
     }
 }

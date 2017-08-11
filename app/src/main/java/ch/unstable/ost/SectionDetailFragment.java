@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import java.util.Date;
 
-import ch.unstable.ost.api.model.impl.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.impl.PassingCheckpoint;
 import ch.unstable.ost.api.model.impl.Section;
 import ch.unstable.ost.utils.TimeDateUtils;

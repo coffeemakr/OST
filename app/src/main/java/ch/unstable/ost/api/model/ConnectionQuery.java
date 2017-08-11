@@ -109,10 +109,6 @@ public class ConnectionQuery implements Parcelable {
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder implements Parcelable {
 
-        private static final int RESTRICTION_TYPE_ARRIVAL = 1;
-        private static final int RESTRICTION_TYPE_DEPARTURE = 0;
-
-
         public static final Creator<Builder> CREATOR = new Creator<Builder>() {
             @Override
             public Builder createFromParcel(Parcel in) {
@@ -124,6 +120,8 @@ public class ConnectionQuery implements Parcelable {
                 return new Builder[size];
             }
         };
+        private static final int RESTRICTION_TYPE_ARRIVAL = 1;
+        private static final int RESTRICTION_TYPE_DEPARTURE = 0;
         @NonNull
         private List<String> via = new ArrayList<>();
         private String from = null;
@@ -210,18 +208,6 @@ public class ConnectionQuery implements Parcelable {
             return new ConnectionQuery(this);
         }
 
-        public Builder setDepartureTime(@Nullable Date departureTime) {
-            this.departureTime = departureTime;
-            this.arrivalTime = null;
-            return this;
-        }
-
-        public Builder setArrivalTime(@Nullable Date arrivalTime) {
-            this.departureTime = null;
-            this.arrivalTime = arrivalTime;
-            return this;
-        }
-
         public Builder reverseDirection() {
             String temp = to;
             to = from;
@@ -234,8 +220,20 @@ public class ConnectionQuery implements Parcelable {
             return departureTime;
         }
 
+        public Builder setDepartureTime(@Nullable Date departureTime) {
+            this.departureTime = departureTime;
+            this.arrivalTime = null;
+            return this;
+        }
+
         public Date getArrivalTime() {
             return arrivalTime;
+        }
+
+        public Builder setArrivalTime(@Nullable Date arrivalTime) {
+            this.departureTime = null;
+            this.arrivalTime = arrivalTime;
+            return this;
         }
     }
 }
