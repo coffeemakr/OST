@@ -105,6 +105,11 @@ public class ConnectionQuery implements Parcelable {
         return Objects.hashCode(from, to, via, departureTime);
     }
 
+    @Nullable
+    public Date getArrivalTime() {
+        return arrivalTime;
+    }
+
 
     @SuppressWarnings("UnusedReturnValue")
     public static class Builder implements Parcelable {
@@ -120,8 +125,7 @@ public class ConnectionQuery implements Parcelable {
                 return new Builder[size];
             }
         };
-        private static final int RESTRICTION_TYPE_ARRIVAL = 1;
-        private static final int RESTRICTION_TYPE_DEPARTURE = 0;
+
         @NonNull
         private List<String> via = new ArrayList<>();
         private String from = null;
@@ -163,16 +167,11 @@ public class ConnectionQuery implements Parcelable {
             return 0;
         }
 
-        @NonNull
-        public List<String> getVia() {
-            return via;
-        }
-
         public Builder setVia(String... via) {
             if (via == null || via.length == 1 && via[0] == null) {
                 this.via.clear();
             } else {
-                this.via = Arrays.asList(via);
+                this.via = new ArrayList<>(Arrays.asList(via));
             }
             return this;
         }
