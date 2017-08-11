@@ -10,7 +10,7 @@
     <item name="masked" type="id" />
 
     <string name="description_invert_direction">Reverse direction</string>
-    <string name="departure_time">Departure departureTime</string>
+    <string name="departure_time">Departure time</string>
     <string name="request_choose_to">Choose destination</string>
     <string name="request_choose_from">Choose start</string>
     <string name="title_activity_choose_station" translatable="false">@string/request_choose_station</string>

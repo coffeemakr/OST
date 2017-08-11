@@ -7,8 +7,8 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 
-public class ParcelCompat {
-
+public enum  ParcelCompat {
+    ;
     @Nullable
     private static <T extends Parcelable> T readTypeObjectCompat(Parcel in, Parcelable.Creator<T> creator) {
         int exists = in.readInt();

@@ -3,9 +3,8 @@ package ch.unstable.ost.utils;
 
 import android.support.annotation.NonNull;
 
-public class ObjectsCompat {
-    private ObjectsCompat() {
-    }
+public enum  ObjectsCompat {
+    ;
 
     @NonNull
     public static <E> E requireNonNull(E object, String name) {
