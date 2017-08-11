@@ -2,8 +2,11 @@
 
 import sqlite3
 import csv
+import zipfile
 
-conn = sqlite3.connect("timetable.db")
+GTFS_SOURCE='data/gtfsfp20172017-08-02.zip'
+
+conn = sqlite3.connect("gtfs-timetable-2.db")
 c = conn.cursor();
 c.execute('''
     CREATE TABLE agencies (
@@ -30,6 +33,21 @@ Route type:
 
 #Field = namedtuple('Field', ['name', 'required', 'type_name', 'type_fnc'])
 
+CALENDAR_FIELDS = ['service_id', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'start_date', 'end_date']
+
+c.execute('''CREATE TABLE calendar(
+        service_id TEXT NOT NULL,
+        monday INTEGER NOT NULL,
+        tuesday INTEGER NOT NULL,
+        wednesday INTEGER NOT NULL,
+        thursday INTEGER NOT NULL,
+        friday INTEGER NOT NULL,
+        saturday INTEGER NOT NULL,
+        sunday INTEGER NOT NULL,
+        start_date TEXT NOT NULL,
+        end_date TEXT NOT NULL
+        )''')
+
 ROUTE_FIELDS = [
         'route_id', 
         'agency_id',
@@ -41,8 +59,9 @@ ROUTE_FIELDS = [
         'route_color', 
         'route_text_color']
 
+
 c.execute('''CREATE TABLE routes(
-        route_id TEXT NON NULL PRIMARY KEY,
+        route_id TEXT NOT NULL PRIMARY KEY,
         agency_id TEXT,
         route_short_name TEXT NOT NULL,
         route_long_name TEXT NOT NULL,
@@ -68,7 +87,7 @@ TRIP_FIELDS = [
         ]
 c.execute('''CREATE TABLE trips (
         route_id TEXT NOT NULL,
-        service_id TEXT NOT NULL,
+        service_id TEXT NOT NULL REFERENCES calendar(service_id),
         trip_id TEXT NOT NULL PRIMARY KEY,
         trip_headsign TEXT,
         trip_short_name TEXT,
@@ -138,34 +157,43 @@ c.execute('''CREATE TABLE stop_times (
         )''')
         
 
+def utf_decoder(lines):
+    for line in lines:
+        yield line.decode('utf-8')
 
-def fill_table(filename, table, fields):
-    with open(filename, encoding='utf-8') as trips:
-        if trips.read(1) != '\ufeff':
-            trips.seek(0)
-        query ='INSERT INTO ' + table + ' VALUES (' + ', '.join(len(fields) * ['?']) + ')' 
-        for trip in csv.DictReader(trips):
-            values = []
-            for field in fields:
-                values.append(trip.get(field, None))
-            try:
-                c.execute(query, values)
-            except sqlite3.IntegrityError as e:
-                print(trip)
-                print("values: %s " % str(dict(zip(fields, values))))
-                raise e
-                #continue
 
+def fill_table(gtfs_filename, filename, table, fields):
+    with zipfile.ZipFile(gtfs_filename) as z:
+        with z.open(filename) as trips:
+            first_line = trips.readline().decode('utf-8').strip()
+            if first_line.startswith('\ufeff'):
+                first_line = first_line[1:]
+            query ='INSERT INTO ' + table + ' VALUES (' + ', '.join(len(fields) * ['?']) + ')' 
+            for trip in csv.DictReader(utf_decoder(trips), fieldnames=first_line.split(',')):
+                values = []
+                for field in fields:
+                    values.append(trip.get(field, None))
+                try:
+                    c.execute(query, values)
+                except sqlite3.IntegrityError as e:
+                    print(trip)
+                    print("values: %s " % str(dict(zip(fields, values))))
+                    raise e
+                    #continue
+
+
+print("Filling calendar")
+fill_table(GTFS_SOURCE, 'calendar.txt', 'calendar', CALENDAR_FIELDS)
 print("Filling routes")
-fill_table('routes.txt', 'routes', ROUTE_FIELDS)
+fill_table(GTFS_SOURCE, 'routes.txt', 'routes', ROUTE_FIELDS)
 conn.commit()
 print("Filling trips")
-fill_table('trips.txt', 'trips', TRIP_FIELDS)
+fill_table(GTFS_SOURCE, 'trips.txt', 'trips', TRIP_FIELDS)
 conn.commit()
 print("Filling stops")
-fill_table('stops.txt', 'stops', STOP_FIELDS)
+fill_table(GTFS_SOURCE, 'stops.txt', 'stops', STOP_FIELDS)
 conn.commit()
 print("Filling stop times")
-fill_table('stop_times.txt', 'stop_times', STOP_TIME_FIELDS)
+fill_table(GTFS_SOURCE, 'stop_times.txt', 'stop_times', STOP_TIME_FIELDS)
 conn.commit()
-conn.close()
+
