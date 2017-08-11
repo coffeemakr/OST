@@ -8,7 +8,8 @@ import android.support.annotation.Nullable;
 
 import java.util.Date;
 
-public class ParcelUtils {
+public enum  ParcelUtils {
+    ;
     @Nullable
     public static Date readDate(Parcel in) {
         long timestamp = in.readLong();

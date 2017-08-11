@@ -26,7 +26,6 @@ before_script:
 - adb shell input keyevent 82 &
 script:
   - ./gradlew build connectedCheck
-  - ./gradlew sonarqube
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -36,8 +35,8 @@ cache:
   - "$HOME/.gradle/wrapper/"
   - "$HOME/.android/build-cache"
 after_success:
+  - ./gradlew sonarqube jacocoTestReport coveralls
   - bash <(curl -s https://codecov.io/bash)
-
 addons:
   sonarcloud:
     organization: "coffeemakr-github"
