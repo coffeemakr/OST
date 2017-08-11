@@ -16,8 +16,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import ch.unstable.ost.api.model.impl.Connection;
-import ch.unstable.ost.api.model.impl.Section;
+import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.utils.TimeDateUtils;
 import ch.unstable.ost.views.ConnectionLineView;
 

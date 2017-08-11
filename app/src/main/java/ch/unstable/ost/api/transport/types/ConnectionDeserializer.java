@@ -12,10 +12,10 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
 import ch.unstable.ost.BuildConfig;
-import ch.unstable.ost.api.model.impl.ArrivalCheckpoint;
-import ch.unstable.ost.api.model.impl.Connection;
-import ch.unstable.ost.api.model.impl.DepartureCheckpoint;
-import ch.unstable.ost.api.model.impl.Section;
+import ch.unstable.ost.api.model.ArrivalCheckpoint;
+import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.DepartureCheckpoint;
+import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.utils.LogUtils;
 
 import static android.content.ContentValues.TAG;

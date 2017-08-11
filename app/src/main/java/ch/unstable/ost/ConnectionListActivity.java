@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
-import ch.unstable.ost.api.model.impl.Connection;
+import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
 

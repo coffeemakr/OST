@@ -28,6 +28,7 @@ import android.widget.TextView;
 import java.io.IOException;
 
 import ch.unstable.ost.api.StationsDAO;
+import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.transport.TransportAPI;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.preference.StationDaoLoader;
@@ -38,10 +39,10 @@ public class ChooseStationActivity extends ThemedActivity {
     public static final String EXTRA_CHOOSE_PROMPT = "EXTRA_CHOOSE_PROMPT";
     public static final String EXTRA_RESULT_STATION_NAME = "EXTRA_RESULT_STATION_NAME";
     public static final String EXTRA_RESULT_STATION_ID = "EXTRA_RESULT_STATION_ID";
-    private static final ch.unstable.ost.api.model.impl.Location.StationType[] STATION_TYPES = {
-            ch.unstable.ost.api.model.impl.Location.StationType.BUS,
-            ch.unstable.ost.api.model.impl.Location.StationType.TRAIN,
-            ch.unstable.ost.api.model.impl.Location.StationType.TRAM};
+    private static final Location.StationType[] STATION_TYPES = {
+            Location.StationType.BUS,
+            Location.StationType.TRAIN,
+            Location.StationType.TRAM};
     private static final int MESSAGE_QUERY_LOCATIONS = 1;
     private static final int MESSAGE_UI_SET_LOCATIONS = 2;
     private static final int MESSAGE_ERROR = 3;
@@ -78,7 +79,7 @@ public class ChooseStationActivity extends ThemedActivity {
         }
         mLocationResultAdapter = new StationListAdapter(this);
         mLocationResultAdapter.setOnStationClickListener(new StationListAdapter.OnStationClickListener() {
-            public void onStationClicked(ch.unstable.ost.api.model.impl.Location location) {
+            public void onStationClicked(Location location) {
                 onLocationSelected(location);
             }
         });
@@ -132,7 +133,7 @@ public class ChooseStationActivity extends ThemedActivity {
 
     }
 
-    private void onLocationSelected(ch.unstable.ost.api.model.impl.Location location) {
+    private void onLocationSelected(Location location) {
         Intent resultData = new Intent();
         resultData.putExtra(EXTRA_RESULT_STATION_NAME, location.getName());
         resultData.putExtra(EXTRA_RESULT_STATION_ID, location.getId());
@@ -227,7 +228,7 @@ public class ChooseStationActivity extends ThemedActivity {
             switch (msg.what) {
                 case MESSAGE_UI_SET_LOCATIONS:
                     hideProgressBar();
-                    mLocationResultAdapter.setLocations((ch.unstable.ost.api.model.impl.Location[]) msg.obj);
+                    mLocationResultAdapter.setLocations((Location[]) msg.obj);
                     return true;
                 case MESSAGE_ERROR:
                     // TODO: show error message
@@ -245,7 +246,7 @@ public class ChooseStationActivity extends ThemedActivity {
     private class BackgroundHandlerCallback implements Handler.Callback {
         private void handleLocationQuery(String query) {
             mUIHandler.sendEmptyMessage(MESSAGE_LOADING_STARTED);
-            ch.unstable.ost.api.model.impl.Location[] locationList;
+            Location[] locationList;
             try {
                 locationList = stationsDAO.getStationsByQuery(query, STATION_TYPES);
             } catch (TransportAPI.TooManyRequestsException e) {

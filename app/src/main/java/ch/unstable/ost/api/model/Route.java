@@ -1,9 +1,13 @@
-package ch.unstable.ost.api.model.impl;
+package ch.unstable.ost.api.model;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+
+import com.google.common.base.Objects;
+
+import java.util.Arrays;
 
 import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
 
@@ -61,5 +65,20 @@ public class Route implements Parcelable {
 
     public PassingCheckpoint[] getStops() {
         return stops;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return Objects.equal(shortName, route.shortName) &&
+                Objects.equal(longName, route.longName) &&
+                Arrays.equals(stops, route.stops);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(shortName, longName, stops);
     }
 }

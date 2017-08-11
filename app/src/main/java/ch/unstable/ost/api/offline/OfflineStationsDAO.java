@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import ch.unstable.ost.api.StationsDAO;
-import ch.unstable.ost.api.model.impl.Location;
-import ch.unstable.ost.api.model.impl.Location.StationType;
+import ch.unstable.ost.api.model.Location;
+import ch.unstable.ost.api.model.Location.StationType;
 import ch.unstable.ost.api.offline.model.LocationEntity;
 
 @Dao
@@ -41,7 +41,7 @@ public abstract class OfflineStationsDAO implements StationsDAO {
     @NonNull
     private Location[] convertLocations(LocationEntity[] entities) {
         Location[] locations = new Location[entities.length];
-        for(int i = 0; i < locations.length; ++i) {
+        for (int i = 0; i < locations.length; ++i) {
             LocationEntity entity = entities[i];
             locations[i] = new Location(entity.getName(), entity.getTypes()[0], entity.getId());
         }

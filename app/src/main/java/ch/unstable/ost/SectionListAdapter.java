@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 
-import ch.unstable.ost.api.model.impl.Section;
+import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.utils.TimeDateUtils;
 
 class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.SectionViewHolder> {

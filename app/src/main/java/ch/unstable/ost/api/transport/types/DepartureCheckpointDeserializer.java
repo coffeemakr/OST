@@ -13,8 +13,8 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.Date;
 
-import ch.unstable.ost.api.model.impl.DepartureCheckpoint;
-import ch.unstable.ost.api.model.impl.Location;
+import ch.unstable.ost.api.model.DepartureCheckpoint;
+import ch.unstable.ost.api.model.Location;
 
 public enum DepartureCheckpointDeserializer implements JsonDeserializer<DepartureCheckpoint> {
     INSTANCE;

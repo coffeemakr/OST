@@ -1,14 +1,17 @@
-package ch.unstable.ost.api.model.impl;
+package ch.unstable.ost.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.common.base.Objects;
+
 import java.util.Arrays;
 
 import ch.unstable.ost.utils.ParcelUtils;
 
+import static ch.unstable.ost.utils.ObjectsCompat.requireNonEmpty;
 import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
 
 
@@ -30,7 +33,7 @@ public class Location implements Parcelable {
     private final String id;
 
     public Location(String name, StationType type, @Nullable String id) {
-        this.name = requireNonNull(name, "name");
+        this.name = requireNonEmpty(name, "name");
         this.type = requireNonNull(type, "type");
         this.id = id;
     }
@@ -70,6 +73,21 @@ public class Location implements Parcelable {
     @NonNull
     public StationType getType() {
         return type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return Objects.equal(name, location.name) &&
+                type == location.type &&
+                Objects.equal(id, location.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name, type, id);
     }
 
     public enum StationType {

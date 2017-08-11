@@ -13,11 +13,11 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import ch.unstable.ost.api.model.impl.ArrivalCheckpoint;
-import ch.unstable.ost.api.model.impl.DepartureCheckpoint;
-import ch.unstable.ost.api.model.impl.PassingCheckpoint;
-import ch.unstable.ost.api.model.impl.Route;
-import ch.unstable.ost.api.model.impl.Section;
+import ch.unstable.ost.api.model.ArrivalCheckpoint;
+import ch.unstable.ost.api.model.DepartureCheckpoint;
+import ch.unstable.ost.api.model.PassingCheckpoint;
+import ch.unstable.ost.api.model.Route;
+import ch.unstable.ost.api.model.Section;
 
 import static ch.unstable.ost.api.transport.types.LocationDeserializer.getNullableString;
 

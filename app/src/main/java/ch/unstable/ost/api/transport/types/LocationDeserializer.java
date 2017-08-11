@@ -11,7 +11,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.Locale;
 
-import ch.unstable.ost.api.model.impl.Location;
+import ch.unstable.ost.api.model.Location;
 
 
 public enum LocationDeserializer implements JsonDeserializer<Location> {

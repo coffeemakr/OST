@@ -1,6 +1,5 @@
 package ch.unstable.ost.api.base;
 
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,6 +10,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import ch.unstable.ost.BuildConfig;
 
 
 public class BaseHttpJsonAPI {
@@ -31,7 +32,13 @@ public class BaseHttpJsonAPI {
 
 
     private InputStreamReader open(URL url) throws IOException {
-        Log.d(TAG, "loading JSON " + url);
+        if(BuildConfig.DEBUG) {
+            try {
+                android.util.Log.d(TAG, "loading JSON " + url);
+            }catch (RuntimeException ignore) {
+
+            }
+        }
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");
         urlConnection.setRequestProperty("User-Agent", USER_AGENT);

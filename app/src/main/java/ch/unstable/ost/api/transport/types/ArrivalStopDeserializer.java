@@ -9,8 +9,8 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.Date;
 
-import ch.unstable.ost.api.model.impl.ArrivalCheckpoint;
-import ch.unstable.ost.api.model.impl.Location;
+import ch.unstable.ost.api.model.ArrivalCheckpoint;
+import ch.unstable.ost.api.model.Location;
 
 import static ch.unstable.ost.api.transport.types.DepartureCheckpointDeserializer.getDate;
 import static ch.unstable.ost.api.transport.types.DepartureCheckpointDeserializer.getPlatform;

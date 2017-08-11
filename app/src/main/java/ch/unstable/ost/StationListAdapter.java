@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.theme.ThemeHelper;
 
 import static android.support.v7.widget.RecyclerView.NO_POSITION;
@@ -25,7 +26,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
     private final int busIcon;
     @DrawableRes
     private final int tramIcon;
-    private ch.unstable.ost.api.model.impl.Location[] mLocations = new ch.unstable.ost.api.model.impl.Location[0];
+    private Location[] mLocations = new Location[0];
     @Nullable
     private OnStationClickListener mOnStationClickListener;
     private final View.OnClickListener mOnItemClickListener = new View.OnClickListener() {
@@ -36,7 +37,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
                 ViewHolder viewHolder = (ViewHolder) v.getTag();
                 int position = viewHolder.getAdapterPosition();
                 if (position != NO_POSITION) {
-                    final ch.unstable.ost.api.model.impl.Location location = mLocations[position];
+                    final Location location = mLocations[position];
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -66,7 +67,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
 
     @Override
     public void onBindViewHolder(StationListAdapter.ViewHolder holder, int position) {
-        ch.unstable.ost.api.model.impl.Location location = mLocations[position];
+        Location location = mLocations[position];
         holder.stationName.setText(location.getName());
         holder.itemView.setTag(holder);
         holder.itemView.setOnClickListener(mOnItemClickListener);
@@ -97,7 +98,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
     }
 
     @MainThread
-    public void setLocations(ch.unstable.ost.api.model.impl.Location[] locations) {
+    public void setLocations(Location[] locations) {
         mLocations = locations;
         notifyDataSetChanged();
     }
@@ -112,7 +113,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
     }
 
     public interface OnStationClickListener {
-        void onStationClicked(ch.unstable.ost.api.model.impl.Location location);
+        void onStationClicked(Location location);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

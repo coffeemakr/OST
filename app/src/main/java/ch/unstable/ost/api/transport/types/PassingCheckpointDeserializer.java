@@ -12,8 +12,8 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.Date;
 
-import ch.unstable.ost.api.model.impl.Location;
-import ch.unstable.ost.api.model.impl.PassingCheckpoint;
+import ch.unstable.ost.api.model.Location;
+import ch.unstable.ost.api.model.PassingCheckpoint;
 
 import static ch.unstable.ost.api.transport.types.DepartureCheckpointDeserializer.getPlatform;
 

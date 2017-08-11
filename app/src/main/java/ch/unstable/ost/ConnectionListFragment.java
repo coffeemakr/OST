@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import java.io.IOException;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
-import ch.unstable.ost.api.model.impl.Connection;
+import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.transport.TransportAPI;
 
 public class ConnectionListFragment extends Fragment {

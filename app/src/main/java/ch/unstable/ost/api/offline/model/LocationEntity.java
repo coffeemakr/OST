@@ -4,7 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import ch.unstable.ost.api.model.impl.Location;
+import ch.unstable.ost.api.model.Location;
 
 @Entity(tableName = "stations")
 public class LocationEntity {

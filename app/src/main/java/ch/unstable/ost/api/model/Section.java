@@ -1,4 +1,4 @@
-package ch.unstable.ost.api.model.impl;
+package ch.unstable.ost.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

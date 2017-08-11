@@ -1,10 +1,11 @@
-package ch.unstable.ost.api.model.impl;
+package ch.unstable.ost.api.model;
 
 import android.os.Parcel;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 
 import java.util.Date;
@@ -45,5 +46,19 @@ abstract class Checkpoint {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(platform);
         ParcelUtils.writeParcelable(dest, location, flags);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Checkpoint)) return false;
+        Checkpoint that = (Checkpoint) o;
+        return Objects.equal(platform, that.platform) &&
+                Objects.equal(location, that.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(platform, location);
     }
 }

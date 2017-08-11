@@ -1,8 +1,10 @@
-package ch.unstable.ost.api.model.impl;
+package ch.unstable.ost.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+
+import com.google.common.base.Objects;
 
 import java.util.Date;
 
@@ -63,5 +65,20 @@ public class PassingCheckpoint extends Checkpoint implements Parcelable {
 
     public Date getArrivalTime() {
         return arrivalTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PassingCheckpoint that = (PassingCheckpoint) o;
+        return Objects.equal(departureTime, that.departureTime) &&
+                Objects.equal(arrivalTime, that.arrivalTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), departureTime, arrivalTime);
     }
 }

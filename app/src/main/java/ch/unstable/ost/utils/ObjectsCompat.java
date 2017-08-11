@@ -14,4 +14,12 @@ public class ObjectsCompat {
         }
         return object;
     }
+
+    public static <E extends CharSequence> E requireNonEmpty(E value, String name) {
+        requireNonNull(value, name);
+        if(value.length() == 0) {
+            throw new IllegalArgumentException(name + " must not be empty");
+        }
+        return value;
+    }
 }
