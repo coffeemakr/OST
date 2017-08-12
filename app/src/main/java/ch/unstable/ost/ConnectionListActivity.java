@@ -63,7 +63,7 @@ public class ConnectionListActivity extends ThemedActivity
         }
         ConnectionQuery query = intent.getParcelableExtra(EXTRA_QUERY);
         if (query != null) {
-            onRouteSelected(query);
+            updateHeadQuery(query);
         }
     }
 
@@ -83,7 +83,6 @@ public class ConnectionListActivity extends ThemedActivity
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)
                 .commit();
-        updateHeadQuery(query);
     }
 
     private void updateHeadQuery(@Nullable ConnectionQuery query) {

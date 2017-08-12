@@ -11,6 +11,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -111,19 +112,7 @@ public class ConnectionQuery implements Parcelable {
     }
 
 
-    public static class Builder implements Parcelable {
-
-        public static final Creator<Builder> CREATOR = new Creator<Builder>() {
-            @Override
-            public Builder createFromParcel(Parcel in) {
-                return new Builder(in);
-            }
-
-            @Override
-            public Builder[] newArray(int size) {
-                return new Builder[size];
-            }
-        };
+    public static class Builder {
 
         @NonNull
         private List<String> via = new ArrayList<>();
@@ -148,31 +137,9 @@ public class ConnectionQuery implements Parcelable {
             this.arrivalTime = connectionQuery.arrivalTime;
         }
 
-        private Builder(Parcel in) {
-            via = in.createStringArrayList();
-            from = in.readString();
-            to = in.readString();
-            departureTime = ParcelUtils.readDate(in);
-            arrivalTime = ParcelUtils.readDate(in);
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeStringList(via);
-            dest.writeString(from);
-            dest.writeString(to);
-            ParcelUtils.writeDate(dest, departureTime);
-            ParcelUtils.writeDate(dest, arrivalTime);
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
         @NonNull
         @CanIgnoreReturnValue
-        public Builder setVia(String... via) {
+        public Builder setVia(@Nullable String... via) {
             if (via == null || via.length == 1 && via[0] == null) {
                 this.via.clear();
             } else {
@@ -188,21 +155,11 @@ public class ConnectionQuery implements Parcelable {
             return this;
         }
 
-        @Nullable
-        public String getFrom() {
-            return from;
-        }
-
         @NonNull
         @CanIgnoreReturnValue
         public Builder setFrom(String from) {
             this.from = from;
             return this;
-        }
-
-        @Nullable
-        public String getTo() {
-            return to;
         }
 
         @NonNull
@@ -230,11 +187,6 @@ public class ConnectionQuery implements Parcelable {
             return this;
         }
 
-        @Nullable
-        public Date getDepartureTime() {
-            return departureTime;
-        }
-
         @NonNull
         @CanIgnoreReturnValue
         public Builder setDepartureTime(@Nullable Date departureTime) {
@@ -243,17 +195,16 @@ public class ConnectionQuery implements Parcelable {
             return this;
         }
 
-        @Nullable
-        public Date getArrivalTime() {
-            return arrivalTime;
-        }
-
         @NonNull
         @CanIgnoreReturnValue
         public Builder setArrivalTime(@Nullable Date arrivalTime) {
             this.departureTime = null;
             this.arrivalTime = arrivalTime;
             return this;
+        }
+
+        public void setVia(List<String> vias) {
+            this.via = new ArrayList<>(vias);
         }
     }
 }
