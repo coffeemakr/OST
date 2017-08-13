@@ -164,7 +164,7 @@ public class TimePickerDialog extends AlertDialog implements DialogInterface.OnC
     }
 
     public enum TimeRestrictionType {
-        DEPARTURE, ARRIVAL;
+        DEPARTURE, ARRIVAL
     }
 
     public interface OnTimeSelected {

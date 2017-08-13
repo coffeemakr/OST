@@ -31,10 +31,12 @@ public class ConnectionListFragment extends Fragment {
     private static final int MESSAGE_ERROR = 2;
     private static final int MESSAGE_CONNECTIONS_LOADED = 3;
     private static final int MESSAGE_CONNECTIONS_LOADING_STARTED = 4;
+    private static final int MESSAGE_QUERY_CONNECTION_PAGE = 5;
 
     private static final String ARG_QUERY = "connection_query";
     private static final String KEY_CONNECTION_LIST = "connection_list";
     private static final String TAG = "ConnectionListFragment";
+
     private final OnConnectionSelectedCaller mOnConnectionClickListener = new OnConnectionSelectedCaller();
     private final BackgroundCallback backgroundCallback = new BackgroundCallback();
     private final UICallback uiCallback = new UICallback();
@@ -47,18 +49,27 @@ public class ConnectionListFragment extends Fragment {
     private OnConnectionListInteractionListener mOnConnectionListInteractionListener;
     private View mLoadingIndicator;
     private RecyclerView mConnectionsList;
-    private OverscrollListener.Listener mOverScrollListener = new OverscrollListener.Listener() {
+    private ConnectionListAdapter.Listener mOverScrollListener = new ConnectionListAdapter.Listener() {
         @Override
-        public void onScrolledBelow(RecyclerView recyclerView) {
+        public boolean onLoadBelow(ConnectionListAdapter adapter, int pageToLoad) {
             Log.d(TAG, "on scrolled below");
+            Message message = backgroundHandler.obtainMessage(MESSAGE_QUERY_CONNECTION_PAGE);
+            message.obj = getConnectionQuery();
+            message.arg1 = pageToLoad;
+            backgroundHandler.sendMessage(message);
+            return true;
         }
 
         @Override
-        public void onScrolledAbove(RecyclerView recyclerView) {
+        public boolean onLoadAbove(ConnectionListAdapter adapter, int pageToLoad) {
             Log.d(TAG, "on scrolled above");
+            Message message = backgroundHandler.obtainMessage(MESSAGE_QUERY_CONNECTION_PAGE);
+            message.obj = getConnectionQuery();
+            message.arg1 = pageToLoad;
+            backgroundHandler.sendMessage(message);
+            return true;
         }
     };
-    private OverscrollListener mConnectionListScrollListener;
 
     public ConnectionListFragment() {
         // Empty constructor
@@ -85,7 +96,7 @@ public class ConnectionListFragment extends Fragment {
         uiHandler = new Handler(uiCallback);
 
         mConnectionAdapter = new ConnectionListAdapter();
-
+        mConnectionAdapter.setOnLoadMoreListener(mOverScrollListener);
         mConnectionAdapter.setOnConnectionClickListener(mOnConnectionClickListener);
         if (savedInstanceState != null) {
             mConnectionQuery = savedInstanceState.getParcelable(ARG_QUERY);
@@ -144,18 +155,13 @@ public class ConnectionListFragment extends Fragment {
         mConnectionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         mConnectionsList.addItemDecoration(dividerItemDecoration);
-        mConnectionListScrollListener = new OverscrollListener(mOverScrollListener);
-        mConnectionsList.addOnScrollListener(mConnectionListScrollListener);
+        mConnectionsList.addOnScrollListener(mConnectionAdapter.getOnScrollListener((LinearLayoutManager) mConnectionsList.getLayoutManager()));
         mLoadingIndicator = view.findViewById(R.id.loadingIndicator);
-
-
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mConnectionsList.removeOnScrollListener(mConnectionListScrollListener);
-        mConnectionListScrollListener = null;
     }
 
     public ConnectionQuery getConnectionQuery() {
@@ -184,9 +190,12 @@ public class ConnectionListFragment extends Fragment {
                     onLoadingStarted();
                     break;
                 case MESSAGE_CONNECTIONS_LOADED:
-                    onLoadingFinished();
+                    if(msg.arg1 == 0) {
+                        // loading finished for the first time/page
+                        onLoadingFinished();
+                    }
                     if (mConnectionAdapter != null) {
-                        mConnectionAdapter.setConnections((Connection[]) msg.obj);
+                        mConnectionAdapter.setConnections(msg.arg1, (Connection[]) msg.obj);
                     }
                     break;
                 default:
@@ -214,11 +223,13 @@ public class ConnectionListFragment extends Fragment {
         public boolean handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_QUERY_CONNECTION:
-                    handleConnectionQuery((ConnectionQuery) msg.obj);
+                    handleConnectionQuery((ConnectionQuery) msg.obj, 0);
                     break;
                 case MESSAGE_ERROR:
                     handleError(msg.arg1, (Throwable) msg.obj);
                     break;
+                case MESSAGE_QUERY_CONNECTION_PAGE:
+                    handleConnectionQuery((ConnectionQuery) msg.obj, msg.arg1);
                 default:
                     return false;
             }
@@ -230,11 +241,13 @@ public class ConnectionListFragment extends Fragment {
             Log.e(TAG, errorMessageString, exception);
         }
 
-        private void handleConnectionQuery(ConnectionQuery connectionQuery) {
-            uiHandler.sendEmptyMessage(MESSAGE_CONNECTIONS_LOADING_STARTED);
+        private void handleConnectionQuery(ConnectionQuery connectionQuery, int page) {
+            if(page == 0 && !uiHandler.hasMessages(MESSAGE_CONNECTIONS_LOADING_STARTED)) {
+                uiHandler.sendEmptyMessage(MESSAGE_CONNECTIONS_LOADING_STARTED);
+            }
             Connection[] connections;
             try {
-                connections = transportAPI.getConnections(connectionQuery, 0);
+                connections = transportAPI.getConnections(connectionQuery, page);
                 for (Connection connection : connections) {
                     Log.d(TAG, connection.toString());
                 }
@@ -243,33 +256,8 @@ public class ConnectionListFragment extends Fragment {
                 return;
             }
             Message message = uiHandler.obtainMessage(MESSAGE_CONNECTIONS_LOADED, connections);
+            message.arg1 = page;
             uiHandler.sendMessage(message);
-        }
-    }
-
-    private static class OverscrollListener extends RecyclerView.OnScrollListener {
-
-        private Listener mListener;
-
-        public OverscrollListener(Listener listener) {
-            this.mListener = checkNotNull(listener, "listener is null");
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            if(mListener == null) return;
-            Log.d(TAG, "onScroll: " + dx + " " + dy);
-            LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            if(layoutManager.getItemCount() == layoutManager.findFirstCompletelyVisibleItemPosition() && dy > 0) {
-                mListener.onScrolledBelow(recyclerView);
-            } else if(0 == layoutManager.findFirstCompletelyVisibleItemPosition() && dy < 0) {
-                mListener.onScrolledAbove(recyclerView);
-            }
-        }
-
-        public interface Listener {
-            void onScrolledBelow(RecyclerView recyclerView);
-            void onScrolledAbove(RecyclerView recyclerView);
         }
     }
 }

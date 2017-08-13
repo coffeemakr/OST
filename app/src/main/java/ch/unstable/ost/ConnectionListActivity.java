@@ -25,6 +25,8 @@ public class ConnectionListActivity extends ThemedActivity
         BaseNavigationFragment.OnRouteSelectionListener {
 
     public static final String EXTRA_QUERY = "EXTRA_QUERY";
+    public static final String EXTRA_CONNECTION_FROM = "ch.unstable.ost.ConnectionListActivity.EXTRA_CONNECTION_FROM";
+    public static final String EXTRA_CONNECTION_TO = "ch.unstable.ost.ConnectionListActivity.EXTRA_CONNECTION_TO";
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -61,7 +63,15 @@ public class ConnectionListActivity extends ThemedActivity
         if (!Intent.ACTION_SEARCH.equals(intent.getAction())) {
             return;
         }
-        ConnectionQuery query = intent.getParcelableExtra(EXTRA_QUERY);
+        ConnectionQuery query = null;
+        if(intent.hasExtra(EXTRA_QUERY)) {
+            query = intent.getParcelableExtra(EXTRA_QUERY);
+        } else if(intent.hasExtra(EXTRA_CONNECTION_FROM) && intent.hasExtra(EXTRA_CONNECTION_TO)){
+            query = new ConnectionQuery.Builder()
+                    .setTo(intent.getStringExtra(EXTRA_CONNECTION_TO))
+                    .setFrom(intent.getStringExtra(EXTRA_CONNECTION_FROM))
+                    .build();
+        }
         if (query != null) {
             updateHeadQuery(query);
         }
