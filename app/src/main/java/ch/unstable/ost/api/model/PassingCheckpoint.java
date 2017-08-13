@@ -10,7 +10,7 @@ import java.util.Date;
 
 import ch.unstable.ost.utils.ParcelUtils;
 
-import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class PassingCheckpoint extends Checkpoint implements Parcelable {
 
@@ -31,8 +31,8 @@ public class PassingCheckpoint extends Checkpoint implements Parcelable {
 
     public PassingCheckpoint(Date arrivalTime, Date departureTime, Location location, String platform) {
         super(platform, location);
-        this.arrivalTime = requireNonNull(arrivalTime, "arrivalTime");
-        this.departureTime = requireNonNull(departureTime, "departureTime");
+        this.arrivalTime = checkNotNull(arrivalTime, "arrivalTime");
+        this.departureTime = checkNotNull(departureTime, "departureTime");
     }
 
     protected PassingCheckpoint(Parcel in) {

@@ -22,6 +22,8 @@ import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.TransportAPI;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class ConnectionListFragment extends Fragment {
 
 
@@ -247,24 +249,16 @@ public class ConnectionListFragment extends Fragment {
 
     private static class OverscrollListener extends RecyclerView.OnScrollListener {
 
-        @Nullable
         private Listener mListener;
 
-        public OverscrollListener() {
-            this(null);
-        }
-
-        public OverscrollListener(@Nullable Listener listener) {
-            setOnScrollPastItemListener(listener);
-        }
-
-        public void setOnScrollPastItemListener(@Nullable Listener listener) {
-            this.mListener = listener;
+        public OverscrollListener(Listener listener) {
+            this.mListener = checkNotNull(listener, "listener is null");
         }
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             if(mListener == null) return;
+            Log.d(TAG, "onScroll: " + dx + " " + dy);
             LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
             if(layoutManager.getItemCount() == layoutManager.findFirstCompletelyVisibleItemPosition() && dy > 0) {
                 mListener.onScrolledBelow(recyclerView);

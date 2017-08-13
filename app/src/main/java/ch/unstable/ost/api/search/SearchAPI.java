@@ -18,6 +18,7 @@ import ch.unstable.ost.api.search.types.SearchCHIconClassDeserializer;
 import io.mikael.urlbuilder.UrlBuilder;
 
 import static ch.unstable.ost.api.model.Location.StationType;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO {
 
@@ -41,7 +42,7 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO {
         if (types != null && types.length == 0) return new Location[0];
         UrlBuilder builder = UrlBuilder.fromString(COMPLETION_URL)
                 .addParameter("show_ids", "1")
-                .addParameter("term", query);
+                .addParameter("term", checkNotNull(query));
         Type listType = new TypeToken<ArrayList<Location>>() {
         }.getType();
         ArrayList<Location> locationCompletions = loadJson(builder.toUrl(), listType);

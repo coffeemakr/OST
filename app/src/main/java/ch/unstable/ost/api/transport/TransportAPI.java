@@ -31,7 +31,7 @@ import ch.unstable.ost.api.transport.types.PassingCheckpointDeserializer;
 import ch.unstable.ost.api.transport.types.SectionListDeserializer;
 import io.mikael.urlbuilder.UrlBuilder;
 
-import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
 
@@ -63,8 +63,8 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
     }
 
     private static UrlBuilder addURLDate(UrlBuilder uriBuilder, Date date) {
-        requireNonNull(uriBuilder, "uriBuilder");
-        requireNonNull(date, "date");
+        checkNotNull(uriBuilder, "uriBuilder");
+        checkNotNull(date, "date");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ROOT);
         timeFormat.setTimeZone(TIME_ZONE);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);

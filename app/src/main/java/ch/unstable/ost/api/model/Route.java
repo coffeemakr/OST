@@ -9,7 +9,7 @@ import com.google.common.base.Objects;
 
 import java.util.Arrays;
 
-import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Route implements Parcelable {
     public static final Creator<Route> CREATOR = new Creator<Route>() {
@@ -30,9 +30,9 @@ public class Route implements Parcelable {
     private final PassingCheckpoint[] stops;
 
     public Route(String shortname, String longName, PassingCheckpoint[] stops) {
-        this.shortName = requireNonNull(shortname, "shortname");
-        this.longName = requireNonNull(longName, "longName");
-        this.stops = requireNonNull(stops, "stops");
+        this.shortName = checkNotNull(shortname, "shortname");
+        this.longName = checkNotNull(longName, "longName");
+        this.stops = checkNotNull(stops, "stops");
     }
 
     protected Route(Parcel in) {

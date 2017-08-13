@@ -12,7 +12,7 @@ import java.util.Date;
 
 import ch.unstable.ost.utils.ParcelUtils;
 
-import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 abstract class Checkpoint {
     @Nullable
@@ -22,7 +22,7 @@ abstract class Checkpoint {
 
     Checkpoint(@Nullable String platform, Location location) {
         this.platform = Strings.emptyToNull(platform);
-        this.location = requireNonNull(location, "location");
+        this.location = checkNotNull(location, "location");
     }
 
     Checkpoint(Parcel in) {

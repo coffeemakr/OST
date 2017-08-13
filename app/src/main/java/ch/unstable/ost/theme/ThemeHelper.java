@@ -14,7 +14,8 @@ import android.util.TypedValue;
 import ch.unstable.ost.R;
 import ch.unstable.ost.preference.PreferenceKeys;
 
-public class ThemeHelper {
+public enum ThemeHelper {
+    ;
 
     private static final String TAG = "ThemeHelper";
 

@@ -11,8 +11,8 @@ import java.util.Arrays;
 
 import ch.unstable.ost.utils.ParcelUtils;
 
-import static ch.unstable.ost.utils.ObjectsCompat.requireNonEmpty;
-import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 public class Location implements Parcelable {
@@ -33,8 +33,9 @@ public class Location implements Parcelable {
     private final String id;
 
     public Location(String name, StationType type, @Nullable String id) {
-        this.name = requireNonEmpty(name, "name");
-        this.type = requireNonNull(type, "type");
+        checkArgument(name != null && name.length() > 0, "name" + " must not be emtpy but was %s", name);
+        this.name = name;
+        this.type = checkNotNull(type, "type");
         this.id = id;
     }
 

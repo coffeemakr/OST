@@ -7,9 +7,9 @@ import android.support.annotation.Nullable;
 
 import java.util.Date;
 
-import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
 import static ch.unstable.ost.utils.ParcelUtils.readParcelable;
 import static ch.unstable.ost.utils.ParcelUtils.writeParcelable;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 public class Section implements Parcelable {
@@ -36,10 +36,10 @@ public class Section implements Parcelable {
     private final Route route;
 
     public Section(Route route, DepartureCheckpoint departure, ArrivalCheckpoint arrival, String headsign, long walkTime) {
-        this.route = requireNonNull(route, "route");
-        this.departure = requireNonNull(departure, "departure");
-        this.arrival = requireNonNull(arrival, "arrival");
-        this.headsign = requireNonNull(headsign, "headsign");
+        this.route = checkNotNull(route, "route");
+        this.departure = checkNotNull(departure, "departure");
+        this.arrival = checkNotNull(arrival, "arrival");
+        this.headsign = checkNotNull(headsign, "headsign");
         this.walkTime = walkTime;
     }
 

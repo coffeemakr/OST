@@ -8,9 +8,7 @@ import com.google.common.base.MoreObjects;
 import java.util.Arrays;
 import java.util.Date;
 
-import ch.unstable.ost.utils.ParcelUtils;
-
-import static ch.unstable.ost.utils.ObjectsCompat.requireNonNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Connection implements Parcelable {
 
@@ -28,7 +26,7 @@ public class Connection implements Parcelable {
     private final Section[] sections;
 
     public Connection(Section[] sections) {
-        this.sections = requireNonNull(sections, "sections");
+        this.sections = checkNotNull(sections, "sections");
     }
 
     protected Connection(Parcel in) {

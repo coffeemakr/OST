@@ -52,6 +52,9 @@ android {
                 events 'skipped', 'failed', 'standardOut', 'standardError'
                 exceptionFormat "short"
             }
+            jacoco {
+                includeNoLocationClasses = true
+            }
         }
     }
 
