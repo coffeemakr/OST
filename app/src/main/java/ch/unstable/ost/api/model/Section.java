@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.common.base.Objects;
+
 import java.util.Date;
 
 import static ch.unstable.ost.utils.ParcelUtils.readParcelable;
@@ -116,5 +118,22 @@ public class Section implements Parcelable {
     @NonNull
     public DepartureCheckpoint getDeparture() {
         return departure;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Section section = (Section) o;
+        return walkTime == section.walkTime &&
+                Objects.equal(departure, section.departure) &&
+                Objects.equal(arrival, section.arrival) &&
+                Objects.equal(headsign, section.headsign) &&
+                Objects.equal(route, section.route);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(departure, arrival, headsign, walkTime, route);
     }
 }

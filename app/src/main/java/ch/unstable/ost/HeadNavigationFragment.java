@@ -30,6 +30,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Verify.verifyNotNull;
+
 
 public class HeadNavigationFragment extends BaseNavigationFragment {
 
@@ -92,6 +95,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     private void updateViews() {
         final Context context = getContext();
+        if(context == null) return;
         mTime.setText(getTimeString(context, mSelectionState));
         mToButton.setText(getToButtonText(context, mSelectionState.getTo()));
         mFromButton.setText(getFromButtonText(context, mSelectionState.getFrom()));
@@ -142,12 +146,12 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
             switch (requestCode) {
                 case REQUEST_CODE_CHOOSE_FROM:
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
-                    Verify.verifyNotNull(name, "Choose station result (from) is null");
+                    verifyNotNull(name, "Choose station result (from) is null");
                     mSelectionState.setFrom(name);
                     break;
                 case REQUEST_CODE_CHOOSE_TO:
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
-                    Verify.verifyNotNull(name, "Choose station result (to) is null");
+                    verifyNotNull(name, "Choose station result (to) is null");
                     mSelectionState.setTo(name);
                     break;
                 default:
@@ -166,6 +170,8 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     }
 
     private static String getTimeString(Context context, SelectionState selectionState) {
+        checkNotNull(context, "context is null");
+        checkNotNull(context, "selectionState is null");
         Date time;
         if ((time = selectionState.getDepartureTime()) != null) {
             return getTimeString(context, time, R.string.departure_time_same_day, R.string.departure_time_other_day);

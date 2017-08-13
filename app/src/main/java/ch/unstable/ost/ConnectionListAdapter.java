@@ -14,11 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.common.collect.Lists;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Iterables;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import ch.unstable.ost.api.model.Connection;
@@ -159,13 +163,26 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
+
     @MainThread
     public void appendConnections(@NonNull Connection[] connections) {
         checkNotNull(connections, "connections is null");
         setLoadingBottom(false);
         int startPosition = getItemCount();
-        Collections.addAll(mConnections, connections);
-        notifyItemRangeInserted(startPosition, connections.length);
+        int skipFirst = 0;
+        for(Connection connection: mConnections) {
+            Log.d(TAG, connections[skipFirst] + "  ?= " + connection);
+            if(connection.equals(connections[skipFirst])) {
+                ++skipFirst;
+            } else if(skipFirst > 0) {
+                break;
+            }
+        }
+        Log.w(TAG, "Found duplicated items (" + skipFirst + ") -> adding only " + (connections.length - skipFirst));
+        for(int i = skipFirst; i < connections.length; ++i) {
+            mConnections.add(connections[i]);
+        }
+        notifyItemRangeInserted(startPosition, connections.length - skipFirst);
         ++highestPage;
     }
 

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -69,5 +70,18 @@ public class Connection implements Parcelable {
         return MoreObjects.toStringHelper(this)
                 .add("sections", sections)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Connection that = (Connection) o;
+        return Arrays.equals(sections, that.sections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(sections);
     }
 }
