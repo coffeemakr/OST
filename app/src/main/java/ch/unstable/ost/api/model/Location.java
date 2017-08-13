@@ -33,7 +33,8 @@ public class Location implements Parcelable {
     private final String id;
 
     public Location(String name, StationType type, @Nullable String id) {
-        checkArgument(name != null && name.length() > 0, "name" + " must not be emtpy but was %s", name);
+        checkNotNull(name, "name is null");
+        checkArgument(name.length() > 0, "name" + " must not be emtpy but was %s", name);
         this.name = name;
         this.type = checkNotNull(type, "type");
         this.id = id;
