@@ -11,7 +11,6 @@ import java.util.TimeZone;
 
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
-import ch.unstable.ost.api.model.DepartureCheckpoint;
 import ch.unstable.ost.api.model.Section;
 
 import static org.junit.Assert.*;
@@ -19,7 +18,7 @@ import static org.junit.Assert.*;
 
 public class TransportAPITest {
     public static final int ONE_HOURS_IN_MILLIES = 60 * 60 * 1000;
-    private TransportAPI transportApi;
+    private ConnectionAPI transportApi;
 
     @Before
     public void setUp() {

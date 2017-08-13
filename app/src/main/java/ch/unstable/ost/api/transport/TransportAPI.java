@@ -16,9 +16,9 @@ import java.util.TimeZone;
 
 import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
-import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.DepartureCheckpoint;
 import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.model.PassingCheckpoint;
@@ -31,17 +31,18 @@ import ch.unstable.ost.api.transport.types.PassingCheckpointDeserializer;
 import ch.unstable.ost.api.transport.types.SectionListDeserializer;
 import io.mikael.urlbuilder.UrlBuilder;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
+public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO, ConnectionAPI {
 
+    public static final int PAGE_MIN = -3;
+    public static final int PAGE_MAX = 3;
     private static final String BASE_URL = "https://transport.opendata.ch/v1/";
     private static final String LOCATION_URL = BASE_URL + "locations";
     private static final String CONNECTIONS_URL = BASE_URL + "connections";
-
     private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Europe/Berlin");
-
-    private static final String TAG = "TransportAPI";
+    private static final String TAG = "ConnectionAPI";
     /**
      * From the documentation:
      * <blockquote>
@@ -86,7 +87,20 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO {
         gsonBuilder.registerTypeAdapter(Connection.class, ConnectionDeserializer.INSTANCE);
     }
 
+    @Override
+    public int getPageMax() {
+        return PAGE_MAX;
+    }
+
+    @Override
+    public int getPageMin() {
+        return PAGE_MIN;
+    }
+
+    @Override
     public Connection[] getConnections(ConnectionQuery connectionQuery, int page) throws IOException {
+        checkArgument(page <= PAGE_MAX && page >= PAGE_MIN,
+                PAGE_MIN + " <= %d <= " + PAGE_MAX, page);
         UrlBuilder builder = UrlBuilder.fromString(CONNECTIONS_URL)
                 .addParameter("from", connectionQuery.getFrom())
                 .addParameter("to", connectionQuery.getTo())

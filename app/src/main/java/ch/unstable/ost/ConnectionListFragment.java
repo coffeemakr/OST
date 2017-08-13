@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
+import ch.unstable.ost.api.transport.ConnectionAPI;
 import ch.unstable.ost.api.transport.TransportAPI;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -40,7 +41,7 @@ public class ConnectionListFragment extends Fragment {
     private final OnConnectionSelectedCaller mOnConnectionClickListener = new OnConnectionSelectedCaller();
     private final BackgroundCallback backgroundCallback = new BackgroundCallback();
     private final UICallback uiCallback = new UICallback();
-    private final TransportAPI transportAPI;
+    private final ConnectionAPI connectionAPI;
     private ConnectionListAdapter mConnectionAdapter;
     private ConnectionQuery mConnectionQuery;
     private Handler backgroundHandler;
@@ -52,6 +53,9 @@ public class ConnectionListFragment extends Fragment {
     private ConnectionListAdapter.Listener mOverScrollListener = new ConnectionListAdapter.Listener() {
         @Override
         public boolean onLoadBelow(ConnectionListAdapter adapter, int pageToLoad) {
+            if(pageToLoad > connectionAPI.getPageMax() || pageToLoad < connectionAPI.getPageMin()) {
+                return false;
+            }
             Log.d(TAG, "on scrolled below");
             Message message = backgroundHandler.obtainMessage(MESSAGE_QUERY_CONNECTION_PAGE);
             message.obj = getConnectionQuery();
@@ -62,6 +66,9 @@ public class ConnectionListFragment extends Fragment {
 
         @Override
         public boolean onLoadAbove(ConnectionListAdapter adapter, int pageToLoad) {
+            if(pageToLoad > connectionAPI.getPageMax() || pageToLoad < connectionAPI.getPageMin()) {
+                return false;
+            }
             Log.d(TAG, "on scrolled above");
             Message message = backgroundHandler.obtainMessage(MESSAGE_QUERY_CONNECTION_PAGE);
             message.obj = getConnectionQuery();
@@ -73,7 +80,7 @@ public class ConnectionListFragment extends Fragment {
 
     public ConnectionListFragment() {
         // Empty constructor
-        transportAPI = new TransportAPI();
+        connectionAPI = new TransportAPI();
     }
 
 
@@ -247,7 +254,7 @@ public class ConnectionListFragment extends Fragment {
             }
             Connection[] connections;
             try {
-                connections = transportAPI.getConnections(connectionQuery, page);
+                connections = connectionAPI.getConnections(connectionQuery, page);
                 for (Connection connection : connections) {
                     Log.d(TAG, connection.toString());
                 }

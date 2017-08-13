@@ -8,6 +8,7 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.common.base.Verify;
+
 import java.util.Calendar;
 import java.util.Date;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.utils.TimeDateUtils;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 
@@ -32,6 +37,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     private static final int REQUEST_CODE_CHOOSE_TO = 1;
     private static final int REQUEST_CODE_CHOOSE_FROM = 2;
     private static final String KEY_STATE = "KEY_STATE";
+    private static final String TAG = "HeadNavigationFragment";
     private View.OnClickListener mOnButtonClickListener;
     private SelectionState mSelectionState;
     private Button mToButton;
@@ -136,10 +142,12 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
             switch (requestCode) {
                 case REQUEST_CODE_CHOOSE_FROM:
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
+                    Verify.verifyNotNull(name, "Choose station result (from) is null");
                     mSelectionState.setFrom(name);
                     break;
                 case REQUEST_CODE_CHOOSE_TO:
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
+                    Verify.verifyNotNull(name, "Choose station result (to) is null");
                     mSelectionState.setTo(name);
                     break;
                 default:
