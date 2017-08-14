@@ -66,7 +66,7 @@ public class TransportAPITest {
                 .build();
 
         Connection[] connections = transportApi.getConnections(query, 0);
-        assertEquals(connections.length, 6);
+        assertEquals(connections.length, 4);
         assertConnectionsSortedByDeparture(connections);
         for(Connection connection: connections) {
             System.out.println(connection.getArrivalDate());
@@ -91,7 +91,7 @@ public class TransportAPITest {
                .build();
 
        Connection[] connections = transportApi.getConnections(query, 0);
-       assertEquals(connections.length, 6);
+       assertEquals(connections.length, 4);
        assertConnectionsSortedByDeparture(connections);
 
        for(Connection connection: connections) {

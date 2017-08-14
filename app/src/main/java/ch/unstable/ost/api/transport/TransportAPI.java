@@ -104,7 +104,6 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO, Connec
         UrlBuilder builder = UrlBuilder.fromString(CONNECTIONS_URL)
                 .addParameter("from", connectionQuery.getFrom())
                 .addParameter("to", connectionQuery.getTo())
-                .addParameter("limit", "6")
                 .addParameter(URL_PARAMETER_PAGE, Integer.toString(page));
         if (connectionQuery.hasVia()) {
             for (String via : connectionQuery.getVia()) {
