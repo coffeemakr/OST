@@ -36,6 +36,27 @@ public class ConnectionQueryBuilderTest {
         assertEquals("To", query.getTo());
     }
 
+    @Test(expected = NullPointerException.class)
+    public void setToWithNull() {
+        new ConnectionQuery.Builder().setTo(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setToWithEmptyString() {
+        new ConnectionQuery.Builder().setTo("");
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void setFromWithNull() {
+        new ConnectionQuery.Builder().setFrom(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setFromWithEmptyString() {
+        new ConnectionQuery.Builder().setTo("");
+    }
+
     @Test
     public void setFrom() {
         ConnectionQuery.Builder builder = new ConnectionQuery.Builder();

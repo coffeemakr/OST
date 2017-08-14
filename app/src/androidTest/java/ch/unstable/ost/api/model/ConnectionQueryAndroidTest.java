@@ -29,6 +29,7 @@ public class ConnectionQueryAndroidTest {
         assertNull(read.getArrivalTime());
         assertNull(read.getDepartureTime());
         assertTrue(read.getVia().length == 0);
+        assertEquals(read, query);
 
 
         String[] vias = new String[]{"Baden, Historisches Museum"};

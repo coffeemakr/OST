@@ -7,11 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -97,7 +97,7 @@ public class ConnectionQuery implements Parcelable {
         ConnectionQuery that = (ConnectionQuery) o;
         return Objects.equal(from, that.from) &&
                 Objects.equal(to, that.to) &&
-                Objects.equal(via, that.via) &&
+                Arrays.equals(via, that.via) &&
                 Objects.equal(departureTime, that.departureTime);
     }
 
@@ -124,19 +124,6 @@ public class ConnectionQuery implements Parcelable {
         public Builder() {
         }
 
-        /**
-         * Create builder from an existing connection query
-         *
-         * @param connectionQuery the connection query to build upon
-         */
-        public Builder(ConnectionQuery connectionQuery) {
-            this.via = Arrays.asList(connectionQuery.via);
-            this.from = connectionQuery.from;
-            this.to = connectionQuery.to;
-            this.departureTime = connectionQuery.departureTime;
-            this.arrivalTime = connectionQuery.arrivalTime;
-        }
-
         @NonNull
         @CanIgnoreReturnValue
         public Builder setVia(@Nullable String... via) {
@@ -158,6 +145,8 @@ public class ConnectionQuery implements Parcelable {
         @NonNull
         @CanIgnoreReturnValue
         public Builder setFrom(String from) {
+            Preconditions.checkNotNull(from, "from is null");
+            Preconditions.checkArgument(!from.isEmpty(), "from may not be empty");
             this.from = from;
             return this;
         }
@@ -165,16 +154,16 @@ public class ConnectionQuery implements Parcelable {
         @NonNull
         @CanIgnoreReturnValue
         public Builder setTo(String to) {
+            Preconditions.checkNotNull(to, "to is null");
+            Preconditions.checkArgument(!to.isEmpty(), "to may not be empty");
             this.to = to;
             return this;
         }
 
         @NonNull
         public ConnectionQuery build() {
-            if (from == null) throw new IllegalStateException("from is null");
-            if (to == null) throw new IllegalStateException("to is null");
-            if (from.isEmpty()) throw new IllegalStateException("from is empty");
-            if (to.isEmpty()) throw new IllegalStateException("to is empty");
+            Preconditions.checkState(from != null, "from is null");
+            Preconditions.checkState(to != null, "to is null");
             return new ConnectionQuery(this);
         }
 
