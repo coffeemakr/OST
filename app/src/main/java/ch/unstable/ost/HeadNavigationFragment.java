@@ -83,6 +83,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                 .subscribe(getSelectionStateObserver());
     }
 
+    @NonNull
     private Consumer<SelectionState> getSelectionStateObserver() {
         return new Consumer<SelectionState>() {
             @Override
@@ -160,6 +161,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         }
     }
 
+    @NonNull
     private static String getTimeString(Context context, Date date, @StringRes int sameDayFormat, @StringRes int otherDayFormat) {
         Date today = new Date();
         if (isSameDay(today, date)) {
@@ -169,6 +171,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         }
     }
 
+    @NonNull
     private static String getTimeString(Context context, SelectionState selectionState) {
         checkNotNull(context, "context is null");
         checkNotNull(context, "selectionState is null");
