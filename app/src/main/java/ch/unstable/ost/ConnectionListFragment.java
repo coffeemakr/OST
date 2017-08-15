@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.io.IOException;
+import java.util.List;
 
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
@@ -35,8 +36,8 @@ public class ConnectionListFragment extends Fragment {
     private static final int MESSAGE_QUERY_CONNECTION_PAGE = 5;
 
     private static final String ARG_QUERY = "connection_query";
-    private static final String KEY_CONNECTION_LIST = "connection_list";
     private static final String TAG = "ConnectionListFragment";
+    private static final String KEY_CONNECTION_STATE = "connection_adapter_state";
 
     private final OnConnectionSelectedCaller mOnConnectionClickListener = new OnConnectionSelectedCaller();
     private final BackgroundCallback backgroundCallback = new BackgroundCallback();
@@ -108,6 +109,12 @@ public class ConnectionListFragment extends Fragment {
         mConnectionAdapter.setOnConnectionClickListener(mOnConnectionClickListener);
         if (savedInstanceState != null) {
             mConnectionQuery = savedInstanceState.getParcelable(ARG_QUERY);
+            ConnectionListAdapter.State state = savedInstanceState.getParcelable(KEY_CONNECTION_STATE);
+            if(state != null) {
+                mConnectionAdapter.restoreState(state);
+            } else {
+                loadConnectionsAsync(mConnectionQuery);
+            }
         } else {
             mConnectionQuery = getArguments().getParcelable(ARG_QUERY);
             loadConnectionsAsync(mConnectionQuery);
@@ -127,6 +134,9 @@ public class ConnectionListFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(ARG_QUERY, mConnectionQuery);
+        if(mConnectionAdapter != null) {
+            outState.putParcelable(KEY_CONNECTION_STATE, mConnectionAdapter.getState());
+        }
     }
 
 

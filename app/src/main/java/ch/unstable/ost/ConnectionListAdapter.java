@@ -3,6 +3,8 @@ package ch.unstable.ost;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -116,6 +118,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         };
     }
 
+    @MainThread
     public void setConnections(int page, @NonNull Connection[] connections) {
         if(page == 0) {
             lowestPage = 0;
@@ -130,6 +133,21 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
+    public State getState() {
+        Connection[] connections = mConnections.toArray(new Connection[mConnections.size()]);
+        return new State(connections, lowestPage, highestPage);
+    }
+
+    @MainThread
+    public void restoreState(State state) {
+        mConnections.clear();
+        Collections.addAll(mConnections, state.connections);
+        loadingTop = false;
+        loadingBottom = false;
+        lowestPage = state.lowestPage;
+        highestPage = state.highestPage;
+        notifyDataSetChanged();
+    }
 
     @MainThread
     public void appendConnections(@NonNull Connection[] connections) {
@@ -289,6 +307,10 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return lowestPage;
     }
 
+    public Connection[] getConnections() {
+        return mConnections.toArray(new Connection[mConnections.size()]);
+    }
+
     public interface OnConnectionClickListener {
         void onConnectionClicked(Connection connection);
     }
@@ -371,6 +393,60 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 default:
                     return false;
             }
+        }
+    }
+
+    public static class State implements Parcelable {
+        private final Connection[] connections;
+        private final int lowestPage;
+        private final int highestPage;
+
+        public State(Connection[] connections, int lowestPage, int highestPage) {
+            this.connections = connections;
+            this.lowestPage = lowestPage;
+            this.highestPage = highestPage;
+        }
+
+        private State(Parcel in) {
+            connections = in.createTypedArray(Connection.CREATOR);
+            lowestPage = in.readInt();
+            highestPage = in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeTypedArray(connections, flags);
+            dest.writeInt(lowestPage);
+            dest.writeInt(highestPage);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<State> CREATOR = new Creator<State>() {
+            @Override
+            public State createFromParcel(Parcel in) {
+                return new State(in);
+            }
+
+            @Override
+            public State[] newArray(int size) {
+                return new State[size];
+            }
+        };
+
+        public Connection[] getConnections() {
+            return connections;
+        }
+
+        public int getLowestPage() {
+            return lowestPage;
+        }
+
+        public int getHighestPage() {
+            return highestPage;
         }
     }
 }
