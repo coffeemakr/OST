@@ -11,6 +11,8 @@ public class ConnectionQueryTest {
     public void testEquals() throws Exception {
         String to = "Zürich, HB";
         String from = "Basel SBB";
+
+
         ConnectionQuery query = new ConnectionQuery.Builder()
                 .setTo(to)
                 .setFrom(from)
@@ -30,6 +32,34 @@ public class ConnectionQueryTest {
         assertFalse(query.equals("other class"));
         //noinspection EqualsWithItself
         assertTrue(query.equals(query));
+
+
+        query = new ConnectionQuery.Builder()
+                .setTo(to)
+                .setFrom(from)
+                .build();
+        other = new ConnectionQuery.Builder()
+                .setTo(from)
+                .setFrom(to)
+                .build();
+
+        assertFalse(query.equals(other));
+        assertFalse(other.equals(query));
+        assertNotEquals(query.hashCode(), other.hashCode());
+
+
+        query = new ConnectionQuery.Builder()
+                .setTo(to)
+                .setFrom(from)
+                .build();
+        other = new ConnectionQuery.Builder()
+                .setTo(to)
+                .setFrom(to)
+                .build();
+
+        assertFalse(query.equals(other));
+        assertFalse(other.equals(query));
+        assertNotEquals(query.hashCode(), other.hashCode());
 
         other = new ConnectionQuery.Builder()
                 .addVia("Genf")
@@ -160,6 +190,15 @@ public class ConnectionQueryTest {
         assertTrue(other.equals(query));
         assertEquals(query.hashCode(), other.hashCode());
 
+    }
+
+    @Test
+    public void testDescribeContent() {
+        ConnectionQuery query = new ConnectionQuery.Builder()
+                .setTo("to")
+                .setFrom("from")
+                .build();
+        assertEquals(0, query.describeContents());
     }
 
 }

@@ -54,7 +54,7 @@ public class ConnectionQueryBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void setFromWithEmptyString() {
-        new ConnectionQuery.Builder().setTo("");
+        new ConnectionQuery.Builder().setFrom("");
     }
 
     @Test
@@ -94,6 +94,18 @@ public class ConnectionQueryBuilderTest {
         builder.addVia("Roggwil");
         ConnectionQuery query = builder.build();
         assertArrayEquals(new String[]{"Bern", "Wynau", "Roggwil"}, query.getVia());
+        assertTrue(query.hasVia());
+
+        builder.setVia((String[]) null);
+        query = builder.build();
+        assertTrue(query.getVia().length == 0);
+        assertFalse(query.hasVia());
+
+        builder.setVia();
+        query = builder.build();
+        assertTrue(query.getVia().length == 0);
+        assertFalse(query.hasVia());
+
     }
 
     @Test
