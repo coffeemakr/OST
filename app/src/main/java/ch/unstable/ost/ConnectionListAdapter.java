@@ -14,15 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Iterables;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import ch.unstable.ost.api.model.Connection;
@@ -38,8 +32,8 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public static final String TAG = "ConnectionListAdapter";
     private static final int PROGRESS_TYPE = 0;
     private static final int ITEM_TYPE = 1;
-    private static final int MESSAGE_SET_BOTTOM_LOADING = 0;
-    private static final int MESSAGE_SET_TOP_LOADING = 1;
+    private static final int MESSAGE_LOAD_MORE_BOTTOM = 0;
+    private static final int MESSAGE_LOAD_MORE_TOP = 1;
 
     private final List<Connection> mConnections = new ArrayList<>();
     private final View.OnClickListener mOnViewHolderClickListener = new OnViewHolderClickListener();
@@ -53,29 +47,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public ConnectionListAdapter() {
         super();
-        mHandler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                switch (msg.what) {
-                    case MESSAGE_SET_BOTTOM_LOADING:
-                        if(mListener.onLoadBelow(ConnectionListAdapter.this, getHighestPage() + 1)) {
-                            setLoadingBottom(true);
-                        } else {
-                            setLoadingBottom(false);
-                        }
-                        return true;
-                    case MESSAGE_SET_TOP_LOADING:
-                        if(mListener.onLoadAbove(ConnectionListAdapter.this, getLowestPage() - 1)) {
-                            setLoadingTop(true);
-                        } else {
-                            setLoadingTop(false);
-                        }
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
+        mHandler = new Handler(new UICallback());
     }
 
     private static int[] getTravelTimes(Section[] sections) {
@@ -123,21 +95,21 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public RecyclerView.OnScrollListener getOnScrollListener(final LinearLayoutManager linearLayoutManager) {
-        final int visibleThreshold = 2;
+    public RecyclerView.OnScrollListener createOnScrollListener(final LinearLayoutManager linearLayoutManager) {
+        final int visibleThreshold = 1;
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (mListener == null) return;
-                int totalItemCount = linearLayoutManager.getItemCount();
+                int lastItemPostion = linearLayoutManager.getItemCount() - 1;
                 int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (dy > 0 && !loadingBottom && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                    if(!mHandler.hasMessages(MESSAGE_SET_BOTTOM_LOADING)) {
-                        mHandler.sendEmptyMessage(MESSAGE_SET_BOTTOM_LOADING);
+                if (dy >= 0 && !loadingBottom && lastItemPostion <= (lastVisibleItem + visibleThreshold)) {
+                    if(!mHandler.hasMessages(MESSAGE_LOAD_MORE_BOTTOM)) {
+                        mHandler.sendEmptyMessage(MESSAGE_LOAD_MORE_BOTTOM);
                     }
                 } else if(dy < 0 && !loadingTop && linearLayoutManager.findFirstCompletelyVisibleItemPosition() <= visibleThreshold) {
-                    if(!mHandler.hasMessages(MESSAGE_SET_TOP_LOADING)) {
-                        mHandler.sendEmptyMessage(MESSAGE_SET_TOP_LOADING);
+                    if(!mHandler.hasMessages(MESSAGE_LOAD_MORE_TOP)) {
+                        mHandler.sendEmptyMessage(MESSAGE_LOAD_MORE_TOP);
                     }
                 }
             }
@@ -146,7 +118,11 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public void setConnections(int page, @NonNull Connection[] connections) {
         if(page == 0) {
-            setConnections(connections);
+            lowestPage = 0;
+            highestPage = 0;
+            mConnections.clear();
+            Collections.addAll(mConnections, connections);
+            notifyDataSetChanged();
         } else if(page > 0) {
             appendConnections(connections);
         } else if(page < 0) {
@@ -154,18 +130,10 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    @MainThread
-    public void setConnections(@NonNull Connection[] connections) {
-        lowestPage = 0;
-        highestPage = 0;
-        mConnections.clear();
-        Collections.addAll(mConnections, connections);
-        notifyDataSetChanged();
-    }
-
 
     @MainThread
     public void appendConnections(@NonNull Connection[] connections) {
+        //noinspection ResultOfMethodCallIgnored
         checkNotNull(connections, "connections is null");
         setLoadingBottom(false);
         int startPosition = getItemCount();
@@ -188,6 +156,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @MainThread
     public void prependConnections(@NonNull Connection[] connections) {
+        //noinspection ResultOfMethodCallIgnored
         checkNotNull(connections, "connections is null");
         setLoadingTop(false);
         ArrayList<Connection> connectionsToInsert = new ArrayList<>(connections.length);
@@ -378,6 +347,30 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public ProgressViewHolder(View itemView) {
             super(itemView);
             this.progressBar = verifyNotNull(itemView.findViewById(R.id.progressBar));
+        }
+    }
+
+    private class UICallback implements Handler.Callback {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_LOAD_MORE_BOTTOM:
+                    if(mListener.onLoadBelow(ConnectionListAdapter.this, getHighestPage() + 1)) {
+                        setLoadingBottom(true);
+                    } else {
+                        setLoadingBottom(false);
+                    }
+                    return true;
+                case MESSAGE_LOAD_MORE_TOP:
+                    if(mListener.onLoadAbove(ConnectionListAdapter.this, getLowestPage() - 1)) {
+                        setLoadingTop(true);
+                    } else {
+                        setLoadingTop(false);
+                    }
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

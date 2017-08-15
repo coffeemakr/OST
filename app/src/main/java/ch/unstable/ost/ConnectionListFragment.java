@@ -77,6 +77,7 @@ public class ConnectionListFragment extends Fragment {
             return true;
         }
     };
+    private RecyclerView.OnScrollListener mConnectionListScrollListener;
 
     public ConnectionListFragment() {
         // Empty constructor
@@ -107,12 +108,6 @@ public class ConnectionListFragment extends Fragment {
         mConnectionAdapter.setOnConnectionClickListener(mOnConnectionClickListener);
         if (savedInstanceState != null) {
             mConnectionQuery = savedInstanceState.getParcelable(ARG_QUERY);
-            Connection[] connections = (Connection[]) savedInstanceState.getParcelableArray(KEY_CONNECTION_LIST);
-            if (connections == null) {
-                loadConnectionsAsync(mConnectionQuery);
-            } else {
-                mConnectionAdapter.setConnections(connections);
-            }
         } else {
             mConnectionQuery = getArguments().getParcelable(ARG_QUERY);
             loadConnectionsAsync(mConnectionQuery);
@@ -159,16 +154,21 @@ public class ConnectionListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mConnectionsList = (RecyclerView) view.findViewById(R.id.connections_list);
         mConnectionsList.setAdapter(mConnectionAdapter);
-        mConnectionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        mConnectionsList.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         mConnectionsList.addItemDecoration(dividerItemDecoration);
-        mConnectionsList.addOnScrollListener(mConnectionAdapter.getOnScrollListener((LinearLayoutManager) mConnectionsList.getLayoutManager()));
+        mConnectionListScrollListener = mConnectionAdapter.createOnScrollListener(linearLayoutManager);
+        mConnectionsList.addOnScrollListener(mConnectionListScrollListener);
         mLoadingIndicator = view.findViewById(R.id.loadingIndicator);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if(mConnectionsList != null) {
+            mConnectionsList.removeOnScrollListener(mConnectionListScrollListener);
+        }
     }
 
     public ConnectionQuery getConnectionQuery() {
