@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import ch.unstable.ost.TestHelper;
+import ch.unstable.ost.test.TestHelper;
 
 import static org.junit.Assert.*;
 

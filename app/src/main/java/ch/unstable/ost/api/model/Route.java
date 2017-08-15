@@ -32,7 +32,9 @@ public class Route implements Parcelable {
     public Route(String shortName, String longName, PassingCheckpoint[] stops) {
         this.shortName = checkNotNull(shortName, "shortName");
         this.longName = checkNotNull(longName, "longName");
-        this.stops = checkNotNull(stops, "stops");
+        //noinspection ResultOfMethodCallIgnored
+        checkNotNull(stops, "stops");
+        this.stops = Arrays.copyOf(stops, stops.length);
     }
 
     private Route(Parcel in) {
