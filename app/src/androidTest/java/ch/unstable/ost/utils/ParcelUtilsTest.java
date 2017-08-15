@@ -62,16 +62,19 @@ public class ParcelUtilsTest {
         parcel.setDataPosition(0);
         assertNull(ParcelUtils.readNullableInteger(parcel));
 
+        parcel.setDataPosition(0);
         ParcelUtils.writeNullableInteger(parcel, 10);
         parcel.setDataPosition(0);
         assertEquals(Integer.valueOf(10), ParcelUtils.readNullableInteger(parcel));
 
+        parcel.setDataPosition(0);
         ParcelUtils.writeNullableInteger(parcel, 0);
         parcel.setDataPosition(0);
         assertEquals(Integer.valueOf(0), ParcelUtils.readNullableInteger(parcel));
 
+        parcel.setDataPosition(0);
         ParcelUtils.writeNullableInteger(parcel, -1);
-        parcel.setDataPosition(-1);
+        parcel.setDataPosition(0);
         assertEquals(Integer.valueOf(-1), ParcelUtils.readNullableInteger(parcel));
     }
 
@@ -81,16 +84,19 @@ public class ParcelUtilsTest {
         parcel.setDataPosition(0);
         assertNull(ParcelUtils.readNullableLong(parcel));
 
+        parcel.setDataPosition(0);
         ParcelUtils.writeNullableLong(parcel, 10L);
         parcel.setDataPosition(0);
         assertEquals(Long.valueOf(10), ParcelUtils.readNullableLong(parcel));
 
+        parcel.setDataPosition(0);
         ParcelUtils.writeNullableLong(parcel, 0L);
         parcel.setDataPosition(0);
         assertEquals(Long.valueOf(0), ParcelUtils.readNullableLong(parcel));
 
+        parcel.setDataPosition(0);
         ParcelUtils.writeNullableLong(parcel, -1L);
-        parcel.setDataPosition(-1);
+        parcel.setDataPosition(0);
         assertEquals(Long.valueOf(-1), ParcelUtils.readNullableLong(parcel));
     }
 }
