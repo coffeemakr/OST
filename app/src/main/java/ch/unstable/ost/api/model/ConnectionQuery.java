@@ -159,6 +159,7 @@ public class ConnectionQuery implements Parcelable {
         @NonNull
         @CanIgnoreReturnValue
         public Builder setFrom(String from) {
+            //noinspection ResultOfMethodCallIgnored
             checkNotNull(from, "from is null");
             Preconditions.checkArgument(!from.isEmpty(), "from may not be empty");
             this.from = from;
@@ -168,6 +169,7 @@ public class ConnectionQuery implements Parcelable {
         @NonNull
         @CanIgnoreReturnValue
         public Builder setTo(String to) {
+            //noinspection ResultOfMethodCallIgnored
             checkNotNull(to, "to is null");
             Preconditions.checkArgument(!to.isEmpty(), "to may not be empty");
             this.to = to;

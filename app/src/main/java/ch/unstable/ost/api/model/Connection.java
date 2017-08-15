@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -30,7 +29,7 @@ public class Connection implements Parcelable {
         this.sections = checkNotNull(sections, "sections");
     }
 
-    protected Connection(Parcel in) {
+    private Connection(Parcel in) {
         sections = in.createTypedArray(Section.CREATOR);
     }
 

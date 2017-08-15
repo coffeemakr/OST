@@ -29,13 +29,13 @@ public class Route implements Parcelable {
     private final String longName;
     private final PassingCheckpoint[] stops;
 
-    public Route(String shortname, String longName, PassingCheckpoint[] stops) {
-        this.shortName = checkNotNull(shortname, "shortname");
+    public Route(String shortName, String longName, PassingCheckpoint[] stops) {
+        this.shortName = checkNotNull(shortName, "shortName");
         this.longName = checkNotNull(longName, "longName");
         this.stops = checkNotNull(stops, "stops");
     }
 
-    protected Route(Parcel in) {
+    private Route(Parcel in) {
         shortName = in.readString();
         longName = in.readString();
         stops = in.createTypedArray(PassingCheckpoint.CREATOR);

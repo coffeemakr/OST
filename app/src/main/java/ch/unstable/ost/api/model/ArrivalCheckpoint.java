@@ -30,7 +30,7 @@ public class ArrivalCheckpoint extends Checkpoint implements Parcelable {
         this.arrivalTime = arrivalTime;
     }
 
-    protected ArrivalCheckpoint(Parcel in) {
+    private ArrivalCheckpoint(Parcel in) {
         super(in);
         arrivalTime = ParcelUtils.readDate(in);
     }

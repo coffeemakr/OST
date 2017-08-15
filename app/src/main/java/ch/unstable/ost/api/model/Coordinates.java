@@ -17,10 +17,10 @@ public class Coordinates implements Parcelable {
             return new Coordinates[size];
         }
     };
-    public final double x;
-    public final double y;
+    private final double x;
+    private final double y;
 
-    protected Coordinates(Parcel in) {
+    private Coordinates(Parcel in) {
         x = in.readDouble();
         y = in.readDouble();
     }

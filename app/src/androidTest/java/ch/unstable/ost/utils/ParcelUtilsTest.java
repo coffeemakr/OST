@@ -58,42 +58,39 @@ public class ParcelUtilsTest {
 
     @Test
     public void writeNullableInteger() throws Exception {
+        ParcelUtils.writeNullableInteger(parcel, null);
+        parcel.setDataPosition(0);
+        assertNull(ParcelUtils.readNullableInteger(parcel));
 
-    }
+        ParcelUtils.writeNullableInteger(parcel, 10);
+        parcel.setDataPosition(0);
+        assertEquals(Integer.valueOf(10), ParcelUtils.readNullableInteger(parcel));
 
-    @Test
-    public void readNullableInteger() throws Exception {
+        ParcelUtils.writeNullableInteger(parcel, 0);
+        parcel.setDataPosition(0);
+        assertEquals(Integer.valueOf(0), ParcelUtils.readNullableInteger(parcel));
 
-    }
-
-    @Test
-    public void readEnum() throws Exception {
-
-    }
-
-    @Test
-    public void writeEnum() throws Exception {
-
-    }
-
-    @Test
-    public void readNullableParcelable() throws Exception {
-
-    }
-
-    @Test
-    public void writeNullableParcelable() throws Exception {
-
+        ParcelUtils.writeNullableInteger(parcel, -1);
+        parcel.setDataPosition(-1);
+        assertEquals(Integer.valueOf(-1), ParcelUtils.readNullableInteger(parcel));
     }
 
     @Test
     public void writeNullableLong() throws Exception {
+        ParcelUtils.writeNullableLong(parcel, null);
+        parcel.setDataPosition(0);
+        assertNull(ParcelUtils.readNullableLong(parcel));
 
+        ParcelUtils.writeNullableLong(parcel, 10L);
+        parcel.setDataPosition(0);
+        assertEquals(Long.valueOf(10), ParcelUtils.readNullableLong(parcel));
+
+        ParcelUtils.writeNullableLong(parcel, 0L);
+        parcel.setDataPosition(0);
+        assertEquals(Long.valueOf(0), ParcelUtils.readNullableLong(parcel));
+
+        ParcelUtils.writeNullableLong(parcel, -1L);
+        parcel.setDataPosition(-1);
+        assertEquals(Long.valueOf(-1), ParcelUtils.readNullableLong(parcel));
     }
-
-    @Test
-    public void readNullableLong() throws Exception {
-
-    }
-
 }

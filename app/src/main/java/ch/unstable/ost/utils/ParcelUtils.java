@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 
 import java.util.Date;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public enum  ParcelUtils {
     ;
     @Nullable
@@ -64,6 +66,7 @@ public enum  ParcelUtils {
     }
 
 
+    @Nullable
     public static <T extends Parcelable> T readParcelable(Parcel in, Parcelable.Creator<T> creator) {
         return ParcelCompat.readTypeObject(in, creator);
     }
@@ -100,7 +103,7 @@ public enum  ParcelUtils {
     }
 
     public static <T extends Parcelable> void writeNonNullTypedObject(Parcel dest, T value, int flags) {
-        if (value == null) throw new NullPointerException("value is null");
+        checkNotNull(value, "value is null");
         ParcelCompat.writeTypeObject(dest, value, flags);
     }
 }

@@ -43,7 +43,7 @@ abstract class Checkpoint {
     }
 
     @CallSuper
-    public void writeToParcel(Parcel dest, int flags) {
+    protected void writeToParcel(Parcel dest, int flags) {
         dest.writeString(platform);
         ParcelUtils.writeParcelable(dest, location, flags);
     }

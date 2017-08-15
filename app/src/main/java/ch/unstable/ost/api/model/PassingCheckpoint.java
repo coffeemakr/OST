@@ -35,7 +35,7 @@ public class PassingCheckpoint extends Checkpoint implements Parcelable {
         this.departureTime = checkNotNull(departureTime, "departureTime");
     }
 
-    protected PassingCheckpoint(Parcel in) {
+    private PassingCheckpoint(Parcel in) {
         super(in);
         departureTime = ParcelUtils.readDate(in);
         arrivalTime = ParcelUtils.readDate(in);

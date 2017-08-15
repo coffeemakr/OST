@@ -9,8 +9,8 @@ import com.google.common.base.Objects;
 
 import java.util.Date;
 
-import static ch.unstable.ost.utils.ParcelUtils.readParcelable;
-import static ch.unstable.ost.utils.ParcelUtils.writeParcelable;
+import static ch.unstable.ost.utils.ParcelUtils.readNonNulTypedObject;
+import static ch.unstable.ost.utils.ParcelUtils.writeNonNullTypedObject;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
@@ -45,19 +45,19 @@ public class Section implements Parcelable {
         this.walkTime = walkTime;
     }
 
-    protected Section(Parcel in) {
-        route = readParcelable(in, Route.CREATOR);
-        departure = readParcelable(in, DepartureCheckpoint.CREATOR);
-        arrival = readParcelable(in, ArrivalCheckpoint.CREATOR);
+    private Section(Parcel in) {
+        route = readNonNulTypedObject(in, Route.CREATOR);
+        departure = readNonNulTypedObject(in, DepartureCheckpoint.CREATOR);
+        arrival = readNonNulTypedObject(in, ArrivalCheckpoint.CREATOR);
         headsign = in.readString();
         walkTime = in.readLong();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        writeParcelable(dest, route, flags);
-        writeParcelable(dest, departure, flags);
-        writeParcelable(dest, arrival, flags);
+        writeNonNullTypedObject(dest, route, flags);
+        writeNonNullTypedObject(dest, departure, flags);
+        writeNonNullTypedObject(dest, arrival, flags);
         dest.writeString(headsign);
         dest.writeLong(walkTime);
     }
