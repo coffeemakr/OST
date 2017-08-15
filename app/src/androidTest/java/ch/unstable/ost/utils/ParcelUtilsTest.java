@@ -1,12 +1,18 @@
 package ch.unstable.ost.utils;
 
 import android.os.Parcel;
+import android.os.ParcelFormatException;
+import android.os.Parcelable;
+
+import com.google.common.base.Objects;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+
+import ch.unstable.ost.api.model.Location;
 
 import static org.junit.Assert.*;
 
@@ -98,5 +104,92 @@ public class ParcelUtilsTest {
         ParcelUtils.writeNullableLong(parcel, -1L);
         parcel.setDataPosition(0);
         assertEquals(Long.valueOf(-1), ParcelUtils.readNullableLong(parcel));
+    }
+
+    private enum TestEnum {
+        ONE, TWO, THREE;
+    }
+
+    private static class TestParcelable implements Parcelable {
+
+        private final int integer;
+        private final String string;
+
+        public TestParcelable(int integer, String string) {
+            this.integer = integer;
+            this.string = string;
+        }
+
+        private TestParcelable(Parcel in) {
+            integer = in.readInt();
+            string = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(integer);
+            dest.writeString(string);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<TestParcelable> CREATOR = new Creator<TestParcelable>() {
+            @Override
+            public TestParcelable createFromParcel(Parcel in) {
+                return new TestParcelable(in);
+            }
+
+            @Override
+            public TestParcelable[] newArray(int size) {
+                return new TestParcelable[size];
+            }
+        };
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            TestParcelable that = (TestParcelable) o;
+            return integer == that.integer &&
+                    Objects.equal(string, that.string);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(integer, string);
+        }
+    }
+
+    @Test
+    public void writeNonNullTypedObject() throws Exception {
+        TestParcelable testParcelable = new TestParcelable(123, "string");
+        parcel.setDataPosition(0);
+        ParcelUtils.writeNonNullTypedObject(parcel, testParcelable, 0);
+        parcel.setDataPosition(0);
+        assertEquals(testParcelable, ParcelUtils.readNonNulTypedObject(parcel, TestParcelable.CREATOR));
+    }
+
+    @Test(expected = ParcelFormatException.class)
+    public void readNonNullTypedObjectWithNull() throws Exception {
+        parcel.setDataPosition(0);
+        ParcelCompat.writeTypeObject(parcel, null, 0);
+        parcel.setDataPosition(0);
+        ParcelUtils.readNonNulTypedObject(parcel, TestParcelable.CREATOR);
+    }
+
+    @Test
+    public void writeEnum() throws Exception {
+        parcel.setDataPosition(0);
+        ParcelUtils.writeEnum(parcel, TestEnum.THREE);
+        parcel.setDataPosition(0);
+        assertEquals(TestEnum.THREE, ParcelUtils.readEnum(TestEnum.values(), parcel));
+
+        parcel.setDataPosition(0);
+        ParcelUtils.writeEnum(parcel, null);
+        parcel.setDataPosition(0);
+        assertEquals(null, ParcelUtils.readEnum(TestEnum.values(), parcel));
     }
 }

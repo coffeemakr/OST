@@ -141,11 +141,11 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @MainThread
     public void restoreState(State state) {
         mConnections.clear();
-        Collections.addAll(mConnections, state.connections);
+        Collections.addAll(mConnections, state.getConnections());
         loadingTop = false;
         loadingBottom = false;
-        lowestPage = state.lowestPage;
-        highestPage = state.highestPage;
+        lowestPage = state.getLowestPage();
+        highestPage = state.getHighestPage();
         notifyDataSetChanged();
     }
 
