@@ -12,10 +12,13 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import ch.unstable.ost.utils.ParcelUtils;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConnectionQuery implements Parcelable {
     public static final Parcelable.Creator<ConnectionQuery> CREATOR = new Parcelable.Creator<ConnectionQuery>() {
@@ -98,12 +101,13 @@ public class ConnectionQuery implements Parcelable {
         return Objects.equal(from, that.from) &&
                 Objects.equal(to, that.to) &&
                 Arrays.equals(via, that.via) &&
-                Objects.equal(departureTime, that.departureTime);
+                Objects.equal(departureTime, that.departureTime) &&
+                Objects.equal(arrivalTime, that.arrivalTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(from, to, via, departureTime);
+        return Objects.hashCode(from, to, Arrays.hashCode(via), departureTime, arrivalTime);
     }
 
     @Nullable
@@ -122,6 +126,16 @@ public class ConnectionQuery implements Parcelable {
         private Date arrivalTime;
 
         public Builder() {
+        }
+
+        public Builder(ConnectionQuery query) {
+            //noinspection ResultOfMethodCallIgnored
+            checkNotNull(query, "query is null");
+            this.from = query.getFrom();
+            this.to = query.getTo();
+            this.departureTime = query.getDepartureTime();
+            this.arrivalTime = query.getArrivalTime();
+            Collections.addAll(this.via, query.getVia());
         }
 
         @NonNull
@@ -145,7 +159,7 @@ public class ConnectionQuery implements Parcelable {
         @NonNull
         @CanIgnoreReturnValue
         public Builder setFrom(String from) {
-            Preconditions.checkNotNull(from, "from is null");
+            checkNotNull(from, "from is null");
             Preconditions.checkArgument(!from.isEmpty(), "from may not be empty");
             this.from = from;
             return this;
@@ -154,7 +168,7 @@ public class ConnectionQuery implements Parcelable {
         @NonNull
         @CanIgnoreReturnValue
         public Builder setTo(String to) {
-            Preconditions.checkNotNull(to, "to is null");
+            checkNotNull(to, "to is null");
             Preconditions.checkArgument(!to.isEmpty(), "to may not be empty");
             this.to = to;
             return this;

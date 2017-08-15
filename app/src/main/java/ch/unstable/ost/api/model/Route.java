@@ -79,6 +79,6 @@ public class Route implements Parcelable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(shortName, longName, stops);
+        return Objects.hashCode(shortName, longName, Arrays.hashCode(stops));
     }
 }
