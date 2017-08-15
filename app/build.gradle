@@ -81,7 +81,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile('com.google.guava:guava:22.0-android', {
+    compile('com.google.guava:guava:23.0-android', {
         exclude group: 'com.google.code.findbugs'
     })
     compile 'io.mikael:urlbuilder:2.0.9'
