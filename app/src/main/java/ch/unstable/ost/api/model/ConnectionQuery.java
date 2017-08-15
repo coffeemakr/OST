@@ -12,7 +12,6 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -126,16 +125,6 @@ public class ConnectionQuery implements Parcelable {
         private Date arrivalTime;
 
         public Builder() {
-        }
-
-        public Builder(ConnectionQuery query) {
-            //noinspection ResultOfMethodCallIgnored
-            checkNotNull(query, "query is null");
-            this.from = query.getFrom();
-            this.to = query.getTo();
-            this.departureTime = query.getDepartureTime();
-            this.arrivalTime = query.getArrivalTime();
-            Collections.addAll(this.via, query.getVia());
         }
 
         @NonNull
