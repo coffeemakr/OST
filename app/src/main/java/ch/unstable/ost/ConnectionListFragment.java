@@ -52,12 +52,14 @@ public class ConnectionListFragment extends Fragment {
     private View mLoadingIndicator;
     private RecyclerView mConnectionsList;
     private ConnectionListAdapter.Listener mOverScrollListener = new ConnectionListAdapter.Listener() {
-        @Override
-        public boolean onLoadBelow(ConnectionListAdapter adapter, int pageToLoad) {
-            if(pageToLoad > connectionAPI.getPageMax() || pageToLoad < connectionAPI.getPageMin()) {
+        private boolean isLoadablePage(int pageToLoad) {
+            return pageToLoad <= connectionAPI.getPageMax() && pageToLoad >= connectionAPI.getPageMin();
+        }
+
+        private boolean loadPage(int pageToLoad) {
+            if(!isLoadablePage(pageToLoad)) {
                 return false;
             }
-            Log.d(TAG, "on scrolled below");
             Message message = backgroundHandler.obtainMessage(MESSAGE_QUERY_CONNECTION_PAGE);
             message.obj = getConnectionQuery();
             message.arg1 = pageToLoad;
@@ -66,16 +68,13 @@ public class ConnectionListFragment extends Fragment {
         }
 
         @Override
+        public boolean onLoadBelow(ConnectionListAdapter adapter, int pageToLoad) {
+            return loadPage(pageToLoad);
+        }
+
+        @Override
         public boolean onLoadAbove(ConnectionListAdapter adapter, int pageToLoad) {
-            if(pageToLoad > connectionAPI.getPageMax() || pageToLoad < connectionAPI.getPageMin()) {
-                return false;
-            }
-            Log.d(TAG, "on scrolled above");
-            Message message = backgroundHandler.obtainMessage(MESSAGE_QUERY_CONNECTION_PAGE);
-            message.obj = getConnectionQuery();
-            message.arg1 = pageToLoad;
-            backgroundHandler.sendMessage(message);
-            return true;
+            return loadPage(pageToLoad);
         }
     };
     private RecyclerView.OnScrollListener mConnectionListScrollListener;

@@ -12,7 +12,8 @@ import java.lang.reflect.Type;
 
 import ch.unstable.ost.api.model.Location;
 
-public class SearchCHIconClassDeserializer implements JsonDeserializer<Location.StationType> {
+public enum SearchCHIconClassDeserializer implements JsonDeserializer<Location.StationType> {
+    INSTANCE;
     private static final String TAG = SearchCHIconClassDeserializer.class.getSimpleName();
 
     @Override

@@ -25,21 +25,21 @@ public class TransportAPITest {
         transportApi = new TransportAPI();
     }
 
-    private static Date getDate(int year, int month, int day, int hour, int minute) {
+    public static Date getDate(int year, int month, int day, int hour, int minute) {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Zurich"));
         calendar.set(year, month, day, hour, minute);
         return calendar.getTime();
     }
 
-    private <E> E getFirst(E[] entities) {
+    public static <E> E getFirst(E[] entities) {
         return entities[0];
     }
 
-    private <E> E getLast(E[] entities) {
+    public static  <E> E getLast(E[] entities) {
         return entities[entities.length - 1];
     }
 
-    private static void assertConnectionsSortedByDeparture(Connection[] connections) {
+    public static void assertConnectionsSortedByDeparture(Connection[] connections) {
         assertIsSorted(connections, new Comparator<Connection>() {
             @Override
             public int compare(Connection o1, Connection o2) {

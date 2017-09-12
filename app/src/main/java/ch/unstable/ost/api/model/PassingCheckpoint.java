@@ -3,6 +3,7 @@ package ch.unstable.ost.api.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.common.base.Objects;
 
@@ -29,7 +30,7 @@ public class PassingCheckpoint extends Checkpoint implements Parcelable {
     private final Date departureTime;
     private final Date arrivalTime;
 
-    public PassingCheckpoint(Date arrivalTime, Date departureTime, Location location, String platform) {
+    public PassingCheckpoint(Date arrivalTime, Date departureTime, Location location, @Nullable String platform) {
         super(platform, location);
         this.arrivalTime = checkNotNull(arrivalTime, "arrivalTime");
         this.departureTime = checkNotNull(departureTime, "departureTime");
