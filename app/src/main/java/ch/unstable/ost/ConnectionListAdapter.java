@@ -212,6 +212,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Section section = sections[0];
             holder.firstEndDestination.setText(formatEndDestination(context, section.getHeadsign()));
             holder.firstTransportName.setText(section.getLineShortName());
+            Log.d(TAG, "Binding departure plattform: " + section.getDeparturePlatform());
             holder.platform.setText(formatPlatform(context, section.getDeparturePlatform()));
         } else {
             Log.e(TAG, "No sections");
@@ -234,8 +235,9 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Nullable
     private String formatPlatform(Context context, @Nullable String platform) {
-        if (platform == null) return null;
-        if (platform.matches("^[0-9]+$")) {
+        if (platform == null) {
+            return null;
+        } else if (platform.matches("^[0-9]+$")) {
             return context.getString(R.string.format_train_platform, platform);
         } else if (platform.matches("^[A-z]+$")) {
             return context.getString(R.string.format_bus_platform, platform);
@@ -363,7 +365,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    private class ProgressViewHolder extends RecyclerView.ViewHolder {
+    private static class ProgressViewHolder extends RecyclerView.ViewHolder {
         private final View progressBar;
 
         public ProgressViewHolder(View itemView) {

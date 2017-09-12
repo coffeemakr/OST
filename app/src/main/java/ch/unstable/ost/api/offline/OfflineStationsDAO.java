@@ -1,6 +1,7 @@
 package ch.unstable.ost.api.offline;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +30,7 @@ public abstract class OfflineStationsDAO implements StationsDAO {
         return fullQuery.toString();
     }
 
+    @Override
     public Location[] getStationsByQuery(String query) {
         return getStationsByQuery(getFullQuery(query), 0);
     }

@@ -9,8 +9,9 @@ public class OSTApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        CaocConfig.Builder.create()
+        /*CaocConfig.Builder.create()
                 .errorActivity(ErrorReportActivity.class)
                 .apply();
+                */
     }
 }

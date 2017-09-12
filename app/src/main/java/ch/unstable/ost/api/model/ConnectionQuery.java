@@ -21,10 +21,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConnectionQuery implements Parcelable {
     public static final Parcelable.Creator<ConnectionQuery> CREATOR = new Parcelable.Creator<ConnectionQuery>() {
+
+        @Override
         public ConnectionQuery createFromParcel(Parcel in) {
             return new ConnectionQuery(in);
         }
 
+        @Override
         public ConnectionQuery[] newArray(int size) {
             return new ConnectionQuery[size];
         }
@@ -130,7 +133,7 @@ public class ConnectionQuery implements Parcelable {
         @NonNull
         @CanIgnoreReturnValue
         public Builder setVia(@Nullable String... via) {
-            if (via == null || via.length == 1 && via[0] == null) {
+            if (via == null || (via.length == 1 && via[0] == null)) {
                 this.via.clear();
             } else {
                 this.via = new ArrayList<>(Arrays.asList(via));

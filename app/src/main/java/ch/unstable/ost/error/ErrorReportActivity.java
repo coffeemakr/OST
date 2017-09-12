@@ -165,7 +165,7 @@ public class ErrorReportActivity extends AppCompatActivity {
         }
     }
 
-    private class BuildInfoViewHolder {
+    private static class BuildInfoViewHolder {
         private final TextView buildId;
 
         public BuildInfoViewHolder(Activity activity) {
@@ -173,7 +173,7 @@ public class ErrorReportActivity extends AppCompatActivity {
         }
     }
 
-    private class AppInfoViewHolder {
+    private static class AppInfoViewHolder {
         private final TextView appVersion;
         private final TextView appPackage;
         private final TextView appSignature;
@@ -185,7 +185,7 @@ public class ErrorReportActivity extends AppCompatActivity {
         }
     }
 
-    private class ErrorViewHolder {
+    private static class ErrorViewHolder {
         private final TextView errorStackTrace;
 
         public ErrorViewHolder(Activity activity) {

@@ -79,6 +79,7 @@ public class ChooseStationActivity extends ThemedActivity {
         }
         mLocationResultAdapter = new StationListAdapter(this);
         mLocationResultAdapter.setOnStationClickListener(new StationListAdapter.OnStationClickListener() {
+            @Override
             public void onStationClicked(Location location) {
                 onLocationSelected(location);
             }

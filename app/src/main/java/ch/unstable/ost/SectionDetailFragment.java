@@ -83,7 +83,7 @@ public class SectionDetailFragment extends Fragment {
         }
     }
 
-    private class StopsListAdapter extends RecyclerView.Adapter<ViewHolder> {
+    private static class StopsListAdapter extends RecyclerView.Adapter<ViewHolder> {
         private PassingCheckpoint[] stops;
 
         public void setStops(PassingCheckpoint[] stops) {

@@ -17,7 +17,7 @@ public class StationDaoLoader {
 
         try {
             Class<?> clazz = Class.forName(preference);
-            StationDAOFactory daoFactory = (StationDAOFactory) clazz.newInstance();
+            StationDAOFactory daoFactory = (StationDAOFactory) clazz.getDeclaredConstructor().newInstance();
             return daoFactory.getStationsDAO(context);
         } catch (Exception e) {
             throw new IllegalStateException("Couldn't get factory for StationsDAO", e);

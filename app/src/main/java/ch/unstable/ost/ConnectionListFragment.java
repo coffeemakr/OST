@@ -246,6 +246,7 @@ public class ConnectionListFragment extends Fragment {
                     break;
                 case MESSAGE_QUERY_CONNECTION_PAGE:
                     handleConnectionQuery((ConnectionQuery) msg.obj, msg.arg1);
+                    break;
                 default:
                     return false;
             }

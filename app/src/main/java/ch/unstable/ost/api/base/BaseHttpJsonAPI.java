@@ -1,6 +1,7 @@
 package ch.unstable.ost.api.base;
 
 
+import android.os.Build;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -12,10 +13,12 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ch.unstable.ost.BuildConfig;
+import ch.unstable.ost.utils.StandartCharsetCompat;
 
 
 public class BaseHttpJsonAPI {
@@ -51,9 +54,10 @@ public class BaseHttpJsonAPI {
         if (code == HTTP_CODE_TOO_MANY_REQUESTS) {
             throw new TooManyRequestsException();
         }
-        return new InputStreamReader(urlConnection.getInputStream());
+        return new InputStreamReader(urlConnection.getInputStream(), StandartCharsetCompat.UTF_8);
     }
 
+    @SuppressWarnings("TypeParameterUnusedInFormals")
     protected <T> T loadJson(URL url, Type typeOfT) throws IOException {
         InputStreamReader inputStreamReader = open(url);
         try {

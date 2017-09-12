@@ -78,7 +78,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         if (mSelectionState == null) {
             mSelectionState = new SelectionState();
         }
-        mSelectionState.getChangeObservable()
+        Disposable disposable = mSelectionState.getChangeObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getSelectionStateObserver());
     }
