@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.api.model.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.DepartureCheckpoint;
 import ch.unstable.ost.api.model.Location;
@@ -74,11 +75,9 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
             }
 
             if(type.equals("walk")) {
-                Log.d(TAG, "Walk not handled: " + LogUtils.prettyJson(object));
-                LOGGER.fine("Walk not handled: " + LogUtils.prettyJson(object));
+                if(BuildConfig.DEBUG) Log.d(TAG, "Walk not handled: " + LogUtils.prettyJson(object));
             } else {
-                Log.d(TAG, "Got type " + type + ": " + LogUtils.prettyJson(object));
-                LOGGER.fine("Got type " + type + ": " + LogUtils.prettyJson(object));
+                if(BuildConfig.DEBUG) Log.d(TAG, "Got type " + type + ": " + LogUtils.prettyJson(object));
                 String shortname = object.get("line").getAsString();
                 String longName = object.get("number").getAsString();
                 Type listOfPassingCheckpoints = new TypeToken<List<PassingCheckpoint>>(){}.getType();

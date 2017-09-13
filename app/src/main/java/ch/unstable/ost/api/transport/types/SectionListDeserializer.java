@@ -13,6 +13,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.api.model.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.DepartureCheckpoint;
 import ch.unstable.ost.api.model.PassingCheckpoint;
@@ -53,7 +54,7 @@ public enum SectionListDeserializer implements JsonDeserializer<Section[]> {
         String number = getNullableString(journey, "number");
         if (number != null) {
             String category = getNullableString(journey, "category");
-            if (category != null) {
+            if (category != null && !number.startsWith(category)) {
                 return category + " " + number;
             }
         }
