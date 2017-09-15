@@ -13,6 +13,9 @@ public abstract class CachedConnectionDAO {
     @Query("SELECT * FROM " + CachedConnection.TABLE_NAME + " WHERE id = :id")
     abstract public Flowable<CachedConnection> getConnectionById(long id);
 
+    @Query("SELECT * FROM " + CachedConnection.TABLE_NAME + " ORDER BY creationDate")
+    abstract public Flowable<CachedConnection> getConnections();
+
     @Insert
     abstract public void addConnection(CachedConnection connection);
 }

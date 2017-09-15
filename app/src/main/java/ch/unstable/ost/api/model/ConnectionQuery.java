@@ -76,7 +76,7 @@ public class ConnectionQuery implements Parcelable {
     public ConnectionQuery(String from, String to, @Nullable String[] via, @Nullable Date departureTime, @Nullable Date arrivalTime) {
         this.from = checkNotNull(from, "from is null");
         this.to = checkNotNull(to, "to is null");
-        checkArgument(departureTime != null || arrivalTime != null, "arrival or departure time need to be set");
+        //checkArgument(departureTime != null || arrivalTime != null, "arrival or departure time need to be set");
         checkArgument(arrivalTime == null || departureTime == null, "only one of departure or arrival time can be set");
         this.arrivalTime = arrivalTime;
         this.departureTime = departureTime;

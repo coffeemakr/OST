@@ -4,6 +4,8 @@ package ch.unstable.ost.database;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import com.google.common.base.Preconditions;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -20,6 +22,7 @@ public class Databases {
     private static CacheDatabase cacheDatabase;
 
     public static synchronized StationsDatabase getStationsDatabase(Context context) {
+        Preconditions.checkNotNull(context, "context is null");
         if (stationsDatabase == null) {
             String databaseName = "stations.db";
             copyDBFromAssets(context, databaseName);
@@ -29,6 +32,7 @@ public class Databases {
     }
 
     public static synchronized CacheDatabase getCacheDatabase(Context context) {
+        Preconditions.checkNotNull(context, "context is null");
         if (cacheDatabase == null) {
             String databaseName = "cache.db";
             cacheDatabase = Room.databaseBuilder(context.getApplicationContext(), CacheDatabase.class, databaseName).build();

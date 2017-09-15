@@ -3,6 +3,7 @@ package ch.unstable.ost.database;
 
 import android.arch.persistence.room.TypeConverter;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 
@@ -24,13 +25,15 @@ public class ConnectionConverters {
     }
 
     @TypeConverter
-    public static long dateToLong(Date date) {
+    public static long dateToLong(@Nullable Date date) {
+        if(date == null) return 0;
         return date.getTime() / 1000L;
     }
 
     @TypeConverter
-    @NonNull
+    @Nullable
     public static Date longToDate(long date) {
+        if(date == 0) return null;
         return new Date(date*1000L);
     }
 

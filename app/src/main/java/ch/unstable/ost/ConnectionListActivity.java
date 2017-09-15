@@ -44,7 +44,7 @@ public class ConnectionListActivity extends ThemedActivity
 
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new EmptyConnectionListFragment())
+                    .add(R.id.fragment_container, new ConnectionHistoryFragment())
                     .commit();
         }
 

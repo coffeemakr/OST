@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
+import ch.unstable.ost.utils.LocalizationUtils;
 import ch.unstable.ost.utils.TimeDateUtils;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -50,16 +51,6 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     public HeadNavigationFragment() {
         // Required empty public constructor
-    }
-
-    private static boolean isSameDay(Date first, Date second) {
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal1.setTime(first);
-        cal2.setTime(second);
-        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-
     }
 
 
@@ -97,7 +88,9 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     private void updateViews() {
         final Context context = getContext();
         if(context == null) return;
-        mTime.setText(getTimeString(context, mSelectionState));
+        mTime.setText(LocalizationUtils.getTimeString(context,
+                mSelectionState.getArrivalTime(),
+                mSelectionState.getDepartureTime()));
         mToButton.setText(getToButtonText(context, mSelectionState.getTo()));
         mFromButton.setText(getFromButtonText(context, mSelectionState.getFrom()));
     }
@@ -158,30 +151,6 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                 default:
                     // Unknown result
             }
-        }
-    }
-
-    @NonNull
-    private static String getTimeString(Context context, Date date, @StringRes int sameDayFormat, @StringRes int otherDayFormat) {
-        Date today = new Date();
-        if (isSameDay(today, date)) {
-            return context.getString(sameDayFormat, TimeDateUtils.formatTime(date));
-        } else {
-            return context.getString(otherDayFormat, TimeDateUtils.formatTime(date), TimeDateUtils.formatDate(context, date));
-        }
-    }
-
-    @NonNull
-    private static String getTimeString(Context context, SelectionState selectionState) {
-        checkNotNull(context, "context is null");
-        checkNotNull(context, "selectionState is null");
-        Date time;
-        if ((time = selectionState.getDepartureTime()) != null) {
-            return getTimeString(context, time, R.string.departure_time_same_day, R.string.departure_time_other_day);
-        } else if ((time = selectionState.getArrivalTime()) != null) {
-            return getTimeString(context, time, R.string.arrival_time_same_day, R.string.arrival_time_other_day);
-        } else {
-            return context.getString(R.string.departure_time_now);
         }
     }
 
