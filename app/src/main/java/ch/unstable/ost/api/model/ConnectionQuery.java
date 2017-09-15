@@ -17,6 +17,7 @@ import java.util.List;
 
 import ch.unstable.ost.utils.ParcelUtils;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConnectionQuery implements Parcelable {
@@ -34,11 +35,15 @@ public class ConnectionQuery implements Parcelable {
     };
     @NonNull
     private final String from;
+
     @NonNull
     private final String to;
+
     private final String[] via;
+
     @Nullable
     private final Date departureTime;
+
     @Nullable
     private final Date arrivalTime;
 
@@ -56,6 +61,30 @@ public class ConnectionQuery implements Parcelable {
         this.via = in.createStringArray();
         this.departureTime = ParcelUtils.readDate(in);
         this.arrivalTime = ParcelUtils.readDate(in);
+    }
+
+    /**
+     * Public constructor for POJO mapping
+     * @param from
+     * @param to
+     * @param via
+     * @param departureTime
+     * @param arrivalTime
+     *
+     * @see Builder
+     */
+    public ConnectionQuery(String from, String to, @Nullable String[] via, @Nullable Date departureTime, @Nullable Date arrivalTime) {
+        this.from = checkNotNull(from, "from is null");
+        this.to = checkNotNull(to, "to is null");
+        checkArgument(departureTime != null || arrivalTime != null, "arrival or departure time need to be set");
+        checkArgument(arrivalTime == null || departureTime == null, "only one of departure or arrival time can be set");
+        this.arrivalTime = arrivalTime;
+        this.departureTime = departureTime;
+        if (via == null) {
+            this.via = new String[0];
+        } else {
+            this.via = Arrays.copyOf(via, via.length);
+        }
     }
 
     @NonNull

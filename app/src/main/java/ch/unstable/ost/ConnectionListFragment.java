@@ -17,12 +17,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.ConnectionAPI;
 import ch.unstable.ost.api.transport.TransportAPI;
+import ch.unstable.ost.database.CachedConnectionDAO;
+import ch.unstable.ost.database.Databases;
+import ch.unstable.ost.database.model.CachedConnection;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -78,6 +82,7 @@ public class ConnectionListFragment extends Fragment {
         }
     };
     private RecyclerView.OnScrollListener mConnectionListScrollListener;
+    private CachedConnectionDAO mCachedConnectionDao;
 
     public ConnectionListFragment() {
         // Empty constructor
@@ -102,6 +107,9 @@ public class ConnectionListFragment extends Fragment {
         backgroundHandler = new Handler(backgroundThread.getLooper(), backgroundCallback);
 
         uiHandler = new Handler(uiCallback);
+
+        mCachedConnectionDao = Databases.getCacheDatabase(getContext()).cachedConnectionDao();
+
 
         mConnectionAdapter = new ConnectionListAdapter();
         mConnectionAdapter.setOnLoadMoreListener(mOverScrollListener);
@@ -161,7 +169,7 @@ public class ConnectionListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mConnectionsList = (RecyclerView) view.findViewById(R.id.connections_list);
+        mConnectionsList = view.findViewById(R.id.connections_list);
         mConnectionsList.setAdapter(mConnectionAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mConnectionsList.setLayoutManager(linearLayoutManager);
@@ -267,6 +275,13 @@ public class ConnectionListFragment extends Fragment {
                 connections = connectionAPI.getConnections(connectionQuery, page);
                 for (Connection connection : connections) {
                     Log.d(TAG, connection.toString());
+                }
+                if(mCachedConnectionDao != null) {
+                    if(page == 0) {
+                        CachedConnection cachedConnection = new CachedConnection(0, new Date(), connectionQuery, connections);
+                        mCachedConnectionDao.addConnection(cachedConnection);
+                    }
+
                 }
             } catch (IOException e) {
                 handleError(R.string.error_failed_to_load_connection, e);

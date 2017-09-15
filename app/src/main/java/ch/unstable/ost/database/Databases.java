@@ -17,6 +17,7 @@ import ch.unstable.ost.api.offline.StationsDatabase;
 public class Databases {
     private static final boolean FORCE_OVERRIDE = true;
     private static StationsDatabase stationsDatabase;
+    private static CacheDatabase cacheDatabase;
 
     public static synchronized StationsDatabase getStationsDatabase(Context context) {
         if (stationsDatabase == null) {
@@ -25,6 +26,14 @@ public class Databases {
             stationsDatabase = Room.databaseBuilder(context.getApplicationContext(), StationsDatabase.class, databaseName).build();
         }
         return stationsDatabase;
+    }
+
+    public static synchronized CacheDatabase getCacheDatabase(Context context) {
+        if (cacheDatabase == null) {
+            String databaseName = "cache.db";
+            cacheDatabase = Room.databaseBuilder(context.getApplicationContext(), CacheDatabase.class, databaseName).build();
+        }
+        return cacheDatabase;
     }
 
     public static void copyDBFromAssets(Context context, String database) {

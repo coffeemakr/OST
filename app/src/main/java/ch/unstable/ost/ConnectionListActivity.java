@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.database.CachedConnectionDAO;
+import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
 
@@ -37,9 +39,8 @@ public class ConnectionListActivity extends ThemedActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             getSupportFragmentManager().beginTransaction()

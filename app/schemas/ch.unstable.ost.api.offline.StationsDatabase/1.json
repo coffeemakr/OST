@@ -2,31 +2,35 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3b0a0f33592ccd09534143ac95e1f9d0",
+    "identityHash": "00270dd0db3937bf185b415da865ba4b",
     "entities": [
       {
         "tableName": "stations",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`frequency` INTEGER, `name` TEXT, `id` TEXT, `types` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`frequency` INTEGER NOT NULL, `name` TEXT, `id` TEXT, `types` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "frequency",
             "columnName": "frequency",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "name",
             "columnName": "name",
-            "affinity": "TEXT"
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "TEXT"
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "types",
             "columnName": "types",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -40,17 +44,19 @@
       },
       {
         "tableName": "fts_stations",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`docid` INTEGER, `fts_stations` INTEGER, PRIMARY KEY(`docid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`docid` INTEGER NOT NULL, `fts_stations` INTEGER NOT NULL, PRIMARY KEY(`docid`))",
         "fields": [
           {
             "fieldPath": "docid",
             "columnName": "docid",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "fts_stations",
             "columnName": "fts_stations",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -65,7 +71,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3b0a0f33592ccd09534143ac95e1f9d0\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"00270dd0db3937bf185b415da865ba4b\")"
     ]
   }
 }
