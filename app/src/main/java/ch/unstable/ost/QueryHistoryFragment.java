@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.common.base.Preconditions;
+import com.google.common.base.Verify;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +33,7 @@ import io.reactivex.functions.Consumer;
 /**
  * Fragment to display old connections
  */
-public class QueryHistoryFragment extends Fragment{
+public class QueryHistoryFragment extends Fragment {
     private static final String TAG = "QueryHistoryFragment";
     private QueryHistoryDao mQueryHistoryDao;
     private QueryHistoryAdapter mQueryHistoryAdapter;
@@ -38,34 +42,48 @@ public class QueryHistoryFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mQueryHistoryDao = Databases.getCacheDatabase(getContext()).queryHistoryDao();
+
+        if (mQueryHistoryAdapter == null) {
+            mQueryHistoryAdapter = new QueryHistoryAdapter();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         Disposable disposable = mQueryHistoryDao.getConnections()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getQueriesConsumer());
         // TODO: is disposable required?
-
-        if(mQueryHistoryAdapter != null) {
-            mQueryHistoryAdapter = new QueryHistoryAdapter();
-        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_connection_history, container, false);
+        return inflater.inflate(R.layout.fragment_query_history, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView cachedConnections  = view.findViewById(R.id.cachedConnections);
+
+        RecyclerView historyEntries = view.findViewById(R.id.historyEntries);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        cachedConnections.setLayoutManager(layoutManager);
-        cachedConnections.setAdapter(mQueryHistoryAdapter);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        historyEntries.setLayoutManager(layoutManager);
+        historyEntries.setAdapter(mQueryHistoryAdapter);
+
+        DividerItemDecoration divider = new DividerItemDecoration(
+                historyEntries.getContext(),
+                layoutManager.getOrientation()
+        );
+
+        historyEntries.addItemDecoration(divider);
     }
 
     /**
      * Get a consumer which adds the loaded queries into the adapter
+     *
      * @return the consumer
      */
     @NonNull
@@ -73,7 +91,8 @@ public class QueryHistoryFragment extends Fragment{
         return new Consumer<List<QueryHistory>>() {
             @Override
             public void accept(List<QueryHistory> entries) throws Exception {
-                if(mQueryHistoryAdapter != null) {
+                if(BuildConfig.DEBUG) Log.d(TAG, "Got entries: " + entries);
+                if (mQueryHistoryAdapter != null) {
                     mQueryHistoryAdapter.setEntries(entries);
                 } else {
                     Log.w(TAG, "Adapter is null");
@@ -83,8 +102,19 @@ public class QueryHistoryFragment extends Fragment{
     }
 
 
+    /**
+     * View holder for a query history entry
+     */
     private static class QueryViewHolder extends RecyclerView.ViewHolder {
+        /**
+         * Text field containing the description of the time restriction
+         * e.g. "Departure 11:20"
+         */
         private final TextView date;
+        /**
+         * Text field containing the description of the route.
+         * e.g "From Zürich to Basel SBB"
+         */
         private final TextView fromAndTo;
 
         public QueryViewHolder(View itemView) {
@@ -100,6 +130,7 @@ public class QueryHistoryFragment extends Fragment{
 
         public QueryHistoryAdapter() {
             mHistoryItems = new ArrayList<>();
+            setHasStableIds(true);
         }
 
         @Override
@@ -110,21 +141,20 @@ public class QueryHistoryFragment extends Fragment{
 
         @Override
         public void onBindViewHolder(QueryViewHolder viewHolder, int i) {
-            final Context context = viewHolder.itemView.getContext();
             QueryHistory queryEntry = getQueryHistoryAt(i);
-            ConnectionQuery query = queryEntry.getQuery();
-            Date arrival = query.getArrivalTime();
-            Date departure = query.getDepartureTime();
-            if(query.isNow()) {
-                // The search was for "now" so we show the time the query was submitted
-                departure = queryEntry.getCreationDate();
-            }
-            viewHolder.date.setText(LocalizationUtils.getArrivalOrDepartureText(context, arrival, departure));
-            viewHolder.fromAndTo.setText(context.getString(R.string.fromAndTo, query.getFrom(), query.getTo()));
+            QueryBinder.bindDate(queryEntry, viewHolder.date, viewHolder.fromAndTo);
         }
 
+        @NonNull
         public QueryHistory getQueryHistoryAt(int i) {
             return mHistoryItems.get(i);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            long id = getQueryHistoryAt(position).getId();
+            Verify.verify(id != 0, "id is 0");
+            return id;
         }
 
         @Override
@@ -133,6 +163,8 @@ public class QueryHistoryFragment extends Fragment{
         }
 
         public void setEntries(List<QueryHistory> entries) {
+            //noinspection ResultOfMethodCallIgnored
+            Preconditions.checkNotNull(entries, "entries is null");
             mHistoryItems = new ArrayList<>(entries);
             notifyDataSetChanged();
         }

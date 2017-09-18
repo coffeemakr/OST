@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +28,7 @@ public class ConnectionListActivity extends ThemedActivity
     public static final String EXTRA_QUERY = "EXTRA_QUERY";
     public static final String EXTRA_CONNECTION_FROM = "ch.unstable.ost.ConnectionListActivity.EXTRA_CONNECTION_FROM";
     public static final String EXTRA_CONNECTION_TO = "ch.unstable.ost.ConnectionListActivity.EXTRA_CONNECTION_TO";
+    private static final String TAG = "ConnectionListActivity";
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -42,7 +44,7 @@ public class ConnectionListActivity extends ThemedActivity
 
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new QueryHistoryFragment())
+                    .add(R.id.fragment_container, new QuickstartFragment())
                     .commit();
         }
 
@@ -77,10 +79,15 @@ public class ConnectionListActivity extends ThemedActivity
     }
 
     @Override
-    public void onConnectionSelected(Connection connection) {
+    public void onConnectionSelected(@NonNull Connection connection) {
         Intent intent = new Intent(this, ConnectionDetailActivity.class);
         intent.putExtra(ConnectionDetailActivity.EXTRA_CONNECTION, connection);
         startActivity(intent);
+    }
+
+    @Override
+    public void onQueryStarted(@NonNull ConnectionQuery query) {
+        Log.d(TAG, "onQueryStarted: " + query);
     }
 
     @Override

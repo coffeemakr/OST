@@ -6,7 +6,6 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
-import ch.unstable.ost.database.model.CachedConnection;
 import ch.unstable.ost.database.model.QueryHistory;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -22,4 +21,7 @@ public abstract class QueryHistoryDao {
 
     @Insert
     abstract public long addConnection(QueryHistory connection);
+
+    @Query("SELECT * FROM " + QueryHistory.TABLE_NAME + " ORDER BY creationDate LIMIT 1")
+    public abstract Single<QueryHistory> getLatestQuery();
 }

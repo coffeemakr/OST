@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -174,6 +175,17 @@ public class ConnectionQuery implements Parcelable {
      */
     public boolean isNow() {
         return departureTime == null && arrivalTime == null;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("from", from)
+                .add("to", to)
+                .add("via", via)
+                .add("departureTime", departureTime)
+                .add("arrivalTime", arrivalTime)
+                .toString();
     }
 
 

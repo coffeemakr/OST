@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -16,11 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
-import java.util.Arrays;
-
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.ConnectionAPI;
@@ -31,11 +27,12 @@ import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
 import io.reactivex.Flowable;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConnectionListFragment extends Fragment {
 
@@ -45,6 +42,7 @@ public class ConnectionListFragment extends Fragment {
     private static final int MESSAGE_CONNECTIONS_LOADED = 3;
     private static final int MESSAGE_CONNECTIONS_LOADING_STARTED = 4;
     private static final int MESSAGE_QUERY_CONNECTION_PAGE = 5;
+    private static final int MESSAGE_ON_QUERY = 6;
 
     private static final String ARG_QUERY = "connection_query";
     private static final String TAG = "ConnectionListFragment";
@@ -206,7 +204,17 @@ public class ConnectionListFragment extends Fragment {
 
 
     public interface OnConnectionListInteractionListener {
-        void onConnectionSelected(Connection connection);
+        /**
+         * Called when a connection is selected.
+         * @param connection the selected connection
+         */
+        void onConnectionSelected(@NonNull Connection connection);
+
+        /**
+         * Called when a list of connection is loaded
+         * @param query the query
+         */
+        void onQueryStarted(@NonNull ConnectionQuery query);
     }
 
     private static class PageQuery {
@@ -253,13 +261,24 @@ public class ConnectionListFragment extends Fragment {
                 case MESSAGE_CONNECTIONS_LOADING_STARTED:
                     onLoadingStarted();
                     break;
+                case MESSAGE_ON_QUERY:
+                    if(mOnConnectionListInteractionListener != null) {
+                        final ConnectionQuery query = (ConnectionQuery) checkNotNull(msg.obj, "query is null");
+                        mOnConnectionListInteractionListener.onQueryStarted(query);
+                    } else {
+                        if(BuildConfig.DEBUG) Log.w(TAG, "mOnConnectionListInteractionListener is null", new Throwable());
+                    }
+                    break;
                 case MESSAGE_CONNECTIONS_LOADED:
                     if (msg.arg1 == 0) {
                         // loading finished for the first time/page
                         onLoadingFinished();
                     }
                     if (mConnectionAdapter != null) {
-                        mConnectionAdapter.setConnections(msg.arg1, (Connection[]) msg.obj);
+                        final Connection[] connections = checkNotNull((Connection[]) msg.obj);
+                        mConnectionAdapter.setConnections(msg.arg1, connections);
+                    } else {
+                        if(BuildConfig.DEBUG) Log.w(TAG, "mConnectionAdapter is null", new Throwable());
                     }
                     break;
                 default:
@@ -312,6 +331,13 @@ public class ConnectionListFragment extends Fragment {
                 uiHandler.sendEmptyMessage(MESSAGE_CONNECTIONS_LOADING_STARTED);
             }
 
+            if(page == 0) {
+                Message message = Message.obtain(uiHandler);
+                message.what = MESSAGE_CONNECTIONS_LOADING_STARTED;
+                message.obj = connectionQuery;
+                uiHandler.sendMessage(message);
+            }
+
             Disposable disposable = Flowable.just(new PageQuery(connectionQuery, page))
                     .observeOn(Schedulers.io())
                     .map(new Function<PageQuery, PageQuery>() {
@@ -332,26 +358,6 @@ public class ConnectionListFragment extends Fragment {
                             }
                             pageQuery.setResult(connections);
                             return pageQuery;
-                        }
-                    })
-                    .doOnEach(new Subscriber<PageQuery>() {
-                        @Override
-                        public void onSubscribe(Subscription s) {
-                        }
-
-                        @Override
-                        public void onNext(PageQuery connections) {
-                            mCachedConnectionDao.addCachedConnection(connections.getHistoryId(), Arrays.asList(connections.getResult()));
-                        }
-
-                        @Override
-                        public void onError(Throwable t) {
-
-                        }
-
-                        @Override
-                        public void onComplete() {
-
                         }
                     })
                     .subscribe(new Consumer<PageQuery>() {

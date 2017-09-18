@@ -133,5 +133,7 @@
     <string name="format_bus_platform">Pl. %1$s</string>
     <string name="connection_direction">Direction %1$s</string>
     <string name="fromAndTo" >%1$s to %2$s</string>
+    <string name="action_view_more">View more</string>
+    <string name="action_open">Open</string>
 
 </resources>
