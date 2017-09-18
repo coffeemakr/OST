@@ -13,15 +13,15 @@ import ch.unstable.ost.api.model.Connection;
 
 public class ConnectionConverters {
     @TypeConverter
-    public static String connectionArrayToString(Connection[] connections) {
+    public static String connectionArrayToString(Connection connection) {
         Gson gson = new Gson();
-        return gson.toJson(connections);
+        return gson.toJson(connection);
     }
 
     @TypeConverter
-    public static Connection[] connectionStringToArray(String connectionString) {
+    public static Connection connectionStringToArray(String connectionString) {
         Gson gson = new Gson();
-        return gson.fromJson(connectionString, Connection[].class);
+        return gson.fromJson(connectionString, Connection.class);
     }
 
     @TypeConverter

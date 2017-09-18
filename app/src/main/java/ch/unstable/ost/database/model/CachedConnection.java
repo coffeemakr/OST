@@ -1,49 +1,59 @@
 package ch.unstable.ost.database.model;
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
 import ch.unstable.ost.api.model.Connection;
-import ch.unstable.ost.api.model.ConnectionQuery;
 
-@Entity(tableName = CachedConnection.TABLE_NAME)
+@Entity(tableName = CachedConnection.TABLE_NAME,
+        foreignKeys = @ForeignKey(
+                entity = QueryHistory.class,
+                parentColumns = "id",
+                childColumns = "query_id"),
+        indices = {@Index(value = {"query_id", "sequence"},
+                unique = true)})
 public class CachedConnection {
-    public final static String TABLE_NAME = "connections";
+    public final static String TABLE_NAME = "connection";
+
+    private final Connection connection;
 
     @PrimaryKey(autoGenerate = true)
-    public final long id;
+    private final long id;
 
-    public final Date creationDate;
-
-    @Embedded
-    private final ConnectionQuery query;
-
-    @ColumnInfo(name = "connection")
-    public final Connection[] connections;
+    @ColumnInfo(name = "query_id")
+    private final long queryId;
+    private final int sequence;
 
 
-    public CachedConnection(long id, Date creationDate, ConnectionQuery query, Connection[] connections) {
+    public CachedConnection(long id, long queryId, int sequence, Connection connection) {
         this.id = id;
-        this.creationDate = creationDate;
-        this.query = query;
-        this.connections = connections;
+        this.queryId = queryId;
+        this.sequence = sequence;
+        this.connection = connection;
+    }
+
+    @Ignore
+    public CachedConnection(long queryId, int sequence, Connection connection) {
+        this(0, queryId, sequence, connection);
+    }
+
+    public long getQueryId() {
+        return queryId;
+    }
+
+    public int getSequence() {
+        return sequence;
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 
     public long getId() {
         return id;
-    }
-
-    public List<Connection> getConnections() {
-        return Arrays.asList(connections);
-    }
-
-    public ConnectionQuery getQuery() {
-        return query;
     }
 }

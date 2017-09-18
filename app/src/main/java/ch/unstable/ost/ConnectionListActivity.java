@@ -17,8 +17,6 @@ import android.view.ViewGroup;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.Connection;
-import ch.unstable.ost.database.CachedConnectionDAO;
-import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
 
@@ -44,7 +42,7 @@ public class ConnectionListActivity extends ThemedActivity
 
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new ConnectionHistoryFragment())
+                    .add(R.id.fragment_container, new QueryHistoryFragment())
                     .commit();
         }
 

@@ -2,11 +2,71 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6fbc179fbc21bc509e25587063811e8b",
+    "identityHash": "5aab844e0e51df8bf2850a4604438b32",
     "entities": [
       {
-        "tableName": "connections",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `creationDate` INTEGER, `connection` TEXT, `from` TEXT, `to` TEXT, `via` TEXT, `departureTime` INTEGER, `arrivalTime` INTEGER)",
+        "tableName": "connection",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`connection` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `query_id` INTEGER NOT NULL, `sequence` INTEGER NOT NULL, FOREIGN KEY(`query_id`) REFERENCES `queries`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "connection",
+            "columnName": "connection",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queryId",
+            "columnName": "query_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sequence",
+            "columnName": "sequence",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_connection_query_id_sequence",
+            "unique": true,
+            "columnNames": [
+              "query_id",
+              "sequence"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_connection_query_id_sequence` ON `${TABLE_NAME}` (`query_id`, `sequence`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "queries",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "query_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "queries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `creationDate` INTEGER, `from` TEXT, `to` TEXT, `via` TEXT, `departureTime` INTEGER, `arrivalTime` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -18,12 +78,6 @@
             "fieldPath": "creationDate",
             "columnName": "creationDate",
             "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "connections",
-            "columnName": "connection",
-            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -69,7 +123,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6fbc179fbc21bc509e25587063811e8b\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5aab844e0e51df8bf2850a4604438b32\")"
     ]
   }
 }

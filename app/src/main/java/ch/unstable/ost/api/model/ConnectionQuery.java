@@ -87,11 +87,19 @@ public class ConnectionQuery implements Parcelable {
         }
     }
 
+    /**
+     * Get the departure location
+     * @return the departure location
+     */
     @NonNull
     public String getFrom() {
         return from;
     }
 
+    /**
+     * Get the name of the arrival location
+     * @return the arrival location
+     */
     @NonNull
     public String getTo() {
         return to;
@@ -111,14 +119,28 @@ public class ConnectionQuery implements Parcelable {
         ParcelUtils.writeDate(out, arrivalTime);
     }
 
+    /**
+     * Get array containing the via stations in order.
+     * @return the stations
+     */
     public String[] getVia() {
         return via;
     }
 
+    /**
+     * Check if the query has vias
+     * @return true if the query has vias. False otherwise
+     */
     public boolean hasVia() {
         return via.length > 0;
     }
 
+    /**
+     * Get the departure time
+     *
+     * If the query has a arrival time or is for now this method returns null.
+     * @return the departure time or null
+     */
     @Nullable
     public Date getDepartureTime() {
         return departureTime;
@@ -144,6 +166,14 @@ public class ConnectionQuery implements Parcelable {
     @Nullable
     public Date getArrivalTime() {
         return arrivalTime;
+    }
+
+    /**
+     * Check if the query is for the current time
+     * @return true if it is a query for now
+     */
+    public boolean isNow() {
+        return departureTime == null && arrivalTime == null;
     }
 
 

@@ -8,7 +8,6 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +17,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.common.base.Verify;
-
-import java.util.Calendar;
 import java.util.Date;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.utils.LocalizationUtils;
-import ch.unstable.ost.utils.TimeDateUtils;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -88,7 +82,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     private void updateViews() {
         final Context context = getContext();
         if(context == null) return;
-        mTime.setText(LocalizationUtils.getTimeString(context,
+        mTime.setText(LocalizationUtils.getArrivalOrDepartureText(context,
                 mSelectionState.getArrivalTime(),
                 mSelectionState.getDepartureTime()));
         mToButton.setText(getToButtonText(context, mSelectionState.getTo()));

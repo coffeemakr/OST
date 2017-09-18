@@ -20,25 +20,25 @@ public enum LocalizationUtils {
     public static String getArrivalOrDepartureText(Context context, ConnectionQuery query) {
         //noinspection ResultOfMethodCallIgnored
         checkNotNull(query, "query is null");
-        return getTimeString(context, query.getArrivalTime(), query.getDepartureTime());
+        return getArrivalOrDepartureText(context, query.getArrivalTime(), query.getDepartureTime());
     }
 
     @NonNull
-    public static String getTimeString(Context context, @Nullable Date arrivalTime, @Nullable Date departureTime) {
+    public static String getArrivalOrDepartureText(Context context, @Nullable Date arrivalTime, @Nullable Date departureTime) {
         //noinspection ResultOfMethodCallIgnored
         checkNotNull(context, "context is null");
         Date time;
         if ((time = departureTime) != null) {
-            return getTimeString(context, time, R.string.departure_time_same_day, R.string.departure_time_other_day);
+            return getArrivalOrDepartureText(context, time, R.string.departure_time_same_day, R.string.departure_time_other_day);
         } else if ((time = arrivalTime) != null) {
-            return getTimeString(context, time, R.string.arrival_time_same_day, R.string.arrival_time_other_day);
+            return getArrivalOrDepartureText(context, time, R.string.arrival_time_same_day, R.string.arrival_time_other_day);
         } else {
             return context.getString(R.string.departure_time_now);
         }
     }
 
     @NonNull
-    private static String getTimeString(Context context, Date date, @StringRes int sameDayFormat, @StringRes int otherDayFormat) {
+    private static String getArrivalOrDepartureText(Context context, Date date, @StringRes int sameDayFormat, @StringRes int otherDayFormat) {
         Date today = new Date();
         if (isSameDay(today, date)) {
             return context.getString(sameDayFormat, TimeDateUtils.formatTime(date));
