@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5aab844e0e51df8bf2850a4604438b32",
+    "identityHash": "e8b3a2a9417df41f801f70b0325fc3b5",
     "entities": [
       {
         "tableName": "connection",
@@ -66,7 +66,7 @@
       },
       {
         "tableName": "queries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `creationDate` INTEGER, `from` TEXT, `to` TEXT, `via` TEXT, `departureTime` INTEGER, `arrivalTime` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `creationDate` INTEGER NOT NULL, `from` TEXT NOT NULL, `to` TEXT NOT NULL, `via` TEXT, `departureTime` INTEGER, `arrivalTime` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -78,19 +78,19 @@
             "fieldPath": "creationDate",
             "columnName": "creationDate",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "query.from",
             "columnName": "from",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "query.to",
             "columnName": "to",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "query.via",
@@ -123,7 +123,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5aab844e0e51df8bf2850a4604438b32\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e8b3a2a9417df41f801f70b0325fc3b5\")"
     ]
   }
 }

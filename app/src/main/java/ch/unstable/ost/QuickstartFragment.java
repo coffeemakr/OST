@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
-import com.jakewharton.rxbinding2.view.RxView;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.Databases;
@@ -92,11 +91,6 @@ public class QuickstartFragment extends Fragment {
     }
 
     private void onOpenConnection() {
-        Intent intent = new Intent(getContext(), QueryHistoryActivity.class);
-        startActivity(intent);
-    }
-
-    private void onShowMore() {
         if(mOnQuerySelectedListener == null) {
             Log.w(TAG, "mOnQuerySelectedListener is null");
             return;
@@ -104,6 +98,11 @@ public class QuickstartFragment extends Fragment {
         //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(mLastQuery, "mLastQuery is null");
         mOnQuerySelectedListener.onRouteSelected(mLastQuery.getQuery());
+    }
+
+    private void onShowMore() {
+        Intent intent = new Intent(getContext(), QueryHistoryActivity.class);
+        startActivity(intent);
     }
 
     @Override
