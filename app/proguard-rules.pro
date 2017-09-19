@@ -34,6 +34,12 @@
     pubic *;
 }
 
+-dontwarn javax.lang.model.element.Modifier
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
+-dontwarn sun.misc.Unsafe
+-dontwarn java.lang.ClassValue
+-dontwarn com.google.appengine.**
 -dontobfuscate
 
 
