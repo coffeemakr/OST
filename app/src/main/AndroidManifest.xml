@@ -16,6 +16,7 @@
         <activity android:name=".ConnectionListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -31,6 +32,7 @@
             android:name=".error.ErrorReportActivity"
             android:label="@string/title_activity_error_report"
             android:theme="@style/GreenDarkTheme" />
+        <activity android:name=".QueryHistoryActivity"></activity>
     </application>
 
 </manifest>

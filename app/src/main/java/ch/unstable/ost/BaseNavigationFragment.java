@@ -2,6 +2,8 @@ package ch.unstable.ost;
 
 import android.content.Context;
 import android.support.annotation.CallSuper;
+import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
@@ -37,6 +39,7 @@ public abstract class BaseNavigationFragment extends Fragment {
 
     public interface OnRouteSelectionListener {
 
-        void onRouteSelected(ConnectionQuery query);
+        @MainThread
+        void onRouteSelected(@NonNull ConnectionQuery query);
     }
 }

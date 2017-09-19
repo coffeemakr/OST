@@ -2,6 +2,7 @@ package ch.unstable.ost;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,8 @@ import ch.unstable.ost.theme.ThemedActivity;
 
 public class ConnectionListActivity extends ThemedActivity
         implements ConnectionListFragment.OnConnectionListInteractionListener,
-        BaseNavigationFragment.OnRouteSelectionListener {
+        BaseNavigationFragment.OnRouteSelectionListener,
+        QuickstartFragment.OnQuerySelectedListener {
 
     public static final String EXTRA_QUERY = "EXTRA_QUERY";
     public static final String EXTRA_CONNECTION_FROM = "ch.unstable.ost.ConnectionListActivity.EXTRA_CONNECTION_FROM";
@@ -90,8 +92,9 @@ public class ConnectionListActivity extends ThemedActivity
         Log.d(TAG, "onQueryStarted: " + query);
     }
 
+    @MainThread
     @Override
-    public void onRouteSelected(ConnectionQuery query) {
+    public void onRouteSelected(@NonNull ConnectionQuery query) {
         ConnectionListFragment connectionListFragment = ConnectionListFragment.newInstance(query);
         getSupportFragmentManager()
                 .beginTransaction()

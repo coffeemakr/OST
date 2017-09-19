@@ -1,8 +1,11 @@
 package ch.unstable.ost;
 
 import android.arch.persistence.room.EmptyResultSetException;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.common.base.Preconditions;
 import com.jakewharton.rxbinding2.view.RxView;
 
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
@@ -28,6 +33,8 @@ public class QuickstartFragment extends Fragment {
     private QueryHistoryDao mQueryDao;
     private TextView mLastQueryFromTo;
     private TextView mLastQueryDate;
+    private OnQuerySelectedListener mOnQuerySelectedListener;
+    private QueryHistory mLastQuery;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +42,22 @@ public class QuickstartFragment extends Fragment {
         if (mQueryDao == null) {
             mQueryDao = Databases.getCacheDatabase(getContext()).queryHistoryDao();
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Preconditions.checkState(
+                context instanceof OnQuerySelectedListener,
+                "context must implement OnQuerySelectedListener");
+        mOnQuerySelectedListener = (OnQuerySelectedListener) context;
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mOnQuerySelectedListener = null;
     }
 
     @Nullable
@@ -69,11 +92,18 @@ public class QuickstartFragment extends Fragment {
     }
 
     private void onOpenConnection() {
-        
+        Intent intent = new Intent(getContext(), QueryHistoryActivity.class);
+        startActivity(intent);
     }
 
     private void onShowMore() {
-
+        if(mOnQuerySelectedListener == null) {
+            Log.w(TAG, "mOnQuerySelectedListener is null");
+            return;
+        }
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(mLastQuery, "mLastQuery is null");
+        mOnQuerySelectedListener.onRouteSelected(mLastQuery.getQuery());
     }
 
     @Override
@@ -105,6 +135,12 @@ public class QuickstartFragment extends Fragment {
     @MainThread
     private void updateLatestQuery(QueryHistory queryHistory) {
         mCardLastQuery.setVisibility(View.VISIBLE); // TODO animate
+        mLastQuery = queryHistory;
         QueryBinder.bindDate(queryHistory, mLastQueryDate, mLastQueryFromTo);
+    }
+
+    public interface OnQuerySelectedListener {
+        @MainThread
+        void onRouteSelected(@NonNull ConnectionQuery query);
     }
 }
