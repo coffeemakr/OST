@@ -1,6 +1,5 @@
 package ch.unstable.ost;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,14 +17,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Verify;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
-import ch.unstable.ost.utils.LocalizationUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;

@@ -32,7 +32,8 @@
             android:name=".error.ErrorReportActivity"
             android:label="@string/title_activity_error_report"
             android:theme="@style/GreenDarkTheme" />
-        <activity android:name=".QueryHistoryActivity"></activity>
+        <activity android:name=".QueryHistoryActivity"
+            android:label="@string/title_activity_query_history" />
     </application>
 
 </manifest>

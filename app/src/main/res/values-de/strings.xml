@@ -54,4 +54,7 @@
     <string name="pref_station_dao_factory_title">Datenquelle für Stationen</string>
     <string name="connection_direction">Richtung %1$s</string>
     <string name="fromAndTo">%1$s nach %2$s</string>
+    <string name="title_activity_query_history">Suchverlauf</string>
+    <string name="action_view_more">Mehr anzeigen</string>
+    <string name="action_open">Öffnen</string>
 </resources>

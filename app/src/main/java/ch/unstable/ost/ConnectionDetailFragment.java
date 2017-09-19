@@ -94,7 +94,7 @@ public class ConnectionDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mSectionsList = (RecyclerView) view.findViewById(R.id.sectionsList);
+        mSectionsList = view.findViewById(R.id.sectionsList);
         mSectionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mSectionsList.setAdapter(mSectionListAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
