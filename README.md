@@ -9,4 +9,4 @@ An Open Swiss Transport (OST) android app.
  * **Offline friendly**: 
     Let the user store connections offline to use them en route without internet.
  * **Privacy-enhanced**: 
-    Don't send tracking information unnecesary information to tracking servers. Also send all requests encrypted.
+    Don't send unnecesary information to tracking servers. Also send all requests encrypted.
