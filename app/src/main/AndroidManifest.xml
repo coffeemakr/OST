@@ -33,7 +33,12 @@
             android:label="@string/title_activity_error_report"
             android:theme="@style/GreenDarkTheme" />
         <activity android:name=".QueryHistoryActivity"
-            android:label="@string/title_activity_query_history" />
+            android:label="@string/title_activity_query_history"
+            android:parentActivityName=".ConnectionListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ConnectionListActivity" />
+        </activity>
     </application>
 
 </manifest>

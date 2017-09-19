@@ -17,19 +17,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.common.base.Preconditions;
+
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConnectionListActivity extends ThemedActivity
         implements ConnectionListFragment.OnConnectionListInteractionListener,
         BaseNavigationFragment.OnRouteSelectionListener,
         QuickstartFragment.OnQuerySelectedListener {
 
-    public static final String EXTRA_QUERY = "EXTRA_QUERY";
-    public static final String EXTRA_CONNECTION_FROM = "ch.unstable.ost.ConnectionListActivity.EXTRA_CONNECTION_FROM";
-    public static final String EXTRA_CONNECTION_TO = "ch.unstable.ost.ConnectionListActivity.EXTRA_CONNECTION_TO";
+    private static final String CLASS_NAME = "ch.unstable.ost.ConnectionListActivity";
+    public static final String EXTRA_CONNECTION_FROM = CLASS_NAME + ".EXTRA_CONNECTION_FROM";
+    public static final String EXTRA_CONNECTION_TO = CLASS_NAME + ".EXTRA_CONNECTION_TO";
+    public static final String EXTRA_CONNECTION_QUERY = CLASS_NAME + ".EXTRA_CONNECTION_QUERY";
     private static final String TAG = "ConnectionListActivity";
 
     static {
@@ -63,12 +68,13 @@ public class ConnectionListActivity extends ThemedActivity
     }
 
     private void handleIntent(@NonNull Intent intent) {
+        checkNotNull(intent, "intent is null");
         if (!Intent.ACTION_SEARCH.equals(intent.getAction())) {
             return;
         }
         ConnectionQuery query = null;
-        if(intent.hasExtra(EXTRA_QUERY)) {
-            query = intent.getParcelableExtra(EXTRA_QUERY);
+        if(intent.hasExtra(EXTRA_CONNECTION_QUERY)) {
+            query = intent.getParcelableExtra(EXTRA_CONNECTION_QUERY);
         } else if(intent.hasExtra(EXTRA_CONNECTION_FROM) && intent.hasExtra(EXTRA_CONNECTION_TO)){
             query = new ConnectionQuery.Builder()
                     .setTo(intent.getStringExtra(EXTRA_CONNECTION_TO))
@@ -77,6 +83,7 @@ public class ConnectionListActivity extends ThemedActivity
         }
         if (query != null) {
             updateHeadQuery(query);
+            onRouteSelected(query);
         }
     }
 

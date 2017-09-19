@@ -135,7 +135,7 @@ public class QuickstartFragment extends Fragment {
     private void updateLatestQuery(QueryHistory queryHistory) {
         mCardLastQuery.setVisibility(View.VISIBLE); // TODO animate
         mLastQuery = queryHistory;
-        QueryBinder.bindDate(queryHistory, mLastQueryDate, mLastQueryFromTo);
+        QueryBinder.bindQuery(queryHistory, mLastQueryDate, mLastQueryFromTo);
     }
 
     public interface OnQuerySelectedListener {

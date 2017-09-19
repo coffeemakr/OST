@@ -1,5 +1,6 @@
 package ch.unstable.ost;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.google.common.base.Verify;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
@@ -33,6 +35,21 @@ public class QueryHistoryFragment extends Fragment {
     private static final String TAG = "QueryHistoryFragment";
     private QueryHistoryDao mQueryHistoryDao;
     private QueryHistoryAdapter mQueryHistoryAdapter;
+    private View.OnClickListener mOnQueryHistoryItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            QueryHistory query = (QueryHistory) view.getTag();
+            Preconditions.checkNotNull(query, "query");
+            openConnection(query);
+        }
+    };
+
+    private void openConnection(@NonNull QueryHistory query) {
+        Intent intent = new Intent(getContext(), ConnectionListActivity.class);
+        intent.putExtra(ConnectionListActivity.EXTRA_CONNECTION_QUERY, query.getQuery());
+        intent.setAction(Intent.ACTION_SEARCH);
+        startActivity(intent);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +57,7 @@ public class QueryHistoryFragment extends Fragment {
         mQueryHistoryDao = Databases.getCacheDatabase(getContext()).queryHistoryDao();
 
         if (mQueryHistoryAdapter == null) {
-            mQueryHistoryAdapter = new QueryHistoryAdapter();
+            mQueryHistoryAdapter = new QueryHistoryAdapter(mOnQueryHistoryItemClickListener);
         }
     }
 
@@ -122,11 +139,13 @@ public class QueryHistoryFragment extends Fragment {
 
     private static class QueryHistoryAdapter extends RecyclerView.Adapter<QueryViewHolder> {
 
+        private final View.OnClickListener mOnClickListener;
         private ArrayList<QueryHistory> mHistoryItems;
 
-        public QueryHistoryAdapter() {
+        public QueryHistoryAdapter(View.OnClickListener onClickListener) {
             mHistoryItems = new ArrayList<>();
             setHasStableIds(true);
+            mOnClickListener = Preconditions.checkNotNull(onClickListener, "onClickListener");
         }
 
         @Override
@@ -136,9 +155,12 @@ public class QueryHistoryFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(QueryViewHolder viewHolder, int i) {
+        public void onBindViewHolder(final QueryViewHolder viewHolder, int i) {
             QueryHistory queryEntry = getQueryHistoryAt(i);
-            QueryBinder.bindDate(queryEntry, viewHolder.date, viewHolder.fromAndTo);
+            QueryBinder.bindQuery(queryEntry, viewHolder.date, viewHolder.fromAndTo);
+            viewHolder.itemView.setTag(queryEntry);
+            viewHolder.itemView.setClickable(true);
+            viewHolder.itemView.setOnClickListener(mOnClickListener);
         }
 
         @NonNull

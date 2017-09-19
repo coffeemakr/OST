@@ -16,7 +16,7 @@ import ch.unstable.ost.utils.LocalizationUtils;
 public class QueryBinder {
 
     @MainThread
-    public static void bindDate(QueryHistory queryEntry, TextView dateView, TextView fromAndTo) {
+    public static void bindQuery(QueryHistory queryEntry, TextView dateView, TextView fromAndTo) {
         final Context context = dateView.getContext();
         final ConnectionQuery query = queryEntry.getQuery();
         Date arrival = query.getArrivalTime();
