@@ -3,6 +3,7 @@ package ch.unstable.ost;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,11 @@ import android.view.ViewGroup;
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.Section;
 
-
+/**
+ * Fragment showing a single connection
+ *
+ * A connection is from a station to another via one or more sections.
+ */
 public class ConnectionDetailFragment extends Fragment {
 
 
@@ -31,6 +36,11 @@ public class ConnectionDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Create a new instance
+     * @param connection the connection to show
+     * @return the fragment
+     */
     public static ConnectionDetailFragment newInstance(Connection connection) {
         if (connection == null) {
             throw new NullPointerException("connection is null");
@@ -102,6 +112,11 @@ public class ConnectionDetailFragment extends Fragment {
     }
 
     public interface OnConnectionDetailInteractionListener {
+        /**
+         * Called when a section is selected
+         * @param section the section
+         */
+        @MainThread
         void onSectionSelected(@NonNull Section section);
     }
 }

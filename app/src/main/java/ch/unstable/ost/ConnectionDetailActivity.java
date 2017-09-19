@@ -2,6 +2,7 @@ package ch.unstable.ost;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +38,7 @@ public class ConnectionDetailActivity extends ThemedActivity implements Connecti
         }
     }
 
+    @MainThread
     @Override
     public void onSectionSelected(@NonNull Section section) {
         SectionDetailFragment fragment = SectionDetailFragment.newInstance(section);

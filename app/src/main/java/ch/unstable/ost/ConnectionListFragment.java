@@ -36,7 +36,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConnectionListFragment extends Fragment {
 
-
     private static final int MESSAGE_QUERY_CONNECTION = 1;
     private static final int MESSAGE_ERROR = 2;
     private static final int MESSAGE_CONNECTIONS_LOADED = 3;
@@ -198,6 +197,10 @@ public class ConnectionListFragment extends Fragment {
         }
     }
 
+    /**
+     * Get the currently shown connection query
+     * @return the query
+     */
     public ConnectionQuery getConnectionQuery() {
         return mQuery;
     }
@@ -343,8 +346,10 @@ public class ConnectionListFragment extends Fragment {
                     .map(new Function<PageQuery, PageQuery>() {
                         @Override
                         public PageQuery apply(PageQuery pageQuery) throws Exception {
-                            long id = mQueryHistoryDao.addConnection(new QueryHistory(pageQuery.query));
-                            pageQuery.setHistoryId((int) id);
+                            if(pageQuery.page == 0) {
+                                long id = mQueryHistoryDao.addConnection(new QueryHistory(pageQuery.query));
+                                pageQuery.setHistoryId((int) id);
+                            }
                             return pageQuery;
                         }
                     })

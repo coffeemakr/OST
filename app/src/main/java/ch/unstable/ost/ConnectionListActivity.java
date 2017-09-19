@@ -18,10 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 
-import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
 

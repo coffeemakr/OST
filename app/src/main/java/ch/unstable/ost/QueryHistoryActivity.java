@@ -80,6 +80,7 @@ public class QueryHistoryActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             QueryHistory query = (QueryHistory) view.getTag();
+            //noinspection ResultOfMethodCallIgnored
             Preconditions.checkNotNull(query, "query");
             openConnection(query);
         }
