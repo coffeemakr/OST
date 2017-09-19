@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
@@ -36,6 +37,9 @@ public class ConnectionListActivity extends ThemedActivity
     public static final String EXTRA_CONNECTION_TO = CLASS_NAME + ".EXTRA_CONNECTION_TO";
     public static final String EXTRA_CONNECTION_QUERY = CLASS_NAME + ".EXTRA_CONNECTION_QUERY";
     private static final String TAG = "ConnectionListActivity";
+
+    @Nullable
+    private ConnectionQuery mCurrentlyShownQuery = null;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -82,7 +86,6 @@ public class ConnectionListActivity extends ThemedActivity
                     .build();
         }
         if (query != null) {
-            updateHeadQuery(query);
             onRouteSelected(query);
         }
     }
@@ -102,6 +105,12 @@ public class ConnectionListActivity extends ThemedActivity
     @MainThread
     @Override
     public void onRouteSelected(@NonNull ConnectionQuery query) {
+        Log.d(TAG, "On route selected: " + query);
+        if(Objects.equal(mCurrentlyShownQuery, query)) {
+            Log.d(TAG, "Query has not changed");
+            return;
+        }
+        mCurrentlyShownQuery = query;
         ConnectionListFragment connectionListFragment = ConnectionListFragment.newInstance(query);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -109,6 +118,7 @@ public class ConnectionListActivity extends ThemedActivity
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)
                 .commit();
+        updateHeadQuery(query);
     }
 
     private void updateHeadQuery(@Nullable ConnectionQuery query) {
@@ -130,8 +140,10 @@ public class ConnectionListActivity extends ThemedActivity
             ConnectionListFragment connectionListFragment = (ConnectionListFragment) fragment;
             ConnectionQuery query = connectionListFragment.getConnectionQuery();
             updateHeadQuery(query);
+            mCurrentlyShownQuery = query;
         } else {
             updateHeadQuery(null);
+            mCurrentlyShownQuery = null;
         }
     }
 

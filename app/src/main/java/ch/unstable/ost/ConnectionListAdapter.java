@@ -212,7 +212,6 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Section section = sections[0];
             holder.firstEndDestination.setText(formatEndDestination(context, section.getHeadsign()));
             holder.firstTransportName.setText(section.getLineShortName());
-            Log.d(TAG, "Binding departure plattform: " + section.getDeparturePlatform());
             holder.platform.setText(formatPlatform(context, section.getDeparturePlatform()));
         } else {
             Log.e(TAG, "No sections");

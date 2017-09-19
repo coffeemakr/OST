@@ -6,17 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.NestedScrollView
+    <!-- app:layout_behavior="@string/appbar_scrolling_view_behavior" -->
+    <android.support.v7.widget.RecyclerView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/historyEntries"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <fragment
-            android:id="@+id/query_history_fragment"
-            android:name="ch.unstable.ost.QueryHistoryFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_query_history" />
-    </android.support.v4.widget.NestedScrollView>
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

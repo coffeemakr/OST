@@ -23,7 +23,13 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConnectionDetailActivity" />
+        <activity
+            android:name=".ConnectionDetailActivity"
+            android:parentActivityName=".ConnectionListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ConnectionListActivity" />
+        </activity>
         <activity android:name=".preference.SettingsActivity" />
         <activity
             android:name=".ChooseStationActivity"
@@ -32,6 +38,7 @@
             android:name=".error.ErrorReportActivity"
             android:label="@string/title_activity_error_report"
             android:theme="@style/GreenDarkTheme" />
+
         <activity android:name=".QueryHistoryActivity"
             android:label="@string/title_activity_query_history"
             android:parentActivityName=".ConnectionListActivity">

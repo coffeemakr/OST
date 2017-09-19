@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.common.base.Objects;
 
@@ -18,6 +19,7 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 class SelectionState implements Parcelable {
+    private static final String TAG = "SelectionState";
 
     public static final Creator<SelectionState> CREATOR = new Creator<SelectionState>() {
         @Override
@@ -74,12 +76,22 @@ class SelectionState implements Parcelable {
     }
 
     void setQuery(ConnectionQuery query) {
-        via = Arrays.asList(query.getVia());
+        boolean changed;
+        List<String> vias = Arrays.asList(query.getVia());
+        changed = !vias.equals(via);
+        via = vias;
+        changed |= !Objects.equal(from, query.getFrom());
         from = query.getFrom();
+        changed |= !Objects.equal(to, query.getTo());
         to = query.getTo();
+        changed |= !Objects.equal(departureTime, query.getDepartureTime());
         departureTime = query.getDepartureTime();
+        changed |= !Objects.equal(arrivalTime, query.getArrivalTime());
         arrivalTime = query.getArrivalTime();
-        notifyChanged();
+        if(changed) {
+            if(BuildConfig.DEBUG) Log.d(TAG, "Query changed: " + query);
+            notifyChanged();
+        }
     }
 
     @Override
