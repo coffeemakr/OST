@@ -24,13 +24,15 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keepclassmembers class ch.unstable.ost.api.offline.StationsDAOFactory {
+-dontobfuscate
+
+-keep public class ch.unstable.ost.api.offline.StationsDAOFactory {
     pubic *;
 }
--keepclassmembers class ch.unstable.ost.api.search.StationsDAOFactory {
+-keep public class ch.unstable.ost.api.search.StationsDAOFactory {
     pubic *;
 }
--keepclassmembers class ch.unstable.ost.api.transport.StationsDAOFactory {
+-keep public class ch.unstable.ost.api.transport.StationsDAOFactory {
     pubic *;
 }
 
@@ -40,6 +42,6 @@
 -dontwarn sun.misc.Unsafe
 -dontwarn java.lang.ClassValue
 -dontwarn com.google.appengine.**
--dontobfuscate
+
 
 
