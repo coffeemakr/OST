@@ -116,8 +116,8 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
 
         public WalkSectionViewHolder(View itemView) {
             super(itemView);
-            departureStationName = (TextView) itemView.findViewById(R.id.departureStationName);
-            departureTime = (TextView) itemView.findViewById(R.id.departureTime);
+            departureStationName = itemView.findViewById(R.id.departureStationName);
+            departureTime = itemView.findViewById(R.id.departureTime);
         }
     }
 
@@ -133,14 +133,14 @@ class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.Section
 
         public JourneyViewHolder(View itemView) {
             super(itemView);
-            productName = (TextView) itemView.findViewById(R.id.productName);
-            endDestination = (TextView) itemView.findViewById(R.id.endDestination);
-            departurePlatform = (TextView) itemView.findViewById(R.id.departurePlatform);
-            arrivalPlatform = (TextView) itemView.findViewById(R.id.arrivalPlatform);
-            arrivalStationName = (TextView) itemView.findViewById(R.id.arrivalStationName);
-            arrivalTime = (TextView) itemView.findViewById(R.id.arrivalTime);
-            departureStationName = (TextView) itemView.findViewById(R.id.departureStationName);
-            departureTime = (TextView) itemView.findViewById(R.id.departureTime);
+            productName = itemView.findViewById(R.id.productName);
+            endDestination = itemView.findViewById(R.id.endDestination);
+            departurePlatform = itemView.findViewById(R.id.departurePlatform);
+            arrivalPlatform = itemView.findViewById(R.id.arrivalPlatform);
+            arrivalStationName = itemView.findViewById(R.id.arrivalStationName);
+            arrivalTime = itemView.findViewById(R.id.arrivalTime);
+            departureStationName = itemView.findViewById(R.id.departureStationName);
+            departureTime = itemView.findViewById(R.id.departureTime);
         }
     }
 

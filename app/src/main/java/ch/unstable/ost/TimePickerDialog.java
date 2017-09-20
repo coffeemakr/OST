@@ -79,7 +79,7 @@ public class TimePickerDialog extends AlertDialog implements DialogInterface.OnC
 
     private void onViewCreated(View view) {
 
-        arrivalDepartureSwitcher = (TabLayout) view.findViewById(R.id.arrivalDepartureSwitcher);
+        arrivalDepartureSwitcher = view.findViewById(R.id.arrivalDepartureSwitcher);
         switch (mDefaultTimeRestrictionType) {
             case DEPARTURE:
                 arrivalDepartureSwitcher.getTabAt(0).select();
@@ -91,12 +91,12 @@ public class TimePickerDialog extends AlertDialog implements DialogInterface.OnC
         dateButton = view.findViewById(R.id.dateButton);
         dateButton.setOnClickListener(mOnclickListener);
         updateDateView();
-        hourPicker = (NumberPicker) view.findViewById(R.id.hourPicker);
+        hourPicker = view.findViewById(R.id.hourPicker);
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(23);
         hourPicker.setValue(calendar.get(Calendar.HOUR_OF_DAY));
 
-        minutePicker = (NumberPicker) view.findViewById(R.id.minutePicker);
+        minutePicker = view.findViewById(R.id.minutePicker);
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(59);
         minutePicker.setValue(calendar.get(Calendar.MINUTE));

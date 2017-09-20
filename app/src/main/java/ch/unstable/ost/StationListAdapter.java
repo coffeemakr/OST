@@ -124,8 +124,8 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
 
         public ViewHolder(View itemView) {
             super(itemView);
-            stationName = (TextView) itemView.findViewById(R.id.stationName);
-            transportationIcon = (ImageView) itemView.findViewById(R.id.transportationIcon);
+            stationName = itemView.findViewById(R.id.stationName);
+            transportationIcon = itemView.findViewById(R.id.transportationIcon);
         }
     }
 }

@@ -71,6 +71,7 @@ public class ConnectionListActivity extends ThemedActivity
     }
 
     private void handleIntent(@NonNull Intent intent) {
+        //noinspection ResultOfMethodCallIgnored
         checkNotNull(intent, "intent is null");
         if (!Intent.ACTION_SEARCH.equals(intent.getAction())) {
             return;

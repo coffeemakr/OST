@@ -64,13 +64,13 @@ public class ChooseStationActivity extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_station);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar == null) throw new NullPointerException("toolbar is null");
         setSupportActionBar(toolbar);
 
         if (getIntent() != null && getIntent().hasExtra(ChooseStationActivity.EXTRA_CHOOSE_PROMPT)) {
             String hint = getIntent().getStringExtra(ChooseStationActivity.EXTRA_CHOOSE_PROMPT);
-            TextInputLayout stationNameLayout = (TextInputLayout) findViewById(R.id.stationNameLayout);
+            TextInputLayout stationNameLayout = findViewById(R.id.stationNameLayout);
             stationNameLayout.setHint(hint);
         }
 
@@ -86,10 +86,10 @@ public class ChooseStationActivity extends ThemedActivity {
         });
 
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mProgressBar = findViewById(R.id.progressBar);
         mProgressBar.setIndeterminate(true);
 
-        RecyclerView searchedStationView = (RecyclerView) findViewById(R.id.searchedStationView);
+        RecyclerView searchedStationView = findViewById(R.id.searchedStationView);
         searchedStationView.setAdapter(mLocationResultAdapter);
         searchedStationView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
@@ -99,7 +99,7 @@ public class ChooseStationActivity extends ThemedActivity {
 
         mUIHandler = new Handler(new UIHandlerCallback());
         mSuggestionTextWatcher = new SuggestionTextWatcher(mBackgroundHandler);
-        mStationEditText = (EditText) findViewById(R.id.stationName);
+        mStationEditText = findViewById(R.id.stationName);
         mStationEditText.addTextChangedListener(mSuggestionTextWatcher);
         mStationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -116,7 +116,7 @@ public class ChooseStationActivity extends ThemedActivity {
             }
         });
 
-        ImageButton clearInputButton = (ImageButton) findViewById(R.id.clearInputButton);
+        ImageButton clearInputButton = findViewById(R.id.clearInputButton);
         clearInputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

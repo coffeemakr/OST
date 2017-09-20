@@ -64,7 +64,7 @@ public class SectionDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView stationsList = (RecyclerView) view.findViewById(R.id.stationsList);
+        RecyclerView stationsList = view.findViewById(R.id.stationsList);
         stationsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         stationsList.setAdapter(mStopsListAdapter);
     }
@@ -77,9 +77,9 @@ public class SectionDetailFragment extends Fragment {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            stationName = (TextView) itemView.findViewById(R.id.stationName);
-            departureTime = (TextView) itemView.findViewById(R.id.departureTime);
-            stopDotView = (StopDotView) itemView.findViewById(R.id.stopDotView);
+            stationName = itemView.findViewById(R.id.stationName);
+            departureTime = itemView.findViewById(R.id.departureTime);
+            stopDotView = itemView.findViewById(R.id.stopDotView);
         }
     }
 

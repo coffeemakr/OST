@@ -64,7 +64,9 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO, Connec
     }
 
     private static UrlBuilder addURLDate(UrlBuilder uriBuilder, Date date) {
+        //noinspection ResultOfMethodCallIgnored
         checkNotNull(uriBuilder, "uriBuilder");
+        //noinspection ResultOfMethodCallIgnored
         checkNotNull(date, "date");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ROOT);
         timeFormat.setTimeZone(TIME_ZONE);

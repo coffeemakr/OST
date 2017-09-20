@@ -107,10 +107,10 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mFromButton = (Button) view.findViewById(R.id.fromButton);
-        mToButton = (Button) view.findViewById(R.id.toButton);
-        mReverseDirectionButton = (ImageButton) view.findViewById(R.id.reverseDirectionButton);
-        mTime = (TextView) view.findViewById(R.id.timeView);
+        mFromButton = view.findViewById(R.id.fromButton);
+        mToButton = view.findViewById(R.id.toButton);
+        mReverseDirectionButton = view.findViewById(R.id.reverseDirectionButton);
+        mTime = view.findViewById(R.id.timeView);
         View timeSettingsContainer = view.findViewById(R.id.timeSettingsContainer);
         timeSettingsContainer.setOnClickListener(mOnButtonClickListener);
         mFromButton.setOnClickListener(mOnButtonClickListener);
@@ -134,11 +134,13 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
             switch (requestCode) {
                 case REQUEST_CODE_CHOOSE_FROM:
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
+                    //noinspection ResultOfMethodCallIgnored
                     verifyNotNull(name, "Choose station result (from) is null");
                     mSelectionState.setFrom(name);
                     break;
                 case REQUEST_CODE_CHOOSE_TO:
                     name = data.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME);
+                    //noinspection ResultOfMethodCallIgnored
                     verifyNotNull(name, "Choose station result (to) is null");
                     mSelectionState.setTo(name);
                     break;

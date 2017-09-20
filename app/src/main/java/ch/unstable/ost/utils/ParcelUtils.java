@@ -103,6 +103,7 @@ public enum  ParcelUtils {
     }
 
     public static <T extends Parcelable> void writeNonNullTypedObject(Parcel dest, T value, int flags) {
+        //noinspection ResultOfMethodCallIgnored
         checkNotNull(value, "value is null");
         ParcelCompat.writeTypeObject(dest, value, flags);
     }

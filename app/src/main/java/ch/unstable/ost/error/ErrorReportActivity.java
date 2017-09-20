@@ -63,15 +63,8 @@ public class ErrorReportActivity extends AppCompatActivity {
     }
 
     private static ErrorReport buildReport(Context context, ErrorInfo errorInfo) {
-        Signature[] signatures = new Signature[0];
-        try {
-            signatures = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES).signatures;
-        } catch (PackageManager.NameNotFoundException ignored) {
-            // Ignore error and leave signatures empty
-        }
-
         BuildInfo buildInfo = new BuildInfo();
-        AppInfo appInfo = new AppInfo(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, BuildConfig.APPLICATION_ID, signatures);
+        AppInfo appInfo = new AppInfo(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, BuildConfig.APPLICATION_ID);
         AndroidInfo androidinfo = new AndroidInfo();
         return new ErrorReport(errorInfo, appInfo, buildInfo, androidinfo);
     }
@@ -80,10 +73,10 @@ public class ErrorReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_error_report);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,8 +153,8 @@ public class ErrorReportActivity extends AppCompatActivity {
         private final TextView androidSDK;
 
         AndroidVersionViewHolder(Activity rootView) {
-            this.androidRelease = (TextView) rootView.findViewById(R.id.androidRelease);
-            this.androidSDK = (TextView) rootView.findViewById(R.id.androidSDK);
+            this.androidRelease = rootView.findViewById(R.id.androidRelease);
+            this.androidSDK = rootView.findViewById(R.id.androidSDK);
         }
     }
 
@@ -169,7 +162,7 @@ public class ErrorReportActivity extends AppCompatActivity {
         private final TextView buildId;
 
         public BuildInfoViewHolder(Activity activity) {
-            this.buildId = (TextView) activity.findViewById(R.id.appBuildId);
+            this.buildId = activity.findViewById(R.id.appBuildId);
         }
     }
 
@@ -179,9 +172,9 @@ public class ErrorReportActivity extends AppCompatActivity {
         private final TextView appSignature;
 
         public AppInfoViewHolder(Activity activity) {
-            this.appVersion = (TextView) activity.findViewById(R.id.appVersion);
-            this.appPackage = (TextView) activity.findViewById(R.id.appPackage);
-            this.appSignature = (TextView) activity.findViewById(R.id.appSignature);
+            this.appVersion = activity.findViewById(R.id.appVersion);
+            this.appPackage = activity.findViewById(R.id.appPackage);
+            this.appSignature = activity.findViewById(R.id.appSignature);
         }
     }
 
@@ -189,7 +182,7 @@ public class ErrorReportActivity extends AppCompatActivity {
         private final TextView errorStackTrace;
 
         public ErrorViewHolder(Activity activity) {
-            this.errorStackTrace = (TextView) activity.findViewById(R.id.stackTrace);
+            this.errorStackTrace = activity.findViewById(R.id.stackTrace);
         }
     }
 }

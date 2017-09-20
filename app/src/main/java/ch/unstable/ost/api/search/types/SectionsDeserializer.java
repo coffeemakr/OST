@@ -65,7 +65,7 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
         ArrayList<Section> sections = new ArrayList<>(jsonArray.size());
         for(JsonElement element: jsonArray) {
             JsonObject object = element.getAsJsonObject();
-            String type = "";
+            String type;
             if(!object.has("type")) {
                 LOGGER.severe("No type defined in " + LogUtils.prettyJson(object) + " \n Parent: " + LogUtils.prettyJson(json));
                 // can be ignored probably
