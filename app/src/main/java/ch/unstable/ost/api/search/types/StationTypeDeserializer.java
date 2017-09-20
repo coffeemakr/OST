@@ -12,9 +12,9 @@ import java.lang.reflect.Type;
 
 import ch.unstable.ost.api.model.Location;
 
-public enum SearchCHIconClassDeserializer implements JsonDeserializer<Location.StationType> {
+public enum StationTypeDeserializer implements JsonDeserializer<Location.StationType> {
     INSTANCE;
-    private static final String TAG = SearchCHIconClassDeserializer.class.getSimpleName();
+    private static final String TAG = StationTypeDeserializer.class.getSimpleName();
 
     @Override
     public Location.StationType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

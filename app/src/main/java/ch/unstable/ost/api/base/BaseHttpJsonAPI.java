@@ -22,14 +22,14 @@ import ch.unstable.ost.utils.StandartCharsetCompat;
 
 
 public class BaseHttpJsonAPI {
-    public static final int HTTP_CODE_TOO_MANY_REQUESTS = 429;
+    private static final int HTTP_CODE_TOO_MANY_REQUESTS = 429;
     private static final String TAG = "BaseHttpJsonAPI";
     private static final String USER_AGENT = "OST/" + BuildConfig.VERSION_NAME;
-    protected final Gson gson;
+    private final Gson gson;
 
     private static final Logger logger = Logger.getLogger(TAG);
 
-    public BaseHttpJsonAPI() {
+    protected BaseHttpJsonAPI() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         onBuildGsonCreated(gsonBuilder);
         gson = gsonBuilder.create();

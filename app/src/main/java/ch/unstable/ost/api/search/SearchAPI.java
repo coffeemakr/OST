@@ -24,7 +24,7 @@ import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.api.search.types.ConnectionDeserializer;
 import ch.unstable.ost.api.search.types.LocationDeserializer;
 import ch.unstable.ost.api.search.types.PassingCheckpointsDeserializer;
-import ch.unstable.ost.api.search.types.SearchCHIconClassDeserializer;
+import ch.unstable.ost.api.search.types.StationTypeDeserializer;
 import ch.unstable.ost.api.search.types.SectionsDeserializer;
 import ch.unstable.ost.api.transport.ConnectionAPI;
 import io.mikael.urlbuilder.UrlBuilder;
@@ -39,8 +39,11 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
     private final static String CONNECTIONS_URL = BASE_URI + "route.json";
     private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Europe/Berlin");
 
+    @NonNull
     private static UrlBuilder addURLDate(UrlBuilder uriBuilder, Date date) {
+        //noinspection ResultOfMethodCallIgnored
         checkNotNull(uriBuilder, "uriBuilder");
+        //noinspection ResultOfMethodCallIgnored
         checkNotNull(date, "date");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ROOT);
         timeFormat.setTimeZone(TIME_ZONE);
@@ -55,7 +58,7 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
     protected void onBuildGsonCreated(GsonBuilder gsonBuilder) {
         gsonBuilder.registerTypeAdapter(Section[].class, new SectionsDeserializer());
         gsonBuilder.registerTypeAdapter(Connection.class, new ConnectionDeserializer());
-        gsonBuilder.registerTypeAdapter(StationType.class, SearchCHIconClassDeserializer.INSTANCE);
+        gsonBuilder.registerTypeAdapter(StationType.class, StationTypeDeserializer.INSTANCE);
         gsonBuilder.registerTypeAdapter(PassingCheckpoint.class, PassingCheckpointsDeserializer.INSTANCE);
         gsonBuilder.registerTypeAdapter(Location.class, LocationDeserializer.INSTANCE);
     }

@@ -62,7 +62,7 @@ public class ConnectionListFragment extends Fragment {
     private RecyclerView mConnectionsList;
 
 
-    private ConnectionListAdapter.Listener mOverScrollListener = new ConnectionListAdapter.Listener() {
+    private final ConnectionListAdapter.Listener mOverScrollListener = new ConnectionListAdapter.Listener() {
         private boolean isLoadablePage(int pageToLoad) {
             return pageToLoad <= connectionAPI.getPageMax() && pageToLoad >= connectionAPI.getPageMin();
         }

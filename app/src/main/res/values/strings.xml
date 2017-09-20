@@ -136,5 +136,6 @@
     <string name="action_view_more">View more</string>
     <string name="action_open">Open</string>
     <string name="title_activity_query_history">Query History</string>
+    <string name="last_query_title">Last search</string>
 
 </resources>

@@ -57,4 +57,5 @@
     <string name="title_activity_query_history">Suchverlauf</string>
     <string name="action_view_more">Mehr anzeigen</string>
     <string name="action_open">Öffnen</string>
+    <string name="last_query_title">Letzte Suche</string>
 </resources>

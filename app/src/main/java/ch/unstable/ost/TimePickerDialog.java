@@ -29,7 +29,7 @@ public class TimePickerDialog extends AlertDialog implements DialogInterface.OnC
     private final TimeRestrictionType mDefaultTimeRestrictionType;
     private NumberPicker hourPicker;
     private NumberPicker minutePicker;
-    private Calendar calendar;
+    private final Calendar calendar;
     private Button dateButton;
     private final View.OnClickListener mOnclickListener = new View.OnClickListener() {
         @Override
@@ -88,7 +88,7 @@ public class TimePickerDialog extends AlertDialog implements DialogInterface.OnC
                 arrivalDepartureSwitcher.getTabAt(1).select();
                 break;
         }
-        dateButton = (Button) view.findViewById(R.id.dateButton);
+        dateButton = view.findViewById(R.id.dateButton);
         dateButton.setOnClickListener(mOnclickListener);
         updateDateView();
         hourPicker = (NumberPicker) view.findViewById(R.id.hourPicker);
