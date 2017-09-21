@@ -1,14 +1,17 @@
 package ch.unstable.ost;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +29,9 @@ import ch.unstable.ost.database.CachedConnectionDAO;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
+import ch.unstable.ost.error.ErrorReportActivity;
 import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -38,7 +43,6 @@ public class ConnectionListFragment extends Fragment {
 
     private static final int MESSAGE_QUERY_CONNECTION = 1;
     private static final int MESSAGE_ERROR = 2;
-    private static final int MESSAGE_CONNECTIONS_LOADED = 3;
     private static final int MESSAGE_CONNECTIONS_LOADING_STARTED = 4;
     private static final int MESSAGE_QUERY_CONNECTION_PAGE = 5;
     private static final int MESSAGE_ON_QUERY = 6;
@@ -272,33 +276,35 @@ public class ConnectionListFragment extends Fragment {
                         if(BuildConfig.DEBUG) Log.w(TAG, "mOnConnectionListInteractionListener is null", new Throwable());
                     }
                     break;
-                case MESSAGE_CONNECTIONS_LOADED:
-                    if (msg.arg1 == 0) {
-                        // loading finished for the first time/page
-                        onLoadingFinished();
-                    }
-                    if (mConnectionAdapter != null) {
-                        final Connection[] connections = checkNotNull((Connection[]) msg.obj);
-                        mConnectionAdapter.setConnections(msg.arg1, connections);
-                    } else {
-                        if(BuildConfig.DEBUG) Log.w(TAG, "mConnectionAdapter is null", new Throwable());
-                    }
-                    break;
                 default:
                     return false;
             }
             return true;
         }
+    }
 
+    private void onLoadingStarted() {
+        mConnectionsList.setVisibility(View.GONE);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+    }
 
-        private void onLoadingStarted() {
-            mConnectionsList.setVisibility(View.GONE);
-            mLoadingIndicator.setVisibility(View.VISIBLE);
+    private void onLoadingFinished() {
+        mLoadingIndicator.setVisibility(View.GONE);
+        mConnectionsList.setVisibility(View.VISIBLE);
+    }
+
+    @MainThread
+    private void onConnectionsLoaded(int page, Connection[] connections) {
+        //noinspection ResultOfMethodCallIgnored
+        checkNotNull(connections, "connections is null");
+        if (page == 0) {
+            // loading finished for the first time/page
+            onLoadingFinished();
         }
-
-        private void onLoadingFinished() {
-            mLoadingIndicator.setVisibility(View.GONE);
-            mConnectionsList.setVisibility(View.VISIBLE);
+        if (mConnectionAdapter != null) {
+            mConnectionAdapter.setConnections(page, connections);
+        } else {
+            if(BuildConfig.DEBUG) Log.w(TAG, "mConnectionAdapter is null", new Throwable());
         }
     }
 
@@ -324,8 +330,12 @@ public class ConnectionListFragment extends Fragment {
         }
 
         private void handleError(@StringRes int errorMessage, @Nullable Throwable exception) {
+            onLoadingFinished();
             String errorMessageString = getString(errorMessage);
             Log.e(TAG, errorMessageString, exception);
+            Intent intent = new Intent(getContext(), ErrorReportActivity.class);
+            intent.putExtra(ErrorReportActivity.EXTRA_EXCEPTION, exception);
+            startActivity(intent);
         }
 
 
@@ -365,12 +375,11 @@ public class ConnectionListFragment extends Fragment {
                             return pageQuery;
                         }
                     })
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<PageQuery>() {
                         @Override
                         public void accept(PageQuery connections) throws Exception {
-                            Message message = uiHandler.obtainMessage(MESSAGE_CONNECTIONS_LOADED, connections.getResult());
-                            message.arg1 = connections.page;
-                            uiHandler.sendMessage(message);
+                            onConnectionsLoaded(connections.page, connections.getResult());
                         }
                     }, new Consumer<Throwable>() {
                         @Override

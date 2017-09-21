@@ -39,18 +39,6 @@ public class ErrorReportActivity extends AppCompatActivity {
     private static void bindAppInfo(Context context, AppInfoViewHolder viewHolder, AppInfo appInfo) {
         viewHolder.appPackage.setText(appInfo.getId());
         viewHolder.appVersion.setText(context.getString(R.string.format_app_version, appInfo.getVersion(), appInfo.getVersionCode()));
-        StringBuilder builder = new StringBuilder();
-        boolean isFirst = true;
-        for (Signature signature : appInfo.getSignatures()) {
-            if (!isFirst) {
-                builder.append("\n");
-            } else {
-                isFirst = false;
-            }
-            builder.append(ErrorUtils.printableSignature(signature));
-
-        }
-        viewHolder.appSignature.setText(builder.toString());
     }
 
     private static void bindBuildInfo(Context context, BuildInfoViewHolder viewHolder, BuildInfo buildInfo) {
@@ -169,12 +157,10 @@ public class ErrorReportActivity extends AppCompatActivity {
     private static class AppInfoViewHolder {
         private final TextView appVersion;
         private final TextView appPackage;
-        private final TextView appSignature;
 
         public AppInfoViewHolder(Activity activity) {
             this.appVersion = activity.findViewById(R.id.appVersion);
             this.appPackage = activity.findViewById(R.id.appPackage);
-            this.appSignature = activity.findViewById(R.id.appSignature);
         }
     }
 

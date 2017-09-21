@@ -30,17 +30,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="0.1.10" />
-
-
-    <TextView
-        style="@style/ErrorReportSubtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_app_signature" />
-
-    <TextView
-        android:id="@+id/appSignature"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="" />
 </LinearLayout>

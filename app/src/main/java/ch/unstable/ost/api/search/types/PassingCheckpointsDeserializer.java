@@ -18,6 +18,7 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.model.PassingCheckpoint;
 import ch.unstable.ost.utils.LogUtils;
@@ -60,14 +61,13 @@ public enum PassingCheckpointsDeserializer implements JsonDeserializer<PassingCh
         Date arrival = getDate(dateFormat, object, "arrival");
         
         if(departure == null && arrival != null) {
-            Log.w(TAG, "Departure is null");
+            if(BuildConfig.DEBUG) Log.w(TAG, "Departure is null");
             departure = arrival;
         } else if(arrival == null && departure != null) {
-            Log.w(TAG, "Arrival is null");
+            if(BuildConfig.DEBUG) Log.w(TAG, "Arrival is null");
             arrival = departure;
-        } else if(arrival == null && departure == null) {
-            LOGGER.log(Level.WARNING, "neither arrival nor departure is set: " + LogUtils.prettyJson(object));
-            Log.w(TAG, "neither arrival nor departure is set: " + LogUtils.prettyJson(object));
+        } else if(arrival == null) {
+            if(BuildConfig.DEBUG) Log.w(TAG, "Neither arrival nor departure is set: " + LogUtils.prettyJson(object));
             return null;
         }
         
