@@ -12,7 +12,31 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        tools:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/onErrorContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/onErrorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="Unable to load connections" />
+        <Button
+            android:id="@+id/onErrorRetryButton"
+            android:text="@string/button_action_retry_on_error"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/connections_list"

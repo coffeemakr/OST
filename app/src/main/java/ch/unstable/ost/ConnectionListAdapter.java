@@ -312,6 +312,10 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return mConnections.toArray(new Connection[mConnections.size()]);
     }
 
+    public boolean isEmpty() {
+        return mConnections.isEmpty();
+    }
+
     public interface OnConnectionClickListener {
         void onConnectionClicked(Connection connection);
     }

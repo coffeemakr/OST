@@ -7,7 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context="ch.unstable.ost.ConnectionListActivity">
 
-
     <fragment
         android:id="@+id/head_fragment"
         android:name="ch.unstable.ost.HeadNavigationFragment"
@@ -15,15 +14,11 @@
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_head_navigation" />
 
-
     <FrameLayout
         android:id="@+id/fragment_container"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    </FrameLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>

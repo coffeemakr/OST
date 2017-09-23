@@ -137,5 +137,7 @@
     <string name="action_open">Open</string>
     <string name="title_activity_query_history">Query History</string>
     <string name="last_query_title">Last search</string>
+    <string name="action_resport_error">Report</string>
+    <string name="button_action_retry_on_error">Try again</string>
 
 </resources>

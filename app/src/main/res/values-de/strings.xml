@@ -58,4 +58,6 @@
     <string name="action_view_more">Mehr anzeigen</string>
     <string name="action_open">Öffnen</string>
     <string name="last_query_title">Letzte Suche</string>
+    <string name="action_resport_error">Melden</string>
+    <string name="button_action_retry_on_error">Erneut versuchen</string>
 </resources>
