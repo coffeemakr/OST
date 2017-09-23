@@ -21,7 +21,6 @@ import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.transport.ConnectionAPI;
 import ch.unstable.ost.api.transport.TransportAPI;
 import ch.unstable.ost.database.CacheDatabase;
-import ch.unstable.ost.database.CachedConnectionDAO;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
@@ -29,6 +28,7 @@ import ch.unstable.ost.views.NoAnimationStrategy;
 import ch.unstable.ost.views.ViewStateHolder;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -50,7 +50,6 @@ public class ConnectionListFragment extends Fragment {
     private OnConnectionListInteractionListener mOnConnectionListInteractionListener;
     private RecyclerView mConnectionList;
     private RecyclerView.OnScrollListener mConnectionListScrollListener;
-    private CachedConnectionDAO mCachedConnectionDao;
     private QueryHistoryDao mQueryHistoryDao;
     private ViewStateHolder mViewStateHolder;
     private final ConnectionListAdapter.Listener mOverScrollListener = new ConnectionListAdapter.Listener() {
@@ -76,6 +75,7 @@ public class ConnectionListFragment extends Fragment {
             return loadPage(pageToLoad);
         }
     };
+    private CompositeDisposable mCompositeDisposable;
 
     public ConnectionListFragment() {
         // Empty constructor
@@ -95,16 +95,15 @@ public class ConnectionListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        mCompositeDisposable = new CompositeDisposable();
         CacheDatabase database = Databases.getCacheDatabase(getContext());
-        mCachedConnectionDao = database.cachedConnectionDao();
         mQueryHistoryDao = database.queryHistoryDao();
 
         mViewStateHolder = new ViewStateHolder(new NoAnimationStrategy());
         mViewStateHolder.setOnRetryClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadConnections(getConnectionQuery(), 0);
+                loadConnections();
             }
         });
         mConnectionAdapter = new ConnectionListAdapter();
@@ -116,11 +115,11 @@ public class ConnectionListFragment extends Fragment {
             if (state != null) {
                 mConnectionAdapter.restoreState(state);
             } else {
-                loadConnections(mQuery);
+                loadConnections();
             }
         } else {
             mQuery = getArguments().getParcelable(ARG_QUERY);
-            loadConnections(mQuery);
+            loadConnections();
         }
     }
 
@@ -145,6 +144,7 @@ public class ConnectionListFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mCompositeDisposable.dispose();
         mConnectionAdapter = null;
     }
 
@@ -204,9 +204,9 @@ public class ConnectionListFragment extends Fragment {
     }
 
     @AnyThread
-    private void loadConnections(ConnectionQuery connectionQuery) {
+    private void loadConnections() {
         mConnectionAdapter.clearConnections();
-        loadConnections(connectionQuery, 0);
+        loadConnections(getConnectionQuery(), 0);
     }
 
     @AnyThread
@@ -253,7 +253,7 @@ public class ConnectionListFragment extends Fragment {
                         handleError(R.string.error_failed_to_load_connection, throwable);
                     }
                 });
-
+        mCompositeDisposable.add(disposable);
     }
 
     private void handleError(@StringRes int errorMessage, @Nullable final Throwable exception) {
