@@ -37,12 +37,12 @@ public class ConnectionListActivity extends ThemedActivity
     public static final String EXTRA_CONNECTION_QUERY = CLASS_NAME + ".EXTRA_CONNECTION_QUERY";
     private static final String TAG = "ConnectionListActivity";
 
-    @Nullable
-    private ConnectionQuery mCurrentlyShownQuery = null;
-
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
+    @Nullable
+    private ConnectionQuery mCurrentlyShownQuery = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +77,9 @@ public class ConnectionListActivity extends ThemedActivity
             return;
         }
         ConnectionQuery query = null;
-        if(intent.hasExtra(EXTRA_CONNECTION_QUERY)) {
+        if (intent.hasExtra(EXTRA_CONNECTION_QUERY)) {
             query = intent.getParcelableExtra(EXTRA_CONNECTION_QUERY);
-        } else if(intent.hasExtra(EXTRA_CONNECTION_FROM) && intent.hasExtra(EXTRA_CONNECTION_TO)){
+        } else if (intent.hasExtra(EXTRA_CONNECTION_FROM) && intent.hasExtra(EXTRA_CONNECTION_TO)) {
             query = new ConnectionQuery.Builder()
                     .setTo(intent.getStringExtra(EXTRA_CONNECTION_TO))
                     .setFrom(intent.getStringExtra(EXTRA_CONNECTION_FROM))
@@ -106,7 +106,7 @@ public class ConnectionListActivity extends ThemedActivity
     @Override
     public void onRouteSelected(@NonNull ConnectionQuery query) {
         Log.d(TAG, "On route selected: " + query);
-        if(Objects.equal(mCurrentlyShownQuery, query)) {
+        if (Objects.equal(mCurrentlyShownQuery, query)) {
             Log.d(TAG, "Query has not changed");
             return;
         }

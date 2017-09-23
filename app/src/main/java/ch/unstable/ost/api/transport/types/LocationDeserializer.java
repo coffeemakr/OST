@@ -19,7 +19,7 @@ public enum LocationDeserializer implements JsonDeserializer<Location> {
 
     @Nullable
     public static String getNullableString(JsonObject parent, String field) {
-        if(!parent.has(field)) return null;
+        if (!parent.has(field)) return null;
         JsonElement value = parent.get(field);
         if (value.isJsonNull()) {
             return null;

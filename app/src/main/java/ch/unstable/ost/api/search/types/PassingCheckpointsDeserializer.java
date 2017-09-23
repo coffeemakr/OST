@@ -58,22 +58,23 @@ public enum PassingCheckpointsDeserializer implements JsonDeserializer<PassingCh
         String name = object.get("name").getAsString();
         Date departure = getDate(dateFormat, object, "departure");
         Date arrival = getDate(dateFormat, object, "arrival");
-        
-        if(departure == null && arrival != null) {
-            if(BuildConfig.DEBUG) Log.w(TAG, "Departure is null");
+
+        if (departure == null && arrival != null) {
+            if (BuildConfig.DEBUG) Log.w(TAG, "Departure is null");
             departure = arrival;
-        } else if(arrival == null && departure != null) {
-            if(BuildConfig.DEBUG) Log.w(TAG, "Arrival is null");
+        } else if (arrival == null && departure != null) {
+            if (BuildConfig.DEBUG) Log.w(TAG, "Arrival is null");
             arrival = departure;
-        } else if(arrival == null) {
-            if(BuildConfig.DEBUG) Log.w(TAG, "Neither arrival nor departure is set: " + LogUtils.prettyJson(object));
+        } else if (arrival == null) {
+            if (BuildConfig.DEBUG)
+                Log.w(TAG, "Neither arrival nor departure is set: " + LogUtils.prettyJson(object));
             return null;
         }
-        
+
         Location location = new Location(name, Location.StationType.UNKNOWN, stopId);
         // TODO: Find out if track is sent
         String platform = null;
-        if(object.has("track")) {
+        if (object.has("track")) {
             platform = object.get("track").getAsString();
         }
         return new PassingCheckpoint(arrival, departure, location, platform);

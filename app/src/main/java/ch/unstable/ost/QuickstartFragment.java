@@ -91,7 +91,7 @@ public class QuickstartFragment extends Fragment {
     }
 
     private void onOpenConnection() {
-        if(mOnQuerySelectedListener == null) {
+        if (mOnQuerySelectedListener == null) {
             Log.w(TAG, "mOnQuerySelectedListener is null");
             return;
         }

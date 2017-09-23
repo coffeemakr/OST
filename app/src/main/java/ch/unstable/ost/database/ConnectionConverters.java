@@ -26,15 +26,15 @@ public class ConnectionConverters {
 
     @TypeConverter
     public static long dateToLong(@Nullable Date date) {
-        if(date == null) return 0;
+        if (date == null) return 0;
         return date.getTime() / 1000L;
     }
 
     @TypeConverter
     @Nullable
     public static Date longToDate(long date) {
-        if(date == 0) return null;
-        return new Date(date*1000L);
+        if (date == 0) return null;
+        return new Date(date * 1000L);
     }
 
     @TypeConverter

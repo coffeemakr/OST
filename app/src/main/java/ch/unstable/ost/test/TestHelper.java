@@ -25,7 +25,7 @@ public class TestHelper {
     @NonNull
     public static PassingCheckpoint[] generatePassingCheckpoints(int number) {
         PassingCheckpoint[] checkpoints = new PassingCheckpoint[number];
-        for(int i = 0; i < number; ++i) {
+        for (int i = 0; i < number; ++i) {
             Date arrival = new Date(number);
             Date departure = new Date(number);
             Location location = generateLocation(number);

@@ -106,11 +106,11 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 int lastItemPostion = linearLayoutManager.getItemCount() - 1;
                 int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 if (dy >= 0 && !loadingBottom && lastItemPostion <= (lastVisibleItem + visibleThreshold)) {
-                    if(!mHandler.hasMessages(MESSAGE_LOAD_MORE_BOTTOM)) {
+                    if (!mHandler.hasMessages(MESSAGE_LOAD_MORE_BOTTOM)) {
                         mHandler.sendEmptyMessage(MESSAGE_LOAD_MORE_BOTTOM);
                     }
-                } else if(dy < 0 && !loadingTop && linearLayoutManager.findFirstCompletelyVisibleItemPosition() <= visibleThreshold) {
-                    if(!mHandler.hasMessages(MESSAGE_LOAD_MORE_TOP)) {
+                } else if (dy < 0 && !loadingTop && linearLayoutManager.findFirstCompletelyVisibleItemPosition() <= visibleThreshold) {
+                    if (!mHandler.hasMessages(MESSAGE_LOAD_MORE_TOP)) {
                         mHandler.sendEmptyMessage(MESSAGE_LOAD_MORE_TOP);
                     }
                 }
@@ -120,15 +120,15 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @MainThread
     public void setConnections(int page, @NonNull Connection[] connections) {
-        if(page == 0) {
+        if (page == 0) {
             lowestPage = 0;
             highestPage = 0;
             mConnections.clear();
             Collections.addAll(mConnections, connections);
             notifyDataSetChanged();
-        } else if(page > 0) {
+        } else if (page > 0) {
             appendConnections(connections);
-        } else if(page < 0) {
+        } else if (page < 0) {
             prependConnections(connections);
         }
     }
@@ -156,16 +156,16 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         setLoadingBottom(false);
         int startPosition = getItemCount();
         int skipFirst = 0;
-        for(Connection connection: mConnections) {
+        for (Connection connection : mConnections) {
             Log.d(TAG, connections[skipFirst] + "  ?= " + connection);
-            if(connection.equals(connections[skipFirst])) {
+            if (connection.equals(connections[skipFirst])) {
                 ++skipFirst;
-            } else if(skipFirst > 0) {
+            } else if (skipFirst > 0) {
                 break;
             }
         }
         Log.w(TAG, "Found duplicated items (" + skipFirst + ") -> adding only " + (connections.length - skipFirst));
-        for(int i = skipFirst; i < connections.length; ++i) {
+        for (int i = skipFirst; i < connections.length; ++i) {
             mConnections.add(connections[i]);
         }
         notifyItemRangeInserted(startPosition, connections.length - skipFirst);
@@ -188,7 +188,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view;
-        if(viewType == ITEM_TYPE) {
+        if (viewType == ITEM_TYPE) {
             view = inflater.inflate(R.layout.item_connection, parent, false);
             return new ConnectionViewHolder(view);
         } else {
@@ -199,7 +199,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(getItemViewType(position) == ITEM_TYPE) {
+        if (getItemViewType(position) == ITEM_TYPE) {
             onBindViewHolder((ConnectionViewHolder) holder, position);
         }
     }
@@ -254,7 +254,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         super.onViewRecycled(holder);
-        if(holder instanceof ConnectionViewHolder) {
+        if (holder instanceof ConnectionViewHolder) {
             holder.itemView.setTag(null);
             holder.itemView.setOnClickListener(null);
         }
@@ -263,8 +263,8 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemCount() {
         int size = mConnections.size();
-        if(loadingTop) ++size;
-        if(loadingBottom) ++size;
+        if (loadingTop) ++size;
+        if (loadingBottom) ++size;
         return size;
     }
 
@@ -347,27 +347,6 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public class OnViewHolderClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            ConnectionViewHolder connectionViewHolder = (ConnectionViewHolder) v.getTag();
-            int position = connectionViewHolder.getAdapterPosition();
-            if (position == RecyclerView.NO_POSITION) {
-                return;
-            }
-            Connection connection;
-            try {
-                connection = getItemAt(position);
-            } catch (RuntimeException e) {
-                Log.e(TAG, "Failed to get connection", e);
-                return;
-            }
-            if (mOnConnectionClickListener != null) {
-                mOnConnectionClickListener.onConnectionClicked(connection);
-            }
-        }
-    }
-
     private static class ProgressViewHolder extends RecyclerView.ViewHolder {
         private final View progressBar;
 
@@ -377,31 +356,18 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    private class UICallback implements Handler.Callback {
-        @Override
-        public boolean handleMessage(Message msg) {
-            switch (msg.what) {
-                case MESSAGE_LOAD_MORE_BOTTOM:
-                    if(mListener.onLoadBelow(ConnectionListAdapter.this, getHighestPage() + 1)) {
-                        setLoadingBottom(true);
-                    } else {
-                        setLoadingBottom(false);
-                    }
-                    return true;
-                case MESSAGE_LOAD_MORE_TOP:
-                    if(mListener.onLoadAbove(ConnectionListAdapter.this, getLowestPage() - 1)) {
-                        setLoadingTop(true);
-                    } else {
-                        setLoadingTop(false);
-                    }
-                    return true;
-                default:
-                    return false;
-            }
-        }
-    }
-
     public static class State implements Parcelable {
+        public static final Creator<State> CREATOR = new Creator<State>() {
+            @Override
+            public State createFromParcel(Parcel in) {
+                return new State(in);
+            }
+
+            @Override
+            public State[] newArray(int size) {
+                return new State[size];
+            }
+        };
         private final Connection[] connections;
         private final int lowestPage;
         private final int highestPage;
@@ -430,18 +396,6 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return 0;
         }
 
-        public static final Creator<State> CREATOR = new Creator<State>() {
-            @Override
-            public State createFromParcel(Parcel in) {
-                return new State(in);
-            }
-
-            @Override
-            public State[] newArray(int size) {
-                return new State[size];
-            }
-        };
-
         public Connection[] getConnections() {
             return connections;
         }
@@ -452,6 +406,51 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public int getHighestPage() {
             return highestPage;
+        }
+    }
+
+    public class OnViewHolderClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            ConnectionViewHolder connectionViewHolder = (ConnectionViewHolder) v.getTag();
+            int position = connectionViewHolder.getAdapterPosition();
+            if (position == RecyclerView.NO_POSITION) {
+                return;
+            }
+            Connection connection;
+            try {
+                connection = getItemAt(position);
+            } catch (RuntimeException e) {
+                Log.e(TAG, "Failed to get connection", e);
+                return;
+            }
+            if (mOnConnectionClickListener != null) {
+                mOnConnectionClickListener.onConnectionClicked(connection);
+            }
+        }
+    }
+
+    private class UICallback implements Handler.Callback {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_LOAD_MORE_BOTTOM:
+                    if (mListener.onLoadBelow(ConnectionListAdapter.this, getHighestPage() + 1)) {
+                        setLoadingBottom(true);
+                    } else {
+                        setLoadingBottom(false);
+                    }
+                    return true;
+                case MESSAGE_LOAD_MORE_TOP:
+                    if (mListener.onLoadAbove(ConnectionListAdapter.this, getLowestPage() - 1)) {
+                        setLoadingTop(true);
+                    } else {
+                        setLoadingTop(false);
+                    }
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

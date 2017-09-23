@@ -23,9 +23,8 @@ public class BaseHttpJsonAPI {
     private static final int HTTP_CODE_TOO_MANY_REQUESTS = 429;
     private static final String TAG = "BaseHttpJsonAPI";
     private static final String USER_AGENT = "OST/" + BuildConfig.VERSION_NAME;
-    private final Gson gson;
-
     private static final Logger logger = Logger.getLogger(TAG);
+    private final Gson gson;
 
     protected BaseHttpJsonAPI() {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -39,7 +38,7 @@ public class BaseHttpJsonAPI {
 
 
     private InputStreamReader open(URL url) throws IOException {
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "loading JSON " + url);
         }
         logger.log(Level.INFO, "loading JSON " + url);

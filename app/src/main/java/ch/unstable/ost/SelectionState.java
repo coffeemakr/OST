@@ -19,8 +19,6 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 class SelectionState implements Parcelable {
-    private static final String TAG = "SelectionState";
-
     public static final Creator<SelectionState> CREATOR = new Creator<SelectionState>() {
         @Override
         public SelectionState createFromParcel(Parcel in) {
@@ -32,6 +30,7 @@ class SelectionState implements Parcelable {
             return new SelectionState[size];
         }
     };
+    private static final String TAG = "SelectionState";
     private final PublishSubject<SelectionState> changeObservable = PublishSubject.create();
     @NonNull
     private List<String> via = new ArrayList<>();
@@ -88,8 +87,8 @@ class SelectionState implements Parcelable {
         departureTime = query.getDepartureTime();
         changed |= !Objects.equal(arrivalTime, query.getArrivalTime());
         arrivalTime = query.getArrivalTime();
-        if(changed) {
-            if(BuildConfig.DEBUG) Log.d(TAG, "Query changed: " + query);
+        if (changed) {
+            if (BuildConfig.DEBUG) Log.d(TAG, "Query changed: " + query);
             notifyChanged();
         }
     }
@@ -123,7 +122,7 @@ class SelectionState implements Parcelable {
     }
 
     void setFrom(String from) {
-        if(!Objects.equal(this.from, from)) {
+        if (!Objects.equal(this.from, from)) {
             this.from = from;
             notifyChanged();
         }
@@ -134,7 +133,7 @@ class SelectionState implements Parcelable {
     }
 
     void setTo(String to) {
-        if(!Objects.equal(this.to, to)) {
+        if (!Objects.equal(this.to, to)) {
             this.to = to;
             notifyChanged();
         }

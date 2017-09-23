@@ -14,7 +14,6 @@ import static ch.unstable.ost.utils.ParcelUtils.writeNonNullTypedObject;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- *
  * TODO: check if the stops contain the arrival and departure
  */
 public class Section implements Parcelable {

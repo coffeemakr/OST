@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 
 public enum LogUtils {
     ;
+
     public static String prettyJson(JsonElement element) {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()

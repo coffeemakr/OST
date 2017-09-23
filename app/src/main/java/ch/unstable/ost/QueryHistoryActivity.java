@@ -32,6 +32,17 @@ import io.reactivex.functions.Consumer;
 public class QueryHistoryActivity extends AppCompatActivity {
 
     private static final String TAG = "QueryHistoryActivity";
+    private QueryHistoryDao mQueryHistoryDao;
+    private QueryHistoryAdapter mQueryHistoryAdapter;
+    private View.OnClickListener mOnQueryHistoryItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            QueryHistory query = (QueryHistory) view.getTag();
+            //noinspection ResultOfMethodCallIgnored
+            Preconditions.checkNotNull(query, "query");
+            openConnection(query);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,18 +84,6 @@ public class QueryHistoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private QueryHistoryDao mQueryHistoryDao;
-    private QueryHistoryAdapter mQueryHistoryAdapter;
-    private View.OnClickListener mOnQueryHistoryItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            QueryHistory query = (QueryHistory) view.getTag();
-            //noinspection ResultOfMethodCallIgnored
-            Preconditions.checkNotNull(query, "query");
-            openConnection(query);
-        }
-    };
-
     private void openConnection(@NonNull QueryHistory query) {
         Intent intent = new Intent(this, ConnectionListActivity.class);
         intent.putExtra(ConnectionListActivity.EXTRA_CONNECTION_QUERY, query.getQuery());
@@ -111,7 +110,7 @@ public class QueryHistoryActivity extends AppCompatActivity {
         return new Consumer<List<QueryHistory>>() {
             @Override
             public void accept(List<QueryHistory> entries) throws Exception {
-                if(BuildConfig.DEBUG) Log.d(TAG, "Got entries: " + entries);
+                if (BuildConfig.DEBUG) Log.d(TAG, "Got entries: " + entries);
                 if (mQueryHistoryAdapter != null) {
                     mQueryHistoryAdapter.setEntries(entries);
                 } else {

@@ -66,12 +66,12 @@ public class ConnectionQuery implements Parcelable {
 
     /**
      * Public constructor for POJO mapping
+     *
      * @param from
      * @param to
      * @param via
      * @param departureTime
      * @param arrivalTime
-     *
      * @see Builder
      */
     public ConnectionQuery(String from, String to, @Nullable String[] via, @Nullable Date departureTime, @Nullable Date arrivalTime) {
@@ -90,6 +90,7 @@ public class ConnectionQuery implements Parcelable {
 
     /**
      * Get the departure location
+     *
      * @return the departure location
      */
     @NonNull
@@ -99,6 +100,7 @@ public class ConnectionQuery implements Parcelable {
 
     /**
      * Get the name of the arrival location
+     *
      * @return the arrival location
      */
     @NonNull
@@ -122,6 +124,7 @@ public class ConnectionQuery implements Parcelable {
 
     /**
      * Get array containing the via stations in order.
+     *
      * @return the stations
      */
     public String[] getVia() {
@@ -130,6 +133,7 @@ public class ConnectionQuery implements Parcelable {
 
     /**
      * Check if the query has vias
+     *
      * @return true if the query has vias. False otherwise
      */
     public boolean hasVia() {
@@ -138,8 +142,9 @@ public class ConnectionQuery implements Parcelable {
 
     /**
      * Get the departure time
-     *
+     * <p>
      * If the query has a arrival time or is for now this method returns null.
+     *
      * @return the departure time or null
      */
     @Nullable
@@ -171,6 +176,7 @@ public class ConnectionQuery implements Parcelable {
 
     /**
      * Check if the query is for the current time
+     *
      * @return true if it is a query for now
      */
     public boolean isNow() {

@@ -10,12 +10,16 @@ import android.view.View;
 interface AnimationStrategy {
     @MainThread
     void initHiddenView(@NonNull final View view);
+
     @MainThread
     void initShownView(@NonNull final View view);
+
     @MainThread
     void showView(@NonNull final View view);
+
     @MainThread
     void hideView(@NonNull final View view);
+
     @MainThread
     void crossFadeViews(@NonNull final View hideView, @NonNull final View showView);
 }

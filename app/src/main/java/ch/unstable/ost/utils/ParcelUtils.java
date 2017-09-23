@@ -10,8 +10,9 @@ import java.util.Date;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public enum  ParcelUtils {
+public enum ParcelUtils {
     ;
+
     @Nullable
     public static Date readDate(Parcel in) {
         long timestamp = in.readLong();

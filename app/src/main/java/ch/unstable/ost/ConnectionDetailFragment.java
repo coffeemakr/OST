@@ -19,7 +19,7 @@ import ch.unstable.ost.api.model.Section;
 
 /**
  * Fragment showing a single connection
- *
+ * <p>
  * A connection is from a station to another via one or more sections.
  */
 public class ConnectionDetailFragment extends Fragment {
@@ -38,6 +38,7 @@ public class ConnectionDetailFragment extends Fragment {
 
     /**
      * Create a new instance
+     *
      * @param connection the connection to show
      * @return the fragment
      */
@@ -114,6 +115,7 @@ public class ConnectionDetailFragment extends Fragment {
     public interface OnConnectionDetailInteractionListener {
         /**
          * Called when a section is selected
+         *
          * @param section the section
          */
         @MainThread

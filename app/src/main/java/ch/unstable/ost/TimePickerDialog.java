@@ -27,9 +27,9 @@ public class TimePickerDialog extends AlertDialog implements DialogInterface.OnC
     @Nullable
     private final OnTimeSelected mOnTimeSelectedListener;
     private final TimeRestrictionType mDefaultTimeRestrictionType;
+    private final Calendar calendar;
     private NumberPicker hourPicker;
     private NumberPicker minutePicker;
-    private final Calendar calendar;
     private Button dateButton;
     private final View.OnClickListener mOnclickListener = new View.OnClickListener() {
         @Override

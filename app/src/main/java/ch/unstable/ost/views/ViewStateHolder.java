@@ -37,25 +37,6 @@ public class ViewStateHolder {
     private View mContentView;
     private State state;
 
-    private class Callback implements Handler.Callback {
-
-        @Override
-        public boolean handleMessage(Message message) {
-            switch (message.what) {
-                case MSG_ERROR:
-                    onErrorSync(message.arg1);
-                    return true;
-                case MSG_LOAD:
-                    onLoadingSync();
-                    return true;
-                case MSG_SUCCESS:
-                    onSuccessSync();
-                    return true;
-            }
-            return false;
-        }
-    }
-
     public ViewStateHolder(AnimationStrategy animationStrategy) {
         this.mAnimationStrategy = Preconditions.checkNotNull(animationStrategy, "animationStrategy");
         this.handler = new Handler(Looper.getMainLooper(), new Callback());
@@ -64,7 +45,7 @@ public class ViewStateHolder {
 
     public void setOnRetryClickListener(View.OnClickListener listener) {
         mOnErrorRetryButtonClickListener = listener;
-        if(mErrorRetryButton != null) {
+        if (mErrorRetryButton != null) {
             mErrorRetryButton.setOnClickListener(mOnErrorRetryButtonClickListener);
         }
     }
@@ -90,7 +71,7 @@ public class ViewStateHolder {
     @MainThread
     public void setLoadingView(View loadingView) {
         this.mLoadingIndicator = Preconditions.checkNotNull(loadingView);
-        if(state == State.LOADING) {
+        if (state == State.LOADING) {
             mAnimationStrategy.initShownView(loadingView);
         } else {
             mAnimationStrategy.initHiddenView(loadingView);
@@ -100,7 +81,7 @@ public class ViewStateHolder {
     @MainThread
     public void setContentView(View contentView) {
         this.mContentView = Preconditions.checkNotNull(contentView);
-        if(state == State.SUCCEEDED) {
+        if (state == State.SUCCEEDED) {
             mAnimationStrategy.initShownView(contentView);
         } else {
             mAnimationStrategy.initHiddenView(contentView);
@@ -109,7 +90,7 @@ public class ViewStateHolder {
 
     @AnyThread
     public void onError(@StringRes int errorMessage) {
-        if(BuildConfig.DEBUG) Log.d(TAG, "onError()");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onError()");
         Message message = handler.obtainMessage(MSG_ERROR);
         message.arg1 = errorMessage;
         message.sendToTarget();
@@ -117,8 +98,8 @@ public class ViewStateHolder {
 
     @AnyThread
     public void onSuccess() {
-        if(BuildConfig.DEBUG) Log.d(TAG, "onSuccess()");
-        if(Thread.currentThread() == Looper.getMainLooper().getThread()) {
+        if (BuildConfig.DEBUG) Log.d(TAG, "onSuccess()");
+        if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
             Log.d(TAG, "Called on main thread");
         }
         handler.sendEmptyMessage(MSG_SUCCESS);
@@ -126,7 +107,7 @@ public class ViewStateHolder {
 
     @AnyThread
     public void onLoading() {
-        if(BuildConfig.DEBUG) Log.d(TAG, "onLoading()");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onLoading()");
         handler.sendEmptyMessage(MSG_LOAD);
     }
 
@@ -134,7 +115,7 @@ public class ViewStateHolder {
     private void onErrorSync(@StringRes int errorMessage) {
         Preconditions.checkArgument(errorMessage != 0, "errorMessage == 0");
         this.errorMessage = errorMessage;
-        if(mErrorTextView != null) mErrorTextView.setText(errorMessage);
+        if (mErrorTextView != null) mErrorTextView.setText(errorMessage);
         switchToState(State.FAILED);
     }
 
@@ -160,22 +141,22 @@ public class ViewStateHolder {
 
     @MainThread
     private void onSuccessSync() {
-        if(BuildConfig.DEBUG) Log.v(TAG, "onSuccessSync()");
+        if (BuildConfig.DEBUG) Log.v(TAG, "onSuccessSync()");
         switchToState(State.SUCCEEDED);
     }
 
     private void switchToState(State newState) {
-        if(state == newState) {
+        if (state == newState) {
             Log.d(TAG, "State not changed: " + newState);
             return;
         }
         View currentView = getStateView();
         View nextView = getStateView(newState);
-        if(currentView == null && nextView != null) {
+        if (currentView == null && nextView != null) {
             mAnimationStrategy.showView(nextView);
-        } else if(currentView != null && nextView != null) {
+        } else if (currentView != null && nextView != null) {
             mAnimationStrategy.crossFadeViews(currentView, nextView);
-        } else if(currentView != null) {
+        } else if (currentView != null) {
             mAnimationStrategy.hideView(currentView);
         }
         state = newState;
@@ -183,13 +164,31 @@ public class ViewStateHolder {
 
     @MainThread
     private void onLoadingSync() {
-        if(BuildConfig.DEBUG) Log.v(TAG, "onLoadingSync()");
+        if (BuildConfig.DEBUG) Log.v(TAG, "onLoadingSync()");
         switchToState(State.LOADING);
     }
 
-
     private enum State {
         FAILED, SUCCEEDED, LOADING, FRESH;
+    }
+
+    private class Callback implements Handler.Callback {
+
+        @Override
+        public boolean handleMessage(Message message) {
+            switch (message.what) {
+                case MSG_ERROR:
+                    onErrorSync(message.arg1);
+                    return true;
+                case MSG_LOAD:
+                    onLoadingSync();
+                    return true;
+                case MSG_SUCCESS:
+                    onSuccessSync();
+                    return true;
+            }
+            return false;
+        }
     }
 
 }

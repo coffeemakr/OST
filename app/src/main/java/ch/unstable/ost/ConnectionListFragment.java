@@ -49,8 +49,10 @@ public class ConnectionListFragment extends Fragment {
     private ConnectionQuery mQuery;
     private OnConnectionListInteractionListener mOnConnectionListInteractionListener;
     private RecyclerView mConnectionList;
-
-
+    private RecyclerView.OnScrollListener mConnectionListScrollListener;
+    private CachedConnectionDAO mCachedConnectionDao;
+    private QueryHistoryDao mQueryHistoryDao;
+    private ViewStateHolder mViewStateHolder;
     private final ConnectionListAdapter.Listener mOverScrollListener = new ConnectionListAdapter.Listener() {
         private boolean isLoadablePage(int pageToLoad) {
             return pageToLoad <= connectionAPI.getPageMax() && pageToLoad >= connectionAPI.getPageMin();
@@ -74,10 +76,6 @@ public class ConnectionListFragment extends Fragment {
             return loadPage(pageToLoad);
         }
     };
-    private RecyclerView.OnScrollListener mConnectionListScrollListener;
-    private CachedConnectionDAO mCachedConnectionDao;
-    private QueryHistoryDao mQueryHistoryDao;
-    private ViewStateHolder mViewStateHolder;
 
     public ConnectionListFragment() {
         // Empty constructor
@@ -183,22 +181,107 @@ public class ConnectionListFragment extends Fragment {
 
     /**
      * Get the currently shown connection query
+     *
      * @return the query
      */
     public ConnectionQuery getConnectionQuery() {
         return mQuery;
     }
 
+    @MainThread
+    private void onConnectionsLoaded(int page, Connection[] connections) {
+        //noinspection ResultOfMethodCallIgnored
+        checkNotNull(connections, "connections is null");
+        if (page == 0) {
+            // loading finished for the first time/page
+            mViewStateHolder.onSuccess();
+        }
+        if (mConnectionAdapter != null) {
+            mConnectionAdapter.setConnections(page, connections);
+        } else {
+            if (BuildConfig.DEBUG) Log.w(TAG, "mConnectionAdapter is null", new Throwable());
+        }
+    }
+
+    @AnyThread
+    private void loadConnections(ConnectionQuery connectionQuery) {
+        mConnectionAdapter.clearConnections();
+        loadConnections(connectionQuery, 0);
+    }
+
+    @AnyThread
+    private void loadConnections(final ConnectionQuery connectionQuery, final int page) {
+        //noinspection ResultOfMethodCallIgnored
+        checkNotNull(connectionQuery, "connectionQuery");
+        if (page == 0) {
+            mViewStateHolder.onLoading();
+        }
+
+        Disposable disposable = Flowable.just(new PageQuery(connectionQuery, page))
+                .observeOn(Schedulers.io())
+                .map(new Function<PageQuery, PageQuery>() {
+                    @Override
+                    public PageQuery apply(PageQuery pageQuery) throws Exception {
+                        if (pageQuery.page == 0) {
+                            long id = mQueryHistoryDao.addConnection(new QueryHistory(pageQuery.query));
+                            pageQuery.setHistoryId((int) id);
+                        }
+                        return pageQuery;
+                    }
+                })
+                .map(new Function<PageQuery, PageQuery>() {
+                    @Override
+                    public PageQuery apply(@NonNull PageQuery pageQuery) throws Exception {
+                        Connection[] connections;
+                        connections = connectionAPI.getConnections(pageQuery.query, pageQuery.page);
+                        for (Connection connection : connections) {
+                            Log.d(TAG, connection.toString());
+                        }
+                        pageQuery.setResult(connections);
+                        return pageQuery;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<PageQuery>() {
+                    @Override
+                    public void accept(PageQuery connections) throws Exception {
+                        onConnectionsLoaded(connections.page, connections.getResult());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        handleError(R.string.error_failed_to_load_connection, throwable);
+                    }
+                });
+
+    }
+
+    private void handleError(@StringRes int errorMessage, @Nullable final Throwable exception) {
+        if (BuildConfig.DEBUG) {
+            // Log exception
+            String errorMessageString = getString(errorMessage);
+            Log.e(TAG, errorMessageString, exception);
+        }
+        if (mViewStateHolder != null) {
+            mViewStateHolder.onError(errorMessage);
+        } else {
+            // Fallback if an error happens outside of view
+            NavHelper.startErrorActivity(getContext(), exception);
+        }
+    }
+
 
     public interface OnConnectionListInteractionListener {
         /**
          * Called when a connection is selected.
+         *
          * @param connection the selected connection
          */
         void onConnectionSelected(@NonNull Connection connection);
 
         /**
          * Called when a list of connection is loaded
+         *
          * @param query the query
          */
         void onQueryStarted(@NonNull ConnectionQuery query);
@@ -238,89 +321,6 @@ public class ConnectionListFragment extends Fragment {
             if (mOnConnectionListInteractionListener != null) {
                 mOnConnectionListInteractionListener.onConnectionSelected(connection);
             }
-        }
-    }
-
-    @MainThread
-    private void onConnectionsLoaded(int page, Connection[] connections) {
-        //noinspection ResultOfMethodCallIgnored
-        checkNotNull(connections, "connections is null");
-        if (page == 0) {
-            // loading finished for the first time/page
-            mViewStateHolder.onSuccess();
-        }
-        if (mConnectionAdapter != null) {
-            mConnectionAdapter.setConnections(page, connections);
-        } else {
-            if(BuildConfig.DEBUG) Log.w(TAG, "mConnectionAdapter is null", new Throwable());
-        }
-    }
-
-
-    @AnyThread
-    private void loadConnections(ConnectionQuery connectionQuery) {
-        mConnectionAdapter.clearConnections();
-        loadConnections(connectionQuery, 0);
-    }
-
-    @AnyThread
-    private void loadConnections(final ConnectionQuery connectionQuery, final int page) {
-        //noinspection ResultOfMethodCallIgnored
-        checkNotNull(connectionQuery, "connectionQuery");
-        if(page == 0) {
-            mViewStateHolder.onLoading();
-        }
-
-        Disposable disposable = Flowable.just(new PageQuery(connectionQuery, page))
-                .observeOn(Schedulers.io())
-                .map(new Function<PageQuery, PageQuery>() {
-                    @Override
-                    public PageQuery apply(PageQuery pageQuery) throws Exception {
-                        if(pageQuery.page == 0) {
-                            long id = mQueryHistoryDao.addConnection(new QueryHistory(pageQuery.query));
-                            pageQuery.setHistoryId((int) id);
-                        }
-                        return pageQuery;
-                    }
-                })
-                .map(new Function<PageQuery, PageQuery>() {
-                    @Override
-                    public PageQuery apply(@NonNull PageQuery pageQuery) throws Exception {
-                        Connection[] connections;
-                        connections = connectionAPI.getConnections(pageQuery.query, pageQuery.page);
-                        for (Connection connection : connections) {
-                            Log.d(TAG, connection.toString());
-                        }
-                        pageQuery.setResult(connections);
-                        return pageQuery;
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<PageQuery>() {
-                    @Override
-                    public void accept(PageQuery connections) throws Exception {
-                        onConnectionsLoaded(connections.page, connections.getResult());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        handleError(R.string.error_failed_to_load_connection, throwable);
-                    }
-                });
-
-    }
-
-    private void handleError(@StringRes int errorMessage, @Nullable final Throwable exception) {
-        if(BuildConfig.DEBUG) {
-            // Log exception
-            String errorMessageString = getString(errorMessage);
-            Log.e(TAG, errorMessageString, exception);
-        }
-        if(mViewStateHolder != null) {
-            mViewStateHolder.onError(errorMessage);
-        } else {
-            // Fallback if an error happens outside of view
-            NavHelper.startErrorActivity(getContext(), exception);
         }
     }
 }

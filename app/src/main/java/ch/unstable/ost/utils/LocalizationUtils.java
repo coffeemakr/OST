@@ -16,6 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public enum LocalizationUtils {
     ;
+
     @NonNull
     public static String getArrivalOrDepartureText(Context context, ConnectionQuery query) {
         //noinspection ResultOfMethodCallIgnored

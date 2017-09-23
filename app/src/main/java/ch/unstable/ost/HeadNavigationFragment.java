@@ -46,6 +46,21 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
         // Required empty public constructor
     }
 
+    @NonNull
+    private static String getToButtonText(Context context, @Nullable String to) {
+        if (to == null) {
+            return context.getString(R.string.request_choose_to);
+        }
+        return to;
+    }
+
+    @NonNull
+    private static String getFromButtonText(Context context, @Nullable String from) {
+        if (from == null) {
+            return context.getString(R.string.request_choose_from);
+        }
+        return from;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +95,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     private void updateViews() {
         final Context context = getContext();
-        if(context == null) return;
+        if (context == null) return;
         mTime.setText(LocalizationUtils.getArrivalOrDepartureText(context,
                 mSelectionState.getArrivalTime(),
                 mSelectionState.getDepartureTime()));
@@ -147,22 +162,6 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
                     // Unknown result
             }
         }
-    }
-
-    @NonNull
-    private static String getToButtonText(Context context, @Nullable String to) {
-        if (to == null) {
-            return context.getString(R.string.request_choose_to);
-        }
-        return to;
-    }
-
-    @NonNull
-    private static String getFromButtonText(Context context, @Nullable String from) {
-        if (from == null) {
-            return context.getString(R.string.request_choose_from);
-        }
-        return from;
     }
 
     private void onQueryChanged() {

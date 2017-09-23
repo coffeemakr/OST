@@ -51,7 +51,7 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
 
     public static void removeNulls(List list) {
         for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
-            if(iterator.next() == null) {
+            if (iterator.next() == null) {
                 iterator.remove();
             }
         }
@@ -62,10 +62,10 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
         SimpleDateFormat dateFormat = PassingCheckpointsDeserializer.getDateFormat();
         JsonArray jsonArray = json.getAsJsonArray();
         ArrayList<Section> sections = new ArrayList<>(jsonArray.size());
-        for(JsonElement element: jsonArray) {
+        for (JsonElement element : jsonArray) {
             JsonObject object = element.getAsJsonObject();
             String type;
-            if(!object.has("type")) {
+            if (!object.has("type")) {
                 LOGGER.severe("No type defined in " + LogUtils.prettyJson(object) + " \n Parent: " + LogUtils.prettyJson(json));
                 // can be ignored probably
                 continue;
@@ -73,13 +73,16 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
                 type = object.get("type").getAsString();
             }
 
-            if(type.equals("walk")) {
-                if(BuildConfig.DEBUG) Log.d(TAG, "Walk not handled: " + LogUtils.prettyJson(object));
+            if (type.equals("walk")) {
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Walk not handled: " + LogUtils.prettyJson(object));
             } else {
-                if(BuildConfig.DEBUG) Log.d(TAG, "Got type " + type + ": " + LogUtils.prettyJson(object));
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Got type " + type + ": " + LogUtils.prettyJson(object));
                 String shortname = object.get("line").getAsString();
                 String longName = object.get("number").getAsString();
-                Type listOfPassingCheckpoints = new TypeToken<List<PassingCheckpoint>>(){}.getType();
+                Type listOfPassingCheckpoints = new TypeToken<List<PassingCheckpoint>>() {
+                }.getType();
                 List<PassingCheckpoint> stops = context.deserialize(object.get("stops"), listOfPassingCheckpoints);
                 removeNulls(stops);
                 Route route = new Route(shortname, longName, stops.toArray(new PassingCheckpoint[stops.size()]));

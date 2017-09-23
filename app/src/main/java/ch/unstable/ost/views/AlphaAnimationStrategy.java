@@ -15,8 +15,8 @@ public class AlphaAnimationStrategy implements AnimationStrategy {
     @CheckResult
     private static Animation getShowAnimation(@NonNull final View view) {
         Animation showAnimation;
-        if(view.getVisibility() == View.VISIBLE) {
-            showAnimation =  new AlphaAnimation(view.getAlpha(), 1f);
+        if (view.getVisibility() == View.VISIBLE) {
+            showAnimation = new AlphaAnimation(view.getAlpha(), 1f);
         } else {
             view.setAlpha(0f);
             view.setVisibility(View.VISIBLE);

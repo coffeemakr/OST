@@ -43,13 +43,13 @@ public enum DepartureCheckpointDeserializer implements JsonDeserializer<Departur
 
     @Override
     public DepartureCheckpoint deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        if(BuildConfig.DEBUG) Log.d(TAG, "Getting departure from: " + json);
+        if (BuildConfig.DEBUG) Log.d(TAG, "Getting departure from: " + json);
         JsonObject passObj = json.getAsJsonObject();
         Location location = LocationDeserializer.INSTANCE.deserialize(passObj.get(FIELD_STATION), null, context);
 
         Date departure = getDate(passObj, FIELD_DEPARTURE_TIMESTAMP);
         String platform = getPlatform(passObj);
-        if(BuildConfig.DEBUG) Log.v(TAG, "departure platform: " + platform);
+        if (BuildConfig.DEBUG) Log.v(TAG, "departure platform: " + platform);
         return new DepartureCheckpoint(departure, platform, location);
     }
 }
