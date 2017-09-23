@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +21,10 @@ import com.google.common.base.Preconditions;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.Databases;
-import ch.unstable.ost.database.QueryHistoryDao;
+import ch.unstable.ost.database.dao.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -34,6 +37,7 @@ public class QuickstartFragment extends Fragment {
     private TextView mLastQueryDate;
     private OnQuerySelectedListener mOnQuerySelectedListener;
     private QueryHistory mLastQuery;
+    private CompositeDisposable mCompositeDisposable;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +45,7 @@ public class QuickstartFragment extends Fragment {
         if (mQueryDao == null) {
             mQueryDao = Databases.getCacheDatabase(getContext()).queryHistoryDao();
         }
+        mCompositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -112,23 +117,46 @@ public class QuickstartFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<QueryHistory>() {
-                               @Override
-                               public void accept(QueryHistory queryHistory) throws Exception {
-                                   updateLatestQuery(queryHistory);
-                               }
-                           },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                if (throwable instanceof EmptyResultSetException) {
-                                    // Nothing to do?
-                                    Log.d(TAG, "No last query", throwable);
-                                } else {
-                                    Log.e(TAG, "Error while loading last query", throwable);
-                                }
-                                mCardLastQuery.setVisibility(View.GONE);
-                            }
-                        });
+                    @Override
+                    public void accept(QueryHistory queryHistory) throws Exception {
+                        updateLatestQuery(queryHistory);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        if (throwable instanceof EmptyResultSetException) {
+                            // Nothing to do?
+                            Log.d(TAG, "No last query", throwable);
+                        } else {
+                            onError(throwable);
+                        }
+                        mCardLastQuery.setVisibility(View.GONE);
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @MainThread
+    private void onError(final Throwable throwable) {
+        Log.e(TAG, "Error while loading last query", throwable);
+        View view = getView();
+        if(view == null) {
+            Log.w(TAG, "No view");
+            return;
+        }
+        Snackbar.make(view, R.string.error_failed_to_load_last_query, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.action_resport_error, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        NavHelper.startErrorActivity(getContext(), throwable);
+                    }
+                }).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCompositeDisposable.dispose();
     }
 
     @MainThread
