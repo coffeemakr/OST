@@ -1,14 +1,12 @@
 package ch.unstable.ost;
 
 
-import android.arch.persistence.room.Query;
 import android.content.Context;
 import android.support.annotation.MainThread;
 import android.widget.TextView;
 
 import java.util.Date;
 
-import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.model.QueryHistory;
 import ch.unstable.ost.utils.LocalizationUtils;

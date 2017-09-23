@@ -1,7 +1,6 @@
 package ch.unstable.ost.api.offline;
 
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

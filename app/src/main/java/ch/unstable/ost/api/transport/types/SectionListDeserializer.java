@@ -13,7 +13,6 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.api.model.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.DepartureCheckpoint;
 import ch.unstable.ost.api.model.PassingCheckpoint;

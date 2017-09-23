@@ -27,7 +27,6 @@ import ch.unstable.ost.api.model.PassingCheckpoint;
 import ch.unstable.ost.api.model.Route;
 import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.utils.LogUtils;
-import ch.unstable.ost.utils.TimeDateUtils;
 
 import static ch.unstable.ost.api.transport.types.LocationDeserializer.getNullableString;
 

@@ -1,8 +1,6 @@
 package ch.unstable.ost.error.model;
 
 
-import android.content.pm.Signature;
-
 public class AppInfo {
     private final String version;
     private final int versionCode;

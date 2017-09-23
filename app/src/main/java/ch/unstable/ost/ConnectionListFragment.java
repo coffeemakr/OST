@@ -2,9 +2,6 @@ package ch.unstable.ost;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Message;
 import android.support.annotation.AnyThread;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
@@ -18,8 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.common.base.Preconditions;
 
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
@@ -65,7 +60,7 @@ public class ConnectionListFragment extends Fragment {
             if (!isLoadablePage(pageToLoad)) {
                 return false;
             }
-            handleConnectionQuery(getConnectionQuery(), pageToLoad);
+            loadConnections(getConnectionQuery(), pageToLoad);
             return true;
         }
 
@@ -111,7 +106,7 @@ public class ConnectionListFragment extends Fragment {
         mViewStateHolder.setOnRetryClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handleConnectionQuery(getConnectionQuery(), 0);
+                loadConnections(getConnectionQuery(), 0);
             }
         });
         mConnectionAdapter = new ConnectionListAdapter();
@@ -123,11 +118,11 @@ public class ConnectionListFragment extends Fragment {
             if (state != null) {
                 mConnectionAdapter.restoreState(state);
             } else {
-                loadConnectionsAsync(mQuery);
+                loadConnections(mQuery);
             }
         } else {
             mQuery = getArguments().getParcelable(ARG_QUERY);
-            loadConnectionsAsync(mQuery);
+            loadConnections(mQuery);
         }
     }
 
@@ -147,15 +142,6 @@ public class ConnectionListFragment extends Fragment {
         if (mConnectionAdapter != null) {
             outState.putParcelable(KEY_CONNECTION_STATE, mConnectionAdapter.getState());
         }
-    }
-
-
-    @MainThread
-    private void loadConnectionsAsync(final ConnectionQuery connectionQuery) {
-        //noinspection ResultOfMethodCallIgnored
-        Preconditions.checkNotNull(connectionQuery, "connectionQuery");
-        mConnectionAdapter.clearConnections();
-        handleConnectionQuery(connectionQuery, 0);
     }
 
     @Override
@@ -270,8 +256,17 @@ public class ConnectionListFragment extends Fragment {
         }
     }
 
+
     @AnyThread
-    private void handleConnectionQuery(final ConnectionQuery connectionQuery, final int page) {
+    private void loadConnections(ConnectionQuery connectionQuery) {
+        mConnectionAdapter.clearConnections();
+        loadConnections(connectionQuery, 0);
+    }
+
+    @AnyThread
+    private void loadConnections(final ConnectionQuery connectionQuery, final int page) {
+        //noinspection ResultOfMethodCallIgnored
+        checkNotNull(connectionQuery, "connectionQuery");
         if(page == 0) {
             mViewStateHolder.onLoading();
         }

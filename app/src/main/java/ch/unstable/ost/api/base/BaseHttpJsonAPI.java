@@ -1,7 +1,6 @@
 package ch.unstable.ost.api.base;
 
 
-import android.os.Build;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -13,7 +12,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

@@ -24,8 +24,8 @@ import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.api.search.types.ConnectionDeserializer;
 import ch.unstable.ost.api.search.types.LocationDeserializer;
 import ch.unstable.ost.api.search.types.PassingCheckpointsDeserializer;
-import ch.unstable.ost.api.search.types.StationTypeDeserializer;
 import ch.unstable.ost.api.search.types.SectionsDeserializer;
+import ch.unstable.ost.api.search.types.StationTypeDeserializer;
 import ch.unstable.ost.api.transport.ConnectionAPI;
 import io.mikael.urlbuilder.UrlBuilder;
 
