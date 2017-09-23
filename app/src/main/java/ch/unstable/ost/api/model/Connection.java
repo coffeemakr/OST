@@ -2,6 +2,7 @@ package ch.unstable.ost.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.common.base.MoreObjects;
 
@@ -23,12 +24,21 @@ public class Connection implements Parcelable {
             return new Connection[size];
         }
     };
+
     private final Section[] sections;
 
+    /**
+     * Create a new connection
+     * @param sections an array containing the sections
+     */
     public Connection(Section[] sections) {
         this.sections = checkNotNull(sections, "sections");
     }
 
+    /**
+     * Create a new connection from a parcel
+     * @param in the parcel
+     */
     private Connection(Parcel in) {
         sections = in.createTypedArray(Section.CREATOR);
     }
@@ -43,23 +53,48 @@ public class Connection implements Parcelable {
         return 0;
     }
 
+    /**
+     * Get the sections
+     * @return the sections
+     */
+    @NonNull
     public Section[] getSections() {
         return Arrays.copyOf(sections, sections.length);
     }
 
+    /**
+     * Get the departure time
+     * @return the time of the departure
+     */
     public Date getDepartureDate() {
         return sections[0].getDepartureDate();
     }
 
+    /**
+     * Get the arrival time
+     * @return the arrival time
+     */
     public Date getArrivalDate() {
         return sections[sections.length - 1].getArrivalDate();
     }
 
 
+    /**
+     * Get the departure checkpoint
+     *
+     * The departure checkpoint of a connection is the departure checkpoint of the first section.
+     * @return the departure checkpoint
+     */
     public DepartureCheckpoint getDeparture() {
         return sections[0].getDeparture();
     }
 
+    /**
+     * Get the arrival checkpoint
+     *
+     * The arrival checkpoint of a connection is the arrival checkpoint of the last section.
+     * @return the arrival checkpoint
+     */
     public ArrivalCheckpoint getArrival() {
         return sections[sections.length - 1].getArrival();
     }

@@ -12,8 +12,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.utils.StandartCharsetCompat;
@@ -23,7 +21,6 @@ public class BaseHttpJsonAPI {
     private static final int HTTP_CODE_TOO_MANY_REQUESTS = 429;
     private static final String TAG = "BaseHttpJsonAPI";
     private static final String USER_AGENT = "OST/" + BuildConfig.VERSION_NAME;
-    private static final Logger logger = Logger.getLogger(TAG);
     private final Gson gson;
 
     protected BaseHttpJsonAPI() {
@@ -41,8 +38,6 @@ public class BaseHttpJsonAPI {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "loading JSON " + url);
         }
-        logger.log(Level.INFO, "loading JSON " + url);
-
 
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestMethod("GET");

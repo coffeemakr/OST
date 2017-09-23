@@ -234,9 +234,6 @@ public class ConnectionListFragment extends Fragment {
                     public PageQuery apply(@NonNull PageQuery pageQuery) throws Exception {
                         Connection[] connections;
                         connections = connectionAPI.getConnections(pageQuery.query, pageQuery.page);
-                        for (Connection connection : connections) {
-                            Log.d(TAG, connection.toString());
-                        }
                         pageQuery.setResult(connections);
                         return pageQuery;
                     }
