@@ -21,6 +21,7 @@ import com.google.common.base.Objects;
 
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
+import ch.unstable.ost.database.model.FavoriteConnection;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
 
@@ -29,7 +30,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ConnectionListActivity extends ThemedActivity
         implements ConnectionListFragment.OnConnectionListInteractionListener,
         BaseNavigationFragment.OnRouteSelectionListener,
-        QuickstartFragment.OnQuerySelectedListener {
+        QuickstartFragment.OnQuerySelectedListener,
+        FavoriteCardFragment.OnFavoriteSelectedListener {
 
     private static final String CLASS_NAME = "ch.unstable.ost.ConnectionListActivity";
     public static final String EXTRA_CONNECTION_FROM = CLASS_NAME + ".EXTRA_CONNECTION_FROM";
@@ -164,6 +166,11 @@ public class ConnectionListActivity extends ThemedActivity
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void onFavoriteSelected(@NonNull FavoriteConnection favoriteConnection) {
+        
     }
 
     public static class EmptyConnectionListFragment extends Fragment {

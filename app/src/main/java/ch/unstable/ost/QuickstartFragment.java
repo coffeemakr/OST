@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,7 @@ import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
+import ch.unstable.ost.lists.query.QueryBinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -82,20 +82,20 @@ public class QuickstartFragment extends Fragment {
         buttonMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onShowMore();
+                onShowMoreQueries();
             }
         });
 
-        Button buttonLoad = view.findViewById(R.id.buttonOpen);
+        Button buttonLoad = view.findViewById(R.id.buttonOpenFavorite);
         buttonLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onOpenConnection();
+                onOpenQuery();
             }
         });
     }
 
-    private void onOpenConnection() {
+    private void onOpenQuery() {
         if (mOnQuerySelectedListener == null) {
             Log.w(TAG, "mOnQuerySelectedListener is null");
             return;
@@ -105,7 +105,7 @@ public class QuickstartFragment extends Fragment {
         mOnQuerySelectedListener.onRouteSelected(mLastQuery.getQuery());
     }
 
-    private void onShowMore() {
+    private void onShowMoreQueries() {
         Intent intent = new Intent(getContext(), QueryHistoryActivity.class);
         startActivity(intent);
     }

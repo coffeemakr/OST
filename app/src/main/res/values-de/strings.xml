@@ -60,4 +60,7 @@
     <string name="last_query_title">Letzte Suche</string>
     <string name="action_resport_error">Melden</string>
     <string name="button_action_retry_on_error">Erneut versuchen</string>
+    <string name="title_activity_favorites">Favoriten</string>
+    <string name="favorites_card_title">Favoriten</string>
+    <string name="error_failed_to_load_last_query">Letzte Suche konnte nicht geladen werden</string>
 </resources>

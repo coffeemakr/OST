@@ -1,4 +1,4 @@
-package ch.unstable.ost.database;
+package ch.unstable.ost.database.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
@@ -21,4 +21,8 @@ public abstract class QueryHistoryDao {
 
     @Query("SELECT * FROM " + QueryHistory.TABLE_NAME + " ORDER BY creationDate DESC LIMIT 1")
     public abstract Single<QueryHistory> getLatestQuery();
+
+
+    @Query(value = "SELECT * FROM " + QueryHistory.TABLE_NAME + " ORDER BY creationDate DESC")
+    abstract List<QueryHistory> getFavoriteQueries();
 }

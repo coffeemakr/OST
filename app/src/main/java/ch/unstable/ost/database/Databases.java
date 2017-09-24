@@ -1,7 +1,9 @@
 package ch.unstable.ost.database;
 
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
+import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
 import com.google.common.base.Preconditions;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.api.offline.StationsDatabase;
 
 public class Databases {
@@ -37,10 +40,20 @@ public class Databases {
         Preconditions.checkNotNull(context, "context is null");
         if (cacheDatabase == null) {
             String databaseName = "cache.db";
-            cacheDatabase = Room.databaseBuilder(context.getApplicationContext(), CacheDatabase.class, databaseName).build();
+            cacheDatabase = Room.databaseBuilder(context.getApplicationContext(), CacheDatabase.class, databaseName)
+                    .addMigrations(MIGRATION_1_2)
+                    .build();
         }
         return cacheDatabase;
     }
+
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE \n");
+        }
+    };
+
 
     public static void copyDBFromAssets(Context context, String database) {
         try {

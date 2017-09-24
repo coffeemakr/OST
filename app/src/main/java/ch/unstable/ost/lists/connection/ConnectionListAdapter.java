@@ -1,4 +1,4 @@
-package ch.unstable.ost;
+package ch.unstable.ost.lists.connection;
 
 import android.content.Context;
 import android.os.Handler;
@@ -14,17 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import ch.unstable.ost.R;
 import ch.unstable.ost.api.model.Connection;
-import ch.unstable.ost.api.model.Section;
-import ch.unstable.ost.utils.TimeDateUtils;
-import ch.unstable.ost.views.ConnectionLineView;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Verify.verifyNotNull;
@@ -50,28 +46,6 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public ConnectionListAdapter() {
         super();
         mHandler = new Handler(new UICallback());
-    }
-
-    private static int[] getTravelTimes(Section[] sections) {
-        int[] times = new int[sections.length * 2 - 1];
-        int i = 0;
-        long lastEnd = 0;
-        for (Section section : sections) {
-            // Walks can be ignored. They are added to the waiting time.
-            if (lastEnd != 0) {
-                // Waiting time
-                times[i] = (int) (section.getDepartureDate().getTime() - lastEnd);
-                ++i;
-            }
-            // Travel time
-            lastEnd = section.getArrivalDate().getTime();
-            times[i] = (int) (lastEnd - section.getDepartureDate().getTime());
-            ++i;
-        }
-        if (i != times.length) {
-            times = Arrays.copyOf(times, i);
-        }
-        return times;
     }
 
     private void setLoadingTop(boolean loadingTop) {
@@ -207,48 +181,9 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(ConnectionViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
         Connection connection = getItemAt(position);
-        Section[] sections = connection.getSections();
-        if (sections.length > 0) {
-            Section section = sections[0];
-            holder.firstEndDestination.setText(formatEndDestination(context, section.getHeadsign()));
-            holder.firstTransportName.setText(section.getLineShortName());
-            holder.platform.setText(formatPlatform(context, section.getDeparturePlatform()));
-        } else {
-            Log.e(TAG, "No sections");
-        }
-
-
-        String duration = TimeDateUtils.formatDuration(holder.itemView.getResources(),
-                connection.getDepartureDate(),
-                connection.getArrivalDate());
-        holder.duration.setText(duration);
-        holder.startTime.setText(TimeDateUtils.formatTime(connection.getDepartureDate()));
-        holder.endTime.setText(TimeDateUtils.formatTime(connection.getArrivalDate()));
-
-        int[] times = getTravelTimes(connection.getSections());
-        holder.connectionLineView.setLengths(times);
-
+        ConnectionBinder.bindConnection(connection, holder);
         holder.itemView.setTag(holder);
         holder.itemView.setOnClickListener(mOnViewHolderClickListener);
-    }
-
-    @Nullable
-    private String formatPlatform(Context context, @Nullable String platform) {
-        if (platform == null) {
-            return null;
-        } else if (platform.matches("^[0-9]+$")) {
-            return context.getString(R.string.format_train_platform, platform);
-        } else if (platform.matches("^[A-z]+$")) {
-            return context.getString(R.string.format_bus_platform, platform);
-        } else {
-            return platform;
-        }
-    }
-
-    @Nullable
-    private String formatEndDestination(Context context, @Nullable String endDestination) {
-        if (endDestination == null) return null;
-        return context.getString(R.string.connection_direction, endDestination);
     }
 
     @Override
@@ -324,27 +259,6 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         boolean onLoadBelow(ConnectionListAdapter adapter, int pageToLoad);
 
         boolean onLoadAbove(ConnectionListAdapter adapter, int pageToLoad);
-    }
-
-    public static class ConnectionViewHolder extends RecyclerView.ViewHolder {
-        private final TextView startTime;
-        private final TextView endTime;
-        private final TextView firstEndDestination;
-        private final ConnectionLineView connectionLineView;
-        private final TextView firstTransportName;
-        private final TextView duration;
-        private final TextView platform;
-
-        public ConnectionViewHolder(View itemView) {
-            super(checkNotNull(itemView));
-            startTime = (TextView) verifyNotNull(itemView.findViewById(R.id.startTime));
-            endTime = (TextView) verifyNotNull(itemView.findViewById(R.id.endTime));
-            firstEndDestination = (TextView) verifyNotNull(itemView.findViewById(R.id.firstSectionEndDestination));
-            connectionLineView = (ConnectionLineView) verifyNotNull(itemView.findViewById(R.id.connectionLineView));
-            firstTransportName = (TextView) verifyNotNull(itemView.findViewById(R.id.firstTransportName));
-            duration = (TextView) verifyNotNull(itemView.findViewById(R.id.duration));
-            platform = (TextView) verifyNotNull(itemView.findViewById(R.id.platform));
-        }
     }
 
     private static class ProgressViewHolder extends RecyclerView.ViewHolder {

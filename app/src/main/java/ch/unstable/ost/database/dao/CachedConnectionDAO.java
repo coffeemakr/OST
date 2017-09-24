@@ -1,4 +1,4 @@
-package ch.unstable.ost.database;
+package ch.unstable.ost.database.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;

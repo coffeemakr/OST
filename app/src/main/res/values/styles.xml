@@ -57,7 +57,8 @@
         <item name="ic_send_24dp">@drawable/ic_send_black_24dp</item>
         <item name="ic_tune_24dp_no_vector">@drawable/ic_tune_black_24dp_no_vector</item>
         <item name="ic_restore_24dp">@drawable/ic_restore_black_24dp</item>
-        <item name="ic_color_lens_24dp_no_vector">@drawable/ic_color_lens_black_24dp_no_vector</item>
+        <item name="ic_color_lens_24dp_no_vector">@drawable/ic_color_lens_black_24dp_no_vector
+        </item>
         <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
         <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -86,9 +87,11 @@
         <item name="ic_send_24dp">@drawable/ic_send_white_24dp</item>
         <item name="ic_tune_24dp_no_vector">@drawable/ic_tune_white_24dp_no_vector</item>
         <item name="ic_restore_24dp">@drawable/ic_restore_white_24dp</item>
-        <item name="ic_color_lens_24dp_no_vector">@drawable/ic_color_lens_white_24dp_no_vector</item>
+        <item name="ic_color_lens_24dp_no_vector">@drawable/ic_color_lens_white_24dp_no_vector
+        </item>
         <!--<item name="toolbarStyle">@style/LightToolBarStyle</item>-->
-        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item> <!-- AppBarOverlay -->
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar
+        </item> <!-- AppBarOverlay -->
         <!-- @style/GreenDarkTheme.PopupOverlay -->
         <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="dividerColor">@android:color/white</item>
@@ -110,8 +113,7 @@
     </style>
 
 
-    <style name="ErrorReportValue" parent="@style/TextAppearance.AppCompat.Body1">
-    </style>
+    <style name="ErrorReportValue" parent="@style/TextAppearance.AppCompat.Body1"></style>
 
 
     <style name="ErrorReportSubtitle" parent="@style/TextAppearance.AppCompat.Subhead">
@@ -137,4 +139,8 @@
     <style name="HeadButtonTheme" parent="ThemeOverlay.AppCompat">
         <item name="colorButtonNormal">?attr/colorButtonInPrimary</item>
     </style>
+
+    <style name="GreenDarkTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="GreenDarkTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

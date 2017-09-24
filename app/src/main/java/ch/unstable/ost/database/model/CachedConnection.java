@@ -7,6 +7,8 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import ch.unstable.ost.api.model.Connection;
 
 @Entity(tableName = CachedConnection.TABLE_NAME,
@@ -56,4 +58,5 @@ public class CachedConnection {
     public long getId() {
         return id;
     }
+
 }

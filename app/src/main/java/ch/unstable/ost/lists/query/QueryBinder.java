@@ -1,4 +1,4 @@
-package ch.unstable.ost;
+package ch.unstable.ost.lists.query;
 
 
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import java.util.Date;
 
+import ch.unstable.ost.R;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.model.QueryHistory;
 import ch.unstable.ost.utils.LocalizationUtils;
@@ -24,7 +25,10 @@ public class QueryBinder {
             departure = queryEntry.getCreationDate();
         }
         dateView.setText(LocalizationUtils.getArrivalOrDepartureText(context, arrival, departure));
-        fromAndTo.setText(context.getString(R.string.fromAndTo, query.getFrom(), query.getTo()));
+        bindFromToText(fromAndTo, query);
+    }
 
+    public static void bindFromToText(TextView textView, ConnectionQuery query) {
+        textView.setText(textView.getContext().getString(R.string.fromAndTo, query.getFrom(), query.getTo()));
     }
 }
