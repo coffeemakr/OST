@@ -63,4 +63,6 @@
     <string name="title_activity_favorites">Favoriten</string>
     <string name="favorites_card_title">Favoriten</string>
     <string name="error_failed_to_load_last_query">Letzte Suche konnte nicht geladen werden</string>
+    <string name="action_favorite">Favorisieren</string>
+    <string name="error_failed_to_load_favorites">Favoriten konnten nicht geladen werden</string>
 </resources>
