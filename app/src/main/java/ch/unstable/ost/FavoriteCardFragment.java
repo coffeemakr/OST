@@ -16,10 +16,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.FavoriteConnectionDao;
 import ch.unstable.ost.database.model.FavoriteConnection;
 import ch.unstable.ost.lists.query.QueryBinder;
+import ch.unstable.ost.utils.LocalizationUtils;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -33,8 +35,6 @@ public class FavoriteCardFragment extends Fragment {
     private View mCardFavorites;
     private TextView mFavoriteFromTo;
     private TextView mFavoriteDate;
-    private View mFavoriteMoreButton;
-    private View mFavoriteOpenButton;
     private FavoriteConnectionDao mFavoriteDao;
     @Nullable
     private FavoriteConnection mLatestFavorite = null;
@@ -65,20 +65,28 @@ public class FavoriteCardFragment extends Fragment {
         mFavoriteFromTo = view.findViewById(R.id.favoriteFromTo);
         mFavoriteDate = view.findViewById(R.id.favoriteDate);
 
-        mFavoriteMoreButton = view.findViewById(R.id.buttonMoreFavorites);
-        mFavoriteMoreButton.setOnClickListener(new View.OnClickListener() {
+        View moreButton = view.findViewById(R.id.buttonMoreFavorites);
+        moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onMoreButtonPressed();
             }
         });
-        mFavoriteOpenButton = view.findViewById(R.id.buttonOpenFavorite);
-        mFavoriteOpenButton.setOnClickListener(new View.OnClickListener() {
+        View openButton = view.findViewById(R.id.buttonOpenFavorite);
+        openButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onOpenButtonPressed();
             }
         });
+    }
+
+    private void bindConnection(FavoriteConnection favoriteConnection) {
+        Connection connection = favoriteConnection.getConnection();
+        QueryBinder.bindFromToText(mFavoriteFromTo, connection);
+        mFavoriteDate.setText(LocalizationUtils.getDepartureText(getContext(), connection.getDepartureDate()));
+        mCardFavorites.setVisibility(View.VISIBLE);
+        mLatestFavorite = favoriteConnection;
     }
 
     @Override
@@ -90,9 +98,7 @@ public class FavoriteCardFragment extends Fragment {
                 .subscribe(new Consumer<FavoriteConnection>() {
                     @Override
                     public void accept(FavoriteConnection favoriteConnection) throws Exception {
-                        QueryBinder.bindFromToText(mFavoriteFromTo, favoriteConnection.getQuery());
-                        mCardFavorites.setVisibility(View.VISIBLE);
-                        mLatestFavorite = favoriteConnection;
+                        bindConnection(favoriteConnection);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

@@ -30,7 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ConnectionListActivity extends ThemedActivity
         implements ConnectionListFragment.OnConnectionListInteractionListener,
         BaseNavigationFragment.OnRouteSelectionListener,
-        QuickstartFragment.OnQuerySelectedListener,
+        LastQueryCardFragment.OnQuerySelectedListener,
         FavoriteCardFragment.OnFavoriteSelectedListener {
 
     private static final String CLASS_NAME = "ch.unstable.ost.ConnectionListActivity";

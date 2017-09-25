@@ -2,62 +2,84 @@ package ch.unstable.ost.database.model;
 
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
-
-import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
 import ch.unstable.ost.api.model.Connection;
-import ch.unstable.ost.api.model.ConnectionQuery;
+import ch.unstable.ost.utils.ParcelUtils;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Favorite connection
  */
 @Entity(tableName = FavoriteConnection.TABLE_NAME)
-public class FavoriteConnection {
+public class FavoriteConnection implements Parcelable {
 
     public final static String TABLE_NAME = "favorite_connections";
-    @PrimaryKey
-    private final long id;
+    @PrimaryKey(autoGenerate = true)
+    private long id;
 
     @NonNull
     private final Connection connection;
-    @NonNull
-    @Embedded
-    private final ConnectionQuery query;
 
     @NonNull
-    @ColumnInfo(name = "creation_date")
+    @ColumnInfo(name = "creation_date", index = true)
     private final Date creationDate;
 
-    public FavoriteConnection(long id, @NonNull Connection connection, @NonNull ConnectionQuery query, @NonNull Date creationDate) {
+    public FavoriteConnection(long id, @NonNull Connection connection, @NonNull Date creationDate) {
         this.id = id;
         this.connection = connection;
-        this.query = query;
         this.creationDate = creationDate;
     }
 
     @Ignore
-    public FavoriteConnection(@NonNull Connection connection, @NonNull ConnectionQuery query) {
+    public FavoriteConnection(@NonNull Connection connection) {
         this.id = 0;
         this.connection = connection;
-        this.query = query;
         this.creationDate = new Date();
     }
+
+    @Ignore
+    protected FavoriteConnection(Parcel in) {
+        id = in.readLong();
+        connection = in.readParcelable(Connection.class.getClassLoader());
+        creationDate = checkNotNull(ParcelUtils.readDate(in), "readDate returned null as creationDate");
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeParcelable(connection, flags);
+        ParcelUtils.writeDate(dest, creationDate);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<FavoriteConnection> CREATOR = new Creator<FavoriteConnection>() {
+        @Override
+        public FavoriteConnection createFromParcel(Parcel in) {
+            return new FavoriteConnection(in);
+        }
+
+        @Override
+        public FavoriteConnection[] newArray(int size) {
+            return new FavoriteConnection[size];
+        }
+    };
 
     @NonNull
     public Connection getConnection() {
         return connection;
-    }
-
-    @NonNull
-    public ConnectionQuery getQuery() {
-        return query;
     }
 
     @NonNull
@@ -67,5 +89,9 @@ public class FavoriteConnection {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

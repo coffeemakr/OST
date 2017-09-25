@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "7fc93cd71e193ba2c3f9ff77695f4b07",
+    "identityHash": "e54798b841e20358cb8f86939ac7a849",
     "entities": [
       {
         "tableName": "connection",
@@ -122,7 +122,7 @@
       },
       {
         "tableName": "favorite_connections",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `connection` TEXT NOT NULL, `creation_date` INTEGER NOT NULL, `from` TEXT NOT NULL, `to` TEXT NOT NULL, `via` TEXT, `departureTime` INTEGER, `arrivalTime` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `connection` TEXT NOT NULL, `creation_date` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -141,51 +141,30 @@
             "columnName": "creation_date",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "query.from",
-            "columnName": "from",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "query.to",
-            "columnName": "to",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "query.via",
-            "columnName": "via",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "query.departureTime",
-            "columnName": "departureTime",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "query.arrivalTime",
-            "columnName": "arrivalTime",
-            "affinity": "INTEGER",
-            "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_favorite_connections_creation_date",
+            "unique": false,
+            "columnNames": [
+              "creation_date"
+            ],
+            "createSql": "CREATE  INDEX `index_favorite_connections_creation_date` ON `${TABLE_NAME}` (`creation_date`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7fc93cd71e193ba2c3f9ff77695f4b07\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e54798b841e20358cb8f86939ac7a849\")"
     ]
   }
 }

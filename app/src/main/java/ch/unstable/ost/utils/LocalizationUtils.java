@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
+import com.google.common.base.Preconditions;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -24,15 +26,28 @@ public enum LocalizationUtils {
         return getArrivalOrDepartureText(context, query.getArrivalTime(), query.getDepartureTime());
     }
 
+    public static String getDepartureText(final Context context, Date departureTime) {
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(departureTime, "departureTime is null");
+        return getArrivalOrDepartureText(context, departureTime, R.string.departure_time_same_day, R.string.departure_time_other_day);
+    }
+
     @NonNull
-    public static String getArrivalOrDepartureText(Context context, @Nullable Date arrivalTime, @Nullable Date departureTime) {
+    private static String getArrivalText(Context context, Date arrivalTime) {
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(arrivalTime, "arrivalTime is null");
+        return getArrivalOrDepartureText(context, arrivalTime, R.string.arrival_time_same_day, R.string.arrival_time_other_day);
+    }
+
+    @NonNull
+    public static String getArrivalOrDepartureText(final Context context, @Nullable Date arrivalTime, @Nullable Date departureTime) {
         //noinspection ResultOfMethodCallIgnored
         checkNotNull(context, "context is null");
         Date time;
         if ((time = departureTime) != null) {
-            return getArrivalOrDepartureText(context, time, R.string.departure_time_same_day, R.string.departure_time_other_day);
+            return getDepartureText(context, time);
         } else if ((time = arrivalTime) != null) {
-            return getArrivalOrDepartureText(context, time, R.string.arrival_time_same_day, R.string.arrival_time_other_day);
+            return getArrivalText(context, time);
         } else {
             return context.getString(R.string.departure_time_now);
         }

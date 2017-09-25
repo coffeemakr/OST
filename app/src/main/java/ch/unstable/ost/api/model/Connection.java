@@ -118,4 +118,12 @@ public class Connection implements Parcelable {
     public int hashCode() {
         return Arrays.hashCode(sections);
     }
+
+    public String getDepartureName() {
+        return getDeparture().getLocation().getName();
+    }
+
+    public String getArrivalName() {
+        return getArrival().getLocation().getName();
+    }
 }

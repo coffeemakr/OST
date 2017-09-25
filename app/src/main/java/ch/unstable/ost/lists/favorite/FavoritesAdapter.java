@@ -3,6 +3,7 @@ package ch.unstable.ost.lists.favorite;
 import android.view.View;
 
 import ch.unstable.ost.R;
+import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.database.model.FavoriteConnection;
 import ch.unstable.ost.lists.connection.ConnectionBinder;
 import ch.unstable.ost.lists.query.QueryBinder;
@@ -27,8 +28,9 @@ public class FavoritesAdapter extends SimplerAdapter<FavoriteConnection, Favorit
 
     @Override
     public void onBindViewHolder(FavoritesViewHolder holder, int i) {
-        ConnectionBinder.bindConnection(getItem(i).getConnection(), holder);
-        QueryBinder.bindFromToText(holder.fromToText, getItem(i).getQuery());
+        final Connection connection = getItem(i).getConnection();
+        ConnectionBinder.bindConnection(connection, holder);
+        QueryBinder.bindFromToText(holder.fromToText, connection);
     }
 
     @Override

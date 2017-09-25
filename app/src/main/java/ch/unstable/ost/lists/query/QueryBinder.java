@@ -5,9 +5,12 @@ import android.content.Context;
 import android.support.annotation.MainThread;
 import android.widget.TextView;
 
+import com.google.common.base.Preconditions;
+
 import java.util.Date;
 
 import ch.unstable.ost.R;
+import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.model.QueryHistory;
 import ch.unstable.ost.utils.LocalizationUtils;
@@ -29,6 +32,18 @@ public class QueryBinder {
     }
 
     public static void bindFromToText(TextView textView, ConnectionQuery query) {
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(query, "query is null");
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(textView, "textView is null");
         textView.setText(textView.getContext().getString(R.string.fromAndTo, query.getFrom(), query.getTo()));
+    }
+
+    public static void bindFromToText(TextView textView, Connection connection) {
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(connection, "connection is null");
+        //noinspection ResultOfMethodCallIgnored
+        Preconditions.checkNotNull(textView, "textView is null");
+        textView.setText(textView.getContext().getString(R.string.fromAndTo, connection.getDepartureName(), connection.getArrivalName()));
     }
 }

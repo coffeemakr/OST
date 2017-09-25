@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/cardLastQuery"
-        android:layout_height="wrap_content"
+    <fragment
+        android:id="@+id/fragment_last_query"
+        android:name="ch.unstable.ost.LastQueryCardFragment"
         android:layout_width="match_parent"
-        layout="@layout/card_last_query" />
+        android:layout_height="wrap_content"
+        tools:layout="@layout/card_last_query" />
 
     <fragment
         android:id="@+id/fragment_favorites"
         android:name="ch.unstable.ost.FavoriteCardFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:layout="@layout/card_favorites" />
 </LinearLayout>
