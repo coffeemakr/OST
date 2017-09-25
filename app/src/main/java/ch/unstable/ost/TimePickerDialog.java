@@ -31,17 +31,14 @@ public class TimePickerDialog extends AlertDialog implements DialogInterface.OnC
     private NumberPicker hourPicker;
     private NumberPicker minutePicker;
     private Button dateButton;
-    private final View.OnClickListener mOnclickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.dateButton:
-                    showDateDialog();
-                    break;
-                case R.id.resetTimeButton:
-                    onResetTime();
-                    break;
-            }
+    private final View.OnClickListener mOnclickListener = v -> {
+        switch (v.getId()) {
+            case R.id.dateButton:
+                showDateDialog();
+                break;
+            case R.id.resetTimeButton:
+                onResetTime();
+                break;
         }
     };
     private TabLayout arrivalDepartureSwitcher;
@@ -100,19 +97,8 @@ public class TimePickerDialog extends AlertDialog implements DialogInterface.OnC
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(59);
         minutePicker.setValue(calendar.get(Calendar.MINUTE));
-        minutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                calendar.set(Calendar.MINUTE, newVal);
-            }
-        });
-
-        hourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                calendar.set(Calendar.HOUR_OF_DAY, newVal);
-            }
-        });
+        minutePicker.setOnValueChangedListener((picker, oldVal, newVal) -> calendar.set(Calendar.MINUTE, newVal));
+        hourPicker.setOnValueChangedListener((picker, oldVal, newVal) -> calendar.set(Calendar.HOUR_OF_DAY, newVal));
         View resetTimeButton = view.findViewById(R.id.resetTimeButton);
         resetTimeButton.setOnClickListener(mOnclickListener);
     }
@@ -128,15 +114,14 @@ public class TimePickerDialog extends AlertDialog implements DialogInterface.OnC
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
-        new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateDateView();
-            }
-        }, year, month, day).show();
+        new DatePickerDialog(getContext(), this::onDateSet, year, month, day).show();
+    }
+
+    private void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateDateView();
     }
 
     @Override

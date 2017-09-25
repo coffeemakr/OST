@@ -40,12 +40,7 @@ class StationListAdapter extends RecyclerView.Adapter<StationListAdapter.ViewHol
                 int position = viewHolder.getAdapterPosition();
                 if (position != NO_POSITION) {
                     final Location location = mLocations[position];
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.onStationClicked(location);
-                        }
-                    });
+                    mHandler.post(() -> listener.onStationClicked(location));
                 }
             }
         }

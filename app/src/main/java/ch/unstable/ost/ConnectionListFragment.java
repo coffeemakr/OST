@@ -25,14 +25,13 @@ import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
 import ch.unstable.ost.lists.connection.ConnectionListAdapter;
+import ch.unstable.ost.utils.NavHelper;
 import ch.unstable.ost.views.NoAnimationStrategy;
 import ch.unstable.ost.views.ViewStateHolder;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -101,12 +100,7 @@ public class ConnectionListFragment extends Fragment {
         mQueryHistoryDao = database.queryHistoryDao();
 
         mViewStateHolder = new ViewStateHolder(new NoAnimationStrategy());
-        mViewStateHolder.setOnRetryClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadConnections();
-            }
-        });
+        mViewStateHolder.setOnRetryClickListener(view -> loadConnections());
         mConnectionAdapter = new ConnectionListAdapter();
         mConnectionAdapter.setOnLoadMoreListener(mOverScrollListener);
         mConnectionAdapter.setOnConnectionClickListener(mOnConnectionClickListener);
@@ -220,37 +214,23 @@ public class ConnectionListFragment extends Fragment {
 
         Disposable disposable = Flowable.just(new PageQuery(connectionQuery, page))
                 .observeOn(Schedulers.io())
-                .map(new Function<PageQuery, PageQuery>() {
-                    @Override
-                    public PageQuery apply(PageQuery pageQuery) throws Exception {
-                        if (pageQuery.page == 0) {
-                            long id = mQueryHistoryDao.addConnection(new QueryHistory(pageQuery.query));
-                            pageQuery.setHistoryId((int) id);
-                        }
-                        return pageQuery;
+                .map(pageQuery -> {
+                    if (pageQuery.page == 0) {
+                        long id = mQueryHistoryDao.addConnection(new QueryHistory(pageQuery.query));
+                        pageQuery.setHistoryId((int) id);
                     }
+                    return pageQuery;
                 })
-                .map(new Function<PageQuery, PageQuery>() {
-                    @Override
-                    public PageQuery apply(@NonNull PageQuery pageQuery) throws Exception {
-                        Connection[] connections;
-                        connections = connectionAPI.getConnections(pageQuery.query, pageQuery.page);
-                        pageQuery.setResult(connections);
-                        return pageQuery;
-                    }
+                .map(pageQuery -> {
+                    Connection[] connections;
+                    connections = connectionAPI.getConnections(pageQuery.query, pageQuery.page);
+                    pageQuery.setResult(connections);
+                    return pageQuery;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<PageQuery>() {
-                    @Override
-                    public void accept(PageQuery connections) throws Exception {
-                        onConnectionsLoaded(connections.page, connections.getResult());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        handleError(R.string.error_failed_to_load_connection, throwable);
-                    }
-                });
+                .subscribe(
+                        connections -> onConnectionsLoaded(connections.page, connections.getResult()),
+                        throwable -> handleError(R.string.error_failed_to_load_connection, throwable));
         mCompositeDisposable.add(disposable);
     }
 

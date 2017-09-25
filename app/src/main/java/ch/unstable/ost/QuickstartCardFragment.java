@@ -13,14 +13,11 @@ import io.reactivex.functions.Consumer;
 public abstract class QuickstartCardFragment extends Fragment {
 
     protected Consumer<Throwable> getErrorConsumer() {
-        return new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                if (throwable instanceof EmptyResultSetException) {
-                    onNoElement();
-                } else {
-                    onError(throwable);
-                }
+        return throwable -> {
+            if (throwable instanceof EmptyResultSetException) {
+                onNoElement();
+            } else {
+                onError(throwable);
             }
         };
     }

@@ -1,4 +1,4 @@
-package ch.unstable.ost;
+package ch.unstable.ost.utils;
 
 
 import android.content.Context;

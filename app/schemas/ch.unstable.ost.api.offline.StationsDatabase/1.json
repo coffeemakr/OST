@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "00270dd0db3937bf185b415da865ba4b",
+    "identityHash": "a56f30787744751cdd2b587f3cf41025",
     "entities": [
       {
         "tableName": "stations",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`frequency` INTEGER NOT NULL, `name` TEXT, `id` TEXT, `types` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`frequency` INTEGER NOT NULL, `name` TEXT, `id` TEXT NOT NULL, `types` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "frequency",
@@ -24,7 +24,7 @@
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "types",
@@ -71,7 +71,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"00270dd0db3937bf185b415da865ba4b\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a56f30787744751cdd2b587f3cf41025\")"
     ]
   }
 }

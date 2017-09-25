@@ -119,12 +119,9 @@ public class ConnectionDetailFragment extends Fragment {
         }
 
         if (mOnJourneyClickedListener == null) {
-            mOnJourneyClickedListener = new SectionListAdapter.OnSectionClickedListener() {
-                @Override
-                public void onSectionClicked(@NonNull Section section) {
-                    if (mOnConnectionDetailInteractionListener != null) {
-                        mOnConnectionDetailInteractionListener.onSectionSelected(section);
-                    }
+            mOnJourneyClickedListener = section -> {
+                if (mOnConnectionDetailInteractionListener != null) {
+                    mOnConnectionDetailInteractionListener.onSectionSelected(section);
                 }
             };
         }
@@ -190,38 +187,22 @@ public class ConnectionDetailFragment extends Fragment {
         Disposable disposable = Flowable.just(mFavoriteId)
                 .subscribeOn(Schedulers.io())
                 .singleOrError()
-                .flatMap(new Function<Long, Single<FavoriteConnection>>() {
-                    @Override
-                    public Single<FavoriteConnection> apply(Long favoriteId) throws Exception {
-                        return mFavoriteConnectionDao.getFavoriteById(favoriteId);
-                    }
+                .flatMap(favoriteId -> mFavoriteConnectionDao.getFavoriteById(favoriteId))
+                .map(favoriteConnection -> {
+                    mFavoriteConnectionDao.removeConnectionById(favoriteConnection);
+                    return true;
                 })
-                .map(new Function<FavoriteConnection, Boolean>() {
-                    @Override
-                    public Boolean apply(FavoriteConnection favoriteConnection) throws Exception {
-                        mFavoriteConnectionDao.removeConnectionById(favoriteConnection);
-                        return true;
-                    }
-                })
-                .onErrorResumeNext(new Function<Throwable, SingleSource<Boolean>>() {
-                    @Override
-                    public SingleSource<Boolean> apply(@NonNull Throwable throwable) throws Exception {
-                        if (throwable instanceof EmptyResultSetException) {
-                            if (BuildConfig.DEBUG)
-                                Log.d(TAG, "Favorite already deleted", throwable);
-                            return Single.just(true);
-                        } else {
-                            return Single.error(throwable);
-                        }
+                .onErrorResumeNext(throwable -> {
+                    if (throwable instanceof EmptyResultSetException) {
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "Favorite already deleted", throwable);
+                        return Single.just(true);
+                    } else {
+                        return Single.error(throwable);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean ignored) throws Exception {
-                        onFavoriteCleared();
-                    }
-                });
+                .subscribe(ignored -> onFavoriteCleared());
         mDisposable.add(disposable);
     }
 
@@ -256,22 +237,14 @@ public class ConnectionDetailFragment extends Fragment {
     private void enableFavorite() {
         Disposable disposable = Flowable.just(mConnection)
                 .subscribeOn(Schedulers.io())
-                .map(new Function<Connection, FavoriteConnection>() {
-                    @Override
-                    public FavoriteConnection apply(Connection connection) throws Exception {
-                        FavoriteConnection favoriteConnection = new FavoriteConnection(connection);
-                        long id = mFavoriteConnectionDao.addConnection(favoriteConnection);
-                        favoriteConnection.setId(id);
-                        return favoriteConnection;
-                    }
+                .map(connection -> {
+                    FavoriteConnection favoriteConnection = new FavoriteConnection(connection);
+                    long id = mFavoriteConnectionDao.addConnection(favoriteConnection);
+                    favoriteConnection.setId(id);
+                    return favoriteConnection;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<FavoriteConnection>() {
-                    @Override
-                    public void accept(FavoriteConnection favoriteConnection) throws Exception {
-                        onFavoriteStored(favoriteConnection.getId());
-                    }
-                }); // TODO: error handling
+                .subscribe(favoriteConnection -> onFavoriteStored(favoriteConnection.getId())); // TODO: error handling
         mDisposable.add(disposable);
     }
 

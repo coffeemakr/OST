@@ -24,7 +24,6 @@ import ch.unstable.ost.lists.query.QueryBinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class LastQueryCardFragment extends QuickstartCardFragment {
@@ -77,20 +76,10 @@ public class LastQueryCardFragment extends QuickstartCardFragment {
         mLastQueryDate = view.findViewById(R.id.lastQueryDate);
 
         Button buttonMore = view.findViewById(R.id.buttonMore);
-        buttonMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onShowMoreQueries();
-            }
-        });
+        buttonMore.setOnClickListener(eventView -> onShowMoreQueries());
 
         Button buttonLoad = view.findViewById(R.id.buttonOpen);
-        buttonLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onOpenQuery();
-            }
-        });
+        buttonLoad.setOnClickListener(eventView -> onOpenQuery());
     }
 
     private void onOpenQuery() {
@@ -114,12 +103,7 @@ public class LastQueryCardFragment extends QuickstartCardFragment {
         Disposable disposable = mQueryDao.getLatestQuery()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<QueryHistory>() {
-                    @Override
-                    public void accept(QueryHistory queryHistory) throws Exception {
-                        updateLatestQuery(queryHistory);
-                    }
-                }, getErrorConsumer());
+                .subscribe(this::updateLatestQuery, getErrorConsumer());
         mCompositeDisposable.add(disposable);
     }
 

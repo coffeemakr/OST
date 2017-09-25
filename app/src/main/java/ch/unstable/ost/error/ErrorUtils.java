@@ -18,7 +18,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
 import ch.unstable.ost.BuildConfig;
-import ch.unstable.ost.NavHelper;
+import ch.unstable.ost.utils.NavHelper;
 import ch.unstable.ost.R;
 
 public enum ErrorUtils {

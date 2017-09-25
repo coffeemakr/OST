@@ -12,6 +12,7 @@ public class LocationEntity {
     private final int frequency;
     private final String name;
     @PrimaryKey
+    @NonNull
     private final String id;
     private final Location.StationType[] types;
 

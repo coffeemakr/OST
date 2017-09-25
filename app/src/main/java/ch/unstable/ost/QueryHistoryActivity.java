@@ -113,15 +113,12 @@ public class QueryHistoryActivity extends AppCompatActivity {
      */
     @NonNull
     public Consumer<List<QueryHistory>> getQueriesConsumer() {
-        return new Consumer<List<QueryHistory>>() {
-            @Override
-            public void accept(List<QueryHistory> entries) throws Exception {
-                if (BuildConfig.DEBUG) Log.d(TAG, "Got entries: " + entries);
-                if (mQueryHistoryAdapter != null) {
-                    mQueryHistoryAdapter.setEntries(entries);
-                } else {
-                    Log.w(TAG, "Adapter is null");
-                }
+        return entries -> {
+            if (BuildConfig.DEBUG) Log.d(TAG, "Got entries: " + entries);
+            if (mQueryHistoryAdapter != null) {
+                mQueryHistoryAdapter.setEntries(entries);
+            } else {
+                Log.w(TAG, "Adapter is null");
             }
         };
     }

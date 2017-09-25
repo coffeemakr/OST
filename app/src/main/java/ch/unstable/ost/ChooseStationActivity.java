@@ -51,7 +51,6 @@ public class ChooseStationActivity extends ThemedActivity {
     //private TransportAPI transportAPI = new TransportAPI();
     private StationsDAO stationsDAO;
     private EditText mStationEditText;
-    private TextWatcher mSuggestionTextWatcher;
     private HandlerThread mBackgroundHandlerThread;
     private Handler mBackgroundHandler;
     private Handler mUIHandler;
@@ -78,12 +77,7 @@ public class ChooseStationActivity extends ThemedActivity {
             stationsDAO = StationDaoLoader.createStationDAO(this);
         }
         mLocationResultAdapter = new StationListAdapter(this);
-        mLocationResultAdapter.setOnStationClickListener(new StationListAdapter.OnStationClickListener() {
-            @Override
-            public void onStationClicked(Location location) {
-                onLocationSelected(location);
-            }
-        });
+        mLocationResultAdapter.setOnStationClickListener(this::onLocationSelected);
 
 
         mProgressBar = findViewById(R.id.progressBar);
@@ -98,31 +92,23 @@ public class ChooseStationActivity extends ThemedActivity {
         mBackgroundHandler = new Handler(mBackgroundHandlerThread.getLooper(), new BackgroundHandlerCallback());
 
         mUIHandler = new Handler(new UIHandlerCallback());
-        mSuggestionTextWatcher = new SuggestionTextWatcher(mBackgroundHandler);
+        TextWatcher suggestionTextWatcher = new SuggestionTextWatcher(mBackgroundHandler);
         mStationEditText = findViewById(R.id.stationName);
-        mStationEditText.addTextChangedListener(mSuggestionTextWatcher);
-        mStationEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String location = v.getText().toString();
-                    if (location.isEmpty()) {
-                        return false;
-                    }
-                    onLocationSelected(location);
-                    return true;
+        mStationEditText.addTextChangedListener(suggestionTextWatcher);
+        mStationEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                String location = v.getText().toString();
+                if (location.isEmpty()) {
+                    return false;
                 }
-                return false;
+                onLocationSelected(location);
+                return true;
             }
+            return false;
         });
 
         ImageButton clearInputButton = findViewById(R.id.clearInputButton);
-        clearInputButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mStationEditText.setText(null);
-            }
-        });
+        clearInputButton.setOnClickListener(v -> mStationEditText.setText(null));
     }
 
     private void onLocationSelected(String location) {

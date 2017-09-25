@@ -48,12 +48,14 @@ public class AlphaAnimationStrategy implements AnimationStrategy {
     }
 
     @MainThread
+    @Override
     public void initHiddenView(@NonNull View view) {
         view.setVisibility(View.GONE);
         view.setAlpha(0f);
     }
 
     @MainThread
+    @Override
     public void initShownView(@NonNull View view) {
         view.setAlpha(1f);
         view.setVisibility(View.VISIBLE);

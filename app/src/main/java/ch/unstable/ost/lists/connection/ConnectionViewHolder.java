@@ -24,12 +24,12 @@ public class ConnectionViewHolder extends RecyclerView.ViewHolder {
 
     public ConnectionViewHolder(View itemView) {
         super(checkNotNull(itemView));
-        startTime = (TextView) verifyNotNull(itemView.findViewById(R.id.startTime));
-        endTime = (TextView) verifyNotNull(itemView.findViewById(R.id.endTime));
-        firstEndDestination = (TextView) verifyNotNull(itemView.findViewById(R.id.firstSectionEndDestination));
-        connectionLineView = (ConnectionLineView) verifyNotNull(itemView.findViewById(R.id.connectionLineView));
-        firstTransportName = (TextView) verifyNotNull(itemView.findViewById(R.id.firstTransportName));
-        duration = (TextView) verifyNotNull(itemView.findViewById(R.id.duration));
-        platform = (TextView) verifyNotNull(itemView.findViewById(R.id.platform));
+        startTime = verifyNotNull(itemView.findViewById(R.id.startTime));
+        endTime = verifyNotNull(itemView.findViewById(R.id.endTime));
+        firstEndDestination = verifyNotNull(itemView.findViewById(R.id.firstSectionEndDestination));
+        connectionLineView = verifyNotNull(itemView.findViewById(R.id.connectionLineView));
+        firstTransportName = verifyNotNull(itemView.findViewById(R.id.firstTransportName));
+        duration = verifyNotNull(itemView.findViewById(R.id.duration));
+        platform = verifyNotNull(itemView.findViewById(R.id.platform));
     }
 }

@@ -179,7 +179,6 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void onBindViewHolder(ConnectionViewHolder holder, int position) {
-        Context context = holder.itemView.getContext();
         Connection connection = getItemAt(position);
         ConnectionBinder.bindConnection(connection, holder);
         holder.itemView.setTag(holder);
@@ -262,11 +261,8 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private static class ProgressViewHolder extends RecyclerView.ViewHolder {
-        private final View progressBar;
-
         public ProgressViewHolder(View itemView) {
             super(itemView);
-            this.progressBar = verifyNotNull(itemView.findViewById(R.id.progressBar));
         }
     }
 
