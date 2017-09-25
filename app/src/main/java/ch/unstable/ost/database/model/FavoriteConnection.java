@@ -34,14 +34,17 @@ public class FavoriteConnection implements Parcelable {
             return new FavoriteConnection[size];
         }
     };
+
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
     @NonNull
     private final Connection connection;
 
     @NonNull
     @ColumnInfo(name = "creation_date", index = true)
     private final Date creationDate;
-    @PrimaryKey(autoGenerate = true)
-    private long id;
+
 
     public FavoriteConnection(long id, @NonNull Connection connection, @NonNull Date creationDate) {
         this.id = id;

@@ -1,5 +1,6 @@
 package ch.unstable.ost.api.offline.model;
 
+import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
