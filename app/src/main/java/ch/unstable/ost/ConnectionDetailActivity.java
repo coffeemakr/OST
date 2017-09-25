@@ -17,6 +17,7 @@ import ch.unstable.ost.theme.ThemedActivity;
 public class ConnectionDetailActivity extends ThemedActivity implements ConnectionDetailFragment.OnConnectionDetailInteractionListener {
 
     public static final String EXTRA_CONNECTION = "EXTRA_CONNECTION";
+    public static final String EXTRA_FAVORITE_ID = "EXTRA_FAVORITE_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +26,14 @@ public class ConnectionDetailActivity extends ThemedActivity implements Connecti
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             Connection connection = getIntent().getParcelableExtra(EXTRA_CONNECTION);
-            ConnectionDetailFragment fragment = ConnectionDetailFragment.newInstance(connection);
+            long favoriteId = getIntent().getLongExtra(EXTRA_FAVORITE_ID, 0L);
+            ConnectionDetailFragment fragment = ConnectionDetailFragment.newInstance(connection, favoriteId);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment)
                     .commit();

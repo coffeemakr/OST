@@ -1,6 +1,7 @@
 package ch.unstable.ost;
 
 
+import android.arch.persistence.room.EmptyResultSetException;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.common.base.Preconditions;
+import com.google.common.primitives.Booleans;
 
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.Section;
@@ -31,6 +33,7 @@ import ch.unstable.ost.database.dao.FavoriteConnectionDao;
 import ch.unstable.ost.database.model.FavoriteConnection;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -74,12 +77,9 @@ public class ConnectionDetailFragment extends Fragment {
      * Create a new instance
      *
      * @param connection the connection to show
+     * @param favoriteId the favorite id or 0
      * @return the fragment
      */
-    public static ConnectionDetailFragment newInstance(Connection connection) {
-        return newInstance(connection, 0);
-    }
-
     public static ConnectionDetailFragment newInstance(Connection connection, long favoriteId) {
         //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(connection, "connection is null");
@@ -197,17 +197,28 @@ public class ConnectionDetailFragment extends Fragment {
                         return mFavoriteConnectionDao.getFavoriteById(favoriteId);
                     }
                 })
-                .map(new Function<FavoriteConnection, FavoriteConnection>() {
+                .map(new Function<FavoriteConnection, Boolean>() {
                     @Override
-                    public FavoriteConnection apply(FavoriteConnection favoriteConnection) throws Exception {
+                    public Boolean apply(FavoriteConnection favoriteConnection) throws Exception {
                         mFavoriteConnectionDao.removeConnectionById(favoriteConnection);
-                        return favoriteConnection;
+                        return true;
+                    }
+                })
+                .onErrorResumeNext(new Function<Throwable, SingleSource<Boolean>>() {
+                    @Override
+                    public SingleSource<Boolean> apply(@NonNull Throwable throwable) throws Exception {
+                        if(throwable instanceof EmptyResultSetException) {
+                            if(BuildConfig.DEBUG) Log.d(TAG, "Favorite already deleted", throwable);
+                            return Single.just(true);
+                        } else {
+                            return Single.error(throwable);
+                        }
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<FavoriteConnection>() {
+                .subscribe(new Consumer<Boolean>() {
                     @Override
-                    public void accept(FavoriteConnection ignored) throws Exception {
+                    public void accept(Boolean ignored) throws Exception {
                         onFavoriteCleared();
                     }
                 });

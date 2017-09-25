@@ -12,9 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-
-import com.google.common.base.Preconditions;
 
 import java.util.List;
 
@@ -26,6 +23,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class QueryHistoryActivity extends AppCompatActivity {
 
     private static final String TAG = "QueryHistoryActivity";
@@ -36,7 +35,7 @@ public class QueryHistoryActivity extends AppCompatActivity {
         public void onClick(View view) {
             QueryHistory query = (QueryHistory) view.getTag();
             //noinspection ResultOfMethodCallIgnored
-            Preconditions.checkNotNull(query, "query");
+            checkNotNull(query, "query");
             openConnection(query);
         }
     };
@@ -48,7 +47,7 @@ public class QueryHistoryActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        checkNotNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         mQueryHistoryDao = Databases.getCacheDatabase(this).queryHistoryDao();
 
@@ -116,6 +115,4 @@ public class QueryHistoryActivity extends AppCompatActivity {
             }
         };
     }
-
-
 }

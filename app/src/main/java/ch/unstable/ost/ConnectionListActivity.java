@@ -170,7 +170,10 @@ public class ConnectionListActivity extends ThemedActivity
 
     @Override
     public void onFavoriteSelected(@NonNull FavoriteConnection favoriteConnection) {
-        
+        Intent intent = new Intent(this, ConnectionDetailActivity.class);
+        intent.putExtra(ConnectionDetailActivity.EXTRA_CONNECTION, favoriteConnection.getConnection());
+        intent.putExtra(ConnectionDetailActivity.EXTRA_FAVORITE_ID, favoriteConnection.getId());
+        startActivity(intent);
     }
 
     public static class EmptyConnectionListFragment extends Fragment {

@@ -91,18 +91,22 @@ public class FavoriteCardFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume()");
         super.onResume();
+        if(mDisposable != null) mDisposable.dispose();
         mDisposable = mFavoriteDao.getLatestFavorite()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<FavoriteConnection>() {
                     @Override
                     public void accept(FavoriteConnection favoriteConnection) throws Exception {
+                        Log.d(TAG, "Got latest connection: " + favoriteConnection);
                         bindConnection(favoriteConnection);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        mCardFavorites.setVisibility(View.GONE); // TODO: animate
                         if(throwable instanceof EmptyResultSetException) {
                             Log.d(TAG, "No last favorite");
                         } else {
@@ -122,6 +126,8 @@ public class FavoriteCardFragment extends Fragment {
     private void onOpenButtonPressed() {
         if(mListener != null && mLatestFavorite != null) {
             mListener.onFavoriteSelected(mLatestFavorite);
+        } else if(BuildConfig.DEBUG) {
+            Log.w(TAG, "mListener or mLatestFavorite is null (" + mListener + ", " + mLatestFavorite + ")");
         }
     }
 
