@@ -115,7 +115,7 @@
     </style>
 
 
-    <style name="ErrorReportValue" parent="@style/TextAppearance.AppCompat.Body1"></style>
+    <style name="ErrorReportValue" parent="@style/TextAppearance.AppCompat.Body1" />
 
 
     <style name="ErrorReportSubtitle" parent="@style/TextAppearance.AppCompat.Subhead">

@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.common.base.Preconditions;
-import com.google.common.primitives.Booleans;
 
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.Section;

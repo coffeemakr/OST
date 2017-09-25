@@ -1,30 +1,22 @@
 package ch.unstable.ost;
 
-import android.arch.persistence.room.EmptyResultSetException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.FavoriteConnectionDao;
 import ch.unstable.ost.database.model.FavoriteConnection;
-import ch.unstable.ost.error.ErrorUtils;
-import ch.unstable.ost.error.model.ErrorInfo;
 import ch.unstable.ost.lists.query.QueryBinder;
 import ch.unstable.ost.utils.LocalizationUtils;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;

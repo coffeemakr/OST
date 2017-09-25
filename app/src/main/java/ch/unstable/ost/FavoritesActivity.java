@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.google.common.base.Verify;
-
 import java.util.List;
 
 import ch.unstable.ost.database.Databases;

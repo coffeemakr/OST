@@ -4,7 +4,6 @@ package ch.unstable.ost.database;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
-import android.support.annotation.NonNull;
 
 import ch.unstable.ost.database.dao.CachedConnectionDAO;
 import ch.unstable.ost.database.dao.FavoriteConnectionDao;
