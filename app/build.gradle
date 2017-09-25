@@ -7,6 +7,10 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += [ '-XepDisableWarningsInGeneratedCode' ]
+}
+
 android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
