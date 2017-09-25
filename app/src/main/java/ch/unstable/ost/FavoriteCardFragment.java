@@ -20,6 +20,8 @@ import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.FavoriteConnectionDao;
 import ch.unstable.ost.database.model.FavoriteConnection;
+import ch.unstable.ost.error.ErrorUtils;
+import ch.unstable.ost.error.model.ErrorInfo;
 import ch.unstable.ost.lists.query.QueryBinder;
 import ch.unstable.ost.utils.LocalizationUtils;
 import io.reactivex.Scheduler;
@@ -28,7 +30,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class FavoriteCardFragment extends Fragment {
+public class FavoriteCardFragment extends QuickstartCardFragment {
 
     private static final String TAG = "FavoriteCardFragment";
     private OnFavoriteSelectedListener mListener;
@@ -103,18 +105,7 @@ public class FavoriteCardFragment extends Fragment {
                         Log.d(TAG, "Got latest connection: " + favoriteConnection);
                         bindConnection(favoriteConnection);
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        mCardFavorites.setVisibility(View.GONE); // TODO: animate
-                        if(throwable instanceof EmptyResultSetException) {
-                            Log.d(TAG, "No last favorite");
-                        } else {
-                            Log.e(TAG, "Failed to load latest favorite: ", throwable);
-                            // TODO: error handling
-                        }
-                    }
-                });
+                }, getErrorConsumer());
     }
 
     @Override
@@ -151,6 +142,11 @@ public class FavoriteCardFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    protected int getErrorMessage() {
+        return R.string.error_failed_to_load_favorites;
     }
 
     public interface OnFavoriteSelectedListener {

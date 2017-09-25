@@ -2,6 +2,11 @@ package ch.unstable.ost.error;
 
 
 import android.content.pm.Signature;
+import android.support.annotation.StringRes;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
+import android.view.View;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -12,11 +17,13 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
-public class ErrorUtils {
-    private final String TAG = "ErrorUtils";
+import ch.unstable.ost.BuildConfig;
+import ch.unstable.ost.NavHelper;
+import ch.unstable.ost.R;
 
-    private ErrorUtils() {
-    }
+public enum ErrorUtils {
+    ;
+    private static final String TAG = "ErrorUtils";
 
     /*
     * Get the X.509 certificate.
@@ -69,5 +76,25 @@ public class ErrorUtils {
         builder.append(certificate.getNotBefore());
         builder.append('\n');
         return builder.toString();
+    }
+
+    public static void showErrorSnackbar(View view, @StringRes int errorMessage, final Throwable throwable) {
+        if(BuildConfig.DEBUG) {
+            Log.e(TAG, view.getContext().getString(errorMessage), throwable);
+        }
+        if(view == null) {
+            if(BuildConfig.DEBUG) {
+                Log.e(TAG, "Can't show snackbar", new NullPointerException("view is null"));
+            }
+            return;
+        }
+        Snackbar.make(view, errorMessage, BaseTransientBottomBar.LENGTH_INDEFINITE)
+                .setAction(R.string.action_resport_error, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        NavHelper.startErrorActivity(view.getContext(), throwable);
+                    }
+                })
+                .show();
     }
 }

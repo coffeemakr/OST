@@ -1,15 +1,12 @@
 package ch.unstable.ost;
 
 
-import android.arch.persistence.room.EmptyResultSetException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +27,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class LastQueryCardFragment extends Fragment {
+public class LastQueryCardFragment extends QuickstartCardFragment {
     private static final String TAG = "LastQueryCardFragment";
     private View mCardLastQuery;
     private QueryHistoryDao mQueryDao;
@@ -122,36 +119,8 @@ public class LastQueryCardFragment extends Fragment {
                     public void accept(QueryHistory queryHistory) throws Exception {
                         updateLatestQuery(queryHistory);
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if (throwable instanceof EmptyResultSetException) {
-                            // Nothing to do?
-                            Log.d(TAG, "No last query", throwable);
-                        } else {
-                            onError(throwable);
-                        }
-                        mCardLastQuery.setVisibility(View.GONE);
-                    }
-                });
+                }, getErrorConsumer());
         mCompositeDisposable.add(disposable);
-    }
-
-    @MainThread
-    private void onError(final Throwable throwable) {
-        Log.e(TAG, "Error while loading last query", throwable);
-        View view = getView();
-        if(view == null) {
-            Log.w(TAG, "No view");
-            return;
-        }
-        Snackbar.make(view, R.string.error_failed_to_load_last_query, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.action_resport_error, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        NavHelper.startErrorActivity(getContext(), throwable);
-                    }
-                }).show();
     }
 
     @Override
@@ -165,6 +134,11 @@ public class LastQueryCardFragment extends Fragment {
         mCardLastQuery.setVisibility(View.VISIBLE); // TODO animate
         mLastQuery = queryHistory;
         QueryBinder.bindQuery(queryHistory, mLastQueryDate, mLastQueryFromTo);
+    }
+
+    @Override
+    protected int getErrorMessage() {
+        return R.string.error_failed_to_load_last_query;
     }
 
     public interface OnQuerySelectedListener {
