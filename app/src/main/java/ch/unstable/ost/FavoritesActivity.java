@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import com.google.common.base.Verify;
 
 import java.util.List;
 
@@ -19,9 +22,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class FavoritesActivity extends AppCompatActivity {
 
-    private RecyclerView mFavorites;
     private FavoriteConnectionDao mFavoritesDao;
     private FlowableSubscriber<? super List<FavoriteConnection>> favoritesConsumer;
     private FavoritesAdapter mFavoritesAdapter;
@@ -42,10 +46,12 @@ public class FavoritesActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        checkNotNull(getSupportActionBar(), "getSupportActionBar").setDisplayHomeAsUpEnabled(true);
 
         mFavoritesAdapter = new FavoritesAdapter();
-        mFavorites = findViewById(R.id.favorites);
+        RecyclerView favorites = findViewById(R.id.favorites);
+        favorites.setAdapter(mFavoritesAdapter);
+        favorites.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         mFavoritesDao = Databases
                 .getCacheDatabase(this)

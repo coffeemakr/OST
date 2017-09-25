@@ -81,6 +81,7 @@ public class ConnectionDetailFragment extends Fragment {
     }
 
     public static ConnectionDetailFragment newInstance(Connection connection, long favoriteId) {
+        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(connection, "connection is null");
         Bundle arguments = new Bundle();
         arguments.putParcelable(KEY_CONNECTION, connection);
