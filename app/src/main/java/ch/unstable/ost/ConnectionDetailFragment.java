@@ -57,7 +57,6 @@ public class ConnectionDetailFragment extends Fragment {
     private static final int ICON_FAVORITED = R.attr.ic_star_24dp_no_vector;
     private static final String TAG = "ConnectionDetailFgmt";
     private Connection mConnection;
-    private RecyclerView mSectionsList;
     private SectionListAdapter mSectionListAdapter;
     private SectionListAdapter.OnSectionClickedListener mOnJourneyClickedListener;
     private OnConnectionDetailInteractionListener mOnConnectionDetailInteractionListener;
@@ -257,11 +256,11 @@ public class ConnectionDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mSectionsList = view.findViewById(R.id.sectionsList);
-        mSectionsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mSectionsList.setAdapter(mSectionListAdapter);
+        RecyclerView sectionList = view.findViewById(R.id.sectionsList);
+        sectionList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        sectionList.setAdapter(mSectionListAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        mSectionsList.addItemDecoration(dividerItemDecoration);
+        sectionList.addItemDecoration(dividerItemDecoration);
     }
 
     public interface OnConnectionDetailInteractionListener {

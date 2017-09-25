@@ -107,7 +107,7 @@ public class ParcelUtilsTest {
     }
 
     private enum TestEnum {
-        ONE, TWO, THREE;
+        ONE, TWO, THREE
     }
 
     private static class TestParcelable implements Parcelable {

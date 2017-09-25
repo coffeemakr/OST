@@ -16,6 +16,7 @@ import com.google.common.base.Preconditions;
 
 import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.R;
+import ch.unstable.ost.utils.LogUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -90,7 +91,6 @@ public class ViewStateHolder {
 
     @AnyThread
     public void onError(@StringRes int errorMessage) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onError()");
         Message message = handler.obtainMessage(MSG_ERROR);
         message.arg1 = errorMessage;
         message.sendToTarget();
@@ -98,16 +98,11 @@ public class ViewStateHolder {
 
     @AnyThread
     public void onSuccess() {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onSuccess()");
-        if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
-            Log.d(TAG, "Called on main thread");
-        }
         handler.sendEmptyMessage(MSG_SUCCESS);
     }
 
     @AnyThread
     public void onLoading() {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onLoading()");
         handler.sendEmptyMessage(MSG_LOAD);
     }
 
@@ -169,7 +164,7 @@ public class ViewStateHolder {
     }
 
     private enum State {
-        FAILED, SUCCEEDED, LOADING, FRESH;
+        FAILED, SUCCEEDED, LOADING, FRESH
     }
 
     private class Callback implements Handler.Callback {

@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -28,6 +27,7 @@ import ch.unstable.ost.error.model.BuildInfo;
 import ch.unstable.ost.error.model.ErrorInfo;
 import ch.unstable.ost.error.model.ErrorReport;
 import ch.unstable.ost.error.model.SignatureTypeAdapter;
+import ch.unstable.ost.utils.LogUtils;
 
 public class ErrorReportActivity extends AppCompatActivity {
 
@@ -40,16 +40,16 @@ public class ErrorReportActivity extends AppCompatActivity {
         viewHolder.appVersion.setText(context.getString(R.string.format_app_version, appInfo.getVersion(), appInfo.getVersionCode()));
     }
 
-    private static void bindBuildInfo(Context context, BuildInfoViewHolder viewHolder, BuildInfo buildInfo) {
+    private static void bindBuildInfo(BuildInfoViewHolder viewHolder, BuildInfo buildInfo) {
         viewHolder.buildId.setText(buildInfo.getId());
     }
 
-    private static void bindAndroidInfo(Context context, AndroidVersionViewHolder viewHolder, AndroidInfo androidInfo) {
+    private static void bindAndroidInfo(AndroidVersionViewHolder viewHolder, AndroidInfo androidInfo) {
         viewHolder.androidSDK.setText(String.format(Locale.getDefault(), "%d", androidInfo.getSdk()));
         viewHolder.androidRelease.setText(androidInfo.getRelease());
     }
 
-    private static ErrorReport buildReport(Context context, ErrorInfo errorInfo) {
+    private static ErrorReport buildReport(ErrorInfo errorInfo) {
         BuildInfo buildInfo = new BuildInfo();
         AppInfo appInfo = new AppInfo(BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, BuildConfig.APPLICATION_ID);
         AndroidInfo androidinfo = new AndroidInfo();
@@ -64,12 +64,7 @@ public class ErrorReportActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSendErrorReport();
-            }
-        });
+        fab.setOnClickListener(view -> onSendErrorReport());
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -78,12 +73,12 @@ public class ErrorReportActivity extends AppCompatActivity {
         }
 
         ErrorInfo errorInfo = getErrorInfoFromIntent(getIntent());
-        mReport = buildReport(this, errorInfo);
+        mReport = buildReport(errorInfo);
 
-        bindAndroidInfo(this, new AndroidVersionViewHolder(this), mReport.getAndroid());
-        bindBuildInfo(this, new BuildInfoViewHolder(this), mReport.getBuild());
+        bindAndroidInfo(new AndroidVersionViewHolder(this), mReport.getAndroid());
+        bindBuildInfo(new BuildInfoViewHolder(this), mReport.getBuild());
         bindAppInfo(this, new AppInfoViewHolder(this), mReport.getApp());
-        bindErrorInfo(this, new ErrorViewHolder(this), mReport.getError());
+        bindErrorInfo(new ErrorViewHolder(this), mReport.getError());
     }
 
     @NonNull
@@ -101,9 +96,7 @@ public class ErrorReportActivity extends AppCompatActivity {
 
             Throwable exception = (Throwable) intent.getSerializableExtra(EXTRA_EXCEPTION);
             if (exception != null) {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Got stacktrace from exception");
-                }
+                Log.d(TAG, "Got stacktrace from exception");
                 return new ErrorInfo(exception);
             }
         }
@@ -130,7 +123,7 @@ public class ErrorReportActivity extends AppCompatActivity {
 
     }
 
-    private void bindErrorInfo(Context context, ErrorViewHolder viewHolder, ErrorInfo errorInfo) {
+    private void bindErrorInfo(ErrorViewHolder viewHolder, ErrorInfo errorInfo) {
         viewHolder.errorStackTrace.setText(errorInfo.getStackTrace());
         viewHolder.errorStackTrace.setHorizontallyScrolling(true);
     }

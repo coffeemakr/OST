@@ -21,6 +21,7 @@ import java.util.List;
 
 import ch.unstable.ost.R;
 import ch.unstable.ost.api.model.Connection;
+import ch.unstable.ost.utils.LogUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Verify.verifyNotNull;

@@ -13,7 +13,7 @@ import ch.unstable.ost.api.offline.model.LocationEntity;
 @Dao
 public abstract class OfflineStationsDAO implements StationsDAO {
 
-    private static final String WHERE_QUERY_MATCHES = "id in (SELECT docid FROM fts_stations WHERE fts_stations MATCH :query)";
+    private static final String WHERE_QUERY_MATCHES = " id in (SELECT docid FROM fts_stations WHERE fts_stations MATCH :query) ";
     private static final String ORDER_BY_DESCENDING_FREQUENCY = " ORDER BY frequency DESC ";
 
     private static String getFullQuery(String query) {
