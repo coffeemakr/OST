@@ -22,7 +22,8 @@ public class Databases {
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("CREATE TABLE \n");
+           database.execSQL("CREATE TABLE IF NOT EXISTS `favorite_connections` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `connection` TEXT NOT NULL, `creation_date` INTEGER NOT NULL)");
+           database.execSQL("CREATE  INDEX `index_favorite_connections_creation_date` ON `favorite_connections` (`creation_date`)");
         }
     };
     private static final boolean FORCE_OVERRIDE = true;

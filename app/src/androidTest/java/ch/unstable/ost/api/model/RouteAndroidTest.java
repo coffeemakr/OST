@@ -1,6 +1,9 @@
 package ch.unstable.ost.api.model;
 
+import android.support.test.runner.AndroidJUnit4;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Date;
 
@@ -9,6 +12,7 @@ import ch.unstable.ost.test.TestHelper;
 import static org.junit.Assert.*;
 
 
+@RunWith(AndroidJUnit4.class)
 public class RouteAndroidTest {
 
     private static PassingCheckpoint[] generatePassingCheckpoints(int number) {

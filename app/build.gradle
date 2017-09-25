@@ -17,8 +17,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     signingConfigs {
         travisSigningConfig {
@@ -27,15 +27,7 @@ android {
             storeFile file('../travis-release-key.jks')
             storePassword System.getenv("KEYSTORE_PASSWORD")
         }
-        privateSigningConfig {
-            keyAlias 'key0'
-            keyPassword 'ost private keystore'
-            storeFile file('/home/coffeemakr/ost_private.jks')
-            storePassword 'ost private keystore'
-        }
     }
-
-
     defaultConfig {
         applicationId "ch.unstable.ost"
         minSdkVersion 15
@@ -53,9 +45,9 @@ android {
             }
         }
     }
-
     testOptions {
         unitTests.returnDefaultValues = true
+        execution 'ANDROID_TEST_ORCHESTRATOR'
         unitTests.all {
             testLogging {
                 events 'skipped', 'failed', 'standardOut', 'standardError'
@@ -66,7 +58,6 @@ android {
             }
         }
     }
-
     buildTypes {
         release {
             shrinkResources false
@@ -77,9 +68,10 @@ android {
             testCoverageEnabled true
         }
     }
-
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+    productFlavors {
     }
 }
 
@@ -103,26 +95,29 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'cat.ereza:customactivityoncrash:2.1.0'
     compile 'com.google.code.gson:gson:2.8.1'
-    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:support-v4:26.1.0'
-    compile 'com.android.support:cardview-v7:26.1.0'
-    compile 'com.android.support:preference-v7:26.1.0'
-    compile 'com.android.support:support-vector-drawable:26.1.0'
+    compile "com.android.support:design:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:cardview-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:preference-v7:${rootProject.ext.supportLibVersion}"
+    compile "com.android.support:support-vector-drawable:${rootProject.ext.supportLibVersion}"
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.3'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.10.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
 
     // Room
-    implementation "android.arch.persistence.room:runtime:1.0.0-beta1"
-    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0-beta1'
-    testImplementation "android.arch.persistence.room:testing:1.0.0-beta1"
-    implementation "android.arch.persistence.room:rxjava2:1.0.0-beta1"
+    implementation "android.arch.persistence.room:runtime:${rootProject.ext.roomLibVersion}"
+    annotationProcessor "android.arch.persistence.room:compiler:${rootProject.ext.roomLibVersion}"
+    androidTestImplementation "android.arch.persistence.room:testing:${rootProject.ext.roomLibVersion}"
+    implementation "android.arch.persistence.room:rxjava2:${rootProject.ext.roomLibVersion}"
 
     // Paging
-    implementation "android.arch.paging:runtime:1.0.0-alpha2"
-
+    compile 'android.arch.paging:runtime:1.0.0-alpha2'
     errorprone 'com.google.errorprone:error_prone_core:2.1.1'
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestUtil 'com.android.support.test:orchestrator:1.0.1'
 }

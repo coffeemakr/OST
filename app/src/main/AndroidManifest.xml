@@ -10,9 +10,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/GreenDarkTheme"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ConnectionListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,17 +49,10 @@
         <activity
             android:name=".FavoritesActivity"
             android:label="@string/title_activity_favorites"
-            android:parentActivityName=".ConnectionListActivity"
-            android:theme="@style/GreenDarkTheme">
+            android:parentActivityName=".ConnectionListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.unstable.ost.ConnectionListActivity" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

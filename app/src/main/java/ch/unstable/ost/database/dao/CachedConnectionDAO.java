@@ -19,11 +19,4 @@ public abstract class CachedConnectionDAO {
     @Insert
     public abstract void addCachedConnections(CachedConnection cachedConnection);
 
-    public void addCachedConnection(final long queryId, Iterable<Connection> connections) {
-        int i = 0;
-        for (Connection connection : connections) {
-            addCachedConnections(new CachedConnection(queryId, i, connection));
-            ++i;
-        }
-    }
 }
