@@ -40,7 +40,7 @@ public abstract class QuickstartCardFragment extends Fragment {
 
     private void hideCard() {
         View view = getView();
-        if(view != null) {
+        if (view != null) {
             // TODO: animate
             view.setVisibility(View.GONE);
         }

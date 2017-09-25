@@ -29,6 +29,7 @@ public class Connection implements Parcelable {
 
     /**
      * Create a new connection
+     *
      * @param sections an array containing the sections
      */
     public Connection(Section[] sections) {
@@ -37,6 +38,7 @@ public class Connection implements Parcelable {
 
     /**
      * Create a new connection from a parcel
+     *
      * @param in the parcel
      */
     private Connection(Parcel in) {
@@ -55,6 +57,7 @@ public class Connection implements Parcelable {
 
     /**
      * Get the sections
+     *
      * @return the sections
      */
     @NonNull
@@ -64,6 +67,7 @@ public class Connection implements Parcelable {
 
     /**
      * Get the departure time
+     *
      * @return the time of the departure
      */
     public Date getDepartureDate() {
@@ -72,6 +76,7 @@ public class Connection implements Parcelable {
 
     /**
      * Get the arrival time
+     *
      * @return the arrival time
      */
     public Date getArrivalDate() {
@@ -81,8 +86,9 @@ public class Connection implements Parcelable {
 
     /**
      * Get the departure checkpoint
-     *
+     * <p>
      * The departure checkpoint of a connection is the departure checkpoint of the first section.
+     *
      * @return the departure checkpoint
      */
     public DepartureCheckpoint getDeparture() {
@@ -91,8 +97,9 @@ public class Connection implements Parcelable {
 
     /**
      * Get the arrival checkpoint
-     *
+     * <p>
      * The arrival checkpoint of a connection is the arrival checkpoint of the last section.
+     *
      * @return the arrival checkpoint
      */
     public ArrivalCheckpoint getArrival() {

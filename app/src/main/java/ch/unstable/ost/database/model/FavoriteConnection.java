@@ -23,15 +23,25 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class FavoriteConnection implements Parcelable {
 
     public final static String TABLE_NAME = "favorite_connections";
-    @PrimaryKey(autoGenerate = true)
-    private long id;
+    public static final Creator<FavoriteConnection> CREATOR = new Creator<FavoriteConnection>() {
+        @Override
+        public FavoriteConnection createFromParcel(Parcel in) {
+            return new FavoriteConnection(in);
+        }
 
+        @Override
+        public FavoriteConnection[] newArray(int size) {
+            return new FavoriteConnection[size];
+        }
+    };
     @NonNull
     private final Connection connection;
 
     @NonNull
     @ColumnInfo(name = "creation_date", index = true)
     private final Date creationDate;
+    @PrimaryKey(autoGenerate = true)
+    private long id;
 
     public FavoriteConnection(long id, @NonNull Connection connection, @NonNull Date creationDate) {
         this.id = id;
@@ -64,18 +74,6 @@ public class FavoriteConnection implements Parcelable {
     public int describeContents() {
         return 0;
     }
-
-    public static final Creator<FavoriteConnection> CREATOR = new Creator<FavoriteConnection>() {
-        @Override
-        public FavoriteConnection createFromParcel(Parcel in) {
-            return new FavoriteConnection(in);
-        }
-
-        @Override
-        public FavoriteConnection[] newArray(int size) {
-            return new FavoriteConnection[size];
-        }
-    };
 
     @NonNull
     public Connection getConnection() {

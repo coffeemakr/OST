@@ -20,6 +20,7 @@ import ch.unstable.ost.database.dao.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
 import ch.unstable.ost.lists.query.QueryHistoryAdapter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -39,10 +40,13 @@ public class QueryHistoryActivity extends AppCompatActivity {
             openConnection(query);
         }
     };
+    private CompositeDisposable mCompositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mCompositeDisposable = new CompositeDisposable();
         setContentView(R.layout.activity_query_history);
 
         Toolbar myToolbar = findViewById(R.id.toolbar);
@@ -93,7 +97,13 @@ public class QueryHistoryActivity extends AppCompatActivity {
         Disposable disposable = mQueryHistoryDao.getConnections()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getQueriesConsumer());
-        // TODO: is disposable required?
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCompositeDisposable.dispose();
     }
 
     /**

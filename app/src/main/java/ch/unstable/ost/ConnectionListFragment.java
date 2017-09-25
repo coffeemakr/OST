@@ -53,6 +53,7 @@ public class ConnectionListFragment extends Fragment {
     private RecyclerView.OnScrollListener mConnectionListScrollListener;
     private QueryHistoryDao mQueryHistoryDao;
     private ViewStateHolder mViewStateHolder;
+    private CompositeDisposable mCompositeDisposable;
     private final ConnectionListAdapter.Listener mOverScrollListener = new ConnectionListAdapter.Listener() {
         private boolean isLoadablePage(int pageToLoad) {
             return pageToLoad <= connectionAPI.getPageMax() && pageToLoad >= connectionAPI.getPageMin();
@@ -76,7 +77,6 @@ public class ConnectionListFragment extends Fragment {
             return loadPage(pageToLoad);
         }
     };
-    private CompositeDisposable mCompositeDisposable;
 
     public ConnectionListFragment() {
         // Empty constructor

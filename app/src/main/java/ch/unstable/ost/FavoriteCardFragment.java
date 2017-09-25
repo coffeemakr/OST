@@ -87,7 +87,7 @@ public class FavoriteCardFragment extends QuickstartCardFragment {
     public void onResume() {
         Log.d(TAG, "onResume()");
         super.onResume();
-        if(mDisposable != null) mDisposable.dispose();
+        if (mDisposable != null) mDisposable.dispose();
         mDisposable = mFavoriteDao.getLatestFavorite()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -107,9 +107,9 @@ public class FavoriteCardFragment extends QuickstartCardFragment {
     }
 
     private void onOpenButtonPressed() {
-        if(mListener != null && mLatestFavorite != null) {
+        if (mListener != null && mLatestFavorite != null) {
             mListener.onFavoriteSelected(mLatestFavorite);
-        } else if(BuildConfig.DEBUG) {
+        } else if (BuildConfig.DEBUG) {
             Log.w(TAG, "mListener or mLatestFavorite is null (" + mListener + ", " + mLatestFavorite + ")");
         }
     }

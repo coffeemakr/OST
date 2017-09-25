@@ -79,11 +79,11 @@ public enum ErrorUtils {
     }
 
     public static void showErrorSnackbar(View view, @StringRes int errorMessage, final Throwable throwable) {
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.e(TAG, view.getContext().getString(errorMessage), throwable);
         }
-        if(view == null) {
-            if(BuildConfig.DEBUG) {
+        if (view == null) {
+            if (BuildConfig.DEBUG) {
                 Log.e(TAG, "Can't show snackbar", new NullPointerException("view is null"));
             }
             return;

@@ -19,6 +19,12 @@ import java.io.OutputStream;
 import ch.unstable.ost.api.offline.StationsDatabase;
 
 public class Databases {
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE \n");
+        }
+    };
     private static final boolean FORCE_OVERRIDE = true;
     private static StationsDatabase stationsDatabase;
     private static CacheDatabase cacheDatabase;
@@ -45,14 +51,6 @@ public class Databases {
         }
         return cacheDatabase;
     }
-
-    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-        @Override
-        public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("CREATE TABLE \n");
-        }
-    };
-
 
     public static void copyDBFromAssets(Context context, String database) {
         try {

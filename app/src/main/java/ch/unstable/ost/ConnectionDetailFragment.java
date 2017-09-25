@@ -48,9 +48,9 @@ import io.reactivex.schedulers.Schedulers;
 public class ConnectionDetailFragment extends Fragment {
 
 
+    public static final long NO_FAVORITE_ID = 0L;
     private static final String KEY_CONNECTION = "KEY_CONNECTION";
     private static final String KEY_FAVORITE_ID = "KEY_FAVORITE_ID";
-    public static final long NO_FAVORITE_ID = 0L;
     @AttrRes
     private static final int ICON_NO_FAVORITE = R.attr.ic_star_border_24dp_no_vector;
     @AttrRes
@@ -84,7 +84,7 @@ public class ConnectionDetailFragment extends Fragment {
         Preconditions.checkNotNull(connection, "connection is null");
         Bundle arguments = new Bundle();
         arguments.putParcelable(KEY_CONNECTION, connection);
-        if(favoriteId != 0) {
+        if (favoriteId != 0) {
             arguments.putLong(KEY_FAVORITE_ID, favoriteId);
         }
         ConnectionDetailFragment detailFragment = new ConnectionDetailFragment();
@@ -160,7 +160,7 @@ public class ConnectionDetailFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.connection_detail_menu, menu);
         mFavoriteMenuItem = menu.findItem(R.id.action_favorite);
-        if(mFavoriteId == NO_FAVORITE_ID) {
+        if (mFavoriteId == NO_FAVORITE_ID) {
             setFavoriteIcon(false);
         } else {
             setFavoriteIcon(true);
@@ -169,7 +169,7 @@ public class ConnectionDetailFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_favorite) {
+        if (item.getItemId() == R.id.action_favorite) {
             onToggedFavoriteConnection();
         }
         return super.onOptionsItemSelected(item);
@@ -177,7 +177,7 @@ public class ConnectionDetailFragment extends Fragment {
 
     @MainThread
     private void onToggedFavoriteConnection() {
-        if(mFavoriteId == NO_FAVORITE_ID) {
+        if (mFavoriteId == NO_FAVORITE_ID) {
             enableFavorite();
         } else {
             disableFavorite();
@@ -186,7 +186,7 @@ public class ConnectionDetailFragment extends Fragment {
 
     @MainThread
     private void disableFavorite() {
-        if(mFavoriteId == NO_FAVORITE_ID) return;
+        if (mFavoriteId == NO_FAVORITE_ID) return;
         Disposable disposable = Flowable.just(mFavoriteId)
                 .subscribeOn(Schedulers.io())
                 .singleOrError()
@@ -206,8 +206,9 @@ public class ConnectionDetailFragment extends Fragment {
                 .onErrorResumeNext(new Function<Throwable, SingleSource<Boolean>>() {
                     @Override
                     public SingleSource<Boolean> apply(@NonNull Throwable throwable) throws Exception {
-                        if(throwable instanceof EmptyResultSetException) {
-                            if(BuildConfig.DEBUG) Log.d(TAG, "Favorite already deleted", throwable);
+                        if (throwable instanceof EmptyResultSetException) {
+                            if (BuildConfig.DEBUG)
+                                Log.d(TAG, "Favorite already deleted", throwable);
                             return Single.just(true);
                         } else {
                             return Single.error(throwable);
@@ -225,12 +226,12 @@ public class ConnectionDetailFragment extends Fragment {
     }
 
     private void setFavoriteIcon(boolean favoriteEnabled) {
-        if(mFavoriteMenuItem == null) {
-            if(BuildConfig.DEBUG) Log.w(TAG, "Can't set icon (mFavoriteMenuItem is null)");
+        if (mFavoriteMenuItem == null) {
+            if (BuildConfig.DEBUG) Log.w(TAG, "Can't set icon (mFavoriteMenuItem is null)");
             return;
         }
-        if(mStyledIcons == null) {
-            int[] startIcon = new int[] { ICON_FAVORITED, ICON_NO_FAVORITE};
+        if (mStyledIcons == null) {
+            int[] startIcon = new int[]{ICON_FAVORITED, ICON_NO_FAVORITE};
             TypedValue typedValue = new TypedValue();
             TypedArray a = getContext().obtainStyledAttributes(typedValue.data, startIcon);
             mStyledIcons = new Drawable[]{a.getDrawable(0), a.getDrawable(1)};
