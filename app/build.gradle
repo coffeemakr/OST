@@ -114,8 +114,6 @@ dependencies {
     androidTestImplementation "android.arch.persistence.room:testing:${rootProject.ext.roomLibVersion}"
     implementation "android.arch.persistence.room:rxjava2:${rootProject.ext.roomLibVersion}"
 
-    // Paging
-    compile 'android.arch.paging:runtime:1.0.0-alpha2'
     errorprone 'com.google.errorprone:error_prone_core:2.1.1'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
