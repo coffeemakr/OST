@@ -1,13 +1,13 @@
-package ch.unstable.ost.lists.favorite;
+package ch.unstable.ost.views.lists.favorite;
 
 import android.view.View;
 
 import ch.unstable.ost.R;
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.database.model.FavoriteConnection;
-import ch.unstable.ost.lists.connection.ConnectionBinder;
-import ch.unstable.ost.lists.query.QueryBinder;
-import ch.unstable.ost.views.SimplerAdapter;
+import ch.unstable.ost.views.lists.connection.ConnectionBinder;
+import ch.unstable.ost.views.lists.query.QueryBinder;
+import ch.unstable.ost.views.lists.SimplerAdapter;
 
 public class FavoritesAdapter extends SimplerAdapter<FavoriteConnection, FavoritesViewHolder> {
 

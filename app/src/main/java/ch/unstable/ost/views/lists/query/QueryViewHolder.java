@@ -1,4 +1,4 @@
-package ch.unstable.ost.lists.query;
+package ch.unstable.ost.views.lists.query;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

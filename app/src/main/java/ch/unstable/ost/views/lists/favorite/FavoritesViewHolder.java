@@ -1,10 +1,10 @@
-package ch.unstable.ost.lists.favorite;
+package ch.unstable.ost.views.lists.favorite;
 
 import android.view.View;
 import android.widget.TextView;
 
 import ch.unstable.ost.R;
-import ch.unstable.ost.lists.connection.ConnectionViewHolder;
+import ch.unstable.ost.views.lists.connection.ConnectionViewHolder;
 
 
 public class FavoritesViewHolder extends ConnectionViewHolder {

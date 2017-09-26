@@ -2,7 +2,9 @@ package ch.unstable.ost.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.Nullable;
 import android.text.format.DateFormat;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +24,31 @@ public class TimeDateUtils {
         return format.format(date);
     }
 
+
+    public static void setStationStay(TextView stationTime, @Nullable Date arrival, @Nullable Date departure) {
+        stationTime.setText(formatStationStay(stationTime.getResources(), arrival, departure));
+    }
+
+    @Nullable
+    public static String formatStationStay(Resources resources, @Nullable Date arrival, @Nullable Date departure) {
+        if(arrival == null && departure == null) {
+            return null;
+        } else if(arrival != null && departure != null) {
+            return resources.getString(R.string.station_stay_format, formatTime(arrival), formatTime(departure));
+        } else if(arrival != null) {
+            return formatTime(arrival);
+        } else {
+            return formatTime(departure);
+        }
+    }
+
+    /**
+     * Formats a duration.
+     * @param resources the resources to get the strings from
+     * @param start the start time
+     * @param end the end time
+     * @return the duration
+     */
     public static String formatDuration(Resources resources, final Date start, final Date end) {
         return formatDuration(resources, end.getTime() - start.getTime());
     }
@@ -40,4 +67,5 @@ public class TimeDateUtils {
     public static String formatDate(Context context, Date date) {
         return DateFormat.getDateFormat(context).format(date);
     }
+
 }

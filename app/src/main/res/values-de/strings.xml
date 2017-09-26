@@ -65,4 +65,5 @@
     <string name="error_failed_to_load_last_query">Letzte Suche konnte nicht geladen werden</string>
     <string name="action_favorite">Favorisieren</string>
     <string name="error_failed_to_load_favorites">Favoriten konnten nicht geladen werden</string>
+    <string name="station_stay_format">%1$s - %2$s</string>
 </resources>

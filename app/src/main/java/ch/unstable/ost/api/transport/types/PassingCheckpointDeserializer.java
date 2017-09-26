@@ -48,7 +48,7 @@ public enum PassingCheckpointDeserializer implements JsonDeserializer<PassingChe
             arrival = departure;
         } else if (arrival != null && departure == null) {
             departure = arrival;
-        } else if (arrival == null && departure == null) {
+        } else if (arrival == null) {
             Log.e(TAG, "departure and arrival is null");
             arrival = departure = new Date(0);
         }

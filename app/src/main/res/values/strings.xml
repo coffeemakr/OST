@@ -144,5 +144,6 @@
     <string name="favorites_card_title">Favorites</string>
     <string name="action_favorite">Favorize</string>
     <string name="error_failed_to_load_favorites">Failed to load favorites</string>
+    <string name="station_stay_format">%1$s - %2$s</string>
 
 </resources>

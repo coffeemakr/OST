@@ -54,8 +54,10 @@ public class StopDotView extends View {
     }
 
     public void setLineMode(Type type) {
-        mType = type;
-        invalidate();
+        if(mType != type) {
+            mType = type;
+            invalidate();
+        }
     }
 
     @Override

@@ -34,9 +34,6 @@ abstract class Checkpoint {
         return location;
     }
 
-    @NonNull
-    public abstract Date getDisplayDate();
-
     @Nullable
     public String getPlatform() {
         return platform;

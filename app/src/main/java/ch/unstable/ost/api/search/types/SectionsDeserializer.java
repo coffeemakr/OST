@@ -32,7 +32,6 @@ import static ch.unstable.ost.api.transport.types.LocationDeserializer.getNullab
 
 public class SectionsDeserializer implements JsonDeserializer<Section[]> {
     private static final String TAG = "SectionsDeserializer";
-    private static final Logger LOGGER = Logger.getLogger(TAG);
 
     @NonNull
     private static Location getLocation(JsonObject jsonObject) {
@@ -66,7 +65,9 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
             JsonObject object = element.getAsJsonObject();
             String type;
             if (!object.has("type")) {
-                LOGGER.severe("No type defined in " + LogUtils.prettyJson(object) + " \n Parent: " + LogUtils.prettyJson(json));
+                if(BuildConfig.DEBUG) {
+                    Log.i(TAG,"No type defined in " + LogUtils.prettyJson(object) + " \n Parent: \n" + LogUtils.prettyJson(json));
+                }
                 // can be ignored probably
                 continue;
             } else {
@@ -79,13 +80,13 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
             } else {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Got type " + type + ": " + LogUtils.prettyJson(object));
-                String shortname = object.get("line").getAsString();
-                String longName = object.get("number").getAsString();
+                String routeShortName = object.get("line").getAsString();
+                String routeLongName = object.get("number").getAsString();
                 Type listOfPassingCheckpoints = new TypeToken<List<PassingCheckpoint>>() {
                 }.getType();
                 List<PassingCheckpoint> stops = context.deserialize(object.get("stops"), listOfPassingCheckpoints);
                 removeNulls(stops);
-                Route route = new Route(shortname, longName, stops.toArray(new PassingCheckpoint[stops.size()]));
+                Route route = new Route(routeShortName, routeLongName, stops.toArray(new PassingCheckpoint[stops.size()]));
 
                 Location departureLocation = getLocation(object);
                 Date departureTime = PassingCheckpointsDeserializer.getDate(dateFormat, object, "departure");

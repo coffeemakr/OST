@@ -1,6 +1,5 @@
-package ch.unstable.ost.lists.connection;
+package ch.unstable.ost.views.lists.connection;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcel;
@@ -21,7 +20,6 @@ import java.util.List;
 
 import ch.unstable.ost.R;
 import ch.unstable.ost.api.model.Connection;
-import ch.unstable.ost.utils.LogUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Verify.verifyNotNull;

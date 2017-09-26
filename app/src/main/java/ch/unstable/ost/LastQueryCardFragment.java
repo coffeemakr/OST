@@ -20,7 +20,7 @@ import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
-import ch.unstable.ost.lists.query.QueryBinder;
+import ch.unstable.ost.views.lists.query.QueryBinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

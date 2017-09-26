@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.FavoriteConnectionDao;
-import ch.unstable.ost.lists.favorite.FavoritesAdapter;
+import ch.unstable.ost.views.lists.favorite.FavoritesAdapter;
 import ch.unstable.ost.utils.NavHelper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

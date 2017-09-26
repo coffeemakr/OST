@@ -6,25 +6,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.Date;
-
-import ch.unstable.ost.api.model.PassingCheckpoint;
 import ch.unstable.ost.api.model.Section;
-import ch.unstable.ost.utils.TimeDateUtils;
-import ch.unstable.ost.views.StopDotView;
+import ch.unstable.ost.views.lists.station.SectionsStopsListAdapter;
 
 public class SectionDetailFragment extends Fragment {
+
     private static final String KEY_SECTION = "SectionDetailFragment.KEY_SECTION";
-    private static final String TAG = SectionDetailFragment.class.getSimpleName();
     private Section mSection;
-    private StopsListAdapter mStopsListAdapter;
+    private SectionsStopsListAdapter mStopsListAdapter;
 
     public static SectionDetailFragment newInstance(Section section) {
         Bundle arguments = new Bundle();
@@ -45,7 +38,7 @@ public class SectionDetailFragment extends Fragment {
         if (mSection == null) {
             throw new IllegalStateException("section not set");
         }
-        mStopsListAdapter = new StopsListAdapter();
+        mStopsListAdapter = new SectionsStopsListAdapter();
         mStopsListAdapter.setStops(mSection.getStops());
     }
 
@@ -67,67 +60,5 @@ public class SectionDetailFragment extends Fragment {
         RecyclerView stationsList = view.findViewById(R.id.stationsList);
         stationsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         stationsList.setAdapter(mStopsListAdapter);
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        private final TextView stationName;
-        private final TextView departureTime;
-        private final StopDotView stopDotView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            stationName = itemView.findViewById(R.id.stationName);
-            departureTime = itemView.findViewById(R.id.departureTime);
-            stopDotView = itemView.findViewById(R.id.stopDotView);
-        }
-    }
-
-    private static class StopsListAdapter extends RecyclerView.Adapter<ViewHolder> {
-        private PassingCheckpoint[] stops;
-
-        public void setStops(PassingCheckpoint[] stops) {
-            this.stops = Arrays.copyOf(stops, stops.length);
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View itemView = inflater.inflate(R.layout.item_connection_journey_station, parent, false);
-            return new ViewHolder(itemView);
-        }
-
-        @Override
-        public void onViewRecycled(ViewHolder holder) {
-            super.onViewRecycled(holder);
-            holder.stopDotView.setLineMode(StopDotView.Type.BOTH);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            PassingCheckpoint stop = stops[position];
-            holder.stationName.setText(stop.getLocation().getName());
-            if (position == 0) {
-                holder.stopDotView.setLineMode(StopDotView.Type.TOP);
-            } else if (position == stops.length - 1) {
-                holder.stopDotView.setLineMode(StopDotView.Type.BOTTOM);
-            }
-            String time = null;
-            Date shownDate = stop.getArrivalTime();
-            if (shownDate != null) {
-                try {
-                    time = TimeDateUtils.formatTime(shownDate);
-                } catch (RuntimeException e) {
-                    Log.e(TAG, "Failed to get arrival date", e);
-                }
-            }
-            holder.departureTime.setText(time);
-        }
-
-        @Override
-        public int getItemCount() {
-            return stops.length;
-        }
     }
 }

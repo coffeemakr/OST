@@ -18,7 +18,7 @@ import java.util.List;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
-import ch.unstable.ost.lists.query.QueryHistoryAdapter;
+import ch.unstable.ost.views.lists.query.QueryHistoryAdapter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

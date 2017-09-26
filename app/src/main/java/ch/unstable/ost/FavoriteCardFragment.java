@@ -15,7 +15,7 @@ import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.FavoriteConnectionDao;
 import ch.unstable.ost.database.model.FavoriteConnection;
-import ch.unstable.ost.lists.query.QueryBinder;
+import ch.unstable.ost.views.lists.query.QueryBinder;
 import ch.unstable.ost.utils.LocalizationUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;

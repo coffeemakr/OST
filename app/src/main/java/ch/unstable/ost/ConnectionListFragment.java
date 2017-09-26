@@ -24,7 +24,7 @@ import ch.unstable.ost.database.CacheDatabase;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
-import ch.unstable.ost.lists.connection.ConnectionListAdapter;
+import ch.unstable.ost.views.lists.connection.ConnectionListAdapter;
 import ch.unstable.ost.utils.NavHelper;
 import ch.unstable.ost.views.NoAnimationStrategy;
 import ch.unstable.ost.views.ViewStateHolder;

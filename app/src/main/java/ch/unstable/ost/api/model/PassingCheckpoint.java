@@ -2,7 +2,6 @@ package ch.unstable.ost.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.common.base.Objects;
@@ -27,25 +26,35 @@ public class PassingCheckpoint extends Checkpoint implements Parcelable {
         }
     };
 
+    @Nullable
     private final Date departureTime;
+
+    @Nullable
     private final Date arrivalTime;
 
-    public PassingCheckpoint(Date arrivalTime, Date departureTime, Location location, @Nullable String platform) {
+    /**
+     * Construct a new passing checkpoint
+     *
+     * if \param arrivalTime and \param departureTime is null it is considered to be a
+     * checkpoint that doesn't stop
+     *
+     * TODO: 26.09.17  TBD: if arrivalTime or departureTime is null is boarding allowed?
+     *
+     * @param arrivalTime the arrival time
+     * @param departureTime the departure time
+     * @param location the location
+     * @param platform the platform
+     */
+    public PassingCheckpoint(@Nullable Date arrivalTime, @Nullable Date departureTime, Location location, @Nullable String platform) {
         super(platform, location);
-        this.arrivalTime = checkNotNull(arrivalTime, "arrivalTime");
-        this.departureTime = checkNotNull(departureTime, "departureTime");
+        this.arrivalTime = arrivalTime;
+        this.departureTime = departureTime;
     }
 
     private PassingCheckpoint(Parcel in) {
         super(in);
         departureTime = ParcelUtils.readDate(in);
         arrivalTime = ParcelUtils.readDate(in);
-    }
-
-    @NonNull
-    @Override
-    public Date getDisplayDate() {
-        return departureTime;
     }
 
     @Override
@@ -60,10 +69,12 @@ public class PassingCheckpoint extends Checkpoint implements Parcelable {
         return 0;
     }
 
+    @Nullable
     public Date getDepartureTime() {
         return departureTime;
     }
 
+    @Nullable
     public Date getArrivalTime() {
         return arrivalTime;
     }

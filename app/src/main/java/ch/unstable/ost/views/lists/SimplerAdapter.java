@@ -1,4 +1,4 @@
-package ch.unstable.ost.views;
+package ch.unstable.ost.views.lists;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.MainThread;

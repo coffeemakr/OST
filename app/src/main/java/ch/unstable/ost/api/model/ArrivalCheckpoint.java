@@ -2,7 +2,6 @@ package ch.unstable.ost.api.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -33,12 +32,6 @@ public class ArrivalCheckpoint extends Checkpoint implements Parcelable {
     private ArrivalCheckpoint(Parcel in) {
         super(in);
         arrivalTime = ParcelUtils.readDate(in);
-    }
-
-    @NonNull
-    @Override
-    public Date getDisplayDate() {
-        return arrivalTime;
     }
 
     @Override

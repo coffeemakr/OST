@@ -1,4 +1,4 @@
-package ch.unstable.ost.lists.connection;
+package ch.unstable.ost.views.lists.connection;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
