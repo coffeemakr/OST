@@ -48,11 +48,11 @@ class LicenseFragment : Fragment() {
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         val inflater = activity.menuInflater
-        val component = v.tag as SoftwareComponent
+        val component = v.tag!! as SoftwareComponent
         menu.setHeaderTitle(component.name)
         inflater.inflate(R.menu.software_component, menu)
         super.onCreateContextMenu(menu, v, menuInfo)
-        mComponentForContextMenu = v.tag as SoftwareComponent
+        mComponentForContextMenu = component
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -130,6 +130,7 @@ class LicenseFragment : Fragment() {
                     setOnClickListener {
                         showLicense(it.context, element.license)
                     }
+                    tag = element
                     fragment.registerForContextMenu(itemView)
                 }
 

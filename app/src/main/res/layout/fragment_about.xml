@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
+            android:contentDescription="@string/contentDescription_aboutLogo"
             app:srcCompat="@mipmap/ic_launcher" />
 
         <TextView

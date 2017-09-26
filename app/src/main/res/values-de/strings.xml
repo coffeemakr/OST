@@ -79,4 +79,5 @@
     <string name="read_full_license">Ganze Linzenz anzeigen</string>
     <string name="action_open_website">Webseite öffnen</string>
     <string name="action_about">Über</string>
+    <string name="contentDescription_aboutLogo">OST Logo</string>
 </resources>

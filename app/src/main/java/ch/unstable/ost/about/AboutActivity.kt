@@ -16,14 +16,6 @@ import ch.unstable.ost.theme.ThemedActivity
 
 class AboutActivity : ThemedActivity() {
 
-    /**
-     * The [android.support.v4.view.PagerAdapter] that will provide
-     * fragments for each of the sections. We use a
-     * [FragmentPagerAdapter] derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * [android.support.v4.app.FragmentStatePagerAdapter].
-     */
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,23 +69,23 @@ class AboutActivity : ThemedActivity() {
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment? {
-            when (position) {
-                0 -> return AboutFragment.newInstance()
-                1 -> return LicenseFragment.newInstance(SOFTWARE_COMPONENTS)
+            return when (position) {
+                0 -> AboutFragment.newInstance()
+                1 -> LicenseFragment.newInstance(SOFTWARE_COMPONENTS)
+                else -> null
             }
-            return null
         }
 
         override fun getCount(): Int {
             return 2
         }
 
-        override fun getPageTitle(position: Int): CharSequence? {
-            when (position) {
-                0 -> return getString(R.string.tab_about)
-                1 -> return getString(R.string.tab_licenses)
+        override fun getPageTitle(position: Int): String? {
+            return when (position) {
+                0 -> getString(R.string.tab_about)
+                1 -> getString(R.string.tab_licenses)
+                else -> null
             }
-            return null
         }
     }
 
@@ -105,6 +97,10 @@ class AboutActivity : ThemedActivity() {
         private val SOFTWARE_COMPONENTS = listOf<SoftwareComponent>(
                 //new SoftwareComponent("RxBinding", "2015", "Jake Wharton", "https://github.com/JakeWharton/RxBinding", StandardLicenses.APACHE2)
                 SoftwareComponent("RxAndroid", "2015", "RxAndroid authors", "https://github.com/ReactiveX/RxAndroid", StandardLicenses.APACHE2),
-                SoftwareComponent("RxJava", "2016-present", "RxJava contributors", "https://github.com/ReactiveX/RxJava", StandardLicenses.APACHE2))
+                SoftwareComponent("RxJava", "2016-present", "RxJava contributors", "https://github.com/ReactiveX/RxJava", StandardLicenses.APACHE2),
+                SoftwareComponent("CustomActivityOnCrash", "2014-2017", "Eduard Ereza Martínez", "https://github.com/Ereza/CustomActivityOnCrash", StandardLicenses.APACHE2),
+                SoftwareComponent("Commons IO", "2017", "The Apache Software Foundation", "https://commons.apache.org/", StandardLicenses.APACHE2),
+                SoftwareComponent("Gson", "2008", "Google Inc.", "https://github.com/google/gson", StandardLicenses.APACHE2),
+                SoftwareComponent("UrlBuilder", "2014", "Mikael Gueck", "https://github.com/mikaelhg/urlbuilder", StandardLicenses.APACHE2))
     }
 }

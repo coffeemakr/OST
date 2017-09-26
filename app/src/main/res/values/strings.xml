@@ -95,6 +95,7 @@
     <string name="error_report_title">Send Bugreport</string>
     <string name="contentDescription_iconWalk">Icon Walk</string>
     <string name="contentDescription_iconTransportation">transportation icon</string>
+    <string name="contentDescription_aboutLogo">OST logo</string>
     <string name="duration_format_days">%1$dd %2$dh %3$02d\'</string>
     <string name="duration_format_hours">%1$dh %2$02d\'</string>
     <string name="duration_format_minutes">%1$d\'</string>
@@ -150,7 +151,7 @@
     <string name="copyright"> %1$s by %2$s under %3$s</string>
     <string name="github_url" translatable="false">https://github.com/coffeemakr/OST</string>
     <string name="title_licenses">Licenses</string>
-    <string name="app_description">Open-source transportation app for Switzerland</string>
+    <string name="app_description">Open-source, free transportation app for Switzerland</string>
     <string name="contribution_title">Contribute</string>
     <string name="contribution_encouragement">Code and issues are very welcome!</string>
     <string name="view_on_github">View on GitHub</string>
