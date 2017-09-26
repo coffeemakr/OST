@@ -52,12 +52,7 @@ public abstract class ThemedActivity extends AppCompatActivity {
         mResumed = true;
         if (mPendingThemeChange) {
             mPendingThemeChange = false;
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    recreate();
-                }
-            });
+            mHandler.post(this::recreate);
         }
     }
 
