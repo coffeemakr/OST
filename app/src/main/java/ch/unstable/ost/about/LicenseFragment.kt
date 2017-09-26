@@ -7,53 +7,46 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.webkit.WebView
 import android.widget.TextView
 import ch.unstable.ost.R
+import ch.unstable.ost.views.lists.SingleTypeSimplerAdapter
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Fragment containing the software licenses
  */
 class LicenseFragment : Fragment() {
-    private var softwareComponents: Array<SoftwareComponent> = emptyArray()
+
     private var mComponentForContextMenu: SoftwareComponent? = null
+    private var softwareComponentsAdapter: LicenseFragment.SoftwareComponentsAdapter? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        softwareComponents = arguments.getParcelableArray(ARG_COMPONENTS) as Array<SoftwareComponent>
-
+        val softwareComponents = arguments.getParcelableArrayList<SoftwareComponent>(ARG_COMPONENTS)
         // Sort components by name
-        Arrays.sort(softwareComponents) { o1, o2 -> o1.name.compareTo(o2.name) }
+        Collections.sort(softwareComponents) { o1, o2 -> o1.name.compareTo(o2.name) }
+        softwareComponentsAdapter = SoftwareComponentsAdapter(this)
+        softwareComponentsAdapter!!.setElements(softwareComponents)
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_licenses, container, false)
-        val softwareComponentsView = rootView.findViewById<ViewGroup>(R.id.software_components)
-
-        for (component in softwareComponents) {
-            val componentView = inflater.inflate(R.layout.item_software_component, container, false)
-            val softwareName = componentView.findViewById<TextView>(R.id.name)
-            val copyright = componentView.findViewById<TextView>(R.id.copyright)
-            softwareName.text = component.name
-            copyright.text = context.getString(R.string.copyright,
-                    component.years,
-                    component.copyrightOwner,
-                    component.license.abbreviation)
-
-            componentView.tag = component
-            componentView.setOnClickListener {
-                showLicense(it.context, component.license)
-            }
-            softwareComponentsView.addView(componentView)
-            registerForContextMenu(componentView)
-
-        }
-        return rootView
+        return inflater.inflate(R.layout.fragment_licenses, container, false)
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(view.findViewById<RecyclerView>(R.id.software_components)) {
+            layoutManager = android.support.v7.widget.LinearLayoutManager(context, android.support.v7.widget.LinearLayoutManager.VERTICAL, false);
+            adapter = softwareComponentsAdapter
+        }
+    }
+
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         val inflater = activity.menuInflater
         val component = v.tag as SoftwareComponent
         menu.setHeaderTitle(component.name)
@@ -87,13 +80,10 @@ class LicenseFragment : Fragment() {
 
         private val ARG_COMPONENTS = "components"
 
-        fun newInstance(softwareComponents: Array<SoftwareComponent>?): LicenseFragment {
-            if (softwareComponents == null) {
-                throw NullPointerException("softwareComponents is null")
-            }
+        fun newInstance(softwareComponents: Collection<SoftwareComponent>): LicenseFragment {
             val fragment = LicenseFragment()
             val bundle = Bundle()
-            bundle.putParcelableArray(ARG_COMPONENTS, softwareComponents)
+            bundle.putParcelableArrayList(ARG_COMPONENTS, ArrayList(softwareComponents))
             fragment.arguments = bundle
             return fragment
         }
@@ -110,8 +100,43 @@ class LicenseFragment : Fragment() {
             val wv = WebView(context)
             wv.loadUrl(license.contentUri.toString())
             alert.setView(wv)
-            alert.setNegativeButton(android.R.string.ok) { dialog, which -> dialog.dismiss() }
+            alert.setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
             alert.show()
         }
+    }
+
+
+    class SoftwareComponentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val name: TextView = itemView.findViewById(R.id.name)
+        val copyright: TextView = itemView.findViewById<TextView>(R.id.copyright)
+    }
+
+    class SoftwareComponentsAdapter(val fragment: Fragment) : SingleTypeSimplerAdapter<SoftwareComponent, SoftwareComponentViewHolder>() {
+
+        override val layout = R.layout.item_software_component
+
+        override fun onBindViewHolder(viewHolder: SoftwareComponentViewHolder, element: SoftwareComponent, position: Int) {
+            val context = viewHolder.itemView.context;
+            with(viewHolder) {
+                copyright.text = context.getString(R.string.copyright,
+                        element.years,
+                        element.copyrightOwner,
+                        element.license.abbreviation)
+                name.text = element.name
+
+                with(itemView) {
+                    isClickable = true
+                    isFocusable = true
+                    setOnClickListener {
+                        showLicense(it.context, element.license)
+                    }
+                    fragment.registerForContextMenu(itemView)
+                }
+
+            }
+        }
+
+        override fun onCreateViewHolder(itemView: View) = SoftwareComponentViewHolder(itemView)
+
     }
 }

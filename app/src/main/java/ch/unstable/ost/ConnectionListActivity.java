@@ -139,7 +139,7 @@ public class ConnectionListActivity extends ThemedActivity
     public void onBackPressed() {
         super.onBackPressed();
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment != null && (fragment instanceof ConnectionListFragment)) {
+        if ((fragment != null) && (fragment instanceof ConnectionListFragment)) {
             ConnectionListFragment connectionListFragment = (ConnectionListFragment) fragment;
             ConnectionQuery query = connectionListFragment.getConnectionQuery();
             updateHeadQuery(query);

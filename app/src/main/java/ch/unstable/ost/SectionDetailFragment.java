@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.views.lists.station.SectionsStopsListAdapter;
 
@@ -39,7 +42,7 @@ public class SectionDetailFragment extends Fragment {
             throw new IllegalStateException("section not set");
         }
         mStopsListAdapter = new SectionsStopsListAdapter();
-        mStopsListAdapter.setStops(mSection.getStops());
+        mStopsListAdapter.setElements(Arrays.asList(mSection.getStops()));
     }
 
     @Override
