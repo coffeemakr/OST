@@ -56,8 +56,8 @@ deploy:
   api_key:
     secure: D5dviU7f2k5HC1WSNNlm8KRfachZhLry5SvHdf0eZ3ynCB4eBPsax/tjwIry6GZMtYkBLiCS+C2hdiZmzeemywPgV0i/dkjpX1/iPJC1XOyM3nz69ybgHrkYpOMm4Gn05gu9WDvARonM9EWtjwRNtKxDEC7JPTV3+f3Yd0hm5s9LUXD4NjBlwVocXw/vwNztjFjuKtgNg6nCk6F/BQfxQXrtHRBWkXm5Tc/KtCjJk4blDOyub1Hix8ymTkh8CZ2dStXn6Ckv215KWdSqubonzYeL7z5fudcFwgEDLQB7YJpAdQzepwZL6GkC6c6cr0zYTcWR1gUGEgo31tCkMq+cGZZPtv4omcuuWxy0U7u0Ckuk4HLleAP4muibhNAs1yU+4dE5n/0sxjmCgHKMvzpVShWWvGAqHdfnQbsOs1TNN2QPfYvIPGrSC7nzxCtGVmspYsoop0OC7Hw0CuNwDAt1jkc8jTWgkc41p+6jkxAevUCmsNi09oL9luYWm3OobtYUpZVptxA8GehLl1ATCImPHRgDfhwaaLCJLseXTJcq8VyT553y4eX254mA8/E2TkNf8FtzABtk53asjAEC+cz1u9YNaZ7JhU3klMuoaFCM9G/mZyuhUxpfFhzbtF7B2Hgm62HQW872IbuVqUAcQgFFLSXFSGBN9RhnL9FBh4y/aBk=
   file:
-  - app/build/outputs/apk/app-debug.apk
-  - app/build/outputs/apk/app-release.apk
+  - app/build/outputs/apk/debug/app-debug.apk
+  - app/build/outputs/apk/release/app-release.apk
   on:
     repo: coffeemakr/OST
     tags: true
