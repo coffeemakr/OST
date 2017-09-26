@@ -46,9 +46,6 @@ public class SearchAPITest {
         Connection[] connections = searchApi.getConnections(query, 0);
         assertEquals(connections.length, 4);
         assertConnectionsSortedByDeparture(connections);
-        for(Connection connection: connections) {
-            System.out.println(connection.getArrivalDate());
-        }
 
         // The last connection should be after the desired arrival date
         Connection lastConnection = getLast(connections);

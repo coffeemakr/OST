@@ -57,7 +57,7 @@ public class TransportAPITest {
     @Test
     public void getConnections() throws Exception {
         Date date = getDate(2017,7,7,10,0);
-        System.out.println(date);
+        //System.out.println(date);
         ConnectionQuery query = new ConnectionQuery.Builder()
                 .setFrom("Bern")
                 .setTo("Basel SBB")
@@ -68,9 +68,6 @@ public class TransportAPITest {
         Connection[] connections = transportApi.getConnections(query, 0);
         assertEquals(connections.length, 4);
         assertConnectionsSortedByDeparture(connections);
-        for(Connection connection: connections) {
-            System.out.println(connection.getArrivalDate());
-        }
 
         // The last connection should be after the desired arrival date
         Connection lastConnection = getLast(connections);
@@ -94,9 +91,6 @@ public class TransportAPITest {
        assertEquals(connections.length, 4);
        assertConnectionsSortedByDeparture(connections);
 
-       for(Connection connection: connections) {
-           System.out.println(connection.getDeparture());
-       }
        // First can be before the selected departure that's fine for me
        Connection firstConnection = getFirst(connections);
        assertTrue(firstConnection.getDepartureDate().getTime() < date.getTime());
