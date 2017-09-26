@@ -36,7 +36,7 @@ public class QueryHistoryAdapter extends RecyclerView.Adapter<QueryViewHolder> {
     @Override
     public void onBindViewHolder(final QueryViewHolder viewHolder, int i) {
         QueryHistory queryEntry = getQueryHistoryAt(i);
-        QueryBinder.bindQuery(queryEntry, viewHolder.date, viewHolder.fromAndTo);
+        QueryBinder.INSTANCE.bindQuery(queryEntry, viewHolder.getDate(), viewHolder.getFromAndTo());
         viewHolder.itemView.setTag(queryEntry);
         viewHolder.itemView.setClickable(true);
         viewHolder.itemView.setOnClickListener(mOnClickListener);

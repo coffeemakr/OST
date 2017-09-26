@@ -117,7 +117,7 @@ public class LastQueryCardFragment extends QuickstartCardFragment {
     private void updateLatestQuery(QueryHistory queryHistory) {
         mCardLastQuery.setVisibility(View.VISIBLE); // TODO animate
         mLastQuery = queryHistory;
-        QueryBinder.bindQuery(queryHistory, mLastQueryDate, mLastQueryFromTo);
+        QueryBinder.INSTANCE.bindQuery(queryHistory, mLastQueryDate, mLastQueryFromTo);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class FavoritesAdapter extends SimplerAdapter<FavoriteConnection, Favorit
     public void onBindViewHolder(FavoritesViewHolder holder, int i) {
         final Connection connection = getItem(i).getConnection();
         ConnectionBinder.bindConnection(connection, holder);
-        QueryBinder.bindFromToText(holder.fromToText, connection);
+        QueryBinder.INSTANCE.bindFromToText(holder.getFromToText(), connection);
     }
 
     @Override

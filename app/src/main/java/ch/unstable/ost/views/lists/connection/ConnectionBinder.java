@@ -42,9 +42,9 @@ public class ConnectionBinder {
         Section[] sections = connection.getSections();
         if (sections.length > 0) {
             Section section = sections[0];
-            holder.firstEndDestination.setText(formatEndDestination(context, section.getHeadsign()));
-            holder.firstTransportName.setText(section.getLineShortName());
-            holder.platform.setText(formatPlatform(context, section.getDeparturePlatform()));
+            holder.getFirstEndDestination().setText(formatEndDestination(context, section.getHeadsign()));
+            holder.getFirstTransportName().setText(section.getLineShortName());
+            holder.getPlatform().setText(formatPlatform(context, section.getDeparturePlatform()));
         } else {
             Log.e(TAG, "No sections");
         }
@@ -53,12 +53,12 @@ public class ConnectionBinder {
         String duration = TimeDateUtils.formatDuration(holder.itemView.getResources(),
                 connection.getDepartureDate(),
                 connection.getArrivalDate());
-        holder.duration.setText(duration);
-        holder.startTime.setText(TimeDateUtils.formatTime(connection.getDepartureDate()));
-        holder.endTime.setText(TimeDateUtils.formatTime(connection.getArrivalDate()));
+        holder.getDuration().setText(duration);
+        holder.getStartTime().setText(TimeDateUtils.formatTime(connection.getDepartureDate()));
+        holder.getEndTime().setText(TimeDateUtils.formatTime(connection.getArrivalDate()));
 
         int[] times = getTravelTimes(connection.getSections());
-        holder.connectionLineView.setLengths(times);
+        holder.getConnectionLineView().setLengths(times);
     }
 
     @Nullable

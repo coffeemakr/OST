@@ -38,15 +38,15 @@ public class SectionsStopsListAdapter extends SimplerAdapter<PassingCheckpoint, 
     @Override
     public void onBindViewHolder(SectionStationViewHolder holder, int position) {
         PassingCheckpoint stop = stops[position];
-        holder.stationName.setText(stop.getLocation().getName());
+        holder.getStationName().setText(stop.getLocation().getName());
         if (position == 0) {
-            holder.stopDotView.setLineMode(StopDotView.Type.TOP);
+            holder.getStopDotView().setLineMode(StopDotView.Type.TOP);
         } else if (position == stops.length - 1) {
-            holder.stopDotView.setLineMode(StopDotView.Type.BOTTOM);
+            holder.getStopDotView().setLineMode(StopDotView.Type.BOTTOM);
         } else {
-            holder.stopDotView.setLineMode(StopDotView.Type.BOTH);
+            holder.getStopDotView().setLineMode(StopDotView.Type.BOTH);
         }
-        TimeDateUtils.setStationStay(holder.stationTime, stop.getArrivalTime(), stop.getDepartureTime());
+        TimeDateUtils.setStationStay(holder.getStationTime(), stop.getArrivalTime(), stop.getDepartureTime());
     }
 
     @Override

@@ -77,7 +77,7 @@ public class FavoriteCardFragment extends QuickstartCardFragment {
 
     private void bindConnection(FavoriteConnection favoriteConnection) {
         Connection connection = favoriteConnection.getConnection();
-        QueryBinder.bindFromToText(mFavoriteFromTo, connection);
+        QueryBinder.INSTANCE.bindFromToText(mFavoriteFromTo, connection);
         mFavoriteDate.setText(LocalizationUtils.getDepartureText(getContext(), connection.getDepartureDate()));
         mCardFavorites.setVisibility(View.VISIBLE);
         mLatestFavorite = favoriteConnection;
