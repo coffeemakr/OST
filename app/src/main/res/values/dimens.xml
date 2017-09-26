@@ -10,4 +10,6 @@
 
     <dimen name="singleItemListDenseFontSize">13sp</dimen>
     <dimen name="singleItemListDenseHeight">40dp</dimen>
+    <dimen name="activity_vertical_margin">8dp</dimen>
+    <dimen name="activity_horizontal_margin">8dp</dimen>
 </resources>

@@ -66,4 +66,9 @@
     <string name="action_favorite">Favorisieren</string>
     <string name="error_failed_to_load_favorites">Favoriten konnten nicht geladen werden</string>
     <string name="station_stay_format">%1$s - %2$s</string>
+    <string name="tab_about">Über</string>
+    <string name="tab_licenses">Lizenzen</string>
+    <string name="copyright">" %1$s von %2$s unter %3$s"</string>
+    <string name="title_licenses">Lizenzen</string>
+    <string name="app_description">Quelloffene</string>
 </resources>

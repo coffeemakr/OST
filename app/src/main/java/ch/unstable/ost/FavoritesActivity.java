@@ -47,7 +47,7 @@ public class FavoritesActivity extends AppCompatActivity {
         Disposable disposable = mFavoritesDao.getFavoriteConnections()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mFavoritesAdapter, throwable -> NavHelper.startErrorActivity(FavoritesActivity.this, throwable));
+                .subscribe(mFavoritesAdapter, throwable -> NavHelper.INSTANCE.startErrorActivity(FavoritesActivity.this, throwable));
         mDisposable.add(disposable);
 
     }

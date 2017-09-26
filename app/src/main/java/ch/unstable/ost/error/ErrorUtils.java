@@ -92,7 +92,7 @@ public enum ErrorUtils {
                 .setAction(R.string.action_resport_error, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        NavHelper.startErrorActivity(view.getContext(), throwable);
+                        NavHelper.INSTANCE.startErrorActivity(view.getContext(), throwable);
                     }
                 })
                 .show();

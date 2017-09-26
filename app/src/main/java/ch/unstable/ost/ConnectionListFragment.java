@@ -244,7 +244,7 @@ public class ConnectionListFragment extends Fragment {
             mViewStateHolder.onError(errorMessage);
         } else {
             // Fallback if an error happens outside of view
-            NavHelper.startErrorActivity(getContext(), exception);
+            NavHelper.INSTANCE.startErrorActivity(getContext(), exception);
         }
     }
 
