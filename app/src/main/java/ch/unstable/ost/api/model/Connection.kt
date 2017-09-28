@@ -79,4 +79,14 @@ data class Connection(val sections: List<Section>) : Parcelable {
         return 0
     }
 
+    companion object CREATOR : Parcelable.Creator<Connection> {
+        override fun createFromParcel(parcel: Parcel): Connection {
+            return Connection(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Connection?> {
+            return arrayOfNulls(size)
+        }
+    }
+
 }

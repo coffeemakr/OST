@@ -288,7 +288,7 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
         private State(Parcel in) {
-            connections = in.createTypedArray(Connection.Companion.getCREATOR());
+            connections = in.createTypedArray(Connection.CREATOR);
             lowestPage = in.readInt();
             highestPage = in.readInt();
         }

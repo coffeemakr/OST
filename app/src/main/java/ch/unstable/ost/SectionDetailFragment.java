@@ -42,7 +42,7 @@ public class SectionDetailFragment extends Fragment {
             throw new IllegalStateException("section not set");
         }
         mStopsListAdapter = new SectionsStopsListAdapter();
-        mStopsListAdapter.setElements(Arrays.asList(mSection.getStops()));
+        mStopsListAdapter.setElements(mSection.getStops());
     }
 
     @Override

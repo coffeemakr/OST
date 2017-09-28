@@ -18,8 +18,9 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
 import ch.unstable.ost.BuildConfig;
-import ch.unstable.ost.utils.NavHelper;
 import ch.unstable.ost.R;
+
+import static ch.unstable.ost.utils.NavHelperKt.startErrorActivity;
 
 public enum ErrorUtils {
     ;
@@ -92,7 +93,7 @@ public enum ErrorUtils {
                 .setAction(R.string.action_resport_error, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        NavHelper.INSTANCE.startErrorActivity(view.getContext(), throwable);
+                        startErrorActivity(view.getContext(), throwable);
                     }
                 })
                 .show();

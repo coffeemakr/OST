@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import ch.unstable.ost.R;
 import ch.unstable.ost.api.model.Connection;
@@ -15,8 +17,8 @@ public class ConnectionBinder {
 
     private static final String TAG = "ConnectionBinder";
 
-    private static int[] getTravelTimes(Section[] sections) {
-        int[] times = new int[sections.length * 2 - 1];
+    private static int[] getTravelTimes(Collection<Section> sections) {
+        int[] times = new int[sections.size() * 2 - 1];
         int i = 0;
         long lastEnd = 0;
         for (Section section : sections) {
@@ -39,12 +41,12 @@ public class ConnectionBinder {
 
     public static void bindConnection(Connection connection, ConnectionViewHolder holder) {
         final Context context = holder.itemView.getContext();
-        Section[] sections = connection.getSections();
-        if (sections.length > 0) {
-            Section section = sections[0];
-            holder.getFirstEndDestination().setText(formatEndDestination(context, section.getHeadsign()));
-            holder.getFirstTransportName().setText(section.getLineShortName());
-            holder.getPlatform().setText(formatPlatform(context, section.getDeparturePlatform()));
+        List<Section> sections = connection.getSections();
+        if (!sections.isEmpty()) {
+            Section firstSection = sections.get(0);
+            holder.getFirstEndDestination().setText(formatEndDestination(context, firstSection.getHeadsign()));
+            holder.getFirstTransportName().setText(firstSection.getLineShortName());
+            holder.getPlatform().setText(formatPlatform(context, firstSection.getDeparturePlatform()));
         } else {
             Log.e(TAG, "No sections");
         }

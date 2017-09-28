@@ -12,6 +12,8 @@ import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.model.PassingCheckpoint;
 import ch.unstable.ost.api.model.Route;
 
+import static java.util.Arrays.asList;
+
 public class TestHelper {
     public static <T extends Parcelable> T writeAndRead(T parcelable, Parcelable.Creator<T> creator) {
         Parcel parcel = Parcel.obtain();
@@ -39,7 +41,7 @@ public class TestHelper {
         String shortName = "short " + number;
         String longName = "long" + number;
         PassingCheckpoint[] stops = generatePassingCheckpoints(25);
-        return new Route(shortName, longName, stops);
+        return new Route(shortName, longName, asList(stops));
     }
 
     @NonNull

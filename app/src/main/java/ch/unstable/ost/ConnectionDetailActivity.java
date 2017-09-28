@@ -13,7 +13,9 @@ import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
-import ch.unstable.ost.utils.NavHelper;
+
+import static ch.unstable.ost.utils.NavHelperKt.openAbout;
+import static ch.unstable.ost.utils.NavHelperKt.openSettings;
 
 public class ConnectionDetailActivity extends ThemedActivity implements ConnectionDetailFragment.OnConnectionDetailInteractionListener {
 
@@ -65,11 +67,10 @@ public class ConnectionDetailActivity extends ThemedActivity implements Connecti
                 finish();
                 return true;
             case R.id.action_settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
+                openSettings(this);
                 return true;
             case R.id.action_about:
-                NavHelper.INSTANCE.openAbout(this);
+                openAbout(this);
                 return true;
             default:
                 return false;

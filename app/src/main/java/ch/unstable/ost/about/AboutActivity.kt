@@ -12,6 +12,7 @@ import android.view.MenuItem
 
 import ch.unstable.ost.R
 import ch.unstable.ost.theme.ThemedActivity
+import ch.unstable.ost.utils.openSettings
 
 
 class AboutActivity : ThemedActivity() {
@@ -45,20 +46,12 @@ class AboutActivity : ThemedActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        val id = item.itemId
-
-        when (id) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-            R.id.action_settings ->
-                //NavigationHelper.openSettings(this);
-                return true
+        when (item.itemId) {
+            android.R.id.home -> finish()
+            R.id.action_settings -> openSettings(this)
+            else -> return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item)
+        return true
     }
 
 

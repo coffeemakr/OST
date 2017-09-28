@@ -9,11 +9,12 @@ import android.support.v7.widget.Toolbar;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.FavoriteConnectionDao;
 import ch.unstable.ost.views.lists.favorite.FavoritesAdapter;
-import ch.unstable.ost.utils.NavHelper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static ch.unstable.ost.utils.NavHelperKt.startErrorActivity;
 
 public class FavoritesActivity extends AppCompatActivity {
 
@@ -47,7 +48,7 @@ public class FavoritesActivity extends AppCompatActivity {
         Disposable disposable = mFavoritesDao.getFavoriteConnections()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mFavoritesAdapter, throwable -> NavHelper.INSTANCE.startErrorActivity(FavoritesActivity.this, throwable));
+                .subscribe(mFavoritesAdapter, throwable -> startErrorActivity(FavoritesActivity.this, throwable));
         mDisposable.add(disposable);
 
     }

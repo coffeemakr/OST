@@ -21,8 +21,8 @@ import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.model.FavoriteConnection;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.theme.ThemedActivity;
-import ch.unstable.ost.utils.NavHelper;
 
+import static ch.unstable.ost.utils.NavHelperKt.openAbout;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConnectionListActivity extends ThemedActivity
@@ -162,7 +162,7 @@ public class ConnectionListActivity extends ThemedActivity
                 startActivity(intent);
                 return true;
             case R.id.action_about:
-                NavHelper.INSTANCE.openAbout(this);
+                openAbout(this);
                 return true;
             default:
                 return false;

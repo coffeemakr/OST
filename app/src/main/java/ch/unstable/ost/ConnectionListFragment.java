@@ -25,7 +25,6 @@ import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
 import ch.unstable.ost.views.lists.connection.ConnectionListAdapter;
-import ch.unstable.ost.utils.NavHelper;
 import ch.unstable.ost.views.NoAnimationStrategy;
 import ch.unstable.ost.views.ViewStateHolder;
 import io.reactivex.Flowable;
@@ -34,6 +33,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static ch.unstable.ost.utils.NavHelperKt.startErrorActivity;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConnectionListFragment extends Fragment {
@@ -244,7 +244,7 @@ public class ConnectionListFragment extends Fragment {
             mViewStateHolder.onError(errorMessage);
         } else {
             // Fallback if an error happens outside of view
-            NavHelper.INSTANCE.startErrorActivity(getContext(), exception);
+            startErrorActivity(getContext(), exception);
         }
     }
 
