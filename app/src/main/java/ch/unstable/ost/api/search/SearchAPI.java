@@ -85,10 +85,10 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
     }
 
     private ArrayList<Location> filterResults(ArrayList<Location> completions, final StationType[] filter) {
-        final int mask = StationType.getMask(filter);
+        final int mask = StationType.Companion.getMask(filter);
         ArrayList<Location> filtered = new ArrayList<>(completions.size());
         for (Location completion : completions) {
-            if ((completion.getType().bit & mask) > 0) {
+            if ((completion.getType().getBit() & mask) > 0) {
                 filtered.add(completion);
             }
         }

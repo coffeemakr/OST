@@ -36,7 +36,7 @@ public abstract class OfflineStationsDAO implements StationsDAO {
 
     @Override
     public Location[] getStationsByQuery(String query, @Nullable StationType[] types) {
-        return getStationsByQuery(getFullQuery(query), StationType.getMask(types));
+        return getStationsByQuery(getFullQuery(query), StationType.Companion.getMask(types));
     }
 
     @NonNull
@@ -44,7 +44,7 @@ public abstract class OfflineStationsDAO implements StationsDAO {
         Location[] locations = new Location[entities.length];
         for (int i = 0; i < locations.length; ++i) {
             LocationEntity entity = entities[i];
-            locations[i] = new Location(entity.getName(), entity.getTypes()[0], entity.getId());
+            locations[i] = new Location(entity.getId(), entity.getName(), entity.getTypes()[0]);
         }
         return locations;
     }

@@ -16,50 +16,50 @@ public class LocationTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorWithNullAsName() {
-        new Location(null, VALID_TYPE, VALID_ID);
+        new Location(VALID_ID, null, VALID_TYPE);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorWithNullAsType() {
-        new Location(VALID_NAME, null, VALID_ID);
+        new Location(VALID_ID, VALID_NAME, null);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithEmptyName() {
-        new Location("", VALID_TYPE, VALID_ID);
+        new Location(VALID_ID, "", VALID_TYPE);
     }
 
     @Test
     public void getName() throws Exception {
-        Location location = new Location("name", VALID_TYPE, VALID_ID);
+        Location location = new Location(VALID_ID, "name", VALID_TYPE);
         assertEquals("name", location.getName());
 
-        location = new Location("other name", VALID_TYPE, VALID_ID);
+        location = new Location(VALID_ID, "other name", VALID_TYPE);
         assertEquals("other name", location.getName());
     }
 
     @Test
     public void getId() throws Exception {
         Location location;
-        location = new Location("name", VALID_TYPE, null);
+        location = new Location(null, "name", VALID_TYPE);
         assertEquals("name", location.getId());
 
-        location = new Location("name", VALID_TYPE, "id");
+        location = new Location("id", "name", VALID_TYPE);
         assertEquals("id", location.getId());
     }
 
     @Test
     public void getType() throws Exception {
         Location location;
-        location = new Location(VALID_NAME, StationType.TRAIN, VALID_ID);
+        location = new Location(VALID_ID, VALID_NAME, StationType.TRAIN);
         assertEquals(StationType.TRAIN, location.getType());
     }
 
     @Test
     public void equals() throws Exception {
         Location location;
-        location = new Location("name", VALID_TYPE, null);
+        location = new Location(null, "name", VALID_TYPE);
         //noinspection EqualsWithItself
         assertTrue(location.equals(location));
         //noinspection ObjectEqualsNull
@@ -67,21 +67,21 @@ public class LocationTest {
         //noinspection EqualsBetweenInconvertibleTypes
         assertFalse(location.equals("other class"));
 
-        Location other = new Location("name", VALID_TYPE, null);
+        Location other = new Location(null, "name", VALID_TYPE);
         assertTrue(other.equals(location));
         assertTrue(location.equals(other));
 
-        other = new Location("name", VALID_TYPE, "name");
+        other = new Location("name", "name", VALID_TYPE);
         assertFalse(other.equals(location));
         assertFalse(location.equals(other));
 
-        location = new Location("name", StationType.TRAM, "id");
-        other = new Location("name", StationType.TRAM, "id");
+        location = new Location("id", "name", StationType.TRAM);
+        other = new Location("id", "name", StationType.TRAM);
         assertTrue(other.equals(location));
         assertTrue(location.equals(other));
 
 
-        other = new Location("name", StationType.BUS, "id");
+        other = new Location("id", "name", StationType.BUS);
         assertFalse(other.equals(location));
         assertFalse(location.equals(other));
 

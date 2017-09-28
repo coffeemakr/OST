@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.Section;
@@ -16,6 +17,6 @@ public class ConnectionDeserializer implements JsonDeserializer<Connection> {
     public Connection deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject connectionObj = json.getAsJsonObject();
         Section[] sections = context.deserialize(connectionObj.get("legs"), Section[].class);
-        return new Connection(sections);
+        return new Connection(Arrays.asList(sections));
     }
 }

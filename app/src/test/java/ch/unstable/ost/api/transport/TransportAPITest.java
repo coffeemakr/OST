@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import ch.unstable.ost.api.model.Connection;
-import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.Section;
 
 import static org.junit.Assert.*;

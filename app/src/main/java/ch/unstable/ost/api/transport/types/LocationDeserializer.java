@@ -50,6 +50,6 @@ public enum LocationDeserializer implements JsonDeserializer<Location> {
                     throw new JsonParseException("Unknown type: " + typeName);
             }
         }
-        return new Location(name, type, id);
+        return new Location(id, name, type);
     }
 }

@@ -15,7 +15,7 @@ public class StationTypeTest {
     public void testSameBit() {
         HashSet<Integer> bits = new HashSet<>(StationType.values().length);
         for(StationType type: StationType.values()) {
-            bits.add(type.bit);
+            bits.add(type.getBit());
         }
         assertEquals(bits.size(), StationType.values().length);
     }
@@ -23,15 +23,15 @@ public class StationTypeTest {
     @Test
     public void getMask() throws Exception {
 
-        int mask = StationType.getMask(StationType.TRAIN, StationType.TRAM);
-        assertTrue((mask & StationType.TRAIN.bit) > 0);
-        assertTrue((mask & StationType.TRAM.bit) > 0);
-        assertTrue((mask & StationType.BUS.bit) == 0);
+        int mask = StationType.Companion.getMask(StationType.TRAIN, StationType.TRAM);
+        assertTrue((mask & StationType.TRAIN.getBit()) > 0);
+        assertTrue((mask & StationType.TRAM.getBit()) > 0);
+        assertTrue((mask & StationType.BUS.getBit()) == 0);
     }
 
     @Test
     public void fromMask() throws Exception {
-        StationType[] fromMask = StationType.fromMask(StationType.TRAIN.bit | StationType.BUS.bit);
+        StationType[] fromMask = StationType.Companion.fromMask(StationType.TRAIN.getBit() | StationType.BUS.getBit());
         assertArrayEquals(new StationType[]{StationType.TRAIN, StationType.BUS}, fromMask);
     }
 

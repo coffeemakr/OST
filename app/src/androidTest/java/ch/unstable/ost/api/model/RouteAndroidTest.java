@@ -20,7 +20,7 @@ public class RouteAndroidTest {
         for(int i = 0; i < number; ++i) {
             Date arrival = new Date(number);
             Date departure = new Date(number);
-            Location location = new Location("" + number, Location.StationType.TRAIN, "" + number);
+            Location location = new Location("" + number, "" + number, Location.StationType.TRAIN);
             checkpoints[i] = new PassingCheckpoint(arrival, departure, location, "" + number);
         }
         return checkpoints;
@@ -34,7 +34,7 @@ public class RouteAndroidTest {
         PassingCheckpoint[] stops = generatePassingCheckpoints(20);
         route = new Route(shortname, longname, stops);
 
-        Route readRoute = TestHelper.writeAndRead(route, Route.CREATOR);
+        Route readRoute = TestHelper.writeAndRead(route, Route.Companion.getCREATOR());
         assertEquals(longname, readRoute.getLongName());
         assertEquals(shortname, readRoute.getShortName());
         assertArrayEquals(stops, readRoute.getStops());

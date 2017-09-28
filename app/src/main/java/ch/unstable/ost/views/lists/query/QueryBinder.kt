@@ -13,7 +13,7 @@ object QueryBinder {
 
     @MainThread
     fun bindQuery(queryEntry: QueryHistory, dateView: TextView, fromAndTo: TextView) {
-        val query = queryEntry.query
+        val query: ConnectionQuery = queryEntry.query
         // The search was for "now" so we show the time the query was submitted
         val departure = if (query.isNow) query.departureTime else queryEntry.creationDate
         dateView.text = LocalizationUtils.getArrivalOrDepartureText(dateView.context, query.arrivalTime, departure)

@@ -52,7 +52,7 @@ public class TestHelper {
 
     @NonNull
     public static Location generateLocation(int number) {
-        return new Location("" + number, Location.StationType.TRAIN, "" + number);
+        return new Location("" + number, "" + number, Location.StationType.TRAIN);
     }
 
     @NonNull

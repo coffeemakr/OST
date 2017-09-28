@@ -71,7 +71,7 @@ public enum PassingCheckpointsDeserializer implements JsonDeserializer<PassingCh
             return null;
         }
 
-        Location location = new Location(name, Location.StationType.UNKNOWN, stopId);
+        Location location = new Location(stopId, name, Location.StationType.UNKNOWN);
         // TODO: Find out if track is sent
         String platform = null;
         if (object.has("track")) {

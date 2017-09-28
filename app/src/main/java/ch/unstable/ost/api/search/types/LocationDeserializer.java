@@ -20,6 +20,6 @@ public enum LocationDeserializer implements JsonDeserializer<Location> {
         String name = locationObj.get("label").getAsString();
         String id = locationObj.get("id").getAsString();
         Location.StationType stationType = context.deserialize(locationObj.get("iconclass"), Location.StationType.class);
-        return new Location(name, stationType, id);
+        return new Location(id, name, stationType);
     }
 }

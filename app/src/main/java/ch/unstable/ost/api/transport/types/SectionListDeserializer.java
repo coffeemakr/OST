@@ -12,6 +12,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ch.unstable.ost.api.model.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.DepartureCheckpoint;
@@ -39,7 +40,7 @@ public enum SectionListDeserializer implements JsonDeserializer<Section[]> {
         DepartureCheckpoint departure = context.deserialize(sectionObj.get("departure"), DepartureCheckpoint.class);
         ArrivalCheckpoint arrival = context.deserialize(sectionObj.get("arrival"), ArrivalCheckpoint.class);
         PassingCheckpoint[] passingCheckpoints = context.deserialize(journey.get("passList"), PassingCheckpoint[].class);
-        Route route = new Route(routeShortName, routeLongName, passingCheckpoints);
+        Route route = new Route(routeShortName, routeLongName, Arrays.asList(passingCheckpoints));
         return new Section(route, departure, arrival, headsign, walkTime);
     }
 

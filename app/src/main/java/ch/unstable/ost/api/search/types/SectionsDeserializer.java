@@ -37,7 +37,7 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
     private static Location getLocation(JsonObject jsonObject) {
         String name = jsonObject.get("sbb_name").getAsString();
         String id = jsonObject.get("stopid").getAsString();
-        return new Location(name, Location.StationType.UNKNOWN, id);
+        return new Location(id, name, Location.StationType.UNKNOWN);
     }
 
     private static ArrivalCheckpoint getArrival(SimpleDateFormat dateFormat, JsonObject object) {
@@ -86,7 +86,7 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
                 }.getType();
                 List<PassingCheckpoint> stops = context.deserialize(object.get("stops"), listOfPassingCheckpoints);
                 removeNulls(stops);
-                Route route = new Route(routeShortName, routeLongName, stops.toArray(new PassingCheckpoint[stops.size()]));
+                Route route = new Route(routeShortName, routeLongName, stops);
 
                 Location departureLocation = getLocation(object);
                 Date departureTime = PassingCheckpointsDeserializer.getDate(dateFormat, object, "departure");
@@ -95,7 +95,7 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
 
                 ArrivalCheckpoint arrival = getArrival(dateFormat, object);
                 String headSign = object.get("terminal").getAsString();
-                Section section = new Section(route, departure, arrival, headSign, 0);
+                Section section = new Section(route, departure, arrival, headSign, 0L);
                 sections.add(section);
             }
         }

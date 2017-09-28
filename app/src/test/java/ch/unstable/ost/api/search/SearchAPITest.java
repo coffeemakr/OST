@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import ch.unstable.ost.api.model.Connection;
-import ch.unstable.ost.api.model.ConnectionQuery;
 
 import static ch.unstable.ost.api.transport.TransportAPITest.ONE_HOURS_IN_MILLIES;
 import static ch.unstable.ost.api.transport.TransportAPITest.assertConnectionsSortedByDeparture;
