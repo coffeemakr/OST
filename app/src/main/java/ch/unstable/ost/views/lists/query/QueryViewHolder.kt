@@ -9,7 +9,7 @@ import ch.unstable.ost.R
 /**
  * View holder for a query history entry
  */
-open class QueryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class QueryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     /**
      * Text field containing the description of the time restriction
      * e.g. "Departure 11:20"

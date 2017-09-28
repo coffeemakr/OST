@@ -13,6 +13,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import ch.unstable.ost.api.model.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.DepartureCheckpoint;
@@ -22,7 +23,7 @@ import ch.unstable.ost.api.model.Section;
 
 import static ch.unstable.ost.api.transport.types.LocationDeserializer.getNullableString;
 
-public enum SectionListDeserializer implements JsonDeserializer<Section[]> {
+public enum SectionListDeserializer implements ch.unstable.ost.api.base.SectionListDeserializer {
     INSTANCE;
 
     public static final String FIELD_JOURNEY = "journey";
@@ -72,7 +73,7 @@ public enum SectionListDeserializer implements JsonDeserializer<Section[]> {
     }
 
     @Override
-    public Section[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public List<Section> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonArray array = json.getAsJsonArray();
         ArrayList<Section> sections = new ArrayList<>(array.size());
         long walkTime = 0;
@@ -88,6 +89,6 @@ public enum SectionListDeserializer implements JsonDeserializer<Section[]> {
                 throw new JsonParseException("Section is not a journey and not a walk");
             }
         }
-        return sections.toArray(new Section[sections.size()]);
+        return sections;
     }
 }

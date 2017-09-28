@@ -20,11 +20,12 @@ import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.QueryHistoryDao;
 import ch.unstable.ost.database.model.QueryHistory;
-import ch.unstable.ost.views.lists.query.QueryBinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static ch.unstable.ost.views.lists.query.QueryBinderKt.bindQuery;
 
 public class LastQueryCardFragment extends QuickstartCardFragment {
     private static final String TAG = "LastQueryCardFragment";
@@ -117,7 +118,7 @@ public class LastQueryCardFragment extends QuickstartCardFragment {
     private void updateLatestQuery(QueryHistory queryHistory) {
         mCardLastQuery.setVisibility(View.VISIBLE); // TODO animate
         mLastQuery = queryHistory;
-        QueryBinder.INSTANCE.bindQuery(queryHistory, mLastQueryDate, mLastQueryFromTo);
+        bindQuery(queryHistory, mLastQueryDate, mLastQueryFromTo);
     }
 
     @Override

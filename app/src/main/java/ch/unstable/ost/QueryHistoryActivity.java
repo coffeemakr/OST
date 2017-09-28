@@ -116,7 +116,7 @@ public class QueryHistoryActivity extends AppCompatActivity {
         return entries -> {
             if (BuildConfig.DEBUG) Log.d(TAG, "Got entries: " + entries);
             if (mQueryHistoryAdapter != null) {
-                mQueryHistoryAdapter.setEntries(entries);
+                mQueryHistoryAdapter.setElements(entries);
             } else {
                 Log.w(TAG, "Adapter is null");
             }

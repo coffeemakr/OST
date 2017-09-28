@@ -16,6 +16,7 @@ import java.util.TimeZone;
 
 import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.base.BaseHttpJsonAPI;
+import ch.unstable.ost.api.base.ThrowingAdapter;
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.Location;
@@ -24,9 +25,10 @@ import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.api.search.types.ConnectionDeserializer;
 import ch.unstable.ost.api.search.types.LocationDeserializer;
 import ch.unstable.ost.api.search.types.PassingCheckpointsDeserializer;
-import ch.unstable.ost.api.search.types.SectionsDeserializer;
+import ch.unstable.ost.api.search.types.SearchSectionListDeserializer;
 import ch.unstable.ost.api.search.types.StationTypeDeserializer;
 import ch.unstable.ost.api.transport.ConnectionAPI;
+import ch.unstable.ost.api.transport.types.SectionListDeserializer;
 import io.mikael.urlbuilder.UrlBuilder;
 
 import static ch.unstable.ost.api.model.Location.StationType;
@@ -56,8 +58,8 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
 
     @Override
     protected void onBuildGsonCreated(GsonBuilder gsonBuilder) {
-        gsonBuilder.registerTypeAdapter(Section[].class, new SectionsDeserializer());
-        gsonBuilder.registerTypeAdapter(Connection.class, new ConnectionDeserializer());
+        gsonBuilder.registerTypeAdapter(SectionListDeserializer.type, SearchSectionListDeserializer.INSTANCE);
+        gsonBuilder.registerTypeAdapter(Connection.class, ConnectionDeserializer.INSTANCE);
         gsonBuilder.registerTypeAdapter(StationType.class, StationTypeDeserializer.INSTANCE);
         gsonBuilder.registerTypeAdapter(PassingCheckpoint.class, PassingCheckpointsDeserializer.INSTANCE);
         gsonBuilder.registerTypeAdapter(Location.class, LocationDeserializer.INSTANCE);

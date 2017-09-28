@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -17,9 +16,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 import ch.unstable.ost.BuildConfig;
+import ch.unstable.ost.api.base.SectionListDeserializer;
 import ch.unstable.ost.api.model.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.DepartureCheckpoint;
 import ch.unstable.ost.api.model.Location;
@@ -30,8 +29,9 @@ import ch.unstable.ost.utils.LogUtils;
 
 import static ch.unstable.ost.api.transport.types.LocationDeserializer.getNullableString;
 
-public class SectionsDeserializer implements JsonDeserializer<Section[]> {
-    private static final String TAG = "SectionsDeserializer";
+public enum SearchSectionListDeserializer implements SectionListDeserializer {
+    INSTANCE;
+    private static final String TAG = "SearchSectionListDsrlr";
 
     @NonNull
     private static Location getLocation(JsonObject jsonObject) {
@@ -57,7 +57,7 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
     }
 
     @Override
-    public Section[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public List<Section> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         SimpleDateFormat dateFormat = PassingCheckpointsDeserializer.getDateFormat();
         JsonArray jsonArray = json.getAsJsonArray();
         ArrayList<Section> sections = new ArrayList<>(jsonArray.size());
@@ -99,6 +99,6 @@ public class SectionsDeserializer implements JsonDeserializer<Section[]> {
                 sections.add(section);
             }
         }
-        return sections.toArray(new Section[sections.size()]);
+        return sections;
     }
 }

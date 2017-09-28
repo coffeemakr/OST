@@ -16,8 +16,14 @@ private const val TAG = "SectionListAdapters"
 private const val JOURNEY_VIEW_TYPE = 1
 private const val WALK_VIEW_TYPE = 2
 
+
 class SectionListAdapter : RecyclerView.Adapter<SectionListAdapter.SectionViewHolder>() {
-    private var sections:List<Section> = ArrayList()
+
+    var sections:List<Section> = ArrayList()
+        set(value) {
+            field = ArrayList(value)
+            notifyDataSetChanged()
+        }
 
     var onJourneyClickedListener: OnSectionClickedListener? = null
 
@@ -47,17 +53,19 @@ class SectionListAdapter : RecyclerView.Adapter<SectionListAdapter.SectionViewHo
         throw IllegalStateException("unknown viewType: " + viewType)
     }
 
-    fun onBindJourneyViewHolder(holder: JourneyViewHolder, section: Section) {
-        holder.arrivalStationName.text = section.arrivalLocation.name
-        holder.departureStationName.text = section.departureLocation.name
-        holder.arrivalTime.text = TimeDateUtils.formatTime(section.arrivalDate)
-        holder.departureTime.text = TimeDateUtils.formatTime(section.departureDate)
-        holder.productName.text = section.lineShortName
-        holder.endDestination.text = section.headsign
-        holder.departurePlatform.text = section.departurePlatform
-        holder.arrivalPlatform.text = section.arrivalPlatform
-        holder.itemView.tag = section
-        holder.itemView.setOnClickListener(onJourneyItemClickListener)
+    private fun onBindJourneyViewHolder(holder: JourneyViewHolder, section: Section) {
+        with(holder) {
+            arrivalStationName.text = section.arrivalLocation.name
+            departureStationName.text = section.departureLocation.name
+            arrivalTime.text = TimeDateUtils.formatTime(section.arrivalDate)
+            departureTime.text = TimeDateUtils.formatTime(section.departureDate)
+            productName.text = section.lineShortName
+            endDestination.text = section.headsign
+            departurePlatform.text = section.departurePlatform
+            arrivalPlatform.text = section.arrivalPlatform
+            itemView.tag = section
+            itemView.setOnClickListener(onJourneyItemClickListener)
+        }
     }
 
     private fun onBindWalkViewHolder(holder: WalkSectionViewHolder, section: Section) {
@@ -65,7 +73,9 @@ class SectionListAdapter : RecyclerView.Adapter<SectionListAdapter.SectionViewHo
         holder.departureTime.text = TimeDateUtils.formatTime(section.departureDate)
     }
 
+
     override fun getItemViewType(position: Int): Int {
+        // TODO: implement walks
         return JOURNEY_VIEW_TYPE
     }
 
@@ -77,14 +87,8 @@ class SectionListAdapter : RecyclerView.Adapter<SectionListAdapter.SectionViewHo
         }
     }
 
-    fun setSections(sections: List<Section>) {
-        this.sections = ArrayList(sections)
-        notifyDataSetChanged()
-    }
 
-    override fun getItemCount(): Int {
-        return sections.size
-    }
+    override fun getItemCount(): Int = sections.size
 
     interface OnSectionClickedListener {
         fun onSectionClicked(section: Section)

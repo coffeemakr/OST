@@ -21,34 +21,34 @@ data class Section(val route: Route,
                    val walkTime: Long?) : Parcelable {
 
     val lineShortName: String?
-        get() = route.shortName
+        get() = route!!.shortName
 
     val departureDate: Date
-        get() = departure.departureTime
+        get() = departure!!.departureTime
 
     val arrivalDate: Date
-        get() = arrival.arrivalTime
+        get() = arrival!!.arrivalTime
 
     val arrivalLocation: Location
-        get() = arrival.location
+        get() = arrival!!.location
 
     val departureLocation: Location
-        get() = departure.location
+        get() = departure!!.location
 
     val departurePlatform: String?
-        get() = departure.platform
+        get() = departure!!.platform
 
     val arrivalPlatform: String?
-        get() = arrival.platform
+        get() = arrival!!.platform
 
     val stops: List<PassingCheckpoint>
-        get() = route.stops
+        get() = route!!.stops
 
     val routeLongName: String
-        get() = route.longName
+        get() = route!!.longName
 
     private constructor(`in`: Parcel): this(
-        route = readNonNulTypedObject(`in`, Route.CREATOR),
+        route = readNonNulTypedObject(`in`, Route.CREATOR)!!,
         departure = readNonNulTypedObject(`in`, DepartureCheckpoint.CREATOR),
         arrival = readNonNulTypedObject(`in`, ArrivalCheckpoint),
         headsign = `in`.readString(),

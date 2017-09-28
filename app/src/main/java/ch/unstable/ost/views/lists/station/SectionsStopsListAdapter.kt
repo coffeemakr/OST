@@ -15,7 +15,11 @@ class SectionsStopsListAdapter : SingleTypeSimplerAdapter<PassingCheckpoint, Sec
         get() = R.layout.item_connection_journey_station
 
 
-    override fun onBindViewHolder(viewHolder: SectionStationViewHolder, element: PassingCheckpoint, position: Int) {
+    override fun onBindViewHolder(
+            viewHolder: SectionStationViewHolder,
+            element: PassingCheckpoint,
+            position: Int
+    ) {
         with(viewHolder) {
             stationName.text = element.stationName
             if (position == 0) {

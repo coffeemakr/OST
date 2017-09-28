@@ -7,7 +7,7 @@ import java.util.*
 
 data class DepartureCheckpoint(val departureTime: Date, val stopLocation: StopLocation) : Parcelable {
 
-    constructor(departureTime: Date, platform: String, location: Location):
+    constructor(departureTime: Date, platform: String?, location: Location):
             this(departureTime, StopLocation(platform, location));
 
     private constructor(source: Parcel): this(

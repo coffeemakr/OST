@@ -8,8 +8,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Date;
 
-import ch.unstable.ost.test.TestHelper;
-
+import static ch.unstable.ost.test.TestHelperKt.writeAndRead;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -27,7 +26,7 @@ public class ConnectionQueryAndroidTest {
                 .setFrom(from)
                 .build();
 
-        ConnectionQuery read = TestHelper.writeAndRead(query, ConnectionQuery.CREATOR);
+        ConnectionQuery read = writeAndRead(query, ConnectionQuery.CREATOR);
         assertEquals(to, read.getTo());
         assertEquals(from, read.getFrom());
         assertNull(read.getArrivalTime());
@@ -43,7 +42,7 @@ public class ConnectionQueryAndroidTest {
                 .setVia(vias)
                 .build();
 
-        read = TestHelper.writeAndRead(query, ConnectionQuery.CREATOR);
+        read = writeAndRead(query, ConnectionQuery.CREATOR);
 
         assertEquals(to, read.getTo());
         assertEquals(from, read.getFrom());
@@ -59,7 +58,7 @@ public class ConnectionQueryAndroidTest {
                 .setDepartureTime(date)
                 .build();
 
-        read = TestHelper.writeAndRead(query, ConnectionQuery.CREATOR);
+        read = writeAndRead(query, ConnectionQuery.CREATOR);
         assertEquals(to, read.getTo());
         assertEquals(from, read.getFrom());
         assertNull(read.getArrivalTime());
@@ -74,7 +73,7 @@ public class ConnectionQueryAndroidTest {
                 .setArrivalTime(date)
                 .build();
 
-        read = TestHelper.writeAndRead(query, ConnectionQuery.CREATOR);
+        read = writeAndRead(query, ConnectionQuery.CREATOR);
         assertEquals(to, read.getTo());
         assertEquals(from, read.getFrom());
         assertNull(read.getDepartureTime());

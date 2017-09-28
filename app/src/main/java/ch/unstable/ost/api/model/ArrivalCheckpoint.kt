@@ -12,7 +12,7 @@ import ch.unstable.ost.utils.ParcelUtils
 
 data class ArrivalCheckpoint(val arrivalTime: Date, val stopLocation: StopLocation) : Parcelable {
 
-    constructor(arrivalTime: Date, platform: String, location: Location) : this(arrivalTime, StopLocation(platform, location))
+    constructor(arrivalTime: Date, platform: String?, location: Location) : this(arrivalTime, StopLocation(platform, location))
 
     private constructor(source: Parcel) : this(
             arrivalTime = ParcelUtils.readDate(source)!!,

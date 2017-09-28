@@ -27,6 +27,7 @@ import ch.unstable.ost.database.model.QueryHistory;
 import ch.unstable.ost.views.lists.connection.ConnectionListAdapter;
 import ch.unstable.ost.views.NoAnimationStrategy;
 import ch.unstable.ost.views.ViewStateHolder;
+import ch.unstable.ost.views.lists.connection.ConnectionListAdapterState;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -106,7 +107,7 @@ public class ConnectionListFragment extends Fragment {
         mConnectionAdapter.setOnConnectionClickListener(mOnConnectionClickListener);
         if (savedInstanceState != null) {
             mQuery = savedInstanceState.getParcelable(ARG_QUERY);
-            ConnectionListAdapter.State state = savedInstanceState.getParcelable(KEY_CONNECTION_STATE);
+            ConnectionListAdapterState state = savedInstanceState.getParcelable(KEY_CONNECTION_STATE);
             if (state != null) {
                 mConnectionAdapter.restoreState(state);
             } else {
@@ -234,7 +235,7 @@ public class ConnectionListFragment extends Fragment {
         mCompositeDisposable.add(disposable);
     }
 
-    private void handleError(@StringRes int errorMessage, @Nullable final Throwable exception) {
+    private void handleError(@StringRes int errorMessage, @NonNull final Throwable exception) {
         if (BuildConfig.DEBUG) {
             // Log exception
             String errorMessageString = getString(errorMessage);
@@ -295,7 +296,7 @@ public class ConnectionListFragment extends Fragment {
 
     private class OnConnectionSelectedCaller implements ConnectionListAdapter.OnConnectionClickListener {
         @Override
-        public void onConnectionClicked(Connection connection) {
+        public void onConnectionClicked(@NonNull Connection connection) {
             if (mOnConnectionListInteractionListener != null) {
                 mOnConnectionListInteractionListener.onConnectionSelected(connection);
             }

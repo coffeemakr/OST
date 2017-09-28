@@ -15,12 +15,13 @@ import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.FavoriteConnectionDao;
 import ch.unstable.ost.database.model.FavoriteConnection;
-import ch.unstable.ost.views.lists.query.QueryBinder;
 import ch.unstable.ost.utils.LocalizationUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+
+import static ch.unstable.ost.views.lists.query.QueryBinderKt.bindFromToText;
 
 public class FavoriteCardFragment extends QuickstartCardFragment {
 
@@ -77,7 +78,7 @@ public class FavoriteCardFragment extends QuickstartCardFragment {
 
     private void bindConnection(FavoriteConnection favoriteConnection) {
         Connection connection = favoriteConnection.getConnection();
-        QueryBinder.INSTANCE.bindFromToText(mFavoriteFromTo, connection);
+        bindFromToText(mFavoriteFromTo, connection);
         mFavoriteDate.setText(LocalizationUtils.getDepartureText(getContext(), connection.getDepartureDate()));
         mCardFavorites.setVisibility(View.VISIBLE);
         mLatestFavorite = favoriteConnection;
