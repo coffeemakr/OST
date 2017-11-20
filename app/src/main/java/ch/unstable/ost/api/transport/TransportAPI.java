@@ -79,8 +79,6 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO, Connec
 
     @Override
     protected void onBuildGsonCreated(GsonBuilder gsonBuilder) {
-        //final TypeAdapter<Number> numberTypeAdapter = new EmptyNumberTypeAdapter();
-        //gsonBuilder.registerTypeAdapter(Integer.class, numberTypeAdapter);
         gsonBuilder.registerTypeAdapter(Location.class, LocationDeserializer.INSTANCE);
         gsonBuilder.registerTypeAdapter(ArrivalCheckpoint.class, ArrivalStopDeserializer.INSTANCE);
         gsonBuilder.registerTypeAdapter(DepartureCheckpoint.class, DepartureCheckpointDeserializer.INSTANCE);

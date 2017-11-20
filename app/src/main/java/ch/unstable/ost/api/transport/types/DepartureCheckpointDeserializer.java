@@ -1,7 +1,6 @@
 package ch.unstable.ost.api.transport.types;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.JsonDeserializationContext;
@@ -17,29 +16,15 @@ import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.api.model.DepartureCheckpoint;
 import ch.unstable.ost.api.model.Location;
 
+import static ch.unstable.ost.api.transport.types.HelpersKt.getDate;
+import static ch.unstable.ost.api.transport.types.HelpersKt.getPlatform;
+
 public enum DepartureCheckpointDeserializer implements JsonDeserializer<DepartureCheckpoint> {
     INSTANCE;
     private static final String TAG = "DepCPDeserializer";
-    private static final String FIELD_PLATFORM = "platform";
     private static final String FIELD_DEPARTURE_TIMESTAMP = "departureTimestamp";
     private static final String FIELD_STATION = "station";
 
-    @Nullable
-    public static String getPlatform(JsonObject object) {
-        if (!object.has(FIELD_PLATFORM)) {
-            return null;
-        }
-        JsonElement platform = object.get(FIELD_PLATFORM);
-        if (!platform.isJsonNull()) {
-            return platform.getAsString().trim();
-        }
-        return null;
-    }
-
-    @NonNull
-    public static Date getDate(JsonObject obj, String fieldName) {
-        return new Date(obj.get(fieldName).getAsLong() * 1000);
-    }
 
     @Override
     public DepartureCheckpoint deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

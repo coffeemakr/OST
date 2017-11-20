@@ -1,7 +1,8 @@
-package ch.unstable.ost.api.search.types
+package ch.unstable.ost.api.transport.types
+
 
 import ch.unstable.ost.api.base.AbstractConnectionDeserializer
 
 object ConnectionDeserializer : AbstractConnectionDeserializer() {
-    override val sectionsField = "legs"
+    override val sectionsField = "sections"
 }

@@ -74,8 +74,8 @@ public enum SectionListDeserializer implements ch.unstable.ost.api.base.SectionL
 
     @Override
     public List<Section> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        JsonArray array = json.getAsJsonArray();
-        ArrayList<Section> sections = new ArrayList<>(array.size());
+        final JsonArray array = json.getAsJsonArray();
+        final ArrayList<Section> sections = new ArrayList<>(array.size());
         long walkTime = 0;
         for (JsonElement element : array) {
             JsonObject sectionObj = element.getAsJsonObject();
