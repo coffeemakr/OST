@@ -26,7 +26,7 @@ class LicenseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val softwareComponents = arguments.getParcelableArrayList<SoftwareComponent>(ARG_COMPONENTS)
+        val softwareComponents = arguments!!.getParcelableArrayList<SoftwareComponent>(ARG_COMPONENTS)
         // Sort components by name
         Collections.sort(softwareComponents) { o1, o2 -> o1.name.compareTo(o2.name) }
         softwareComponentsAdapter = SoftwareComponentsAdapter(this)
@@ -47,7 +47,7 @@ class LicenseFragment : Fragment() {
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
-        val inflater = activity.menuInflater
+        val inflater = activity!!.menuInflater!!
         val component = v.tag!! as SoftwareComponent
         menu.setHeaderTitle(component.name)
         inflater.inflate(R.menu.software_component, menu)
@@ -64,7 +64,7 @@ class LicenseFragment : Fragment() {
                 return true;
             }
             R.id.action_show_license -> {
-                showLicense(context, component.license)
+                showLicense(context!!, component.license)
                 return true;
             }
         }

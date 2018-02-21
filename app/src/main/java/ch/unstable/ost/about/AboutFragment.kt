@@ -29,7 +29,7 @@ class AboutFragment : Fragment() {
 
         view.findViewById<View>(R.id.github_link).setOnClickListener({
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.context.getString(R.string.github_url)))
-            context.startActivity(intent)
+            context!!.startActivity(intent)
         })
 
         view.findViewById<View>(R.id.app_read_license).setOnClickListener({
