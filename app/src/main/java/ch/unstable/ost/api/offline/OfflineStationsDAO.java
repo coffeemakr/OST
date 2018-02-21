@@ -36,7 +36,7 @@ public abstract class OfflineStationsDAO implements StationsDAO {
 
     @Override
     public Location[] getStationsByQuery(String query, @Nullable StationType[] types) {
-        return getStationsByQuery(getFullQuery(query), StationType.getMask(types));
+        return getStationsByQuery(getFullQuery(query), StationType.Companion.getMask(types));
     }
 
     @NonNull

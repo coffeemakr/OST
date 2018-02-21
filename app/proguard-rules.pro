@@ -27,13 +27,13 @@
 -dontobfuscate
 
 -keep public class ch.unstable.ost.api.offline.StationsDAOFactory {
-    pubic *;
+    public *;
 }
 -keep public class ch.unstable.ost.api.search.StationsDAOFactory {
-    pubic *;
+    public *;
 }
 -keep public class ch.unstable.ost.api.transport.StationsDAOFactory {
-    pubic *;
+    public *;
 }
 
 -dontwarn javax.lang.model.element.Modifier
@@ -43,5 +43,5 @@
 -dontwarn java.lang.ClassValue
 -dontwarn com.google.appengine.**
 
-
+-printconfiguration config.txt
 

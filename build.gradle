@@ -1,7 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.50'
+    ext.kotlin_version = '1.2.10'
+    ext.gradle_android_version = '3.0.1'
     repositories {
         jcenter()
         maven {
@@ -9,7 +10,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta6'
+        classpath "com.android.tools.build:gradle:$gradle_android_version"
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
@@ -30,10 +31,10 @@ allprojects {
 // modules in the project.
 ext {
     // The following are only a few examples of the types of properties you can define.
-    compileSdkVersion = 26
-    buildToolsVersion = "26.0.1"
+    compileSdkVersion = 27
+    buildToolsVersion = "27.0.2"
     // You can also create properties to specify versions for dependencies.
     // Having consistent versions between modules can avoid conflicts with behavior.
-    supportLibVersion = "26.1.0"
-    roomLibVersion = "1.0.0-beta1"
+    supportLibVersion = "27.0.2"
+    roomLibVersion = "1.0.0"
 }

@@ -9,11 +9,11 @@ public class StationTypeConverter {
 
     @TypeConverter
     public Location.StationType[] getStationTypesFromInteger(int mask) {
-        return Location.StationType.fromMask(mask);
+        return Location.StationType.Companion.fromMask(mask);
     }
 
     @TypeConverter
     public int getIntegerFromStationTypes(Location.StationType[] types) {
-        return Location.StationType.getMask(types);
+        return Location.StationType.Companion.getMask(types);
     }
 }

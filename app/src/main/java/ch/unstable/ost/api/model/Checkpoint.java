@@ -27,7 +27,7 @@ abstract class Checkpoint {
 
     Checkpoint(Parcel in) {
         platform = in.readString();
-        location = ParcelUtils.readParcelable(in, Location.CREATOR);
+        location = ParcelUtils.readParcelable(in, Location.Companion.getCREATOR());
     }
 
     public Location getLocation() {

@@ -1,0 +1,626 @@
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/2.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/3.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/4.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/5.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/6.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/7.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/8.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/9.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/10.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/11.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/12.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/13.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/14.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/15.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/16.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/17.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/18.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/19.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/20.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/21.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/22.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/23.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/24.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/25.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/26.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/27.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/28.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/29.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/30.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/31.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/32.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/33.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/34.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/35.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/36.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/37.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/38.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/39.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/40.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/41.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/42.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/43.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/44.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/45.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/46.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/47.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/0(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/1(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/desugar/release/48(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/processing-tools/runtime-deps/release/desugar_try_with_resources.jar(**.class)
+-injars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/mergeJavaRes/release/0.jar(!**.class)
+-outjars /home/coffeemakr/hacks/OST/app/build/intermediates/transforms/proguard/release/0.jar
+
+-libraryjars /opt/android-sdk/platforms/android-27/android.jar
+-libraryjars /opt/android-sdk/platforms/android-27/optional/org.apache.http.legacy.jar
+
+-forceprocessing
+-printusage /home/coffeemakr/hacks/OST/app/build/outputs/mapping/release/usage.txt
+-dontoptimize
+-dontobfuscate
+-printmapping /home/coffeemakr/hacks/OST/app/build/outputs/mapping/release/mapping.txt
+-dontusemixedcaseclassnames
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod,*Annotation*,*Annotation*,*Annotation*
+-verbose
+-dontnote com.android.vending.licensing.ILicensingService,com.google.vending.licensing.ILicensingService,com.google.android.vending.licensing.ILicensingService,android.support.**
+-dontwarn android.support.**,javax.lang.model.element.Modifier,javax.annotation.**,javax.inject.**,sun.misc.Unsafe,java.lang.ClassValue,com.google.appengine.**,android.arch.persistence.room.paging.**
+-printconfiguration /home/coffeemakr/hacks/OST/app/config.txt
+-dump /home/coffeemakr/hacks/OST/app/build/outputs/mapping/release/dump.txt
+-printseeds /home/coffeemakr/hacks/OST/app/build/outputs/mapping/release/seeds.txt
+
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/card_favorites.xml:17
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/card_last_query.xml:17
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/content_favorites.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/dialog_time_picker.xml:1
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_head_navigation.xml:21
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_standard_navigation_new.xml:1
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/item_connection.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/item_connection_journey_station.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/item_connection_query.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/item_connection_section_journey.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/item_connection_section_walk.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/item_favorite_connection.xml:4
+-keep class android.support.constraint.ConstraintLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/design-27.0.2.aar/2e491a0ba2613fb4801ec3efc9fa4f8f/res/layout/design_bottom_navigation_item.xml:26
+-keep class android.support.design.internal.BaselineLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/design-27.0.2.aar/2e491a0ba2613fb4801ec3efc9fa4f8f/res/layout/design_navigation_item.xml:17
+-keep class android.support.design.internal.NavigationMenuItemView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/design-27.0.2.aar/2e491a0ba2613fb4801ec3efc9fa4f8f/res/layout/design_navigation_menu.xml:17
+-keep class android.support.design.internal.NavigationMenuView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/design-27.0.2.aar/2e491a0ba2613fb4801ec3efc9fa4f8f/res/layout/design_layout_snackbar_include.xml:18
+-keep class android.support.design.internal.SnackbarContentLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_about.xml:12
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_error_report.xml:9
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_favorites.xml:9
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_query_history.xml:16
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_head_navigation.xml:2
+-keep class android.support.design.widget.AppBarLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/design-27.0.2.aar/2e491a0ba2613fb4801ec3efc9fa4f8f/res/layout/design_text_input_password_icon.xml:18
+-keep class android.support.design.widget.CheckableImageButton {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/design-27.0.2.aar/2e491a0ba2613fb4801ec3efc9fa4f8f/res/layout/design_bottom_sheet_dialog.xml:26
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_about.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_connection_list.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_error_report.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_favorites.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_query_history.xml:2
+-keep class android.support.design.widget.CoordinatorLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_error_report.xml:26
+-keep class android.support.design.widget.FloatingActionButton {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/design-27.0.2.aar/2e491a0ba2613fb4801ec3efc9fa4f8f/res/layout-sw600dp-v13/design_layout_snackbar.xml:18
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/design-27.0.2.aar/2e491a0ba2613fb4801ec3efc9fa4f8f/res/layout/design_layout_snackbar.xml:18
+-keep class android.support.design.widget.Snackbar$SnackbarLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/dialog_time_picker.xml:74
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/dialog_time_picker.xml:79
+-keep class android.support.design.widget.TabItem {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_about.xml:26
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/dialog_time_picker.xml:63
+-keep class android.support.design.widget.TabLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_choose_station.xml:29
+-keep class android.support.design.widget.TextInputLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_about.xml:33
+-keep class android.support.v4.view.ViewPager {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_alert_dialog_material.xml:41
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/content_error_report.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_about.xml:1
+-keep class android.support.v4.widget.NestedScrollView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_alert_dialog_button_bar_material.xml:43
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_alert_dialog_material.xml:52
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_alert_dialog_material.xml:66
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_alert_dialog_title_material.xml:56
+-keep class android.support.v4.widget.Space {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_select_dialog_material.xml:23
+-keep class android.support.v7.app.AlertController$RecycleListView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/preference-v7-27.0.2.aar/7da7ccee6ad6418853bd07c33c979657/res/layout-v11/preference.xml:32
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/preference-v7-27.0.2.aar/7da7ccee6ad6418853bd07c33c979657/res/layout-v11/preference_dropdown.xml:38
+-keep class android.support.v7.internal.widget.PreferenceImageView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/preference-v7-27.0.2.aar/7da7ccee6ad6418853bd07c33c979657/res/layout/preference_widget_seekbar.xml:66
+-keep class android.support.v7.preference.UnPressableLinearLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_action_menu_item_layout.xml:17
+-keep class android.support.v7.view.menu.ActionMenuItemView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_expanded_menu_layout.xml:17
+-keep class android.support.v7.view.menu.ExpandedMenuView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_list_menu_item_layout.xml:17
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_popup_menu_item_layout.xml:17
+-keep class android.support.v7.view.menu.ListMenuItemView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout-v26/abc_screen_toolbar.xml:27
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_screen_toolbar.xml:27
+-keep class android.support.v7.widget.ActionBarContainer {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout-v26/abc_screen_toolbar.xml:44
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_action_mode_bar.xml:19
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_screen_toolbar.xml:43
+-keep class android.support.v7.widget.ActionBarContextView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout-v26/abc_screen_toolbar.xml:17
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_screen_toolbar.xml:17
+-keep class android.support.v7.widget.ActionBarOverlayLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_action_menu_layout.xml:17
+-keep class android.support.v7.widget.ActionMenuView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_activity_chooser_view.xml:19
+-keep class android.support.v7.widget.ActivityChooserView$InnerLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_alert_dialog_material.xml:18
+-keep class android.support.v7.widget.AlertDialogLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_alert_dialog_button_bar_material.xml:26
+-keep class android.support.v7.widget.ButtonBarLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/card_favorites.xml:10
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/card_last_query.xml:10
+-keep class android.support.v7.widget.CardView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_screen_content_include.xml:19
+-keep class android.support.v7.widget.ContentFrameLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_alert_dialog_title_material.xml:45
+-keep class android.support.v7.widget.DialogTitle {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_screen_simple_overlay_action_mode.xml:23
+-keep class android.support.v7.widget.FitWindowsFrameLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_dialog_title_material.xml:22
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_screen_simple.xml:17
+-keep class android.support.v7.widget.FitWindowsLinearLayout {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/preference-v7-27.0.2.aar/7da7ccee6ad6418853bd07c33c979657/res/layout/preference_recyclerview.xml:18
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_choose_station.xml:65
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_query_history.xml:10
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/content_favorites.xml:11
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_connection_detail.xml:8
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_connection_list.xml:41
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_journey_detail.xml:8
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_licenses.xml:2
+-keep class android.support.v7.widget.RecyclerView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_search_view.xml:75
+-keep class android.support.v7.widget.SearchView$SearchAutoComplete {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/preference-v7-27.0.2.aar/7da7ccee6ad6418853bd07c33c979657/res/layout/preference_widget_switch_compat.xml:20
+-keep class android.support.v7.widget.SwitchCompat {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout-v26/abc_screen_toolbar.xml:37
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_screen_toolbar.xml:36
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_about.xml:19
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_choose_station.xml:12
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_error_report.xml:15
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_favorites.xml:14
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_query_history.xml:22
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/default_toolbar.xml:2
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_head_navigation.xml:11
+-keep class android.support.v7.widget.Toolbar {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_screen_simple.xml:25
+# Referenced at /home/coffeemakr/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/43f062eea870c6f089edd683dd55ef80/res/layout/abc_screen_simple_overlay_action_mode.xml:32
+-keep class android.support.v7.widget.ViewStubCompat {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:70
+-keep class cat.ereza.customactivityoncrash.activity.DefaultErrorActivity {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:74
+-keep class cat.ereza.customactivityoncrash.provider.CaocInitProvider {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:38
+-keep class ch.unstable.ost.ChooseStationActivity {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:30
+-keep class ch.unstable.ost.ConnectionDetailActivity {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:20
+-keep class ch.unstable.ost.ConnectionListActivity {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_quickstart.xml:14
+-keep class ch.unstable.ost.FavoriteCardFragment {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:53
+-keep class ch.unstable.ost.FavoritesActivity {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/activity_connection_list.xml:10
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_standart_navigation.xml:6
+-keep class ch.unstable.ost.HeadNavigationFragment {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/fragment_quickstart.xml:7
+-keep class ch.unstable.ost.LastQueryCardFragment {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:13
+-keep class ch.unstable.ost.OSTApplication {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:45
+-keep class ch.unstable.ost.QueryHistoryActivity {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:61
+-keep class ch.unstable.ost.about.AboutActivity {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:41
+-keep class ch.unstable.ost.error.ErrorReportActivity {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/xml/pref_headers.xml:3
+-keep class ch.unstable.ost.preference.AppearanceSettingsFragment {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/xml/pref_headers.xml:9
+-keep class ch.unstable.ost.preference.ContentSettingsFragment {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/build/intermediates/manifests/full/release/AndroidManifest.xml:37
+-keep class ch.unstable.ost.preference.SettingsActivity {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/item_connection.xml:20
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/item_favorite_connection.xml:34
+-keep class ch.unstable.ost.views.ConnectionLineView {
+    <init>(...);
+}
+
+# Referenced at /home/coffeemakr/hacks/OST/app/src/main/res/layout/item_connection_journey_station.xml:10
+-keep class ch.unstable.ost.views.StopDotView {
+    <init>(...);
+}
+
+-keep public class com.google.vending.licensing.ILicensingService
+
+-keep public class com.android.vending.licensing.ILicensingService
+
+-keep public class com.google.android.vending.licensing.ILicensingService
+
+# For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
+-keepclasseswithmembers,allowshrinking class * {
+    native <methods>;
+}
+
+# Keep setters in Views so that animations can still work.
+-keepclassmembers public class * extends android.view.View {
+    void set*(***);
+    *** get*();
+}
+
+# We want to keep methods in Activity that could be used in the XML attribute onClick.
+-keepclassmembers class * extends android.app.Activity {
+    public void *(android.view.View);
+}
+
+# For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
+-keepclassmembers enum  * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keepclassmembers class * extends android.os.Parcelable {
+    public static final ** CREATOR;
+}
+
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
+
+# Preserve annotated Javascript interface methods.
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface
+    <methods>;
+}
+
+# Understand the @Keep support annotation.
+-keep class android.support.annotation.Keep
+
+-keep @android.support.annotation.Keep class * {
+    <fields>;
+    <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep
+    <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep
+    <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep
+    <init>(...);
+}
+
+-keep public class ch.unstable.ost.api.offline.StationsDAOFactory {
+    public <fields>;
+    public <methods>;
+}
+
+-keep public class ch.unstable.ost.api.search.StationsDAOFactory {
+    public <fields>;
+    public <methods>;
+}
+
+-keep public class ch.unstable.ost.api.transport.StationsDAOFactory {
+    public <fields>;
+    public <methods>;
+}
+
+# Copyright (C) 2015 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# CoordinatorLayout resolves the behaviors of its child components with reflection.
+-keep public class * extends android.support.design.widget.CoordinatorLayout$Behavior {
+    public <init>(android.content.Context,android.util.AttributeSet);
+    public <init>();
+}
+
+# Copyright (C) 2015 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# Preference objects are inflated via reflection
+-keep public class android.support.v7.preference.Preference {
+    public <init>(android.content.Context,android.util.AttributeSet);
+}
+
+-keep public class * extends android.support.v7.preference.Preference {
+    public <init>(android.content.Context,android.util.AttributeSet);
+}
+
+# Copyright (C) 2016 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# keep setters in VectorDrawables so that animations can still work.
+-keepclassmembers class android.support.graphics.drawable.VectorDrawableCompat$* {
+    void set*(***);
+    *** get*();
+}
+
+-keep public class * extends android.arch.persistence.room.RoomDatabase
+
+# Copyright (C) 2015 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# When layoutManager xml attribute is used, RecyclerView inflates
+# LayoutManagers' constructors using reflection.
+-keep public class * extends android.support.v7.widget.RecyclerView$LayoutManager {
+    public <init>(...);
+}
+
+# Copyright (C) 2017 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# FragmentTransitionSupport is instantiated in support-fragment via reflection.
+-keep public class android.support.transition.FragmentTransitionSupport
+
+# Keep a field in transition that is used to keep a reference to weakly-referenced object
+-keepclassmembers class android.support.transition.ChangeBounds$* extends android.animation.AnimatorListenerAdapter {
+    android.support.transition.ChangeBounds$ViewBounds mViewBounds;
+}
+
+# Copyright (C) 2017 The Android Open Source Project
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#      http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# Prevent Parcelable objects from being removed or renamed.
+-keep class android.support.v4.media.** extends android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+
+-keepclassmembers enum  android.arch.lifecycle.Lifecycle$Event {
+    <fields>;
+}
+
+-keep class * extends android.arch.lifecycle.LifecycleObserver
+
+-keep class * extends android.arch.lifecycle.GeneratedAdapter {
+    <init>(...);
+}
+
+-keepclassmembers class ** {
+    @android.arch.lifecycle.OnLifecycleEvent
+    <fields>;
+    @android.arch.lifecycle.OnLifecycleEvent
+    <methods>;
+}
