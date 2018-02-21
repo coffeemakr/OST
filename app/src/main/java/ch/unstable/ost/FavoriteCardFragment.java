@@ -15,11 +15,10 @@ import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.database.Databases;
 import ch.unstable.ost.database.dao.FavoriteConnectionDao;
 import ch.unstable.ost.database.model.FavoriteConnection;
-import ch.unstable.ost.views.lists.query.QueryBinder;
 import ch.unstable.ost.utils.LocalizationUtils;
+import ch.unstable.ost.views.lists.query.QueryBinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class FavoriteCardFragment extends QuickstartCardFragment {
@@ -46,12 +45,12 @@ public class FavoriteCardFragment extends QuickstartCardFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.card_favorites, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mCardFavorites = view.findViewById(R.id.cardFavorites);
@@ -91,12 +90,9 @@ public class FavoriteCardFragment extends QuickstartCardFragment {
         mDisposable = mFavoriteDao.getLatestFavorite()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<FavoriteConnection>() {
-                    @Override
-                    public void accept(FavoriteConnection favoriteConnection) throws Exception {
-                        Log.d(TAG, "Got latest connection: " + favoriteConnection);
-                        bindConnection(favoriteConnection);
-                    }
+                .subscribe(favoriteConnection -> {
+                    Log.d(TAG, "Got latest connection: " + favoriteConnection);
+                    bindConnection(favoriteConnection);
                 }, getErrorConsumer());
     }
 

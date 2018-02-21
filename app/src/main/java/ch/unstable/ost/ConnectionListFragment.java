@@ -145,18 +145,20 @@ public class ConnectionListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_connection_list, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        final Context context = getContext();
+        if(context == null) throw new IllegalStateException("context is null");
         super.onViewCreated(view, savedInstanceState);
         mConnectionList = view.findViewById(R.id.connections_list);
         mConnectionList.setAdapter(mConnectionAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         mConnectionList.setLayoutManager(linearLayoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         mConnectionList.addItemDecoration(dividerItemDecoration);
         mConnectionListScrollListener = mConnectionAdapter.createOnScrollListener(linearLayoutManager);
         mConnectionList.addOnScrollListener(mConnectionListScrollListener);
@@ -242,7 +244,7 @@ public class ConnectionListFragment extends Fragment {
         }
         if (mViewStateHolder != null) {
             mViewStateHolder.onError(errorMessage);
-        } else {
+        } else if(exception != null){
             // Fallback if an error happens outside of view
             NavHelper.INSTANCE.startErrorActivity(getContext(), exception);
         }
