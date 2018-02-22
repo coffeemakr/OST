@@ -3,15 +3,18 @@ group: edge
 language: android
 android:
   components:
-  - build-tools-27.0.2
-  - android-27
-  - android-22
-  - extra-android-m2repository
-  - sys-img-armeabi-v7a-android-22
+    - tools
+    - platform-tools
+    - tools
+
+    - build-tools-27.0.2
+    - android-27
+    - extra-android-m2repository
+    - sys-img-armeabi-v7a-android-22
   licenses:
-  - android-sdk-preview-license-.+
-  - android-sdk-license-.+
-  - extra-android-.+
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - extra-android-.+
 before_install:
 - openssl aes-256-cbc -K $encrypted_d80c35a8c544_key -iv $encrypted_d80c35a8c544_iv
   -in travis-release-key.jks.enc -out travis-release-key.jks -d
