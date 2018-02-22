@@ -107,7 +107,6 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.13.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'commons-codec:commons-codec:1.11'
 
     // Room
     implementation "android.arch.persistence.room:runtime:${rootProject.ext.roomLibVersion}"

@@ -3,8 +3,8 @@ group: edge
 language: android
 android:
   components:
-  - build-tools-25.0.3
-  - android-25
+  - build-tools-27.0.2
+  - android-27
   - android-22
   - extra-android-m2repository
   - sys-img-armeabi-v7a-android-22
