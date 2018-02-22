@@ -1,5 +1,7 @@
 package ch.unstable.ost.api.sbb.auth
 
+import ch.unstable.lib.sbb.auth.AuthInterceptor
+import ch.unstable.lib.sbb.auth.CustomDateSource
 import okhttp3.Request
 import org.apache.commons.codec.binary.Hex
 import org.junit.Test

@@ -1,6 +1,4 @@
-package ch.unstable.ost.api.sbb.model
-
-import ch.unstable.sbb.api.model.Station
+package ch.unstable.lib.sbb.model
 
 /**
  * Created on 21.02.18.

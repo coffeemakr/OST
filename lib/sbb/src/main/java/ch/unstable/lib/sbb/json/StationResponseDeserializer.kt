@@ -1,7 +1,7 @@
-package ch.unstable.sbb.api.json
+package ch.unstable.lib.sbb.json
 
-import ch.unstable.ost.api.sbb.model.StationResponse
-import ch.unstable.sbb.api.model.Station
+import ch.unstable.lib.sbb.model.StationResponse
+import ch.unstable.lib.sbb.model.Station
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement

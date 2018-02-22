@@ -1,17 +1,11 @@
 plugins {
     id "org.sonarqube" version "2.5"
-    id "net.ltgt.errorprone" version "0.0.11"
 }
-
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
 apply plugin: 'kotlin-kapt'
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs += ['-XepDisableWarningsInGeneratedCode']
-}
 
 android {
     compileOptions {
@@ -33,7 +27,7 @@ android {
     defaultConfig {
         applicationId "ch.unstable.ost"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 27
         multiDexEnabled true
         versionCode 9
         versionName "0.5.0"
@@ -55,9 +49,6 @@ android {
             testLogging {
                 events 'skipped', 'failed', 'standardOut', 'standardError'
                 exceptionFormat "short"
-            }
-            jacoco {
-                includeNoLocationClasses = true
             }
         }
     }
@@ -88,6 +79,9 @@ jacocoAndroidUnitTestReport {
 
 
 dependencies {
+
+    implementation project(':lib:sbb')
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -120,8 +114,6 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:${rootProject.ext.roomLibVersion}"
     androidTestImplementation "android.arch.persistence.room:testing:${rootProject.ext.roomLibVersion}"
     implementation "android.arch.persistence.room:rxjava2:${rootProject.ext.roomLibVersion}"
-
-    errorprone 'com.google.errorprone:error_prone_core:2.1.1'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestUtil 'com.android.support.test:orchestrator:1.0.1'

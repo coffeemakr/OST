@@ -63,6 +63,7 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
         gsonBuilder.registerTypeAdapter(Location.class, LocationDeserializer.INSTANCE);
     }
 
+    @NonNull
     @Override
     public Location[] getStationsByQuery(String query) throws IOException {
         return getStationsByQuery(query, null);

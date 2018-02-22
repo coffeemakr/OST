@@ -1,4 +1,4 @@
-package ch.unstable.ost.api.sbb.auth
+package ch.unstable.lib.sbb.auth
 
 import android.content.pm.PackageManager
 import android.os.Build

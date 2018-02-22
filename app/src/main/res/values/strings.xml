@@ -115,7 +115,7 @@
     <string name="station_dao_factory_offline" translatable="false">ch.unstable.ost.api.offline.StationsDAOFactory</string>
     <string name="station_dao_factory_search_ch" translatable="false">ch.unstable.ost.api.search.StationsDAOFactory</string>
     <string name="station_dao_factory_transport_ch" translatable="false">ch.unstable.ost.api.transport.StationsDAOFactory</string>
-    <string name="station_dao_factory_sbb_ch" translatable="false">ch.unstable.ost.api.sbb.SbbApiFactory</string>
+    <string name="station_dao_factory_sbb_ch" translatable="false">ch.unstable.ost.api.sbb.SbbStationsDaoFactory</string>
     <string-array name="prefs_station_dao_factory_values">
         <item>@string/station_dao_factory_offline</item>
         <item>@string/station_dao_factory_search_ch</item>

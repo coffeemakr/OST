@@ -35,6 +35,9 @@
 -keep public class ch.unstable.ost.api.transport.StationsDAOFactory {
     public *;
 }
+-keep public class ch.unstable.ost.api.sbb.SbbStationsDaoFactory {
+    public *;
+}
 
 -dontwarn javax.lang.model.element.Modifier
 -dontwarn javax.annotation.**

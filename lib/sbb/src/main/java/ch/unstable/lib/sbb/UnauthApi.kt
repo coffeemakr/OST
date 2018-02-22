@@ -1,7 +1,6 @@
-package ch.unstable.ost.api.sbb
+package ch.unstable.lib.sbb
 
-import ch.unstable.ost.api.sbb.model.StationResponse
-import ch.unstable.sbb.api.model.Station
+import ch.unstable.lib.sbb.model.StationResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
