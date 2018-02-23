@@ -1,6 +1,5 @@
 package ch.unstable.lib.sbb
 
-import android.annotation.SuppressLint
 import ch.unstable.lib.sbb.auth.AuthInterceptor
 import ch.unstable.lib.sbb.json.StationDeserializer
 import ch.unstable.lib.sbb.json.StationResponseDeserializer
@@ -107,7 +106,6 @@ class SbbApiFactory {
     }
 
 
-    @SuppressLint("TrustAllX509TrustManager")
     private fun createTrustAllX509TrustManager(): SSLConfig {
         val sslContext = SSLContext.getInstance("TLS")
         val allTrustManager = object : X509TrustManager {

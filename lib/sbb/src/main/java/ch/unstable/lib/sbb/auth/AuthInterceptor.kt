@@ -1,13 +1,9 @@
 package ch.unstable.lib.sbb.auth
 
-import android.content.pm.PackageManager
-import android.os.Build
-import android.util.Log
-import ch.unstable.ost.BuildConfig
-import ch.unstable.ost.utils.StandartCharsetCompat.UTF_8
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.internal.Util.UTF_8
 import org.apache.commons.codec.binary.Base64.encodeBase64
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
@@ -21,8 +17,6 @@ import javax.crypto.spec.SecretKeySpec
 class AuthInterceptor(certHash: ByteArray, private val dateSource: DateSource) : Interceptor {
 
     constructor(certHash: ByteArray) : this(certHash, DefaultDateSource())
-
-    private val tag = "AuthInterceptor"
 
     private val secretKey: ByteArray = "c3eAd3eC3a7845dE98f73942b3d5f9c0".toByteArray(UTF_8)
 
@@ -50,22 +44,16 @@ class AuthInterceptor(certHash: ByteArray, private val dateSource: DateSource) :
         val path = original
                 .url()
                 .encodedPath()
-        Log.d(tag, "Using date: " + date)
-        Log.d(tag, "Using path: " + path)
 
         val mac = createMac()
         mac.update(path.toByteArray(UTF_8))
         mac.update(date.toByteArray(UTF_8))
 
         val key = encodeBase64(mac.doFinal()).toString(UTF_8)
-        Log.d(tag, "Using key: " + key)
-        Build.VERSION.RELEASE
 
 
         val versionName = "7.1.1"
-        //val userAgent = "SBBmobile/" + versionName + " Android/" + Build.VERSION.RELEASE + "(" + Build.MANUFACTURER + ";" + Build.MODEL + ")"
         val userAgent = "SBBmobile/flavorprodRelease-7.3.0-RELEASE Android/8.1.0 (Google;Android SDK built for x86)"
-        Log.d(tag, "Using user-agent: " + userAgent)
 
         return original.newBuilder()
                 .addHeader("X-API-AUTHORIZATION", key)
@@ -82,7 +70,7 @@ class AuthInterceptor(certHash: ByteArray, private val dateSource: DateSource) :
     }
 
     init {
-        macKey = generateMacKey(certHash!!)
+        macKey = generateMacKey(certHash)
     }
 
 
