@@ -13,7 +13,7 @@ import com.google.common.base.Preconditions.checkArgument
 import com.google.common.base.Preconditions.checkNotNull
 
 
-class Location : Parcelable {
+open class Location : Parcelable {
     val name: String
     val type: StationType?
     private val id: String?

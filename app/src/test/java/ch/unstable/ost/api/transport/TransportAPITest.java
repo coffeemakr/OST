@@ -56,7 +56,7 @@ public class TransportAPITest {
 
     @Test
     public void getConnections() throws Exception {
-        Date date = getDate(2017,7,7,10,0);
+        Date date = getDate(2018,7,7,10,0);
         //System.out.println(date);
         ConnectionQuery query = new ConnectionQuery.Builder()
                 .setFrom("Bern")
@@ -66,6 +66,7 @@ public class TransportAPITest {
                 .build();
 
         Connection[] connections = transportApi.getConnections(query, 0);
+        assertNotNull(connections);
         assertEquals(connections.length, 4);
         assertConnectionsSortedByDeparture(connections);
 
@@ -78,7 +79,7 @@ public class TransportAPITest {
    @Test
     public void getConnectionsWithDepartureTimeSet() throws Exception {
 
-       Date date = getDate(2017,7,7,10,0);
+       Date date = getDate(2018,7,7,10,0);
 
        ConnectionQuery query = new ConnectionQuery.Builder()
                .setFrom("Bern")

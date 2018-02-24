@@ -22,6 +22,8 @@ import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.model.PassingCheckpoint;
 import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.api.search.types.ConnectionDeserializer;
+import ch.unstable.ost.api.search.types.ConnectionListDeserializer;
+import ch.unstable.ost.api.search.types.ConnectionsList;
 import ch.unstable.ost.api.search.types.LocationDeserializer;
 import ch.unstable.ost.api.search.types.PassingCheckpointsDeserializer;
 import ch.unstable.ost.api.search.types.SectionsDeserializer;
@@ -56,8 +58,10 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
 
     @Override
     protected void onBuildGsonCreated(GsonBuilder gsonBuilder) {
+        // TODO: 24.02.18 Convert to singleton
         gsonBuilder.registerTypeAdapter(Section[].class, new SectionsDeserializer());
         gsonBuilder.registerTypeAdapter(Connection.class, new ConnectionDeserializer());
+        gsonBuilder.registerTypeAdapter(ConnectionsList.class, new ConnectionListDeserializer());
         gsonBuilder.registerTypeAdapter(StationType.class, StationTypeDeserializer.INSTANCE);
         gsonBuilder.registerTypeAdapter(PassingCheckpoint.class, PassingCheckpointsDeserializer.INSTANCE);
         gsonBuilder.registerTypeAdapter(Location.class, LocationDeserializer.INSTANCE);
@@ -65,13 +69,13 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
 
     @NonNull
     @Override
-    public Location[] getStationsByQuery(String query) throws IOException {
+    public Location[] getStationsByQuery(@NonNull String query) throws IOException {
         return getStationsByQuery(query, null);
     }
 
     @Override
     @NonNull
-    public Location[] getStationsByQuery(String query, @Nullable StationType[] types) throws IOException {
+    public Location[] getStationsByQuery(@NonNull String query, @Nullable StationType[] types) throws IOException {
         if (types != null && types.length == 0) return new Location[0];
         UrlBuilder builder = UrlBuilder.fromString(COMPLETION_URL)
                 .addParameter("show_ids", "1")
@@ -122,7 +126,4 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
         return connectionsList.connections;
     }
 
-    private static class ConnectionsList {
-        public Connection[] connections;
-    }
 }

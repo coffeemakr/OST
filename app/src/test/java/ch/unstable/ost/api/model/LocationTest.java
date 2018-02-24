@@ -14,12 +14,12 @@ public class LocationTest {
     private static final String VALID_NAME = "name";
     private StationType VALID_TYPE = StationType.TRAIN;
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNullAsName() {
         new Location(null, VALID_TYPE, VALID_ID);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithNullAsType() {
         new Location(VALID_NAME, null, VALID_ID);
     }
