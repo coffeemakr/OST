@@ -24,10 +24,10 @@ before_install:
 before_script:
 - android list target
 - echo no | avdmanager create avd --force -n test --package 'system-images;android-27;google_apis;x86'
-- export ANDROID_EMULATOR_DEBUG=1 emulator -debug -avd test -no-audio -no-window
+- ANDROID_EMULATOR_DEBUG=1 emulator -debug -avd test -no-audio -no-window
 script:
   - ./gradlew build
-  - adb wait-for-device
+  - android-wait-for-emulator
   - adb shell input keyevent 82 &
   - ./gradlew connectedCheck --stacktrace
 before_cache:
