@@ -24,7 +24,7 @@ before_install:
 before_script:
 - android list target
 - echo no | avdmanager create avd --force -n test --package 'system-images;android-27;google_apis;x86'
-- emulator -debug -avd test -no-audio -no-window
+- export ANDROID_EMULATOR_DEBUG=1 emulator -debug -avd test -no-audio -no-window
 script:
   - ./gradlew build
   - adb wait-for-device
