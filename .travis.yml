@@ -19,7 +19,7 @@ before_install:
   - yes | sdkmanager 'system-images;android-27;google_apis;x86' >/dev/null
   - yes | sdkmanager 'build-tools;27.0.2' >/dev/null
   - yes | sdkmanager 'extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2' >/dev/null
-  - yes | sdkmanager --licenses
+  - yes | sdkmanager --licenses >/dev/null
   - openssl aes-256-cbc -K $encrypted_d80c35a8c544_key -iv $encrypted_d80c35a8c544_iv -in travis-release-key.jks.enc -out travis-release-key.jks -d
 before_script:
 - android list target
