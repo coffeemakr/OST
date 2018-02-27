@@ -3,6 +3,7 @@ An Open Swiss Transport (OST) android app.
 
 [![Build Status](https://travis-ci.org/coffeemakr/OST.svg?branch=master)](https://travis-ci.org/coffeemakr/OST)
 [![codecov](https://codecov.io/gh/coffeemakr/OST/branch/master/graph/badge.svg)](https://codecov.io/gh/coffeemakr/OST)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcoffeemakr%2FOST.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcoffeemakr%2FOST?ref=badge_shield)
 
 ## Values
 
@@ -33,3 +34,6 @@ For connection queries currently only transport.opendata.ch API is supported.
   
  * [Documentation of timetable.search.ch API](https://timetable.search.ch/api/help)
  * [Documentation of transport](http://transport.opendata.ch/)
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcoffeemakr%2FOST.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcoffeemakr%2FOST?ref=badge_large)
