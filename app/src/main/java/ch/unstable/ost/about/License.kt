@@ -16,7 +16,7 @@ class License(val abbreviation: String, val name: String, val filename: String) 
                 .appendPath(filename)
                 .build()
 
-    private constructor(input: Parcel): this(input.readString(), input.readString(), input.readString());
+    private constructor(input: Parcel): this(input.readString()!!, input.readString()!!, input.readString()!!);
 
     override fun describeContents(): Int {
         return 0
@@ -29,7 +29,7 @@ class License(val abbreviation: String, val name: String, val filename: String) 
     }
 
     companion object {
-
+        @JvmField
         val CREATOR: Parcelable.Creator<License> = object : Parcelable.Creator<License> {
             override fun createFromParcel(source: Parcel): License {
                 return License(source)
