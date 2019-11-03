@@ -1,9 +1,6 @@
 # OST
 An Open Swiss Transport (OST) android app.
 
-[![Build Status](https://travis-ci.org/coffeemakr/OST.svg?branch=master)](https://travis-ci.org/coffeemakr/OST)
-[![codecov](https://codecov.io/gh/coffeemakr/OST/branch/master/graph/badge.svg)](https://codecov.io/gh/coffeemakr/OST)
-
 ## Values
 
  * **Offline friendly**: 
@@ -28,6 +25,12 @@ For the autocompletion of the stations can be provided by the following services
 ### Connections
 
 For connection queries currently only transport.opendata.ch API is supported.
+
+### Screenshots
+<img alt="Connections Overview" src="screenshots/connections-overview.png" width="200px"/>
+<img alt="Connection Details" src="screenshots/connection-details.png" width="200px"/>
+<img alt="Trip Details" src="screenshots/trip-details.png" width="200px"/>
+
 
 ### More information
   
