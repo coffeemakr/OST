@@ -40,9 +40,6 @@ cache:
   - "$HOME/.android/build-cache"
 after_failure:
   - cat app/build/test-results/*/*
-after_success:
-  - ./gradlew sonarqube jacocoTestReport
-  - bash <(curl -s https://codecov.io/bash)
 addons:
   sonarcloud:
     organization: "coffeemakr-github"
