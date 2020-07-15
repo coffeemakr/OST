@@ -8,7 +8,7 @@ import ch.unstable.ost.preference.StationDaoLoader
 
 class SbbStationsDaoFactory : StationDaoLoader.StationDAOFactory {
     override fun getStationsDAO(context: Context): StationsDAO {
-        val api = SbbApiFactory().createAPI()
+        val api = SbbApiFactory().createAPI(context)
         return SbbStationDao(api)
     }
 }

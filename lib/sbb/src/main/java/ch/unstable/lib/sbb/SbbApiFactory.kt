@@ -1,5 +1,6 @@
 package ch.unstable.lib.sbb
 
+import android.content.Context
 import ch.unstable.lib.sbb.auth.AuthInterceptor
 import ch.unstable.lib.sbb.json.StationDeserializer
 import ch.unstable.lib.sbb.json.StationResponseDeserializer
@@ -13,7 +14,6 @@ import org.apache.commons.codec.digest.DigestUtils
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.InputStream
-import java.lang.IllegalArgumentException
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
@@ -56,7 +56,7 @@ class SbbApiFactory {
         val password = "2bU`dldNzSA0k(,f>oMku#Ak/`fox-?Z".toCharArray() // Any password will work.
         val keyStore = newEmptyKeyStore(password)
         for ((index, certificate) in certificates.withIndex()) {
-            val certificateAlias = Integer.toString(index)
+            val certificateAlias = index.toString()
             keyStore.setCertificateEntry(certificateAlias, certificate)
         }
 
@@ -89,17 +89,9 @@ class SbbApiFactory {
                 .registerTypeAdapter(StationResponse::class.java, StationResponseDeserializer())
                 .create()!!
 
-    private fun openCertificate() = javaClass.getResourceAsStream("ch/unstable/lib/sbb/ca_cert.crt")!!
-
-    private val authInterceptor: AuthInterceptor
-        get() {
-            val certHash = DigestUtils.sha1(openCertificate())
-            return AuthInterceptor(certHash)
-        }
-
-    private fun createTrustManager(): SSLConfig {
+    private fun createTrustManager(certificate: InputStream): SSLConfig {
         val sslContext = SSLContext.getInstance("TLS")
-        val trustManager = trustManagerForCertificates(openCertificate())
+        val trustManager = trustManagerForCertificates(certificate)
         sslContext.init(null, arrayOf<TrustManager>(trustManager), null)
         val sslSocketFactory = sslContext.socketFactory
         return SSLConfig(sslSocketFactory, trustManager)
@@ -120,12 +112,18 @@ class SbbApiFactory {
 
     private data class SSLConfig(val sslSocketFactory: SSLSocketFactory, val trustManager: X509TrustManager)
 
-    fun createAPI(): UnauthApi {
+    fun createAPI(context: Context): UnauthApi {
 
-        val (sslSocketFactory, trustManager) = createTrustManager()
+        val certHash = context.resources.openRawResource(R.raw.ca_cert).use {
+            DigestUtils.sha1(it)
+        }
+
+        val (sslSocketFactory, trustManager) = context.resources.openRawResource(R.raw.ca_cert).use {
+            createTrustManager(it)
+        }
 
         val client = OkHttpClient.Builder()
-                .addInterceptor(authInterceptor)
+                .addInterceptor(AuthInterceptor(certHash))
                 .sslSocketFactory(sslSocketFactory, trustManager)
                 .build()
 
@@ -133,8 +131,8 @@ class SbbApiFactory {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseUrl)
-                .build()!!
+                .build()
 
-        return retrofit.create(UnauthApi::class.java)!!
+        return retrofit.create(UnauthApi::class.java)
     }
 }

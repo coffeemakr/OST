@@ -20,11 +20,20 @@ class AuthInterceptor(certHash: ByteArray, private val dateSource: DateSource) :
 
     private val secretKey: ByteArray = "c3eAd3eC3a7845dE98f73942b3d5f9c0".toByteArray(UTF_8)
 
+
+    private val userAgent = run {
+        val versionName = "10.6.0"
+        val androidVersion = "9"
+        val deviceName = "Google;Android SDK built for x86"
+        "SBBmobile/flavorprodRelease-$versionName-RELEASE Android/$androidVersion ($deviceName)"
+    }
+
+    private val token = UUID.randomUUID().toString()
+
     private val macKey: SecretKeySpec
 
     private fun generateMacKey(certificateHash: ByteArray): SecretKeySpec {
         //val certBase64 = encodeBase64(certificateHash)!!
-        //assert("WdfnzdQugRFUF5b812hZl3lAahM=" == String(certBase64))
         val certBase64 = "WdfnzdQugRFUF5b812hZl3lAahM=".toByteArray(UTF_8)
         val keyDigest = DigestUtils.getSha256Digest()!!
         keyDigest.update(certBase64)
@@ -51,29 +60,22 @@ class AuthInterceptor(certHash: ByteArray, private val dateSource: DateSource) :
 
         val key = encodeBase64(mac.doFinal()).toString(UTF_8)
 
-
-        val versionName = "7.1.1"
-        val userAgent = "SBBmobile/flavorprodRelease-7.3.0-RELEASE Android/8.1.0 (Google;Android SDK built for x86)"
-
         return original.newBuilder()
                 .addHeader("X-API-AUTHORIZATION", key)
                 .addHeader("X-API-DATE", date)
+                .addHeader("X-APP-TOKEN", token)
                 .addHeader("User-Agent", userAgent)
                 .build()
-
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val original = chain.request()
-        val request = createNewRequest(original);
+        val request = createNewRequest(chain.request())
         return chain.proceed(request)
     }
 
     init {
         macKey = generateMacKey(certHash)
     }
-
-
 }
 
 interface DateSource {
