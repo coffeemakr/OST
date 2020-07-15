@@ -5,13 +5,11 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-
 import ch.unstable.ost.R
 import ch.unstable.ost.theme.ThemedActivity
+import kotlinx.android.synthetic.main.activity_about.*
 
 
 class AboutActivity : ThemedActivity() {
@@ -23,7 +21,6 @@ class AboutActivity : ThemedActivity() {
 
         setContentView(R.layout.activity_about)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         // Create the adapter that will return a fragment for each of the three
@@ -31,10 +28,9 @@ class AboutActivity : ThemedActivity() {
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         // Set up the ViewPager with the sections adapter.
-        val viewPager: ViewPager = findViewById(R.id.container)
-        viewPager.adapter = mSectionsPagerAdapter
+        container.adapter = mSectionsPagerAdapter
 
-        findViewById<TabLayout>(R.id.tabs).setupWithViewPager(viewPager)
+        findViewById<TabLayout>(R.id.tabs).setupWithViewPager(container)
     }
 
 

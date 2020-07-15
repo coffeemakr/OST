@@ -13,6 +13,8 @@ import android.webkit.WebView
 import android.widget.TextView
 import ch.unstable.ost.R
 import ch.unstable.ost.views.lists.SingleTypeSimplerAdapter
+import kotlinx.android.synthetic.main.fragment_licenses.*
+import kotlinx.android.synthetic.main.item_software_component.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -40,7 +42,7 @@ class LicenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(view.findViewById<RecyclerView>(R.id.software_components)) {
+        with(software_components) {
             layoutManager = android.support.v7.widget.LinearLayoutManager(context, android.support.v7.widget.LinearLayoutManager.VERTICAL, false);
             adapter = softwareComponentsAdapter
         }
@@ -107,8 +109,8 @@ class LicenseFragment : Fragment() {
 
 
     class SoftwareComponentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.name)
-        val copyright: TextView = itemView.findViewById<TextView>(R.id.copyright)
+        val name: TextView = itemView.name
+        val copyright: TextView = itemView.copyright
     }
 
     class SoftwareComponentsAdapter(val fragment: Fragment) : SingleTypeSimplerAdapter<SoftwareComponent, SoftwareComponentViewHolder>() {

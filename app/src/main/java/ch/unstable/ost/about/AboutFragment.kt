@@ -11,6 +11,7 @@ import android.widget.TextView
 import ch.unstable.ost.BuildConfig
 
 import ch.unstable.ost.R
+import kotlinx.android.synthetic.main.fragment_about.*
 
 /**
  * A placeholder fragment containing a simple view.
@@ -25,14 +26,14 @@ class AboutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<TextView>(R.id.app_version).text = BuildConfig.VERSION_NAME
+        app_version.text = BuildConfig.VERSION_NAME
 
-        view.findViewById<View>(R.id.github_link).setOnClickListener {
+        github_link.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.context.getString(R.string.github_url)))
             context!!.startActivity(intent)
         }
 
-        view.findViewById<View>(R.id.app_read_license).setOnClickListener {
+        app_read_license.setOnClickListener {
             LicenseFragment.showLicense(it.context, appLicense)
         }
     }
