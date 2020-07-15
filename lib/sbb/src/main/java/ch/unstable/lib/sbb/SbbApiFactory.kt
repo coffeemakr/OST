@@ -10,7 +10,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
-import org.apache.commons.codec.digest.DigestUtils
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.InputStream
@@ -73,9 +72,6 @@ class SbbApiFactory {
     }
 
 
-    val baseUrl = "https://p1.sbbmobile.ch"
-
-
     private fun newEmptyKeyStore(password: CharArray): KeyStore {
         val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
         // By convention, 'null' creates an empty key store.
@@ -113,17 +109,12 @@ class SbbApiFactory {
     private data class SSLConfig(val sslSocketFactory: SSLSocketFactory, val trustManager: X509TrustManager)
 
     fun createAPI(context: Context): UnauthApi {
-
-        val certHash = context.resources.openRawResource(R.raw.ca_cert).use {
-            DigestUtils.sha1(it)
-        }
-
         val (sslSocketFactory, trustManager) = context.resources.openRawResource(R.raw.ca_cert).use {
             createTrustManager(it)
         }
 
         val client = OkHttpClient.Builder()
-                .addInterceptor(AuthInterceptor(certHash))
+                .addInterceptor(AuthInterceptor())
                 .sslSocketFactory(sslSocketFactory, trustManager)
                 .build()
 
@@ -134,5 +125,9 @@ class SbbApiFactory {
                 .build()
 
         return retrofit.create(UnauthApi::class.java)
+    }
+
+    companion object {
+        private const val baseUrl = "https://p1.sbbmobile.ch"
     }
 }

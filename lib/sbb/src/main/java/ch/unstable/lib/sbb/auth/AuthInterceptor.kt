@@ -1,25 +1,19 @@
 package ch.unstable.lib.sbb.auth
 
+import android.util.Base64
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.internal.Util.UTF_8
-import org.apache.commons.codec.binary.Base64.encodeBase64
-import org.apache.commons.codec.binary.Hex
-import org.apache.commons.codec.digest.DigestUtils
-import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 
-class AuthInterceptor(certHash: ByteArray, private val dateSource: DateSource) : Interceptor {
+class AuthInterceptor(private val dateSource: DateSource) : Interceptor {
 
-    constructor(certHash: ByteArray) : this(certHash, DefaultDateSource())
-
-    private val secretKey: ByteArray = "c3eAd3eC3a7845dE98f73942b3d5f9c0".toByteArray(UTF_8)
-
+    constructor() : this(DefaultDateSource())
 
     private val userAgent = run {
         val versionName = "10.6.0"
@@ -30,38 +24,35 @@ class AuthInterceptor(certHash: ByteArray, private val dateSource: DateSource) :
 
     private val token = UUID.randomUUID().toString()
 
-    private val macKey: SecretKeySpec
+    private val macKey: SecretKeySpec = SecretKeySpec(Keys.macKey.toByteArray(UTF_8), "HmacSHA1")
 
-    private fun generateMacKey(certificateHash: ByteArray): SecretKeySpec {
-        //val certBase64 = encodeBase64(certificateHash)!!
-        val certBase64 = "WdfnzdQugRFUF5b812hZl3lAahM=".toByteArray(UTF_8)
-        val keyDigest = DigestUtils.getSha256Digest()!!
-        keyDigest.update(certBase64)
-        keyDigest.update(secretKey)
-        val macKey = keyDigest.hexDigest();
-        return SecretKeySpec(macKey,"HmacSHA1")
-    }
-
-    private fun createMac(): Mac {
-        val mac = Mac.getInstance("HmacSHA1")
-        mac.init(macKey)
-        return mac
+    private fun createSignature(date: String, path: String): String {
+        return Mac.getInstance("HmacSHA1").also {
+            it.init(macKey)
+            it.update(path.toByteArray(UTF_8))
+            it.update(date.toByteArray(UTF_8))
+        }.doFinal().let { Base64.encodeToString(it, Base64.NO_WRAP) }
     }
 
     fun createNewRequest(original: Request): Request {
-        val date = SimpleDateFormat("YYYY-MM-dd", Locale.US).format(dateSource.currentDate)
-        val path = original
-                .url()
-                .encodedPath()
+        val date = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(dateSource.currentDate)
+        val url = original.url()
 
-        val mac = createMac()
-        mac.update(path.toByteArray(UTF_8))
-        mac.update(date.toByteArray(UTF_8))
+        val signature = createSignature(date, url.encodedPath())
 
-        val key = encodeBase64(mac.doFinal()).toString(UTF_8)
+        // for unknown reasons the path needs to be url-encoded again AFTER calculating the
+        // signature..
+        val doubleEncodedUrl = original.url().newBuilder()
+                .encodedPath("/")
+                .also {
+                    url.encodedPathSegments().forEach {segment ->
+                        it.addPathSegment(segment)
+                    }
+                }.build()
 
         return original.newBuilder()
-                .addHeader("X-API-AUTHORIZATION", key)
+                .url(doubleEncodedUrl)
+                .addHeader("X-API-AUTHORIZATION", signature)
                 .addHeader("X-API-DATE", date)
                 .addHeader("X-APP-TOKEN", token)
                 .addHeader("User-Agent", userAgent)
@@ -72,23 +63,5 @@ class AuthInterceptor(certHash: ByteArray, private val dateSource: DateSource) :
         val request = createNewRequest(chain.request())
         return chain.proceed(request)
     }
-
-    init {
-        macKey = generateMacKey(certHash)
-    }
 }
 
-interface DateSource {
-    val currentDate: Date
-}
-
-class DefaultDateSource: DateSource {
-    override val currentDate: Date
-        get() = Date()
-}
-
-class CustomDateSource(override val currentDate: Date) : DateSource
-
-private fun MessageDigest.hexDigest(): ByteArray {
-    return String(Hex.encodeHex(digest())).toByteArray(UTF_8)
-}

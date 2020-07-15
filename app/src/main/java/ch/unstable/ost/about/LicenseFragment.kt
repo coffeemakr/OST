@@ -22,13 +22,13 @@ import kotlin.collections.ArrayList
 class LicenseFragment : Fragment() {
 
     private var mComponentForContextMenu: SoftwareComponent? = null
-    private var softwareComponentsAdapter: LicenseFragment.SoftwareComponentsAdapter? = null;
+    private var softwareComponentsAdapter: SoftwareComponentsAdapter? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val softwareComponents = arguments!!.getParcelableArrayList<SoftwareComponent>(ARG_COMPONENTS)
         // Sort components by name
-        Collections.sort(softwareComponents) { o1, o2 -> o1.name.compareTo(o2.name) }
+        softwareComponents!!.sortWith(Comparator { o1, o2 -> o1.name.compareTo(o2.name) })
         softwareComponentsAdapter = SoftwareComponentsAdapter(this)
         softwareComponentsAdapter!!.setElements(softwareComponents)
     }
@@ -47,7 +47,7 @@ class LicenseFragment : Fragment() {
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
-        val inflater = activity!!.menuInflater!!
+        val inflater = activity!!.menuInflater
         val component = v.tag!! as SoftwareComponent
         menu.setHeaderTitle(component.name)
         inflater.inflate(R.menu.software_component, menu)
