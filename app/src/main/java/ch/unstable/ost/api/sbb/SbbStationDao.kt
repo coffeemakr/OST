@@ -13,7 +13,7 @@ class SbbStationDao(private val api: UnauthApi): StationsDAO {
             "POI" -> Location.StationType.POI
             "ADDRESS" -> Location.StationType.ADDRESS
             else -> {
-                Log.w(TAG, "Unknown type: " + stringType)
+                Log.w(TAG, "Unknown type: $stringType")
                 Location.StationType.UNKNOWN
             }
         }

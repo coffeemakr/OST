@@ -27,14 +27,14 @@ class AboutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<TextView>(R.id.app_version).text = BuildConfig.VERSION_NAME
 
-        view.findViewById<View>(R.id.github_link).setOnClickListener({
+        view.findViewById<View>(R.id.github_link).setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it.context.getString(R.string.github_url)))
             context!!.startActivity(intent)
-        })
+        }
 
-        view.findViewById<View>(R.id.app_read_license).setOnClickListener({
+        view.findViewById<View>(R.id.app_read_license).setOnClickListener {
             LicenseFragment.showLicense(it.context, appLicense)
-        })
+        }
     }
 
     companion object {

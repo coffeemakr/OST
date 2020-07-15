@@ -46,9 +46,7 @@ class AboutActivity : ThemedActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        val id = item.itemId
-
-        when (id) {
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return true
@@ -94,13 +92,12 @@ class AboutActivity : ThemedActivity() {
         /**
          * List of all software components
          */
-        private val SOFTWARE_COMPONENTS = listOf<SoftwareComponent>(
+        private val SOFTWARE_COMPONENTS = listOf(
                 //new SoftwareComponent("RxBinding", "2015", "Jake Wharton", "https://github.com/JakeWharton/RxBinding", StandardLicenses.APACHE2)
                 SoftwareComponent("RxAndroid", "2015", "RxAndroid authors", "https://github.com/ReactiveX/RxAndroid", StandardLicenses.APACHE2),
                 SoftwareComponent("RxJava", "2016-present", "RxJava contributors", "https://github.com/ReactiveX/RxJava", StandardLicenses.APACHE2),
                 SoftwareComponent("CustomActivityOnCrash", "2014-2017", "Eduard Ereza Martínez", "https://github.com/Ereza/CustomActivityOnCrash", StandardLicenses.APACHE2),
                 SoftwareComponent("Commons IO", "2017", "The Apache Software Foundation", "https://commons.apache.org/", StandardLicenses.APACHE2),
-                SoftwareComponent("Gson", "2008", "Google Inc.", "https://github.com/google/gson", StandardLicenses.APACHE2),
-                SoftwareComponent("UrlBuilder", "2014", "Mikael Gueck", "https://github.com/mikaelhg/urlbuilder", StandardLicenses.APACHE2))
+                SoftwareComponent("Gson", "2008", "Google Inc.", "https://github.com/google/gson", StandardLicenses.APACHE2))
     }
 }

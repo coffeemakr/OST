@@ -5,6 +5,8 @@ import android.arch.persistence.room.Query;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.model.Location;
 import ch.unstable.ost.api.model.Location.StationType;
@@ -29,13 +31,15 @@ public abstract class OfflineStationsDAO implements StationsDAO {
         return fullQuery.toString();
     }
 
+    @NotNull
     @Override
-    public Location[] getStationsByQuery(String query) {
+    public Location[] getStationsByQuery(@NotNull String query) {
         return getStationsByQuery(getFullQuery(query), 0);
     }
 
+    @NotNull
     @Override
-    public Location[] getStationsByQuery(String query, @Nullable StationType[] types) {
+    public Location[] getStationsByQuery(@NotNull String query, @Nullable StationType[] types) {
         return getStationsByQuery(getFullQuery(query), StationType.Companion.getMask(types));
     }
 

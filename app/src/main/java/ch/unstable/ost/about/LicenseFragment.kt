@@ -78,7 +78,7 @@ class LicenseFragment : Fragment() {
 
     companion object {
 
-        private val ARG_COMPONENTS = "components"
+        private const val ARG_COMPONENTS = "components"
 
         fun newInstance(softwareComponents: Collection<SoftwareComponent>): LicenseFragment {
             val fragment = LicenseFragment()
