@@ -85,7 +85,6 @@ dependencies {
     })
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
-    implementation 'io.mikael:urlbuilder:2.0.9'
     implementation 'commons-io:commons-io:2.6'
     implementation 'cat.ereza:customactivityoncrash:2.1.0'
     implementation 'com.google.code.gson:gson:2.8.6'

@@ -49,7 +49,6 @@ public class BaseHttpJsonAPI {
         return new InputStreamReader(urlConnection.getInputStream(), StandartCharsetCompat.UTF_8);
     }
 
-    @SuppressWarnings("TypeParameterUnusedInFormals")
     protected <T> T loadJson(URL url, Type typeOfT) throws IOException {
         InputStreamReader inputStreamReader = open(url);
         try {

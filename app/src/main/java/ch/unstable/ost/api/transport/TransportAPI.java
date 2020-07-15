@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -29,7 +31,6 @@ import ch.unstable.ost.api.transport.types.DepartureCheckpointDeserializer;
 import ch.unstable.ost.api.transport.types.LocationDeserializer;
 import ch.unstable.ost.api.transport.types.PassingCheckpointDeserializer;
 import ch.unstable.ost.api.transport.types.SectionListDeserializer;
-import io.mikael.urlbuilder.UrlBuilder;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -63,18 +64,16 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO, Connec
         }
     }
 
-    private static UrlBuilder addURLDate(UrlBuilder uriBuilder, Date date) {
-        //noinspection ResultOfMethodCallIgnored
+    private static Uri.Builder addURLDate(Uri.Builder uriBuilder, Date date) {
         checkNotNull(uriBuilder, "uriBuilder");
-        //noinspection ResultOfMethodCallIgnored
         checkNotNull(date, "date");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ROOT);
         timeFormat.setTimeZone(TIME_ZONE);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
         dateFormat.setTimeZone(TIME_ZONE);
         return uriBuilder
-                .addParameter("time", timeFormat.format(date))
-                .addParameter("date", dateFormat.format(date));
+                .appendQueryParameter("time", timeFormat.format(date))
+                .appendQueryParameter("date", dateFormat.format(date));
     }
 
     @Override
@@ -103,23 +102,23 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO, Connec
     public Connection[] getConnections(ConnectionQuery connectionQuery, int page) throws IOException {
         checkArgument(page <= PAGE_MAX && page >= PAGE_MIN,
                 PAGE_MIN + " <= %d <= " + PAGE_MAX, page);
-        UrlBuilder builder = UrlBuilder.fromString(CONNECTIONS_URL)
-                .addParameter("from", connectionQuery.getFrom())
-                .addParameter("to", connectionQuery.getTo())
-                .addParameter(URL_PARAMETER_PAGE, Integer.toString(page));
+        Uri.Builder builder = Uri.parse(CONNECTIONS_URL).buildUpon()
+                .appendQueryParameter("from", connectionQuery.getFrom())
+                .appendQueryParameter("to", connectionQuery.getTo())
+                .appendQueryParameter(URL_PARAMETER_PAGE, Integer.toString(page));
         if (connectionQuery.hasVia()) {
             for (String via : connectionQuery.getVia()) {
-                builder = builder.addParameter("via[]", via);
+                builder = builder.appendQueryParameter("via[]", via);
             }
         }
 
         if (connectionQuery.getDepartureTime() != null) {
             builder = addURLDate(builder, connectionQuery.getDepartureTime());
         } else if (connectionQuery.getArrivalTime() != null) {
-            builder = builder.setParameter("isArrivalTime", "1");
+            builder = builder.appendQueryParameter("isArrivalTime", "1");
             builder = addURLDate(builder, connectionQuery.getArrivalTime());
         }
-        return loadConnections(builder.toUrl());
+        return loadConnections(new URL(builder.build().toString()));
     }
 
     private Connection[] loadConnections(URL url) throws IOException {
@@ -131,28 +130,29 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO, Connec
     }
 
 
+    @NotNull
     @Override
-    public Location[] getStationsByQuery(String query) throws IOException {
+    public Location[] getStationsByQuery(@NotNull String query) throws IOException {
         return getStationsByQuery(query, null);
     }
 
     @Override
-    public Location[] getStationsByQuery(String query, @Nullable Location.StationType[] types) throws IOException {
-        UrlBuilder builder = UrlBuilder.fromString(LOCATION_URL)
-                .addParameter("query", query);
+    public Location[] getStationsByQuery(@NotNull String query, @Nullable Location.StationType[] types) throws IOException {
+        Uri.Builder builder = Uri.parse(LOCATION_URL).buildUpon()
+                .appendQueryParameter("query", query);
         if (types != null && types.length > 0) {
             for (Location.StationType type : types) {
                 switch (type) {
                     case TRAIN:
                     case BUS:
                     case TRAM:
-                        builder = builder.addParameter("type", "station");
+                        builder = builder.appendQueryParameter("type", "station");
                         break;
                     case POI:
-                        builder = builder.addParameter("type", "poi");
+                        builder = builder.appendQueryParameter("type", "poi");
                         break;
                     case ADDRESS:
-                        builder = builder.addParameter("type", "address");
+                        builder = builder.appendQueryParameter("type", "address");
                         break;
                     case UNKNOWN:
                     default:
@@ -160,7 +160,7 @@ public class TransportAPI extends BaseHttpJsonAPI implements StationsDAO, Connec
                 }
             }
         }
-        return loadLocations(builder.toUrl());
+        return loadLocations(new URL(builder.build().toString()));
     }
 
     private static class StationsList {

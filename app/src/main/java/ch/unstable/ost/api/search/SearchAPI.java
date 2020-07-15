@@ -1,5 +1,6 @@
 package ch.unstable.ost.api.search;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -8,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +31,6 @@ import ch.unstable.ost.api.search.types.PassingCheckpointsDeserializer;
 import ch.unstable.ost.api.search.types.SectionsDeserializer;
 import ch.unstable.ost.api.search.types.StationTypeDeserializer;
 import ch.unstable.ost.api.transport.ConnectionAPI;
-import io.mikael.urlbuilder.UrlBuilder;
 
 import static ch.unstable.ost.api.model.Location.StationType;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -42,18 +43,16 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
     private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Europe/Berlin");
 
     @NonNull
-    private static UrlBuilder addURLDate(UrlBuilder uriBuilder, Date date) {
-        //noinspection ResultOfMethodCallIgnored
+    private static Uri.Builder addURLDate(Uri.Builder uriBuilder, Date date) {
         checkNotNull(uriBuilder, "uriBuilder");
-        //noinspection ResultOfMethodCallIgnored
         checkNotNull(date, "date");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ROOT);
         timeFormat.setTimeZone(TIME_ZONE);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
         dateFormat.setTimeZone(TIME_ZONE);
         return uriBuilder
-                .addParameter("time", timeFormat.format(date))
-                .addParameter("date", dateFormat.format(date));
+                .appendQueryParameter("time", timeFormat.format(date))
+                .appendQueryParameter("date", dateFormat.format(date));
     }
 
     @Override
@@ -77,12 +76,12 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
     @NonNull
     public Location[] getStationsByQuery(@NonNull String query, @Nullable StationType[] types) throws IOException {
         if (types != null && types.length == 0) return new Location[0];
-        UrlBuilder builder = UrlBuilder.fromString(COMPLETION_URL)
-                .addParameter("show_ids", "1")
-                .addParameter("term", checkNotNull(query));
+        Uri.Builder builder = Uri.parse(COMPLETION_URL).buildUpon()
+                .appendQueryParameter("show_ids", "1")
+                .appendQueryParameter("term", checkNotNull(query));
         Type listType = new TypeToken<ArrayList<Location>>() {
         }.getType();
-        ArrayList<Location> locationCompletions = loadJson(builder.toUrl(), listType);
+        ArrayList<Location> locationCompletions = loadJson(new URL(builder.build().toString()), listType);
         if (types != null) {
             locationCompletions = filterResults(locationCompletions, types);
         }
@@ -112,17 +111,17 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
 
     @Override
     public Connection[] getConnections(ConnectionQuery connectionQuery, int page) throws IOException {
-        UrlBuilder builder = UrlBuilder.fromString(CONNECTIONS_URL)
-                .addParameter("from", connectionQuery.getFrom())
-                .addParameter("to", connectionQuery.getTo());
+        Uri.Builder builder = Uri.parse(CONNECTIONS_URL).buildUpon()
+                .appendQueryParameter("from", connectionQuery.getFrom())
+                .appendQueryParameter("to", connectionQuery.getTo());
 
         if (connectionQuery.getArrivalTime() != null) {
             builder = addURLDate(builder, connectionQuery.getArrivalTime());
-            builder = builder.addParameter("time_type", "arrival");
+            builder = builder.appendQueryParameter("time_type", "arrival");
         } else if (connectionQuery.getDepartureTime() != null) {
             builder = addURLDate(builder, connectionQuery.getDepartureTime());
         }
-        ConnectionsList connectionsList = loadJson(builder.toUrl(), ConnectionsList.class);
+        ConnectionsList connectionsList = loadJson(new URL(builder.build().toString()), ConnectionsList.class);
         return connectionsList.connections;
     }
 
