@@ -47,10 +47,10 @@ open class Location : Parcelable {
         return id ?: name
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val location = o as Location?
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val location = other as Location?
         return Objects.equal(name, location!!.name) &&
                 type == location.type &&
                 Objects.equal(id, location.id)

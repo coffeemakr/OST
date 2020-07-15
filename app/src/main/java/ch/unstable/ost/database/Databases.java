@@ -31,7 +31,6 @@ public class Databases {
     private static CacheDatabase cacheDatabase;
 
     public static synchronized StationsDatabase getStationsDatabase(Context context) {
-        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(context, "context is null");
         if (stationsDatabase == null) {
             String databaseName = "stations.db";
@@ -42,7 +41,6 @@ public class Databases {
     }
 
     public static synchronized CacheDatabase getCacheDatabase(Context context) {
-        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(context, "context is null");
         if (cacheDatabase == null) {
             String databaseName = "cache.db";

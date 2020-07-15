@@ -85,7 +85,7 @@ public class SearchAPI extends BaseHttpJsonAPI implements StationsDAO, Connectio
         if (types != null) {
             locationCompletions = filterResults(locationCompletions, types);
         }
-        return locationCompletions.toArray(new Location[locationCompletions.size()]);
+        return locationCompletions.toArray(new Location[0]);
     }
 
     private ArrayList<Location> filterResults(ArrayList<Location> completions, final StationType[] filter) {
