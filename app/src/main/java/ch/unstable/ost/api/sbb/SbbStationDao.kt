@@ -1,11 +1,11 @@
 package ch.unstable.ost.api.sbb
 
 import android.util.Log
-import ch.unstable.lib.sbb.UnauthApi
+import ch.unstable.lib.sbb.SbbApi
 import ch.unstable.ost.api.StationsDAO
 import ch.unstable.ost.api.model.Location
 
-class SbbStationDao(private val api: UnauthApi): StationsDAO {
+class SbbStationDao(private val api: SbbApi): StationsDAO {
 
     private fun convertToType(stringType: String): Location.StationType {
         return when(stringType) {
@@ -20,10 +20,7 @@ class SbbStationDao(private val api: UnauthApi): StationsDAO {
     }
 
     override fun getStationsByQuery(query: String): Array<Location> {
-        val response = api.getStations(query).execute()
-        Log.d(TAG, "response: " + response.raw())
-        return response.body()?.stations
-                .orEmpty()
+        return api.getStations(query)
                 .map { station -> Location(
                         name = station.displayName,
                         type = convertToType(station.type),

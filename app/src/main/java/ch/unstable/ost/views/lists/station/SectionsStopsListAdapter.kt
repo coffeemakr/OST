@@ -18,12 +18,16 @@ class SectionsStopsListAdapter : SingleTypeSimplerAdapter<PassingCheckpoint, Sec
     override fun onBindViewHolder(viewHolder: SectionStationViewHolder, element: PassingCheckpoint, position: Int) {
         with(viewHolder) {
             stationName.text = element.location.name
-            if (position == 0) {
-                stopDotView.setLineMode(StopDotView.Type.TOP)
-            } else if (position == itemCount - 1) {
-                stopDotView.setLineMode(StopDotView.Type.BOTTOM)
-            } else {
-                stopDotView.setLineMode(StopDotView.Type.BOTH)
+            when (position) {
+                0 -> {
+                    stopDotView.setLineMode(StopDotView.Type.TOP)
+                }
+                itemCount - 1 -> {
+                    stopDotView.setLineMode(StopDotView.Type.BOTTOM)
+                }
+                else -> {
+                    stopDotView.setLineMode(StopDotView.Type.BOTH)
+                }
             }
             TimeDateUtils.setStationStay(stationTime, element.arrivalTime, element.departureTime)
         }

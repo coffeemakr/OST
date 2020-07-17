@@ -1,11 +1,12 @@
 package ch.unstable.ost.database.model;
 
 
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.room.Embedded;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
@@ -25,7 +26,6 @@ public class QueryHistory {
     private final Date creationDate;
 
     @NonNull
-    @Embedded
     private final ConnectionQuery query;
 
     public QueryHistory(long id, Date creationDate, ConnectionQuery query) {

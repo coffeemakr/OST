@@ -6,14 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,13 +18,17 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 
 import ch.unstable.ost.api.StationsDAO;
 import ch.unstable.ost.api.model.Location;
-import ch.unstable.ost.api.transport.TransportAPI;
 import ch.unstable.ost.preference.SettingsActivity;
 import ch.unstable.ost.preference.StationDaoLoader;
 import ch.unstable.ost.theme.ThemedActivity;
@@ -237,13 +236,14 @@ public class ChooseStationActivity extends ThemedActivity {
             Location[] locationList;
             try {
                 locationList = stationsDAO.getStationsByQuery(query, STATION_TYPES);
-            } catch (TransportAPI.TooManyRequestsException e) {
-                Message message = mBackgroundHandler.obtainMessage(MESSAGE_QUERY_LOCATIONS, query);
-                mBackgroundHandler.sendMessageDelayed(message, 300);
-                return;
+           // } catch (TooManyRequestsException e) {
+             //   Message message = mBackgroundHandler.obtainMessage(MESSAGE_QUERY_LOCATIONS, query);
+               // mBackgroundHandler.sendMessageDelayed(message, 300);
+              //  return;
             } catch (IOException e) {
                 mUIHandler.sendEmptyMessage(MESSAGE_ERROR);
                 Log.e(TAG, "Failed to get suggestions", e);
+                Log.e(TAG,  e.getMessage());
                 return;
             }
             Message message = mUIHandler.obtainMessage(MESSAGE_UI_SET_LOCATIONS, locationList);

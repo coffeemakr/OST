@@ -1,10 +1,12 @@
 package ch.unstable.ost;
 
 import android.content.Context;
-import android.support.annotation.CallSuper;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import ch.unstable.ost.api.model.ConnectionQuery;
 

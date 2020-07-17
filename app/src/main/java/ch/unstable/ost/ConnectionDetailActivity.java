@@ -2,9 +2,11 @@ package ch.unstable.ost;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

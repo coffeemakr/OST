@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "e54798b841e20358cb8f86939ac7a849",
+    "identityHash": "da3835d69936cc1fbc5a5db65f9e9460",
     "entities": [
       {
         "tableName": "connection",
@@ -66,7 +66,7 @@
       },
       {
         "tableName": "queries",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `creationDate` INTEGER NOT NULL, `from` TEXT NOT NULL, `to` TEXT NOT NULL, `via` TEXT, `departureTime` INTEGER, `arrivalTime` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `creationDate` INTEGER NOT NULL, `query` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -81,34 +81,10 @@
             "notNull": true
           },
           {
-            "fieldPath": "query.from",
-            "columnName": "from",
+            "fieldPath": "query",
+            "columnName": "query",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "query.to",
-            "columnName": "to",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "query.via",
-            "columnName": "via",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "query.departureTime",
-            "columnName": "departureTime",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "query.arrivalTime",
-            "columnName": "arrivalTime",
-            "affinity": "INTEGER",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -164,7 +140,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e54798b841e20358cb8f86939ac7a849\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"da3835d69936cc1fbc5a5db65f9e9460\")"
     ]
   }
 }

@@ -4,10 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +12,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import java.util.Date;
 
@@ -96,7 +97,8 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
     private void updateViews() {
         final Context context = getContext();
         if (context == null) return;
-        mTime.setText(LocalizationUtils.getArrivalOrDepartureText(context,
+        mTime.setText(LocalizationUtils.getArrivalOrDepartureText(
+                context,
                 mSelectionState.getArrivalTime(),
                 mSelectionState.getDepartureTime()));
         mToButton.setText(getToButtonText(context, mSelectionState.getTo()));
@@ -166,7 +168,7 @@ public class HeadNavigationFragment extends BaseNavigationFragment {
 
     private void onQueryChanged() {
         if (mSelectionState.getTo() != null && mSelectionState.getFrom() != null) {
-            ConnectionQuery query = SelectionState.createConnectionQuery(mSelectionState);
+            ConnectionQuery query = mSelectionState.createQuery();
             selectRoute(query);
         }
     }

@@ -4,7 +4,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.ParcelFormatException;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 
 public enum ParcelCompat {

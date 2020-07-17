@@ -1,17 +1,20 @@
 package ch.unstable.lib.sbb
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import ch.unstable.lib.sbb.auth.AuthInterceptor
+import ch.unstable.lib.sbb.json.ConnectionDeserializer
+import ch.unstable.lib.sbb.json.ConnectionPageDeserializer
 import ch.unstable.lib.sbb.json.StationDeserializer
 import ch.unstable.lib.sbb.json.StationResponseDeserializer
-import ch.unstable.lib.sbb.model.Station
+import ch.unstable.lib.sbb.model.SbbConnectionPage
+import ch.unstable.lib.sbb.model.SbbStation
 import ch.unstable.lib.sbb.model.StationResponse
+import ch.unstable.ost.api.model.Connection
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.CertificatePinner
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.*
 import java.io.InputStream
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
@@ -81,8 +84,10 @@ class SbbApiFactory {
 
     val gson: Gson
         get() = GsonBuilder()
-                .registerTypeAdapter(Station::class.java, StationDeserializer())
+                .registerTypeAdapter(SbbStation::class.java, StationDeserializer())
                 .registerTypeAdapter(StationResponse::class.java, StationResponseDeserializer())
+                .registerTypeAdapter(SbbConnectionPage::class.java, ConnectionPageDeserializer())
+                .registerTypeAdapter(Connection::class.java, ConnectionDeserializer())
                 .create()!!
 
     private fun createTrustManager(certificate: InputStream): SSLConfig {
@@ -94,40 +99,52 @@ class SbbApiFactory {
     }
 
 
-    private fun createTrustAllX509TrustManager(): SSLConfig {
-        val sslContext = SSLContext.getInstance("TLS")
-        val allTrustManager = object : X509TrustManager {
-            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-            override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
-            override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
-        }
-        sslContext.init(null, arrayOf<TrustManager>(allTrustManager), null)
-        return SSLConfig(sslContext.socketFactory, allTrustManager)
+    data class SSLConfig(val sslSocketFactory: SSLSocketFactory, val trustManager: X509TrustManager)
+
+    fun createSslContext(context: Context) = context.resources.openRawResource(R.raw.ca_cert).use {
+        createTrustManager(it)
     }
 
-
-    private data class SSLConfig(val sslSocketFactory: SSLSocketFactory, val trustManager: X509TrustManager)
-
-    fun createAPI(context: Context): UnauthApi {
-        val (sslSocketFactory, trustManager) = context.resources.openRawResource(R.raw.ca_cert).use {
-            createTrustManager(it)
-        }
+    fun createAPI(sslConfig: SSLConfig): SbbApi {
 
         val client = OkHttpClient.Builder()
                 .addInterceptor(AuthInterceptor())
-                .sslSocketFactory(sslSocketFactory, trustManager)
+                .addInterceptor(LoggingInterceptor())
+                .sslSocketFactory(sslConfig.sslSocketFactory, sslConfig.trustManager)
                 .build()
+        return SbbApi(client = client, baseUrl = baseUrl, converter = gson)
+    }
 
-        val retrofit = Retrofit.Builder()
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(baseUrl)
-                .build()
-
-        return retrofit.create(UnauthApi::class.java)
+    internal class LoggingInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request: Request = chain.request()
+            val t1 = System.nanoTime()
+            Log.d("OkHttp", java.lang.String.format("Sending request %s on %s%n%s",
+                    request.url, chain.connection(), request.headers))
+            val response: Response = chain.proceed(request)
+            val t2 = System.nanoTime()
+            Log.d("OkHttp", java.lang.String.format("Received response for %s in %.1fms%n%s",
+                    response.request.url, (t2 - t1) / 1e6, response.headers))
+            return response
+        }
     }
 
     companion object {
         private const val baseUrl = "https://p1.sbbmobile.ch"
+
+
+        fun createTrustAllX509TrustManager(): SSLConfig {
+            val sslContext = SSLContext.getInstance("TLS")
+            val allTrustManager = @SuppressLint("TrustAllX509TrustManager") object : X509TrustManager {
+                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+
+                override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+                }
+
+                override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
+            }
+            sslContext.init(null, arrayOf<TrustManager>(allTrustManager), null)
+            return SSLConfig(sslContext.socketFactory, allTrustManager)
+        }
     }
 }

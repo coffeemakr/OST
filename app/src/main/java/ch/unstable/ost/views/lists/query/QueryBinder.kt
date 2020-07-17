@@ -1,8 +1,8 @@
 package ch.unstable.ost.views.lists.query
 
 
-import android.support.annotation.MainThread
 import android.widget.TextView
+import androidx.annotation.MainThread
 import ch.unstable.ost.R
 import ch.unstable.ost.api.model.Connection
 import ch.unstable.ost.api.model.ConnectionQuery

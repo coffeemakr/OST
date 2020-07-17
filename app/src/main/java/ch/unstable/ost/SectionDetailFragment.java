@@ -2,15 +2,17 @@ package ch.unstable.ost;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 
 import ch.unstable.ost.api.model.Section;
@@ -42,7 +44,7 @@ public class SectionDetailFragment extends Fragment {
             throw new IllegalStateException("section not set");
         }
         mStopsListAdapter = new SectionsStopsListAdapter();
-        mStopsListAdapter.setElements(Arrays.asList(mSection.getStops()));
+        mStopsListAdapter.setElements(mSection.getStops());
     }
 
     @Override
@@ -58,7 +60,7 @@ public class SectionDetailFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView stationsList = view.findViewById(R.id.stationsList);
         stationsList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

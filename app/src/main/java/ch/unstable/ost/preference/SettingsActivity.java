@@ -2,8 +2,8 @@ package ch.unstable.ost.preference;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import java.util.List;
 

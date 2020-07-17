@@ -1,11 +1,11 @@
 package ch.unstable.ost.views.lists
 
-import android.support.annotation.LayoutRes
-import android.support.annotation.MainThread
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.annotation.MainThread
+import androidx.recyclerview.widget.RecyclerView
 
 import com.google.common.base.Preconditions
 

@@ -2,7 +2,7 @@ package ch.unstable.ost.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.format.DateFormat;
 import android.widget.TextView;
 

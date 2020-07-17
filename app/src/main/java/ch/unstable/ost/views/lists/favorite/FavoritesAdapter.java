@@ -1,6 +1,6 @@
 package ch.unstable.ost.views.lists.favorite;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import ch.unstable.ost.R;

@@ -4,11 +4,11 @@ import android.util.Base64
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import okhttp3.internal.Util.UTF_8
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
+import kotlin.text.Charsets.UTF_8
 
 
 class AuthInterceptor(private val dateSource: DateSource) : Interceptor {
@@ -36,19 +36,13 @@ class AuthInterceptor(private val dateSource: DateSource) : Interceptor {
 
     fun createNewRequest(original: Request): Request {
         val date = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(dateSource.currentDate)
-        val url = original.url()
+        val url = original.url
 
-        val signature = createSignature(date, url.encodedPath())
+        val signature = createSignature(date, url.encodedPath)
 
         // for unknown reasons the path needs to be url-encoded again AFTER calculating the
         // signature..
-        val doubleEncodedUrl = original.url().newBuilder()
-                .encodedPath("/")
-                .also {
-                    url.encodedPathSegments().forEach {segment ->
-                        it.addPathSegment(segment)
-                    }
-                }.build()
+        val doubleEncodedUrl = original.url.toString().replace("%", "%25")
 
         return original.newBuilder()
                 .url(doubleEncodedUrl)

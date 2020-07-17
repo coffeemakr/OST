@@ -4,10 +4,12 @@ package ch.unstable.ost.views;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.AnyThread;
-import android.support.annotation.MainThread;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+
+import androidx.annotation.AnyThread;
+import androidx.annotation.MainThread;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -16,7 +18,6 @@ import com.google.common.base.Preconditions;
 
 import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.R;
-import ch.unstable.ost.utils.LogUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -55,10 +56,8 @@ public class ViewStateHolder {
     public void setErrorContainer(View errorContainer) {
         this.mErrorView = checkNotNull(errorContainer, "errorContainer is null");
         mErrorTextView = errorContainer.findViewById(R.id.onErrorText);
-        //noinspection ResultOfMethodCallIgnored
         checkNotNull(mErrorTextView, "onErrorText is null");
         mErrorRetryButton = errorContainer.findViewById(R.id.onErrorRetryButton);
-        //noinspection ResultOfMethodCallIgnored
         checkNotNull(mErrorRetryButton, "onErrorRetryButton is null");
         mErrorRetryButton.setOnClickListener(mOnErrorRetryButtonClickListener);
         if (state == State.FAILED) {

@@ -2,11 +2,13 @@ package ch.unstable.ost.error;
 
 
 import android.content.pm.Signature;
-import android.support.annotation.StringRes;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.StringRes;
+
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -82,19 +84,8 @@ public enum ErrorUtils {
         if (BuildConfig.DEBUG) {
             Log.e(TAG, view.getContext().getString(errorMessage), throwable);
         }
-        if (view == null) {
-            if (BuildConfig.DEBUG) {
-                Log.e(TAG, "Can't show snackbar", new NullPointerException("view is null"));
-            }
-            return;
-        }
-        Snackbar.make(view, errorMessage, BaseTransientBottomBar.LENGTH_INDEFINITE)
-                .setAction(R.string.action_resport_error, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        NavHelper.INSTANCE.startErrorActivity(view.getContext(), throwable);
-                    }
-                })
+        Snackbar.make(view, errorMessage, Snackbar.LENGTH_LONG)
+                .setAction(R.string.action_resport_error, view1 -> NavHelper.INSTANCE.startErrorActivity(view1.getContext(), throwable))
                 .show();
     }
 }

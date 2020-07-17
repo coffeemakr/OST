@@ -1,11 +1,12 @@
 package ch.unstable.ost;
 
 
-import android.arch.persistence.room.EmptyResultSetException;
-import android.support.annotation.MainThread;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.view.View;
+
+import androidx.annotation.MainThread;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.room.EmptyResultSetException;
 
 import ch.unstable.ost.error.ErrorUtils;
 import io.reactivex.functions.Consumer;

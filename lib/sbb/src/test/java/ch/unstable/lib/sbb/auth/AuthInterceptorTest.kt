@@ -29,7 +29,7 @@ class AuthInterceptorTest {
                 .url("https://p1.bla.ch/unauth/fahrplanservice/v1/standorte/H%C3%BCswil/?onlyHaltestellen=false")
                 .build()
         val newRequest = authenticator.createNewRequest(request)
-        assertEquals("URL is wrong", "https://p1.bla.ch/unauth/fahrplanservice/v1/standorte/H%25C3%25BCswil/?onlyHaltestellen=false", newRequest.url().toString())
+        assertEquals("URL is wrong", "https://p1.bla.ch/unauth/fahrplanservice/v1/standorte/H%25C3%25BCswil/?onlyHaltestellen=false", newRequest.url.toString())
         assertEquals("Date differs", "2020-07-15", newRequest.header("X-API-DATE"))
         assertEquals("Auth token", "iuNmY6Qyjgl32MQ6Po4wPkovncs=", newRequest.header("X-API-AUTHORIZATION"))
     }

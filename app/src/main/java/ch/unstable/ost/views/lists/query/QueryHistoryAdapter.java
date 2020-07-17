@@ -1,7 +1,8 @@
 package ch.unstable.ost.views.lists.query;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,6 @@ public class QueryHistoryAdapter extends RecyclerView.Adapter<QueryViewHolder> {
     }
 
     public void setEntries(List<QueryHistory> entries) {
-        //noinspection ResultOfMethodCallIgnored
         Preconditions.checkNotNull(entries, "entries is null");
         mHistoryItems = new ArrayList<>(entries);
         notifyDataSetChanged();

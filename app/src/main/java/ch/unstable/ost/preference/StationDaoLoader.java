@@ -4,7 +4,7 @@ package ch.unstable.ost.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import ch.unstable.ost.R;
 import ch.unstable.ost.api.StationsDAO;

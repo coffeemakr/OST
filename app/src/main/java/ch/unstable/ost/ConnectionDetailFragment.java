@@ -1,19 +1,21 @@
 package ch.unstable.ost;
 
 
-import android.arch.persistence.room.EmptyResultSetException;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.AttrRes;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.EmptyResultSetException;
+
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,6 +27,8 @@ import android.view.ViewGroup;
 
 import com.google.common.base.Preconditions;
 
+import org.jetbrains.annotations.NotNull;
+
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.database.Databases;
@@ -32,12 +36,9 @@ import ch.unstable.ost.database.dao.FavoriteConnectionDao;
 import ch.unstable.ost.database.model.FavoriteConnection;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -138,7 +139,7 @@ public class ConnectionDetailFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(KEY_CONNECTION, mConnection);
         outState.putLong(KEY_FAVORITE_ID, mFavoriteId);

@@ -5,11 +5,12 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
-import android.support.annotation.AttrRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StyleRes;
 import android.util.Log;
 import android.util.TypedValue;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StyleRes;
 
 import ch.unstable.ost.R;
 import ch.unstable.ost.preference.PreferenceKeys;

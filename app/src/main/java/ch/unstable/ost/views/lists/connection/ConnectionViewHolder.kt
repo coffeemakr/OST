@@ -1,8 +1,8 @@
 package ch.unstable.ost.views.lists.connection
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 import ch.unstable.ost.R
 import ch.unstable.ost.views.ConnectionLineView
@@ -15,7 +15,7 @@ import com.google.common.base.Verify.verifyNotNull
  */
 open class ConnectionViewHolder(itemView: View) : RecyclerView.ViewHolder(checkNotNull(itemView)) {
 
-    val startTime: TextView = verifyNotNull(itemView.findViewById(R.id.startTime))
+    val startTime: TextView = itemView.findViewById(R.id.startTime)
     val endTime: TextView = verifyNotNull(itemView.findViewById(R.id.endTime))
     val firstEndDestination: TextView = verifyNotNull(itemView.findViewById(R.id.firstSectionEndDestination))
     val connectionLineView: ConnectionLineView = verifyNotNull(itemView.findViewById(R.id.connectionLineView))

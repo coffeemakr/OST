@@ -2,9 +2,12 @@ package ch.unstable.ost.test;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import ch.unstable.ost.api.model.ArrivalCheckpoint;
 import ch.unstable.ost.api.model.DepartureCheckpoint;
@@ -23,13 +26,13 @@ public class TestHelper {
     }
 
     @NonNull
-    public static PassingCheckpoint[] generatePassingCheckpoints(int number) {
-        PassingCheckpoint[] checkpoints = new PassingCheckpoint[number];
+    public static List<PassingCheckpoint> generatePassingCheckpoints(int number) {
+        ArrayList<PassingCheckpoint> checkpoints = new ArrayList<>();
         for (int i = 0; i < number; ++i) {
             Date arrival = new Date(number);
             Date departure = new Date(number);
             Location location = generateLocation(number);
-            checkpoints[i] = new PassingCheckpoint(arrival, departure, location, "" + number);
+            checkpoints.add(new PassingCheckpoint(arrival, departure, location, "" + number));
         }
         return checkpoints;
     }
@@ -38,7 +41,7 @@ public class TestHelper {
     public static Route generateRandomRoute(int number) {
         String shortName = "short " + number;
         String longName = "long" + number;
-        PassingCheckpoint[] stops = generatePassingCheckpoints(25);
+        List<PassingCheckpoint> stops = generatePassingCheckpoints(25);
         return new Route(shortName, longName, stops);
     }
 

@@ -1,8 +1,8 @@
 package ch.unstable.ost.views.lists.station
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 import ch.unstable.ost.R
 import ch.unstable.ost.views.StopDotView

@@ -5,12 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.webkit.WebView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ch.unstable.ost.R
 import ch.unstable.ost.views.lists.SingleTypeSimplerAdapter
 import kotlinx.android.synthetic.main.fragment_licenses.*
@@ -43,7 +44,7 @@ class LicenseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(software_components) {
-            layoutManager = android.support.v7.widget.LinearLayoutManager(context, android.support.v7.widget.LinearLayoutManager.VERTICAL, false);
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             adapter = softwareComponentsAdapter
         }
     }
