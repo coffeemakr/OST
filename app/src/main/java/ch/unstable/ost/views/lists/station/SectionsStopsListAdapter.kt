@@ -17,7 +17,7 @@ class SectionsStopsListAdapter : SingleTypeSimplerAdapter<PassingCheckpoint, Sec
 
     override fun onBindViewHolder(viewHolder: SectionStationViewHolder, element: PassingCheckpoint, position: Int) {
         with(viewHolder) {
-            stationName.text = element.location.name
+            stationName.text = element.station.name
             when (position) {
                 0 -> {
                     stopDotView.setLineMode(StopDotView.Type.TOP)

@@ -8,8 +8,8 @@ class UrlEncodeTest {
 
     @Test
     fun urlEncodeTest() {
-        assertEquals("%20", urlEncode(" "))
-        assertEquals("Test", urlEncode("Test"))
-        assertEquals("Z%C3%BCrich", urlEncode("Zürich"))
+        assertEquals("%20", urlEncodePathSegment(" "))
+        assertEquals("Test", urlEncodePathSegment("Test"))
+        assertEquals("Z%C3%BCrich", urlEncodePathSegment("Zürich"))
     }
 }

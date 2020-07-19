@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
+import androidx.annotation.NonNull
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -61,9 +62,9 @@ class ConnectionListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        connectionAPI = SbbApiFactory().createAPI(SbbApiFactory().createSslContext(context!!))
+        connectionAPI = SbbApiFactory().createAPI(SbbApiFactory().createSslContext(requireContext()))
         mCompositeDisposable = CompositeDisposable()
-        val database = Databases.getCacheDatabase(context)
+        val database = Databases.getCacheDatabase(requireContext())
         mQueryHistoryDao = database.queryHistoryDao()
 
         // Empty constructor
@@ -96,7 +97,7 @@ class ConnectionListFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mCompositeDisposable!!.dispose()
+        mCompositeDisposable.dispose()
         mConnectionAdapter = null
     }
 
@@ -115,9 +116,9 @@ class ConnectionListFragment : Fragment() {
         connections_list.addItemDecoration(dividerItemDecoration)
         mConnectionListScrollListener = mConnectionAdapter!!.createOnScrollListener(linearLayoutManager)
         connections_list.addOnScrollListener(mConnectionListScrollListener)
-        mViewStateHolder!!.setContentView(connections_list)
-        mViewStateHolder!!.setLoadingView(view.findViewById(R.id.loadingIndicator))
-        mViewStateHolder!!.setErrorContainer(view.findViewById(R.id.onErrorContainer))
+        mViewStateHolder.setContentView(connections_list)
+        mViewStateHolder.setLoadingView(view.findViewById(R.id.loadingIndicator))
+        mViewStateHolder.setErrorContainer(view.findViewById(R.id.onErrorContainer))
     }
 
     override fun onDestroyView() {
@@ -126,11 +127,10 @@ class ConnectionListFragment : Fragment() {
     }
 
     @MainThread
-    private fun onConnectionsLoaded(page: Int, connections: List<Connection>) {
-        Preconditions.checkNotNull(connections, "connections is null")
+    private fun onConnectionsLoaded(page: Int, @NonNull connections: List<Connection>) {
         if (page == 0) {
             // loading finished for the first time/page
-            mViewStateHolder!!.onSuccess()
+            mViewStateHolder.onSuccess()
         }
         if (mConnectionAdapter != null) {
             mConnectionAdapter!!.setConnections(page, connections.toTypedArray())
@@ -173,12 +173,7 @@ class ConnectionListFragment : Fragment() {
             val errorMessageString = getString(errorMessage)
             Log.e(TAG, errorMessageString, exception)
         }
-        if (mViewStateHolder != null) {
-            mViewStateHolder!!.onError(errorMessage)
-        } else if (exception != null) {
-            // Fallback if an error happens outside of view
-            startErrorActivity(context!!, exception)
-        }
+        mViewStateHolder.onError(errorMessage)
     }
 
     interface OnConnectionListInteractionListener {

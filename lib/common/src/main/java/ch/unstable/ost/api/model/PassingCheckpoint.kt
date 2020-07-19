@@ -14,8 +14,8 @@ import java.util.*
  *
  * @param arrivalTime the arrival time
  * @param departureTime the departure time
- * @param location the location
+ * @param station the location
  * @param platform the platform
  */
 @Parcelize
-class PassingCheckpoint(val arrivalTime: Date, val departureTime: Date, val location: Location, val platform: String): Parcelable
+class PassingCheckpoint(val arrivalTime: Date, val departureTime: Date, val station: Station, val platform: String): Parcelable

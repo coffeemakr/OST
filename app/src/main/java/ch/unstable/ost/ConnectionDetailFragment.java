@@ -79,9 +79,7 @@ public class ConnectionDetailFragment extends Fragment {
      * @param favoriteId the favorite id or 0
      * @return the fragment
      */
-    public static ConnectionDetailFragment newInstance(Connection connection, long favoriteId) {
-        //noinspection ResultOfMethodCallIgnored
-        Preconditions.checkNotNull(connection, "connection is null");
+    public static ConnectionDetailFragment newInstance(@NonNull Connection connection, long favoriteId) {
         Bundle arguments = new Bundle();
         arguments.putParcelable(KEY_CONNECTION, connection);
         if (favoriteId != 0) {

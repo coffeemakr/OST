@@ -7,6 +7,7 @@ import android.os.Message;
 
 import androidx.annotation.AnyThread;
 import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
@@ -14,12 +15,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.common.base.Preconditions;
 
 import ch.unstable.ost.BuildConfig;
 import ch.unstable.ost.R;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ViewStateHolder {
 
@@ -39,8 +38,8 @@ public class ViewStateHolder {
     private View mContentView;
     private State state;
 
-    public ViewStateHolder(AnimationStrategy animationStrategy) {
-        this.mAnimationStrategy = Preconditions.checkNotNull(animationStrategy, "animationStrategy");
+    public ViewStateHolder(@NonNull AnimationStrategy animationStrategy) {
+        this.mAnimationStrategy = animationStrategy;
         this.handler = new Handler(Looper.getMainLooper(), new Callback());
         this.state = State.FRESH;
     }
@@ -53,12 +52,10 @@ public class ViewStateHolder {
     }
 
     @MainThread
-    public void setErrorContainer(View errorContainer) {
-        this.mErrorView = checkNotNull(errorContainer, "errorContainer is null");
+    public void setErrorContainer(@NonNull View errorContainer) {
+        this.mErrorView = errorContainer;
         mErrorTextView = errorContainer.findViewById(R.id.onErrorText);
-        checkNotNull(mErrorTextView, "onErrorText is null");
         mErrorRetryButton = errorContainer.findViewById(R.id.onErrorRetryButton);
-        checkNotNull(mErrorRetryButton, "onErrorRetryButton is null");
         mErrorRetryButton.setOnClickListener(mOnErrorRetryButtonClickListener);
         if (state == State.FAILED) {
             mAnimationStrategy.initShownView(mErrorView);
@@ -69,8 +66,8 @@ public class ViewStateHolder {
     }
 
     @MainThread
-    public void setLoadingView(View loadingView) {
-        this.mLoadingIndicator = Preconditions.checkNotNull(loadingView);
+    public void setLoadingView(@NonNull View loadingView) {
+        this.mLoadingIndicator = loadingView;
         if (state == State.LOADING) {
             mAnimationStrategy.initShownView(loadingView);
         } else {
@@ -79,8 +76,8 @@ public class ViewStateHolder {
     }
 
     @MainThread
-    public void setContentView(View contentView) {
-        this.mContentView = Preconditions.checkNotNull(contentView);
+    public void setContentView(@NonNull View contentView) {
+        this.mContentView = contentView;
         if (state == State.SUCCEEDED) {
             mAnimationStrategy.initShownView(contentView);
         } else {
@@ -107,7 +104,6 @@ public class ViewStateHolder {
 
     @MainThread
     private void onErrorSync(@StringRes int errorMessage) {
-        Preconditions.checkArgument(errorMessage != 0, "errorMessage == 0");
         this.errorMessage = errorMessage;
         if (mErrorTextView != null) mErrorTextView.setText(errorMessage);
         switchToState(State.FAILED);

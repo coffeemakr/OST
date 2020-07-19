@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.HashSet;
 
-import ch.unstable.ost.api.model.Location.StationType;
+import ch.unstable.ost.api.model.Station.StationType;
 
 import static org.junit.Assert.*;
 

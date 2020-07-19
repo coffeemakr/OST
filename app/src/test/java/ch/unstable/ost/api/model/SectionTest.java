@@ -65,11 +65,11 @@ public class SectionTest {
     @Test
     public void getDeparture() throws Exception {
         Date departureTime = new Date();
-        Location location = mock(Location.class);
-        DepartureCheckpoint departureCheckpoint = new DepartureCheckpoint(departureTime, "21", location);
+        Station station = mock(Station.class);
+        DepartureCheckpoint departureCheckpoint = new DepartureCheckpoint(departureTime, "21", station);
         Section section = new Section(VALID_ROUTE, departureCheckpoint, VALID_ARRIVAL, VALID_HEADSIGN, VALID_WALKTIME);
-        assertEquals(departureTime, section.getDepartureDate());
-        assertEquals(location, section.getDepartureLocation());
+        assertEquals(departureTime, section.getDeparture().getTime());
+        assertEquals(station, section.getDepartureStation());
         assertEquals("21", section.getDeparturePlatform());
         assertSame(departureCheckpoint, section.getDeparture());
 
@@ -78,11 +78,11 @@ public class SectionTest {
     @Test
     public void getArrival() throws Exception {
         Date arrivalTime = new Date();
-        Location location = mock(Location.class);
-        ArrivalCheckpoint arrivalCheckpoint = new ArrivalCheckpoint(arrivalTime, "21", location);
+        Station station = mock(Station.class);
+        ArrivalCheckpoint arrivalCheckpoint = new ArrivalCheckpoint(arrivalTime, "21", station);
         Section section = new Section(VALID_ROUTE, VALID_DEPARTURE, arrivalCheckpoint, VALID_HEADSIGN, VALID_WALKTIME);
         assertEquals(arrivalTime, section.getArrivalDate());
-        assertEquals(location, section.getArrivalLocation());
+        assertEquals(station, section.getArrivalStation());
         assertEquals("21", section.getArrivalPlatform());
         assertSame(arrivalCheckpoint, section.getArrival());
     }

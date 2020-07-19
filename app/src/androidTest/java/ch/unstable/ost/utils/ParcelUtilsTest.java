@@ -12,8 +12,6 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import ch.unstable.ost.api.model.Location;
-
 import static org.junit.Assert.*;
 
 

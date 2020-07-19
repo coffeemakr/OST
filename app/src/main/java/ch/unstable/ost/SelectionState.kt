@@ -1,16 +1,13 @@
 package ch.unstable.ost
 
-import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import ch.unstable.ost.api.model.ConnectionQuery
-import ch.unstable.ost.utils.ParcelUtils
 import com.google.common.base.Objects
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
-import okhttp3.internal.toImmutableList
 import java.util.*
 
 @Parcelize
@@ -57,7 +54,7 @@ internal class SelectionState(
     }
 
     fun setVia(via: List<String>) {
-        this.via = via.toImmutableList()
+        this.via = via
         notifyChanged()
     }
 
@@ -66,7 +63,7 @@ internal class SelectionState(
     }
 
     fun setFrom(from: String?) {
-        if (!Objects.equal(this.from, from)) {
+        if (this.from != from) {
             this.from = from
             notifyChanged()
         }
@@ -77,7 +74,7 @@ internal class SelectionState(
     }
 
     fun setTo(to: String?) {
-        if (!Objects.equal(this.to, to)) {
+        if (this.to != to) {
             this.to = to
             notifyChanged()
         }
@@ -115,7 +112,5 @@ internal class SelectionState(
 
     companion object {
         private const val TAG = "SelectionState"
-        @JvmStatic
-        fun createConnectionQuery(state: SelectionState) = state.createQuery()
     }
 }

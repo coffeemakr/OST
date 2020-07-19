@@ -18,7 +18,7 @@ data class Connection(val sections: List<Section>) : Parcelable {
      * @return the time of the departure
      */
     val departureDate: Date
-        get() = sections.first().departureDate
+        get() = departure.time
 
     /**
      * Get the arrival time
@@ -26,7 +26,7 @@ data class Connection(val sections: List<Section>) : Parcelable {
      * @return the arrival time
      */
     val arrivalDate: Date
-        get() = sections.last().arrivalDate
+        get() = arrival.time
 
     /**
      * Get the departure checkpoint
@@ -36,7 +36,7 @@ data class Connection(val sections: List<Section>) : Parcelable {
      *
      * @return the departure checkpoint
      */
-    val departure: DepartureCheckpoint
+    val departure
         get() = sections.first().departure
 
     /**
@@ -47,13 +47,13 @@ data class Connection(val sections: List<Section>) : Parcelable {
      *
      * @return the arrival checkpoint
      */
-    val arrival: ArrivalCheckpoint
+    val arrival
         get() = sections.last().arrival
 
     val departureName: String
-        get() = departure.location.name
+        get() = departure.station.name
 
     val arrivalName: String
-        get() = arrival.location.name
+        get() = arrival.station.name
 
 }

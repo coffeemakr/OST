@@ -2,6 +2,7 @@ package ch.unstable.lib.sbb
 
 import ch.unstable.ost.api.model.ConnectionQuery
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -37,6 +38,13 @@ class SbbApiTest {
         println(laterPage)
         assertEquals(5, connectionPage.connections.size)
         assertEquals(1, laterPage.pageNumber)
+    }
+
+
+    @Test
+    fun testGetLocation() {
+        val locations: List<SbbStation> = sbbApi.getStations("luz")
+        assertNotNull(locations)
     }
 
     private fun getDate(year: Int, month: Int, day: Int): Date {

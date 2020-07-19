@@ -1,7 +1,7 @@
 package ch.unstable.lib.sbb.json
 
 import ch.unstable.lib.sbb.model.StationResponse
-import ch.unstable.lib.sbb.model.SbbStation
+import ch.unstable.ost.api.model.Station
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
@@ -14,7 +14,7 @@ class StationResponseDeserializer : JsonDeserializer<StationResponse> {
             typeOfT: Type,
             context: JsonDeserializationContext
     ): StationResponse {
-        val type = genericType<List<SbbStation>>()
+        val type = genericType<List<Station>>()
         return StationResponse(
                 stations = context.deserialize(json.asJsonObject.get("standorte"), type))
     }

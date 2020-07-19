@@ -11,7 +11,6 @@ import ch.unstable.ost.preference.StationDaoLoader
 @Suppress("unused")
 class SbbStationsDaoFactory : StationDaoLoader.StationDAOFactory {
     override fun getStationsDAO(context: Context): StationsDAO {
-        val api = SbbApiFactory().createAPI(SbbApiFactory().createSslContext(context))
-        return SbbStationDao(api)
+        return SbbApiFactory().createAPI(SbbApiFactory().createSslContext(context))
     }
 }

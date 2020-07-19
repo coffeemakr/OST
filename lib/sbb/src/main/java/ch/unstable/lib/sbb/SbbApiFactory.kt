@@ -4,14 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import ch.unstable.lib.sbb.auth.AuthInterceptor
-import ch.unstable.lib.sbb.json.ConnectionDeserializer
-import ch.unstable.lib.sbb.json.ConnectionPageDeserializer
-import ch.unstable.lib.sbb.json.StationDeserializer
-import ch.unstable.lib.sbb.json.StationResponseDeserializer
+import ch.unstable.lib.sbb.json.*
 import ch.unstable.lib.sbb.model.SbbConnectionPage
-import ch.unstable.lib.sbb.model.SbbStation
 import ch.unstable.lib.sbb.model.StationResponse
 import ch.unstable.ost.api.model.Connection
+import ch.unstable.ost.api.model.Section
+import ch.unstable.ost.api.model.Station
+import ch.unstable.ost.api.model.TransportInfo
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.*
@@ -84,10 +83,12 @@ class SbbApiFactory {
 
     val gson: Gson
         get() = GsonBuilder()
-                .registerTypeAdapter(SbbStation::class.java, StationDeserializer())
+                .registerTypeAdapter(Station::class.java, StationDeserializer())
                 .registerTypeAdapter(StationResponse::class.java, StationResponseDeserializer())
                 .registerTypeAdapter(SbbConnectionPage::class.java, ConnectionPageDeserializer())
                 .registerTypeAdapter(Connection::class.java, ConnectionDeserializer())
+                .registerTypeAdapter(Section::class.java, SectionDeserializer())
+                .registerTypeAdapter(TransportInfo::class.java, TransportInfoDeserializer())
                 .create()!!
 
     private fun createTrustManager(certificate: InputStream): SSLConfig {

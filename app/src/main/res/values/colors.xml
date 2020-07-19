@@ -5,7 +5,7 @@
 
     <color name="colorConnectionLineWaiting">@color/colorTealAccent</color>
     <color name="colorConnectionLineTravelling">@color/colorTealAccent</color>
-
+    <color name="colorConnectionLineWalking">@color/colorTeal600</color>
     <color name="colorBackgroundFaded">#616161</color>
 
 

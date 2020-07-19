@@ -1,3 +1,5 @@
 package ch.unstable.lib.sbb.model
 
-data class StationResponse(val stations: List<SbbStation>)
+import ch.unstable.ost.api.model.Station
+
+data class StationResponse(val stations: List<Station>)

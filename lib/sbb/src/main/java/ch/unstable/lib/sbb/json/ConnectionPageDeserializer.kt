@@ -1,8 +1,8 @@
 package ch.unstable.lib.sbb.json
 
 import ch.unstable.lib.sbb.model.SbbConnectionPage
-import ch.unstable.lib.sbb.model.SbbStation
 import ch.unstable.ost.api.model.Connection
+import ch.unstable.ost.api.model.Station
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
@@ -13,8 +13,8 @@ class ConnectionPageDeserializer: JsonDeserializer<SbbConnectionPage> {
     override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext): SbbConnectionPage {
         val obj = json.asJsonObject
         val connectionsNode = obj["verbindungen"].asJsonArray
-        val start: SbbStation = context.deserialize(obj["abfahrt"])
-        val destination: SbbStation = context.deserialize(obj["ankunft"])
+        val start: Station = context.deserialize(obj["abfahrt"])
+        val destination: Station = context.deserialize(obj["ankunft"])
 
         val connections: List<Connection>  = context.deserializeList(connectionsNode)
         return SbbConnectionPage(

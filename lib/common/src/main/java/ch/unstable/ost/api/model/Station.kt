@@ -4,10 +4,11 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Location(
+data class Station(
         val name: String,
         val type: StationType?,
-        val id: String?
+        val id: String?,
+        val coordinates: Coordinates? = null
 ) : Parcelable {
 
     enum class StationType(val bit: Int) {

@@ -5,4 +5,10 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-class ArrivalCheckpoint(val arrivalTime: Date, val platform: String, val location: Location): Parcelable
+class TimedCheckpoint(
+        val time: Date,
+        val platform: String,
+        val station: Station,
+        val longitude: Long,
+        val latitude: Long
+): Parcelable

@@ -21,8 +21,8 @@ public class RouteAndroidTest {
         for(int i = 0; i < number; ++i) {
             Date arrival = new Date(number);
             Date departure = new Date(number);
-            Location location = new Location("" + number, Location.StationType.TRAIN, "" + number);
-            checkpoints[i] = new PassingCheckpoint(arrival, departure, location, "" + number);
+            Station station = new Station("" + number, Station.StationType.TRAIN, "" + number);
+            checkpoints[i] = new PassingCheckpoint(arrival, departure, station, "" + number);
         }
         return checkpoints;
     }

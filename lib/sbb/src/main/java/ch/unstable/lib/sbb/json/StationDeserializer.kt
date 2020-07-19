@@ -1,35 +1,38 @@
 package ch.unstable.lib.sbb.json
 
-import ch.unstable.lib.sbb.model.SbbStation
+import android.util.Log
+import ch.unstable.ost.api.model.Station
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import java.lang.reflect.Type
 
-class StationDeserializer: JsonDeserializer<SbbStation> {
+class StationDeserializer: JsonDeserializer<Station> {
     private val tag: String =  "StationDeserializer"
 
     override fun deserialize(
             json: JsonElement,
             typeOfT: Type,
             context: JsonDeserializationContext
-    ): SbbStation {
+    ): Station {
         val obj = json.asJsonObject!!
 
-        return SbbStation(
-            displayName = obj["displayName"].asString!!,
-            externalId = obj["externalId"].nullable?.asString,
-            longitude = obj["longitude"].asLong,
-            latitude = obj["latitude"].asLong,
-            type = obj["type"].asString!!
+        return Station(
+            name = obj["displayName"].asString!!,
+            id = obj["externalId"].nullable?.asString,
+            type = convertToType(obj["type"].asString)
         )
     }
 }
 
-private val JsonElement.nullable: JsonElement?
-    get() {
-        return when {
-            isJsonNull -> null
-            else -> this
+private fun convertToType(stringType: String): Station.StationType {
+    return when(stringType) {
+        "STATION" -> Station.StationType.TRAIN
+        "POI" -> Station.StationType.POI
+        "ADDRESS" -> Station.StationType.ADDRESS
+        else -> {
+            Log.w("convertToType", "Unknown type: $stringType")
+            Station.StationType.UNKNOWN
         }
     }
+}

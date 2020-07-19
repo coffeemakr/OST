@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
 
+import ch.unstable.ost.api.ConnectionAPI;
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.ConnectionQuery;
 import ch.unstable.ost.api.model.Section;
@@ -98,8 +99,8 @@ public class TransportAPITest {
        assertTrue(firstConnection.getDepartureDate().getTime() > (date.getTime() - ONE_HOURS_IN_MILLIES));
 
        for(Connection connection: connections) {
-           assertEquals("Bern", connection.getDeparture().getLocation().getName());
-           assertEquals("8507000", connection.getDeparture().getLocation().getId());
+           assertEquals("Bern", connection.getDeparture().getStation().getName());
+           assertEquals("8507000", connection.getDeparture().getStation().getId());
 
            Section firstSection = getFirst(connection.getSections());
            assertSame(connection.getDeparture(), firstSection.getDeparture());
@@ -107,8 +108,8 @@ public class TransportAPITest {
            Section lastSection = getLast(connection.getSections());
            assertSame(connection.getArrival(), lastSection.getArrival());
 
-           assertEquals("Basel SBB", connection.getArrival().getLocation().getName());
-           assertEquals("8500010", connection.getArrival().getLocation().getId());
+           assertEquals("Basel SBB", connection.getArrival().getStation().getName());
+           assertEquals("8500010", connection.getArrival().getStation().getId());
        }
    }
 }

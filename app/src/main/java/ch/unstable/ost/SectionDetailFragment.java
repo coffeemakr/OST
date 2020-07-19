@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.views.lists.station.SectionsStopsListAdapter;
@@ -44,7 +45,7 @@ public class SectionDetailFragment extends Fragment {
             throw new IllegalStateException("section not set");
         }
         mStopsListAdapter = new SectionsStopsListAdapter();
-        mStopsListAdapter.setElements(mSection.getStops());
+        mStopsListAdapter.setElements(Collections.emptyList()); //TODO
     }
 
     @Override

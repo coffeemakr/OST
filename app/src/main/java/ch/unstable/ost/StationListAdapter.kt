@@ -10,10 +10,9 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
 import androidx.recyclerview.widget.RecyclerView
-import ch.unstable.ost.api.model.Location
-import ch.unstable.ost.api.model.Location.StationType
+import ch.unstable.ost.api.model.Station
+import ch.unstable.ost.api.model.Station.StationType
 import ch.unstable.ost.theme.ThemeHelper
-import java.util.*
 
 internal class StationListAdapter @MainThread constructor(context: Context?) : RecyclerView.Adapter<StationListAdapter.ViewHolder>() {
     private val mHandler: Handler = Handler()
@@ -27,16 +26,23 @@ internal class StationListAdapter @MainThread constructor(context: Context?) : R
     @DrawableRes
     private val tramIcon: Int = ThemeHelper.getThemedDrawable(context, R.attr.ic_direction_tram_24dp)
 
-    private var mLocations = arrayOfNulls<Location>(0)
-    private var mOnStationClickListener: OnStationClickListener? = null
+
+    var locations = listOf<Station>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+    private var mOnStationClickListener: OnStationClick? = null
     private val mOnItemClickListener = View.OnClickListener { v ->
         val listener = mOnStationClickListener
         if (listener != null) {
             val viewHolder = v.tag as ViewHolder
             val position = viewHolder.adapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                val location = mLocations[position]
-                mHandler.post { listener.onStationClicked(location) }
+                val location = locations[position]
+                mHandler.post {
+                    listener(location)
+                }
             }
         }
     }
@@ -48,8 +54,8 @@ internal class StationListAdapter @MainThread constructor(context: Context?) : R
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val location = mLocations[position]
-        holder.stationName.text = location!!.name
+        val location = locations[position]
+        holder.stationName.text = location.name
         holder.itemView.tag = holder
         holder.itemView.setOnClickListener(mOnItemClickListener)
         when (location.type) {
@@ -68,23 +74,16 @@ internal class StationListAdapter @MainThread constructor(context: Context?) : R
         holder.itemView.isClickable = true
     }
 
-    @MainThread
-    fun setLocations(locations: Array<Location?>) {
-        mLocations = locations.copyOf(locations.size)
-        notifyDataSetChanged()
-    }
 
-    fun setOnStationClickListener(onStationClickListener: OnStationClickListener?) {
+    fun setOnStationClickListener(onStationClickListener: OnStationClick) {
         mOnStationClickListener = onStationClickListener
     }
 
     override fun getItemCount(): Int {
-        return mLocations.size
+        return locations.size
     }
 
-    interface OnStationClickListener {
-        fun onStationClicked(location: Location?)
-    }
+
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val stationName: TextView = itemView.findViewById(R.id.stationName)
@@ -92,3 +91,5 @@ internal class StationListAdapter @MainThread constructor(context: Context?) : R
     }
 
 }
+
+typealias OnStationClick = (Station) -> Unit

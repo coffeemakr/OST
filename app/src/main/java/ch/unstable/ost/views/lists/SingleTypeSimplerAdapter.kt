@@ -1,19 +1,15 @@
 package ch.unstable.ost.views.lists
 
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
+import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-
-import com.google.common.base.Preconditions
-
-import java.util.ArrayList
-
 import io.reactivex.functions.Consumer
-
-import com.google.common.base.Verify.verifyNotNull
+import java.util.*
 
 abstract class SingleTypeSimplerAdapter<E, VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>(), Consumer<List<E>> {
 
@@ -38,12 +34,10 @@ abstract class SingleTypeSimplerAdapter<E, VH : RecyclerView.ViewHolder> : Recyc
 
 
     protected fun getItem(position: Int): E {
-        return verifyNotNull(mElements[position], "element is null")
+        return mElements[position]!!
     }
 
-    fun setElements(elements: Collection<E>) {
-
-        Preconditions.checkNotNull(elements, "elements is null")
+    fun setElements(@NonNull elements: Collection<E>) {
         this.mElements.clear()
         this.mElements.addAll(elements)
         notifyDataSetChanged()
