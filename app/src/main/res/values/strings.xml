@@ -128,7 +128,7 @@
         <item>@string/station_dao_transport_opendata_ch</item>
         <item>@string/station_dao_sbb_ch</item>
     </string-array>
-    <string name="prefs_station_dao_factory_default" translatable="false">@string/station_dao_factory_offline</string>
+    <string name="prefs_station_dao_factory_default" translatable="false">@string/station_dao_factory_sbb_ch</string>
     <string name="prefs_category_content">Content</string>
     <string name="station_dao_offline">Offline</string>
     <string name="station_dao_search_ch" translatable="false">timetable.search.ch</string>
