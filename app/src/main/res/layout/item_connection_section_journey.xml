@@ -17,6 +17,15 @@
         android:layout_marginTop="8dp" />
 
     <TextView
+        android:id="@+id/departureActual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/productName"
+        tools:text="11:20" />
+
+    <TextView
         android:id="@+id/arrivalStationName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,6 +43,14 @@
         app:layout_constraintTop_toBottomOf="@+id/endDestination"
         tools:text="11:30" />
 
+
+    <TextView
+        android:id="@+id/actualArrivalTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/departureTime"
+        app:layout_constraintTop_toTopOf="@+id/endDestination"
+        tools:text="11:30" />
 
     <TextView
         android:id="@+id/arrivalPlatform"

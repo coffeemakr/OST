@@ -65,6 +65,10 @@ android {
     }
     productFlavors {
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {

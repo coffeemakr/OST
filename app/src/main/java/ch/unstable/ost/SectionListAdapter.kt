@@ -1,5 +1,6 @@
 package ch.unstable.ost
 
+import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.unstable.ost.SectionListAdapter.SectionViewHolder
 import ch.unstable.ost.api.model.Section
 import ch.unstable.ost.api.model.SectionType
+import ch.unstable.ost.databinding.ItemConnectionSectionJourneyBinding
 import ch.unstable.ost.utils.TimeDateUtils
 
 internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
@@ -28,8 +30,8 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
         val itemView: View
         when (viewType) {
             JOURNEY_VIEW_TYPE -> {
-                itemView = inflater.inflate(R.layout.item_connection_section_journey, parent, false)
-                return JourneyViewHolder(itemView)
+                val binding = ItemConnectionSectionJourneyBinding.inflate(inflater, parent, false)
+                return JourneyViewHolder(binding)
             }
             WALK_VIEW_TYPE -> {
                 itemView = inflater.inflate(R.layout.item_connection_section_walk, parent, false)
@@ -39,8 +41,25 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
         throw IllegalStateException("unknown viewType: $viewType")
     }
 
-    private fun onBindJourneyViewHolder(holder: JourneyViewHolder, section: Section?) {
-        holder.arrivalStationName.text = section!!.arrival.station.name
+    private fun onBindJourneyViewHolder(holder: JourneyViewHolder, section: Section) {
+        if (section.realtimeInfo.arrival.actualTime != section.arrival.time) {
+            holder.arrivalTime.paintFlags = holder.arrivalTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            holder.binding.actualArrivalTime.visibility = View.VISIBLE
+            holder.binding.actualArrivalTime.text = TimeDateUtils.formatTime(section.realtimeInfo.arrival.actualTime)
+        } else {
+            holder.binding.actualArrivalTime.visibility = View.GONE
+            holder.arrivalTime.paintFlags = holder.arrivalTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+        }
+        if (section.realtimeInfo.departure.actualTime != section.departure.time) {
+            holder.departureTime.paintFlags = holder.departureTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            holder.binding.departureActual.visibility = View.VISIBLE
+            holder.binding.departureActual.text = TimeDateUtils.formatTime(section.realtimeInfo.departure.actualTime)
+        } else {
+            holder.binding.departureActual.visibility = View.GONE
+            holder.departureTime.paintFlags = holder.departureTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+        }
+
+        holder.arrivalStationName.text = section.arrival.station.name
         holder.departureStationName.text = section.departure.station.name
         holder.arrivalTime.text = TimeDateUtils.formatTime(section.arrival.time)
         holder.departureTime.text = TimeDateUtils.formatTime(section.departure.time)
@@ -48,6 +67,7 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
         holder.endDestination.text = section.arrival.station.name
         holder.departurePlatform.text = section.departure.platform
         holder.arrivalPlatform.text = section.arrival.platform
+
         holder.itemView.tag = section
         holder.itemView.setOnClickListener(onJourneyItemClickListener)
     }
@@ -100,15 +120,15 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
 
     }
 
-    class JourneyViewHolder(itemView: View) : SectionViewHolder(itemView) {
-        val productName: TextView = itemView.findViewById(R.id.productName)
-        val endDestination: TextView = itemView.findViewById(R.id.endDestination)
-        val departurePlatform: TextView = itemView.findViewById(R.id.departurePlatform)
-        val arrivalPlatform: TextView = itemView.findViewById(R.id.arrivalPlatform)
-        val arrivalStationName: TextView = itemView.findViewById(R.id.arrivalStationName)
-        val departureStationName: TextView = itemView.findViewById(R.id.departureStationName)
-        val arrivalTime: TextView = itemView.findViewById(R.id.arrivalTime)
-        val departureTime: TextView = itemView.findViewById(R.id.departureTime)
+    class JourneyViewHolder(val binding: ItemConnectionSectionJourneyBinding) : SectionViewHolder(binding.root) {
+        val productName: TextView = binding.productName
+        val endDestination: TextView = binding.endDestination
+        val departurePlatform: TextView = binding.departurePlatform
+        val arrivalPlatform: TextView = binding.arrivalPlatform
+        val arrivalStationName: TextView = binding.arrivalStationName
+        val departureStationName: TextView = binding.departureStationName
+        val arrivalTime: TextView = binding.arrivalTime
+        val departureTime: TextView = binding.departureTime
     }
 
     open class SectionViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView!!)
