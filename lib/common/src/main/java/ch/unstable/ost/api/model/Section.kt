@@ -2,7 +2,6 @@ package ch.unstable.ost.api.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 /**
  * TODO: check if the stops contain the arrival and departure
