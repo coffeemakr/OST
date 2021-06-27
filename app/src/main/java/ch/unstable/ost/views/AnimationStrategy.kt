@@ -6,7 +6,7 @@ import androidx.annotation.MainThread
 /**
  * Animation strategy
  */
-internal interface AnimationStrategy {
+interface AnimationStrategy {
     /**
      * Initialize a view in a hidden state
      * @param view the view to initialize

@@ -11,6 +11,7 @@ import ch.unstable.ost.SectionListAdapter.SectionViewHolder
 import ch.unstable.ost.api.model.Section
 import ch.unstable.ost.api.model.SectionType
 import ch.unstable.ost.databinding.ItemConnectionSectionJourneyBinding
+import ch.unstable.ost.databinding.ItemConnectionSectionWalkBinding
 import ch.unstable.ost.utils.TimeDateUtils
 
 internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
@@ -34,8 +35,8 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
                 return JourneyViewHolder(binding)
             }
             WALK_VIEW_TYPE -> {
-                itemView = inflater.inflate(R.layout.item_connection_section_walk, parent, false)
-                return WalkSectionViewHolder(itemView)
+                val binding = ItemConnectionSectionWalkBinding.inflate(inflater, parent, false)
+                return WalkSectionViewHolder(binding)
             }
         }
         throw IllegalStateException("unknown viewType: $viewType")
@@ -114,10 +115,9 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
         fun onSectionClicked(section: Section)
     }
 
-    class WalkSectionViewHolder(itemView: View) : SectionViewHolder(itemView) {
-        val departureTime: TextView = itemView.findViewById(R.id.departureTime)
-        val departureStationName: TextView = itemView.findViewById(R.id.departureStationName)
-
+    class WalkSectionViewHolder(binding: ItemConnectionSectionWalkBinding) : SectionViewHolder(binding.root) {
+        val departureTime: TextView = binding.departureTime
+        val departureStationName: TextView = binding.departureStationName
     }
 
     class JourneyViewHolder(val binding: ItemConnectionSectionJourneyBinding) : SectionViewHolder(binding.root) {

@@ -95,9 +95,8 @@ class LastQueryCardFragment : QuickstartCardFragment() {
         bindQuery(queryHistory, mLastQueryDate, mLastQueryFromTo)
     }
 
-    override fun getErrorMessage(): Int {
-        return R.string.error_failed_to_load_last_query
-    }
+    override val errorMessage: Int
+        get() = R.string.error_failed_to_load_last_query
 
     interface OnQuerySelectedListener {
         @MainThread
