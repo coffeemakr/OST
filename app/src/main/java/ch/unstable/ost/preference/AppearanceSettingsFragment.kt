@@ -36,7 +36,7 @@ class AppearanceSettingsFragment : PreferenceFragment(), SharedPreferences.OnSha
                 .unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Load the preferences from an XML resource
