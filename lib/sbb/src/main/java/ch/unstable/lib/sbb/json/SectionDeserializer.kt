@@ -6,8 +6,6 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import java.lang.reflect.Type
-import java.text.SimpleDateFormat
-import java.util.*
 
 class SectionDeserializer: JsonDeserializer<Section> {
     override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext): Section {
@@ -28,11 +26,14 @@ class SectionDeserializer: JsonDeserializer<Section> {
             else -> error("Unknown type")
         }
 
+        val realtimeInfo = context.deserialize<RealtimeInfo>(obj["realtimeInfo"])
+
         return Section(
                 arrival = arrivalCheckpoint,
                 departure = departureCheckpoint,
                 type = type,
-                transportInfo=transportInfo
+                transportInfo=transportInfo,
+                realtimeInfo=realtimeInfo
         )
     }
 
@@ -54,11 +55,4 @@ class SectionDeserializer: JsonDeserializer<Section> {
                 longitude = coordinates["longitude"].asLong
         )
     }
-
-    private fun readDateTime(date: JsonElement, time: JsonElement): Date {
-        return readDateTime(date.asString, time.asString)
-    }
-
-    private fun readDateTime(date: String, time: String): Date =
-            SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.US).parse("$date $time")!!
 }

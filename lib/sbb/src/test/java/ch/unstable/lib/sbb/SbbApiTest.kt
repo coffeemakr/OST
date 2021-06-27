@@ -1,12 +1,31 @@
 package ch.unstable.lib.sbb
 
+import android.annotation.SuppressLint
 import ch.unstable.ost.api.model.ConnectionQuery
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
+import java.security.cert.X509Certificate
 import java.util.*
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
+
+fun createTrustAllX509TrustManager(): SbbApiFactory.SSLConfig {
+    val sslContext = SSLContext.getInstance("TLS")
+    val allTrustManager = @SuppressLint("TrustAllX509TrustManager") object : X509TrustManager {
+        override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+
+        override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+        }
+
+        override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
+    }
+    sslContext.init(null, arrayOf<TrustManager>(allTrustManager), null)
+    return SbbApiFactory.SSLConfig(sslContext.socketFactory, allTrustManager)
+}
 
 class SbbApiTest {
 
@@ -19,7 +38,7 @@ class SbbApiTest {
 
     @Before
     fun setUp() {
-        sbbApi = SbbApiFactory().createAPI(SbbApiFactory.createTrustAllX509TrustManager())
+        sbbApi = SbbApiFactory().createAPI(createTrustAllX509TrustManager())
     }
 
     @Test

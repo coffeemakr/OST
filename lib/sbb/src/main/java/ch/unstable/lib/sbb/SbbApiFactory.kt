@@ -1,23 +1,19 @@
 package ch.unstable.lib.sbb
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import ch.unstable.lib.sbb.auth.AuthInterceptor
 import ch.unstable.lib.sbb.json.*
 import ch.unstable.lib.sbb.model.SbbConnectionPage
 import ch.unstable.lib.sbb.model.StationResponse
+import ch.unstable.ost.api.model.*
 import ch.unstable.ost.api.model.Connection
-import ch.unstable.ost.api.model.Section
-import ch.unstable.ost.api.model.Station
-import ch.unstable.ost.api.model.TransportInfo
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.InputStream
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
-import java.security.cert.X509Certificate
 import java.util.*
 import javax.net.ssl.*
 
@@ -89,6 +85,7 @@ class SbbApiFactory {
                 .registerTypeAdapter(Connection::class.java, ConnectionDeserializer())
                 .registerTypeAdapter(Section::class.java, SectionDeserializer())
                 .registerTypeAdapter(TransportInfo::class.java, TransportInfoDeserializer())
+                .registerTypeAdapter(RealtimeInfo::class.java, RealtimeInfoDeserializer())
                 .create()!!
 
     private fun createTrustManager(certificate: InputStream): SSLConfig {
@@ -132,20 +129,5 @@ class SbbApiFactory {
 
     companion object {
         private const val baseUrl = "https://p1.sbbmobile.ch"
-
-
-        fun createTrustAllX509TrustManager(): SSLConfig {
-            val sslContext = SSLContext.getInstance("TLS")
-            val allTrustManager = @SuppressLint("TrustAllX509TrustManager") object : X509TrustManager {
-                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-
-                override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
-                }
-
-                override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
-            }
-            sslContext.init(null, arrayOf<TrustManager>(allTrustManager), null)
-            return SSLConfig(sslContext.socketFactory, allTrustManager)
-        }
     }
 }
