@@ -6,13 +6,13 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import java.lang.reflect.Type
 
-class TransportInfoDeserializer: JsonDeserializer<TransportInfo> {
+class TransportInfoDeserializer : JsonDeserializer<TransportInfo> {
     override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext): TransportInfo {
         val obj = json.asJsonObject
         // label = obj["transportLabel"].asString
         return TransportInfo(
                 direction = obj["transportDirection"].asString,
-                label = obj["transportLabel"].asString,
+                label = obj["transportLabel"].asString.emptyAsNull,
                 text = obj["transportText"].asString,
                 name = obj["transportText"].nullable?.asString,
                 icon = obj["transportIcon"].asString,
@@ -20,6 +20,15 @@ class TransportInfoDeserializer: JsonDeserializer<TransportInfo> {
         )
     }
 }
+
+private val String.emptyAsNull: String?
+    get() {
+        return if (isEmpty()) {
+            null
+        } else {
+            this
+        }
+    }
 
 /*
     "oevIcon": "ZUG",

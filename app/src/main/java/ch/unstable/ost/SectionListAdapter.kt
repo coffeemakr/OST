@@ -44,7 +44,7 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
         holder.departureStationName.text = section.departure.station.name
         holder.arrivalTime.text = TimeDateUtils.formatTime(section.arrival.time)
         holder.departureTime.text = TimeDateUtils.formatTime(section.departure.time)
-        holder.productName.text = section.transportInfo?.displayName
+        holder.productName.text = section.transportInfo?.shortDisplayName
         holder.endDestination.text = section.arrival.station.name
         holder.departurePlatform.text = section.departure.platform
         holder.arrivalPlatform.text = section.arrival.platform

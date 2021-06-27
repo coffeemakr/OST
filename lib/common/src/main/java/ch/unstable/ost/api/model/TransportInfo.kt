@@ -6,18 +6,20 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TransportInfo(
         val direction: String,
-        val label: String,
+        val label: String?,
         val icon: String,
         val iconSuffix: String?,
         val text: String,
         val name: String?
 ) : Parcelable {
-    val displayName: String
+    val shortDisplayName: String
         get() {
-            if (iconSuffix != null) {
-                return "$icon $iconSuffix"
+            return if (label != null) {
+                "$label"
+            } else if (iconSuffix != null) {
+                "$icon $iconSuffix"
             } else {
-                return "$icon $name"
+                "$icon $name"
             }
         }
 }

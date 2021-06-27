@@ -43,7 +43,7 @@ object ConnectionBinder {
         val firstNonWalkSection = connection.sections.firstOrNull { it.type == SectionType.TRANSPORT }
         if (firstNonWalkSection != null) {
             holder.direction.text = formatEndDestination(context, firstNonWalkSection.transportInfo?.direction)
-            holder.firstTransportName.text = firstNonWalkSection.transportInfo?.displayName
+            holder.firstTransportName.text = firstNonWalkSection.transportInfo?.shortDisplayName
             holder.platform.text = formatPlatform(context, firstNonWalkSection.departure.platform)
             if(firstNonWalkSection.departure.station.name != connection.sections.first().departure.station.name) {
                 // A walk to another station is required
