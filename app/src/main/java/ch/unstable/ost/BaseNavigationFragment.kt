@@ -7,11 +7,11 @@ import androidx.fragment.app.Fragment
 import ch.unstable.ost.api.model.ConnectionQuery
 
 abstract class BaseNavigationFragment : Fragment() {
-    private var mListener: OnRouteSelectionListener? = null
+    private var listener: OnRouteSelectionListener? = null
     @CallSuper
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mListener = if (context is OnRouteSelectionListener) {
+        listener = if (context is OnRouteSelectionListener) {
             context
         } else {
             throw IllegalStateException(context.toString()
@@ -22,13 +22,11 @@ abstract class BaseNavigationFragment : Fragment() {
     @CallSuper
     override fun onDetach() {
         super.onDetach()
-        mListener = null
+        listener = null
     }
 
     fun selectRoute(query: ConnectionQuery) {
-        if (mListener != null) {
-            mListener!!.onRouteSelected(query)
-        }
+        listener?.onRouteSelected(query)
     }
 
     interface OnRouteSelectionListener {

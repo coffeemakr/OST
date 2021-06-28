@@ -11,7 +11,6 @@ import androidx.core.app.NavUtils
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ch.unstable.ost.ConnectionListActivity
 import ch.unstable.ost.database.Databases
 import ch.unstable.ost.database.dao.QueryHistoryDao
 import ch.unstable.ost.database.model.QueryHistory
@@ -22,30 +21,30 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 
 class QueryHistoryActivity : AppCompatActivity() {
-    private var mQueryHistoryDao: QueryHistoryDao? = null
-    private var mQueryHistoryAdapter: QueryHistoryAdapter? = null
-    private val mOnQueryHistoryItemClickListener = View.OnClickListener { view ->
+    private var queryHistoryDao: QueryHistoryDao? = null
+    private var queryHistoryAdapter: QueryHistoryAdapter? = null
+    private val onQueryHistoryItemClickListener = View.OnClickListener { view ->
         val query = view.tag as QueryHistory
         Preconditions.checkNotNull(query, "query")
         openConnection(query)
     }
-    private var mCompositeDisposable: CompositeDisposable? = null
+    private var compositeDisposable: CompositeDisposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mCompositeDisposable = CompositeDisposable()
+        compositeDisposable = CompositeDisposable()
         setContentView(R.layout.activity_query_history)
         val myToolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(myToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        mQueryHistoryDao = Databases.getCacheDatabase(this).queryHistoryDao()
-        if (mQueryHistoryAdapter == null) {
-            mQueryHistoryAdapter = QueryHistoryAdapter(mOnQueryHistoryItemClickListener)
+        queryHistoryDao = Databases.getCacheDatabase(this).queryHistoryDao()
+        if (queryHistoryAdapter == null) {
+            queryHistoryAdapter = QueryHistoryAdapter(onQueryHistoryItemClickListener)
         }
         val historyEntries = findViewById<RecyclerView>(R.id.historyEntries)
         val layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         historyEntries.layoutManager = layoutManager
-        historyEntries.adapter = mQueryHistoryAdapter
+        historyEntries.adapter = queryHistoryAdapter
         val divider = DividerItemDecoration(
                 historyEntries.context,
                 layoutManager.orientation
@@ -72,15 +71,15 @@ class QueryHistoryActivity : AppCompatActivity() {
 
     public override fun onResume() {
         super.onResume()
-        val disposable = mQueryHistoryDao!!.connections
+        val disposable = queryHistoryDao!!.connections
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(queriesConsumer)
-        mCompositeDisposable!!.add(disposable)
+        compositeDisposable!!.add(disposable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mCompositeDisposable!!.dispose()
+        compositeDisposable!!.dispose()
     }
 
     /**
@@ -91,8 +90,8 @@ class QueryHistoryActivity : AppCompatActivity() {
     private val queriesConsumer: Consumer<List<QueryHistory>>
         get() = Consumer { entries: List<QueryHistory> ->
             if (BuildConfig.DEBUG) Log.d(TAG, "Got entries: $entries")
-            if (mQueryHistoryAdapter != null) {
-                mQueryHistoryAdapter!!.setEntries(entries)
+            if (queryHistoryAdapter != null) {
+                queryHistoryAdapter!!.setEntries(entries)
             } else {
                 Log.w(TAG, "Adapter is null")
             }

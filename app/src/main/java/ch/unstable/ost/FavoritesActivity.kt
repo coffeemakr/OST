@@ -15,36 +15,36 @@ import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class FavoritesActivity : AppCompatActivity() {
-    private var mFavoritesDao: FavoriteConnectionDao? = null
-    private var mFavoritesAdapter: FavoritesAdapter? = null
-    private var mDisposable: CompositeDisposable? = null
+    private var favoritesDao: FavoriteConnectionDao? = null
+    private var favoritesAdapter: FavoritesAdapter? = null
+    private var compositeDisposable: CompositeDisposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        mFavoritesAdapter = FavoritesAdapter()
+        favoritesAdapter = FavoritesAdapter()
         val favorites = findViewById<RecyclerView>(R.id.favorites)
-        favorites.adapter = mFavoritesAdapter
+        favorites.adapter = favoritesAdapter
         favorites.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        mDisposable = CompositeDisposable()
-        mFavoritesDao = Databases
+        compositeDisposable = CompositeDisposable()
+        favoritesDao = Databases
                 .getCacheDatabase(this)
                 .favoriteConnectionDao()
     }
 
     override fun onResume() {
         super.onResume()
-        val disposable = mFavoritesDao!!.favoriteConnections
+        val disposable = favoritesDao!!.favoriteConnections
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mFavoritesAdapter, Consumer { throwable: Throwable? -> startErrorActivity(this@FavoritesActivity, throwable!!) })
-        mDisposable!!.add(disposable)
+                .subscribe(favoritesAdapter, Consumer { throwable: Throwable? -> startErrorActivity(this@FavoritesActivity, throwable!!) })
+        compositeDisposable!!.add(disposable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mDisposable!!.dispose()
+        compositeDisposable!!.dispose()
     }
 }

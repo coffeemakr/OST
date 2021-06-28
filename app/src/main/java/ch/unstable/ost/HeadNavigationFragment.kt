@@ -9,15 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.annotation.MainThread
 import androidx.annotation.StringRes
-import ch.unstable.ost.ChooseStationActivity
 import ch.unstable.ost.TimePickerDialog.OnTimeSelected
 import ch.unstable.ost.TimePickerDialog.TimeRestrictionType
 import ch.unstable.ost.api.model.ConnectionQuery
+import ch.unstable.ost.databinding.FragmentHeadNavigationBinding
 import ch.unstable.ost.utils.LocalizationUtils.getArrivalOrDepartureText
 import com.google.common.base.Verify
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,25 +22,23 @@ import io.reactivex.functions.Consumer
 import java.util.*
 
 class HeadNavigationFragment : BaseNavigationFragment() {
-    private var mOnButtonClickListener: View.OnClickListener? = null
-    private var mSelectionState: SelectionState? = null
-    private var mToButton: Button? = null
-    private var mFromButton: Button? = null
-    private var mReverseDirectionButton: ImageButton? = null
-    private var mTime: TextView? = null
+    private var onButtonClickListener: View.OnClickListener? = null
+    private var selectionState: SelectionState? = null
+    private var binding: FragmentHeadNavigationBinding? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mOnButtonClickListener = OnNavigationButtonsClickListener()
-        mSelectionState = null
+        onButtonClickListener = OnNavigationButtonsClickListener()
+        selectionState = null
         if (savedInstanceState != null) {
-            mSelectionState = savedInstanceState.getParcelable(KEY_STATE)
+            selectionState = savedInstanceState.getParcelable(KEY_STATE)
         } else if (arguments != null) {
-            mSelectionState = requireArguments().getParcelable(KEY_STATE)
+            selectionState = requireArguments().getParcelable(KEY_STATE)
         }
-        if (mSelectionState == null) {
-            mSelectionState = SelectionState()
+        if (selectionState == null) {
+            selectionState = SelectionState()
         }
-        val disposable = mSelectionState!!.getChangeObservable()
+        val disposable = selectionState!!.getChangeObservable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(selectionStateObserver)
     }
@@ -56,39 +51,37 @@ class HeadNavigationFragment : BaseNavigationFragment() {
 
     private fun updateViews() {
         val context = context ?: return
-        mTime!!.text = getArrivalOrDepartureText(
+        val binding = binding ?: return
+        binding.timeView.text = getArrivalOrDepartureText(
                 context,
-                mSelectionState!!.getArrivalTime(),
-                mSelectionState!!.getDepartureTime())
-        mToButton!!.text = getToButtonText(context, mSelectionState!!.getTo())
-        mFromButton!!.text = getFromButtonText(context, mSelectionState!!.getFrom())
+                selectionState!!.getArrivalTime(),
+                selectionState!!.getDepartureTime())
+        binding.toButton.text = getToButtonText(context, selectionState!!.getTo())
+        binding.fromButton.text = getFromButtonText(context, selectionState!!.getFrom())
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (mSelectionState != null) {
-            outState.putParcelable(KEY_STATE, mSelectionState)
+        if (selectionState != null) {
+            outState.putParcelable(KEY_STATE, selectionState)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_head_navigation, container, false)
+        val binding = FragmentHeadNavigationBinding.inflate(inflater, container, false)
+        this.binding = binding
+        binding.timeSettingsContainer.setOnClickListener(onButtonClickListener)
+        binding.fromButton.setOnClickListener(onButtonClickListener)
+        binding.toButton.setOnClickListener(onButtonClickListener)
+        binding.reverseDirectionButton.setOnClickListener(onButtonClickListener)
+        updateViews()
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mFromButton = view.findViewById(R.id.fromButton)
-        mToButton = view.findViewById(R.id.toButton)
-        mReverseDirectionButton = view.findViewById(R.id.reverseDirectionButton)
-        mTime = view.findViewById(R.id.timeView)
-        val timeSettingsContainer = view.findViewById<View>(R.id.timeSettingsContainer)
-        timeSettingsContainer.setOnClickListener(mOnButtonClickListener)
-        mFromButton?.setOnClickListener(mOnButtonClickListener)
-        mToButton?.setOnClickListener(mOnButtonClickListener)
-        mReverseDirectionButton?.setOnClickListener(mOnButtonClickListener)
-        updateViews()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        this.binding = null
     }
 
     private fun startStationChooser(@StringRes chooseRequest: Int, codeTo: Int) {
@@ -106,12 +99,12 @@ class HeadNavigationFragment : BaseNavigationFragment() {
                 REQUEST_CODE_CHOOSE_FROM -> {
                     name = data!!.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME)
                     Verify.verifyNotNull(name, "Choose station result (from) is null")
-                    mSelectionState!!.setFrom(name)
+                    selectionState!!.setFrom(name)
                 }
                 REQUEST_CODE_CHOOSE_TO -> {
                     name = data!!.getStringExtra(ChooseStationActivity.EXTRA_RESULT_STATION_NAME)
                     Verify.verifyNotNull(name, "Choose station result (to) is null")
-                    mSelectionState!!.setTo(name)
+                    selectionState!!.setTo(name)
                 }
                 else -> {
                 }
@@ -120,8 +113,8 @@ class HeadNavigationFragment : BaseNavigationFragment() {
     }
 
     private fun onQueryChanged() {
-        if (mSelectionState!!.getTo() != null && mSelectionState!!.getFrom() != null) {
-            val query = mSelectionState!!.createQuery()
+        if (selectionState!!.getTo() != null && selectionState!!.getFrom() != null) {
+            val query = selectionState!!.createQuery()
             selectRoute(query)
         }
     }
@@ -129,43 +122,46 @@ class HeadNavigationFragment : BaseNavigationFragment() {
     private fun onReverseDirectionRequested() {
         val context = context
         val animation = AnimationUtils.loadAnimation(context, R.anim.half_rotation)
-        mReverseDirectionButton!!.startAnimation(animation)
+        binding?.reverseDirectionButton?.startAnimation(animation)
         val fadeInTop = AnimationUtils.loadAnimation(context, R.anim.fade_in_top)
         val fadeOutTop = AnimationUtils.loadAnimation(context, R.anim.fade_out_top)
         val fadeInBottom = AnimationUtils.loadAnimation(context, R.anim.fade_in_bottom)
         val fadeOutBottom = AnimationUtils.loadAnimation(context, R.anim.fade_out_bottom)
-        val newTo = mSelectionState!!.getFrom()
-        val newFrom = mSelectionState!!.getTo()
+        val newTo = selectionState!!.getFrom()
+        val newFrom = selectionState!!.getTo()
         fadeOutTop.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation1: Animation) {
                 // Not interested in this event
             }
 
             override fun onAnimationEnd(animation1: Animation) {
-                mFromButton!!.text = getFromButtonText(context, newFrom)
-                mFromButton!!.startAnimation(fadeInTop)
-                mToButton!!.text = getToButtonText(context, newTo)
-                mToButton!!.startAnimation(fadeInBottom)
-                mSelectionState!!.setFrom(newFrom)
-                mSelectionState!!.setTo(newTo)
+                val binding = binding
+                if(binding != null) {
+                    binding.fromButton.text = getFromButtonText(context, newFrom)
+                    binding.fromButton.startAnimation(fadeInTop)
+                    binding.toButton.text = getToButtonText(context, newTo)
+                    binding.toButton.startAnimation(fadeInBottom)
+                }
+                selectionState!!.setFrom(newFrom)
+                selectionState!!.setTo(newTo)
             }
 
             override fun onAnimationRepeat(animation1: Animation) {
                 // Not interested in this event
             }
         })
-        mFromButton!!.startAnimation(fadeOutTop)
-        mToButton!!.startAnimation(fadeOutBottom)
+        binding?.fromButton?.startAnimation(fadeOutTop)
+        binding?.toButton?.startAnimation(fadeOutBottom)
     }
 
     @MainThread
     fun updateQuery(query: ConnectionQuery?) {
-        mSelectionState!!.setQuery(query!!)
+        selectionState!!.setQuery(query!!)
     }
 
     fun clearQuery() {
-        mSelectionState!!.setFrom(null)
-        mSelectionState!!.setTo(null)
+        selectionState!!.setFrom(null)
+        selectionState!!.setTo(null)
     }
 
     inner class OnNavigationButtonsClickListener : View.OnClickListener {
@@ -179,19 +175,19 @@ class HeadNavigationFragment : BaseNavigationFragment() {
         }
 
         private fun onOpenTimeSettings() {
-            var date = mSelectionState!!.getDepartureTime()
+            var date = selectionState!!.getDepartureTime()
             var restrictionType = TimeRestrictionType.DEPARTURE
-            if (date == null && mSelectionState!!.getArrivalTime() != null) {
+            if (date == null && selectionState!!.getArrivalTime() != null) {
                 restrictionType = TimeRestrictionType.ARRIVAL
-                date = mSelectionState!!.getArrivalTime()
+                date = selectionState!!.getArrivalTime()
             }
             val timePickerDialog = TimePickerDialog(context!!, restrictionType, date, object : OnTimeSelected {
                 override fun onArrivalTimeSelected(date: Date) {
-                    mSelectionState!!.setArrivalTime(date)
+                    selectionState!!.setArrivalTime(date)
                 }
 
                 override fun onDepartureTimeSelected(date: Date) {
-                    mSelectionState!!.setDepartureTime(date)
+                    selectionState!!.setDepartureTime(date)
                 }
             })
             timePickerDialog.show()

@@ -25,8 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.common.base.Preconditions;
-
 import org.jetbrains.annotations.NotNull;
 
 import ch.unstable.ost.api.model.Connection;
@@ -48,7 +46,6 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class ConnectionDetailFragment extends Fragment {
 
-
     public static final long NO_FAVORITE_ID = 0L;
     private static final String KEY_CONNECTION = "KEY_CONNECTION";
     private static final String KEY_FAVORITE_ID = "KEY_FAVORITE_ID";
@@ -57,16 +54,16 @@ public class ConnectionDetailFragment extends Fragment {
     @AttrRes
     private static final int ICON_FAVORITED = R.attr.ic_star_24dp_no_vector;
     private static final String TAG = "ConnectionDetailFgmt";
-    private Connection mConnection;
-    private SectionListAdapter mSectionListAdapter;
-    private SectionListAdapter.OnSectionClickedListener mOnJourneyClickedListener;
-    private OnConnectionDetailInteractionListener mOnConnectionDetailInteractionListener;
-    private FavoriteConnectionDao mFavoriteConnectionDao;
-    private CompositeDisposable mDisposable;
+    private Connection connection;
+    private SectionListAdapter sectionListAdapter;
+    private SectionListAdapter.OnSectionClickedListener sectionClickedListener;
+    private OnConnectionDetailInteractionListener connectionDetailInteractionListener;
+    private FavoriteConnectionDao favoriteConnectionDao;
+    private CompositeDisposable compositeDisposable;
     @Nullable
-    private MenuItem mFavoriteMenuItem;
-    private long mFavoriteId;
-    private Drawable[] mStyledIcons;
+    private MenuItem menuItem;
+    private long favoriteId;
+    private Drawable[] styledIcons;
 
     public ConnectionDetailFragment() {
         // Required empty public constructor
@@ -94,53 +91,53 @@ public class ConnectionDetailFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.mOnConnectionDetailInteractionListener = (OnConnectionDetailInteractionListener) context;
+        this.connectionDetailInteractionListener = (OnConnectionDetailInteractionListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mOnConnectionDetailInteractionListener = null;
+        connectionDetailInteractionListener = null;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDisposable = new CompositeDisposable();
+        compositeDisposable = new CompositeDisposable();
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
-            mConnection = savedInstanceState.getParcelable(KEY_CONNECTION);
-            mFavoriteId = savedInstanceState.getLong(KEY_FAVORITE_ID, NO_FAVORITE_ID);
+            connection = savedInstanceState.getParcelable(KEY_CONNECTION);
+            favoriteId = savedInstanceState.getLong(KEY_FAVORITE_ID, NO_FAVORITE_ID);
         } else {
-            mConnection = getArguments().getParcelable(KEY_CONNECTION);
-            mFavoriteId = getArguments().getLong(KEY_FAVORITE_ID, NO_FAVORITE_ID);
+            connection = getArguments().getParcelable(KEY_CONNECTION);
+            favoriteId = getArguments().getLong(KEY_FAVORITE_ID, NO_FAVORITE_ID);
         }
 
-        if (mOnJourneyClickedListener == null) {
-            mOnJourneyClickedListener = section -> {
-                if (mOnConnectionDetailInteractionListener != null) {
-                    mOnConnectionDetailInteractionListener.onSectionSelected(section);
+        if (sectionClickedListener == null) {
+            sectionClickedListener = section -> {
+                if (connectionDetailInteractionListener != null) {
+                    connectionDetailInteractionListener.onSectionSelected(section);
                 }
             };
         }
-        mSectionListAdapter = new SectionListAdapter();
-        mSectionListAdapter.setOnJourneyClickedListener(mOnJourneyClickedListener);
-        mSectionListAdapter.setSections(mConnection.getSections());
+        sectionListAdapter = new SectionListAdapter();
+        sectionListAdapter.setOnJourneyClickedListener(sectionClickedListener);
+        sectionListAdapter.setSections(connection.getSections());
 
-        mFavoriteConnectionDao = Databases.getCacheDatabase(getContext()).favoriteConnectionDao();
+        favoriteConnectionDao = Databases.getCacheDatabase(getContext()).favoriteConnectionDao();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDisposable.dispose();
+        compositeDisposable.dispose();
     }
 
     @Override
     public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(KEY_CONNECTION, mConnection);
-        outState.putLong(KEY_FAVORITE_ID, mFavoriteId);
+        outState.putParcelable(KEY_CONNECTION, connection);
+        outState.putLong(KEY_FAVORITE_ID, favoriteId);
     }
 
     @Override
@@ -154,8 +151,8 @@ public class ConnectionDetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.connection_detail_menu, menu);
-        mFavoriteMenuItem = menu.findItem(R.id.action_favorite);
-        if (mFavoriteId == NO_FAVORITE_ID) {
+        menuItem = menu.findItem(R.id.action_favorite);
+        if (favoriteId == NO_FAVORITE_ID) {
             setFavoriteIcon(false);
         } else {
             setFavoriteIcon(true);
@@ -172,7 +169,7 @@ public class ConnectionDetailFragment extends Fragment {
 
     @MainThread
     private void onToggedFavoriteConnection() {
-        if (mFavoriteId == NO_FAVORITE_ID) {
+        if (favoriteId == NO_FAVORITE_ID) {
             enableFavorite();
         } else {
             disableFavorite();
@@ -181,13 +178,13 @@ public class ConnectionDetailFragment extends Fragment {
 
     @MainThread
     private void disableFavorite() {
-        if (mFavoriteId == NO_FAVORITE_ID) return;
-        Disposable disposable = Flowable.just(mFavoriteId)
+        if (favoriteId == NO_FAVORITE_ID) return;
+        Disposable disposable = Flowable.just(favoriteId)
                 .subscribeOn(Schedulers.io())
                 .singleOrError()
-                .flatMap(favoriteId -> mFavoriteConnectionDao.getFavoriteById(favoriteId))
+                .flatMap(favoriteId -> favoriteConnectionDao.getFavoriteById(favoriteId))
                 .map(favoriteConnection -> {
-                    mFavoriteConnectionDao.removeConnectionById(favoriteConnection);
+                    favoriteConnectionDao.removeConnectionById(favoriteConnection);
                     return true;
                 })
                 .onErrorResumeNext(throwable -> {
@@ -201,64 +198,64 @@ public class ConnectionDetailFragment extends Fragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ignored -> onFavoriteCleared());
-        mDisposable.add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     private void setFavoriteIcon(boolean favoriteEnabled) {
-        if (mFavoriteMenuItem == null) {
+        if (menuItem == null) {
             if (BuildConfig.DEBUG) Log.w(TAG, "Can't set icon (mFavoriteMenuItem is null)");
             return;
         }
-        if (mStyledIcons == null) {
+        if (styledIcons == null) {
             int[] startIcon = new int[]{ICON_FAVORITED, ICON_NO_FAVORITE};
             TypedValue typedValue = new TypedValue();
             TypedArray a = getContext().obtainStyledAttributes(typedValue.data, startIcon);
-            mStyledIcons = new Drawable[]{a.getDrawable(0), a.getDrawable(1)};
+            styledIcons = new Drawable[]{a.getDrawable(0), a.getDrawable(1)};
             a.recycle();
         }
-        mFavoriteMenuItem.setIcon(mStyledIcons[favoriteEnabled ? 0 : 1]);
+        menuItem.setIcon(styledIcons[favoriteEnabled ? 0 : 1]);
     }
 
     @MainThread
     private void onFavoriteStored(long id) {
         setFavoriteIcon(true);
-        mFavoriteId = id;
+        favoriteId = id;
     }
 
     @MainThread
     private void onFavoriteCleared() {
-        mFavoriteId = NO_FAVORITE_ID;
+        favoriteId = NO_FAVORITE_ID;
         setFavoriteIcon(false);
     }
 
     @MainThread
     private void enableFavorite() {
-        Disposable disposable = Flowable.just(mConnection)
+        Disposable disposable = Flowable.just(connection)
                 .subscribeOn(Schedulers.io())
                 .map(connection -> {
                     FavoriteConnection favoriteConnection = new FavoriteConnection(connection);
-                    long id = mFavoriteConnectionDao.addConnection(favoriteConnection);
+                    long id = favoriteConnectionDao.addConnection(favoriteConnection);
                     favoriteConnection.setId(id);
                     return favoriteConnection;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(favoriteConnection -> onFavoriteStored(favoriteConnection.getId())); // TODO: error handling
-        mDisposable.add(disposable);
+        compositeDisposable.add(disposable);
     }
 
     @Override
     public void onDestroyOptionsMenu() {
-        mFavoriteMenuItem = null;
+        menuItem = null;
         super.onDestroyOptionsMenu();
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView sectionList = view.findViewById(R.id.sectionsList);
         sectionList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        sectionList.setAdapter(mSectionListAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        sectionList.setAdapter(sectionListAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
         sectionList.addItemDecoration(dividerItemDecoration);
     }
 

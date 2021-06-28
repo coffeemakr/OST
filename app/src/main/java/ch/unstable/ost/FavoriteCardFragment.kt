@@ -19,16 +19,16 @@ import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class FavoriteCardFragment : QuickstartCardFragment() {
-    private var mListener: OnFavoriteSelectedListener? = null
-    private var mCardFavorites: View? = null
-    private var mFavoriteFromTo: TextView? = null
-    private var mFavoriteDate: TextView? = null
-    private var mFavoriteDao: FavoriteConnectionDao? = null
-    private var mLatestFavorite: FavoriteConnection? = null
-    private var mDisposable: Disposable? = null
+    private var favoriteSelectedListener: OnFavoriteSelectedListener? = null
+    private var cardFavorites: View? = null
+    private var favoriteFromTo: TextView? = null
+    private var favoriteDate: TextView? = null
+    private var favoriteDao: FavoriteConnectionDao? = null
+    private var latestFavorite: FavoriteConnection? = null
+    private var disposable: Disposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mFavoriteDao = Databases.getCacheDatabase(context).favoriteConnectionDao()
+        favoriteDao = Databases.getCacheDatabase(context).favoriteConnectionDao()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,10 +37,10 @@ class FavoriteCardFragment : QuickstartCardFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mCardFavorites = view.findViewById(R.id.cardFavorites)
-        mCardFavorites?.visibility = View.GONE
-        mFavoriteFromTo = view.findViewById(R.id.favoriteFromTo)
-        mFavoriteDate = view.findViewById(R.id.favoriteDate)
+        cardFavorites = view.findViewById(R.id.cardFavorites)
+        cardFavorites?.visibility = View.GONE
+        favoriteFromTo = view.findViewById(R.id.favoriteFromTo)
+        favoriteDate = view.findViewById(R.id.favoriteDate)
         val moreButton = view.findViewById<View>(R.id.buttonMoreFavorites)
         moreButton.setOnClickListener { onMoreButtonPressed() }
         val openButton = view.findViewById<View>(R.id.buttonOpenFavorite)
@@ -49,17 +49,17 @@ class FavoriteCardFragment : QuickstartCardFragment() {
 
     private fun bindConnection(favoriteConnection: FavoriteConnection) {
         val connection = favoriteConnection.connection
-        bindFromToText(mFavoriteFromTo!!, connection)
-        mFavoriteDate!!.text = getDepartureText(requireContext(), connection.departureDate)
-        mCardFavorites!!.visibility = View.VISIBLE
-        mLatestFavorite = favoriteConnection
+        bindFromToText(favoriteFromTo!!, connection)
+        favoriteDate!!.text = getDepartureText(requireContext(), connection.departureDate)
+        cardFavorites!!.visibility = View.VISIBLE
+        latestFavorite = favoriteConnection
     }
 
     override fun onResume() {
         Log.d(TAG, "onResume()")
         super.onResume()
-        if (mDisposable != null) mDisposable!!.dispose()
-        mDisposable = mFavoriteDao!!.latestFavorite
+        disposable?.dispose()
+        disposable = favoriteDao!!.latestFavorite
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Consumer { favoriteConnection: FavoriteConnection ->
@@ -70,14 +70,14 @@ class FavoriteCardFragment : QuickstartCardFragment() {
 
     override fun onStop() {
         super.onStop()
-        mDisposable!!.dispose()
+        disposable?.dispose()
     }
 
     private fun onOpenButtonPressed() {
-        if (mListener != null && mLatestFavorite != null) {
-            mListener!!.onFavoriteSelected(mLatestFavorite!!)
+        if (favoriteSelectedListener != null && latestFavorite != null) {
+            favoriteSelectedListener!!.onFavoriteSelected(latestFavorite!!)
         } else if (BuildConfig.DEBUG) {
-            Log.w(TAG, "mListener or mLatestFavorite is null ($mListener, $mLatestFavorite)")
+            Log.w(TAG, "mListener or mLatestFavorite is null ($favoriteSelectedListener, $latestFavorite)")
         }
     }
 
@@ -88,7 +88,7 @@ class FavoriteCardFragment : QuickstartCardFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mListener = if (context is OnFavoriteSelectedListener) {
+        favoriteSelectedListener = if (context is OnFavoriteSelectedListener) {
             context
         } else {
             throw RuntimeException(context.toString()
@@ -98,7 +98,7 @@ class FavoriteCardFragment : QuickstartCardFragment() {
 
     override fun onDetach() {
         super.onDetach()
-        mListener = null
+        favoriteSelectedListener = null
     }
 
     override val errorMessage: Int

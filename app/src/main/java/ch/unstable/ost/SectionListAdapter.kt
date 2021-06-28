@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ch.unstable.ost.SectionListAdapter.SectionViewHolder
 import ch.unstable.ost.api.model.Section
@@ -43,43 +42,47 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
     }
 
     private fun onBindJourneyViewHolder(holder: JourneyViewHolder, section: Section) {
-        if (section.realtimeInfo.arrival.actualTime != section.arrival.time) {
-            holder.arrivalTime.paintFlags = holder.arrivalTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            holder.binding.actualArrivalTime.visibility = View.VISIBLE
-            holder.binding.actualArrivalTime.text = TimeDateUtils.formatTime(section.realtimeInfo.arrival.actualTime)
-        } else {
-            holder.binding.actualArrivalTime.visibility = View.GONE
-            holder.arrivalTime.paintFlags = holder.arrivalTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-        }
-        if (section.realtimeInfo.departure.actualTime != section.departure.time) {
-            holder.departureTime.paintFlags = holder.departureTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            holder.binding.departureActual.visibility = View.VISIBLE
-            holder.binding.departureActual.text = TimeDateUtils.formatTime(section.realtimeInfo.departure.actualTime)
-        } else {
-            holder.binding.departureActual.visibility = View.GONE
-            holder.departureTime.paintFlags = holder.departureTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-        }
+        with(holder.binding) {
+            if (section.realtimeInfo.arrival.actualTime != section.arrival.time) {
+                arrivalTime.paintFlags = arrivalTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                actualArrivalTime.visibility = View.VISIBLE
+                actualArrivalTime.text = TimeDateUtils.formatTime(section.realtimeInfo.arrival.actualTime)
+            } else {
+                actualArrivalTime.visibility = View.GONE
+                arrivalTime.paintFlags = arrivalTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            }
+            if (section.realtimeInfo.departure.actualTime != section.departure.time) {
+                departureTime.paintFlags = departureTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                departureActual.visibility = View.VISIBLE
+                departureActual.text = TimeDateUtils.formatTime(section.realtimeInfo.departure.actualTime)
+            } else {
+                departureActual.visibility = View.GONE
+                departureTime.paintFlags = departureTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            }
 
-        holder.arrivalStationName.text = section.arrival.station.name
-        holder.departureStationName.text = section.departure.station.name
-        holder.arrivalTime.text = TimeDateUtils.formatTime(section.arrival.time)
-        holder.departureTime.text = TimeDateUtils.formatTime(section.departure.time)
-        holder.productName.text = section.transportInfo?.shortDisplayName
-        holder.endDestination.text = section.arrival.station.name
-        holder.departurePlatform.text = section.departure.platform
-        holder.arrivalPlatform.text = section.arrival.platform
+            arrivalStationName.text = section.arrival.station.name
+            departureStationName.text = section.departure.station.name
+            arrivalTime.text = TimeDateUtils.formatTime(section.arrival.time)
+            departureTime.text = TimeDateUtils.formatTime(section.departure.time)
+            productName.text = section.transportInfo?.shortDisplayName
+            endDestination.text = section.arrival.station.name
+            departurePlatform.text = section.departure.platform
+            arrivalPlatform.text = section.arrival.platform
 
-        holder.itemView.tag = section
-        holder.itemView.setOnClickListener(onJourneyItemClickListener)
+            holder.itemView.tag = section
+            holder.itemView.setOnClickListener(onJourneyItemClickListener)
+        }
     }
 
     private fun onBindWalkViewHolder(holder: WalkSectionViewHolder, section: Section) {
-        holder.departureStationName.text = section.departure.station.name
-        holder.departureTime.text = TimeDateUtils.formatDuration(
-                holder.itemView.context.resources,
-                section.departure.time,
-                section.arrival.time
-        )
+        with(holder.binding) {
+            departureStationName.text = section.departure.station.name
+            departureTime.text = TimeDateUtils.formatDuration(
+                    root.context.resources,
+                    section.departure.time,
+                    section.arrival.time
+            )
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -115,21 +118,9 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
         fun onSectionClicked(section: Section)
     }
 
-    class WalkSectionViewHolder(binding: ItemConnectionSectionWalkBinding) : SectionViewHolder(binding.root) {
-        val departureTime: TextView = binding.departureTime
-        val departureStationName: TextView = binding.departureStationName
-    }
+    class WalkSectionViewHolder(val binding: ItemConnectionSectionWalkBinding) : SectionViewHolder(binding.root)
 
-    class JourneyViewHolder(val binding: ItemConnectionSectionJourneyBinding) : SectionViewHolder(binding.root) {
-        val productName: TextView = binding.productName
-        val endDestination: TextView = binding.endDestination
-        val departurePlatform: TextView = binding.departurePlatform
-        val arrivalPlatform: TextView = binding.arrivalPlatform
-        val arrivalStationName: TextView = binding.arrivalStationName
-        val departureStationName: TextView = binding.departureStationName
-        val arrivalTime: TextView = binding.arrivalTime
-        val departureTime: TextView = binding.departureTime
-    }
+    class JourneyViewHolder(val binding: ItemConnectionSectionJourneyBinding) : SectionViewHolder(binding.root)
 
     open class SectionViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView!!)
     companion object {

@@ -22,12 +22,10 @@ import ch.unstable.ost.api.model.ConnectionQuery
 import ch.unstable.ost.database.Databases
 import ch.unstable.ost.database.dao.QueryHistoryDao
 import ch.unstable.ost.database.model.QueryHistory
-import ch.unstable.ost.utils.NavHelper.startErrorActivity
 import ch.unstable.ost.views.NoAnimationStrategy
 import ch.unstable.ost.views.ViewStateHolder
 import ch.unstable.ost.views.lists.connection.ConnectionListAdapter
 import ch.unstable.ost.views.lists.connection.ConnectionListAdapter.OnConnectionClickListener
-import com.google.common.base.Preconditions
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -35,9 +33,9 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_connection_list.*
 
 class ConnectionListFragment : Fragment() {
-    private val mOnConnectionClickListener = OnConnectionSelectedCaller()
+    private val onConnectionClickListener = OnConnectionSelectedCaller()
     private var connectionAPI: ConnectionAPI? = null
-    private var mConnectionAdapter: ConnectionListAdapter? = null
+    private var connectionAdapter: ConnectionListAdapter? = null
 
     /**
      * Get the currently shown connection query
@@ -70,9 +68,9 @@ class ConnectionListFragment : Fragment() {
         // Empty constructor
         mViewStateHolder = ViewStateHolder(NoAnimationStrategy())
         mViewStateHolder.setOnRetryClickListener { loadConnections() }
-        mConnectionAdapter = ConnectionListAdapter()
-        mConnectionAdapter!!.setOnLoadMoreListener(mOverScrollListener)
-        mConnectionAdapter!!.setOnConnectionClickListener(mOnConnectionClickListener)
+        connectionAdapter = ConnectionListAdapter()
+        connectionAdapter!!.setOnLoadMoreListener(mOverScrollListener)
+        connectionAdapter!!.setOnConnectionClickListener(onConnectionClickListener)
         connectionQuery = if (savedInstanceState != null) {
             savedInstanceState.getParcelable(ARG_QUERY)
         } else {
@@ -90,7 +88,7 @@ class ConnectionListFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(ARG_QUERY, connectionQuery)
-        if (mConnectionAdapter != null) {
+        if (connectionAdapter != null) {
            // outState.putParcelable(KEY_CONNECTION_STATE, mConnectionAdapter!!.state)
         }
     }
@@ -98,7 +96,7 @@ class ConnectionListFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         mCompositeDisposable.dispose()
-        mConnectionAdapter = null
+        connectionAdapter = null
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -109,12 +107,12 @@ class ConnectionListFragment : Fragment() {
         val context = context ?: throw IllegalStateException("context is null")
         super.onViewCreated(view, savedInstanceState)
 
-        connections_list.adapter = mConnectionAdapter
+        connections_list.adapter = connectionAdapter
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         connections_list.layoutManager = linearLayoutManager
         val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         connections_list.addItemDecoration(dividerItemDecoration)
-        mConnectionListScrollListener = mConnectionAdapter!!.createOnScrollListener(linearLayoutManager)
+        mConnectionListScrollListener = connectionAdapter!!.createOnScrollListener(linearLayoutManager)
         connections_list.addOnScrollListener(mConnectionListScrollListener)
         mViewStateHolder.setContentView(connections_list)
         mViewStateHolder.setLoadingView(view.findViewById(R.id.loadingIndicator))
@@ -132,8 +130,8 @@ class ConnectionListFragment : Fragment() {
             // loading finished for the first time/page
             mViewStateHolder.onSuccess()
         }
-        if (mConnectionAdapter != null) {
-            mConnectionAdapter!!.setConnections(page, connections.toTypedArray())
+        if (connectionAdapter != null) {
+            connectionAdapter?.setConnections(page, connections.toTypedArray())
         } else {
             if (BuildConfig.DEBUG) Log.w(TAG, "mConnectionAdapter is null", Throwable())
         }
@@ -141,7 +139,7 @@ class ConnectionListFragment : Fragment() {
 
     @AnyThread
     private fun loadConnections() {
-        mConnectionAdapter!!.clearConnections()
+        connectionAdapter?.clearConnections()
         loadConnections(connectionQuery, 0)
     }
 

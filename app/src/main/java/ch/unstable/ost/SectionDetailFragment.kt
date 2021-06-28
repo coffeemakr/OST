@@ -11,24 +11,26 @@ import ch.unstable.ost.api.model.Section
 import ch.unstable.ost.views.lists.station.SectionsStopsListAdapter
 
 class SectionDetailFragment : Fragment() {
-    private var mSection: Section? = null
-    private var mStopsListAdapter: SectionsStopsListAdapter? = null
+    private var sectionToShow: Section? = null
+    private var stopsListAdapter: SectionsStopsListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSection = if (savedInstanceState != null) {
+        sectionToShow = if (savedInstanceState != null) {
             savedInstanceState.getParcelable(KEY_SECTION)
         } else {
             requireArguments().getParcelable(KEY_SECTION)
         }
-        checkNotNull(mSection) { "section not set" }
-        mStopsListAdapter = SectionsStopsListAdapter()
-        mStopsListAdapter!!.setElements(emptyList()) //TODO
+        checkNotNull(sectionToShow) { "section not set" }
+        stopsListAdapter = SectionsStopsListAdapter().apply {
+            // TODO
+            setElements(emptyList())
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(KEY_SECTION, mSection)
+        outState.putParcelable(KEY_SECTION, sectionToShow)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,7 +41,7 @@ class SectionDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val stationsList: RecyclerView = view.findViewById(R.id.stationsList)
         stationsList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        stationsList.adapter = mStopsListAdapter
+        stationsList.adapter = stopsListAdapter
     }
 
     companion object {

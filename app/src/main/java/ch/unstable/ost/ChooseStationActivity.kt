@@ -33,9 +33,9 @@ class ChooseStationActivity : ThemedActivity() {
 
     //private TransportAPI transportAPI = new TransportAPI();
     private var stationsDAO: StationsDAO? = null
-    private var mBackgroundHandlerThread: HandlerThread? = null
-    private var mBackgroundHandler: Handler? = null
-    private var mUIHandler: Handler? = null
+    private var backgroundHandlerThread: HandlerThread? = null
+    private var backgroundHandler: Handler? = null
+    private var uiHandler: Handler? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choose_station)
@@ -57,12 +57,12 @@ class ChooseStationActivity : ThemedActivity() {
         progressBar.isIndeterminate = true
         searchedStationView.adapter = locationResultAdapter
         searchedStationView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        mBackgroundHandlerThread = HandlerThread("ChooseStationActivity.Background").also {
+        backgroundHandlerThread = HandlerThread("ChooseStationActivity.Background").also {
             it.start()
         }
-        mBackgroundHandler = Handler(mBackgroundHandlerThread!!.looper, BackgroundHandlerCallback())
-        mUIHandler = Handler(UIHandlerCallback())
-        val suggestionTextWatcher: TextWatcher = SuggestionTextWatcher(mBackgroundHandler!!)
+        backgroundHandler = Handler(backgroundHandlerThread!!.looper, BackgroundHandlerCallback())
+        uiHandler = Handler(UIHandlerCallback())
+        val suggestionTextWatcher: TextWatcher = SuggestionTextWatcher(backgroundHandler!!)
 
         stationName.addTextChangedListener(suggestionTextWatcher)
         stationName.setOnEditorActionListener(TextView.OnEditorActionListener { v: TextView, actionId: Int, event: KeyEvent? ->
@@ -98,7 +98,7 @@ class ChooseStationActivity : ThemedActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mBackgroundHandlerThread!!.quit()
+        backgroundHandlerThread!!.quit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -187,7 +187,7 @@ class ChooseStationActivity : ThemedActivity() {
 
     private inner class BackgroundHandlerCallback : Handler.Callback {
         private fun handleLocationQuery(query: String) {
-            mUIHandler!!.sendEmptyMessage(MESSAGE_LOADING_STARTED)
+            uiHandler!!.sendEmptyMessage(MESSAGE_LOADING_STARTED)
             val stationList: List<Station>
             stationList = try {
                 stationsDAO!!.getStationsByQuery(query, STATION_TYPES)
@@ -196,13 +196,13 @@ class ChooseStationActivity : ThemedActivity() {
                 // mBackgroundHandler.sendMessageDelayed(message, 300);
                 //  return;
             } catch (e: IOException) {
-                mUIHandler!!.sendEmptyMessage(MESSAGE_ERROR)
+                uiHandler!!.sendEmptyMessage(MESSAGE_ERROR)
                 Log.e(TAG, "Failed to get suggestions", e)
                 Log.e(TAG, e.message)
                 return
             }
-            val message = mUIHandler!!.obtainMessage(MESSAGE_UI_SET_LOCATIONS, stationList)
-            mUIHandler!!.sendMessage(message)
+            val message = uiHandler!!.obtainMessage(MESSAGE_UI_SET_LOCATIONS, stationList)
+            uiHandler!!.sendMessage(message)
         }
 
         override fun handleMessage(msg: Message): Boolean {
