@@ -65,7 +65,7 @@ class ChooseStationActivity : ThemedActivity() {
         val suggestionTextWatcher: TextWatcher = SuggestionTextWatcher(backgroundHandler!!)
 
         stationName.addTextChangedListener(suggestionTextWatcher)
-        stationName.setOnEditorActionListener(TextView.OnEditorActionListener { v: TextView, actionId: Int, event: KeyEvent? ->
+        stationName.setOnEditorActionListener(TextView.OnEditorActionListener { v: TextView, actionId: Int, _: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val location = v.text.toString()
                 if (location.isEmpty()) {
@@ -188,8 +188,7 @@ class ChooseStationActivity : ThemedActivity() {
     private inner class BackgroundHandlerCallback : Handler.Callback {
         private fun handleLocationQuery(query: String) {
             uiHandler!!.sendEmptyMessage(MESSAGE_LOADING_STARTED)
-            val stationList: List<Station>
-            stationList = try {
+            val stationList = try {
                 stationsDAO!!.getStationsByQuery(query, STATION_TYPES)
                 //} catch (TooManyRequestsException e) {
                 //   Message message = mBackgroundHandler.obtainMessage(MESSAGE_QUERY_LOCATIONS, query);

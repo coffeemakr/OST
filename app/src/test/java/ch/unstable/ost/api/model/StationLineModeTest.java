@@ -8,7 +8,7 @@ import ch.unstable.ost.api.model.Station.StationType;
 
 import static org.junit.Assert.*;
 
-public class StationTypeTest {
+public class StationLineModeTest {
 
 
     @Test

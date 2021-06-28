@@ -1,12 +1,11 @@
 package ch.unstable.ost.views.lists.station
 
 import android.view.View
-
 import ch.unstable.ost.R
 import ch.unstable.ost.api.model.PassingCheckpoint
 import ch.unstable.ost.utils.TimeDateUtils
-import ch.unstable.ost.views.lists.SingleTypeSimplerAdapter
 import ch.unstable.ost.views.StopDotView
+import ch.unstable.ost.views.lists.SingleTypeSimplerAdapter
 
 
 class SectionsStopsListAdapter : SingleTypeSimplerAdapter<PassingCheckpoint, SectionStationViewHolder>() {
@@ -19,15 +18,9 @@ class SectionsStopsListAdapter : SingleTypeSimplerAdapter<PassingCheckpoint, Sec
         with(viewHolder) {
             stationName.text = element.station.name
             when (position) {
-                0 -> {
-                    stopDotView.setLineMode(StopDotView.Type.TOP)
-                }
-                itemCount - 1 -> {
-                    stopDotView.setLineMode(StopDotView.Type.BOTTOM)
-                }
-                else -> {
-                    stopDotView.setLineMode(StopDotView.Type.BOTH)
-                }
+                0 -> stopDotView.lineMode = StopDotView.LineMode.TOP
+                itemCount - 1 -> stopDotView.lineMode = StopDotView.LineMode.BOTTOM
+                else -> stopDotView.lineMode = StopDotView.LineMode.BOTH
             }
             TimeDateUtils.setStationStay(stationTime, element.arrivalTime, element.departureTime)
         }

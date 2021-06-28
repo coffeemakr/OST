@@ -43,12 +43,12 @@ class ConnectionListFragment : Fragment() {
      * @return the query
      */
     lateinit var connectionQuery: ConnectionQuery
-    private var mOnConnectionListInteractionListener: OnConnectionListInteractionListener? = null
-    private lateinit var mConnectionListScrollListener: RecyclerView.OnScrollListener
-    private lateinit var mQueryHistoryDao: QueryHistoryDao
-    lateinit var  mViewStateHolder: ViewStateHolder
-    lateinit var mCompositeDisposable: CompositeDisposable
-    private val mOverScrollListener: ConnectionListAdapter.Listener = object : ConnectionListAdapter.Listener {
+    private var onConnectionListInteractionListener: OnConnectionListInteractionListener? = null
+    private lateinit var connectionListScrollListener: RecyclerView.OnScrollListener
+    private lateinit var queryHistoryDao: QueryHistoryDao
+    lateinit var  viewStateHolder: ViewStateHolder
+    lateinit var compositeDisposable: CompositeDisposable
+    private val overScrollListener: ConnectionListAdapter.Listener = object : ConnectionListAdapter.Listener {
         override fun onLoadBelow(adapter: ConnectionListAdapter?, pageToLoad: Int): Boolean {
             return false
         }
@@ -61,18 +61,18 @@ class ConnectionListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         connectionAPI = SbbApiFactory().createAPI(SbbApiFactory().createSslContext(requireContext()))
-        mCompositeDisposable = CompositeDisposable()
+        compositeDisposable = CompositeDisposable()
         val database = Databases.getCacheDatabase(requireContext())
-        mQueryHistoryDao = database.queryHistoryDao()
+        queryHistoryDao = database.queryHistoryDao()
 
         // Empty constructor
-        mViewStateHolder = ViewStateHolder(NoAnimationStrategy())
-        mViewStateHolder.setOnRetryClickListener { loadConnections() }
+        viewStateHolder = ViewStateHolder(NoAnimationStrategy())
+        viewStateHolder.setOnRetryClickListener { loadConnections() }
         connectionAdapter = ConnectionListAdapter()
-        connectionAdapter!!.setOnLoadMoreListener(mOverScrollListener)
+        connectionAdapter!!.setOnLoadMoreListener(overScrollListener)
         connectionAdapter!!.setOnConnectionClickListener(onConnectionClickListener)
         connectionQuery = if (savedInstanceState != null) {
-            savedInstanceState.getParcelable(ARG_QUERY)
+            savedInstanceState.getParcelable(ARG_QUERY)!!
         } else {
             arguments?.getParcelable(ARG_QUERY) ?: error("no save or argumetns")
         }
@@ -82,20 +82,20 @@ class ConnectionListFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         check(context is OnConnectionListInteractionListener) { "parent must implement OnConnectionListInteractionListener" }
-        mOnConnectionListInteractionListener = context
+        onConnectionListInteractionListener = context
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(ARG_QUERY, connectionQuery)
-        if (connectionAdapter != null) {
+//        if (connectionAdapter != null) {
            // outState.putParcelable(KEY_CONNECTION_STATE, mConnectionAdapter!!.state)
-        }
+//        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mCompositeDisposable.dispose()
+        compositeDisposable.dispose()
         connectionAdapter = null
     }
 
@@ -112,23 +112,23 @@ class ConnectionListFragment : Fragment() {
         connections_list.layoutManager = linearLayoutManager
         val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         connections_list.addItemDecoration(dividerItemDecoration)
-        mConnectionListScrollListener = connectionAdapter!!.createOnScrollListener(linearLayoutManager)
-        connections_list.addOnScrollListener(mConnectionListScrollListener)
-        mViewStateHolder.setContentView(connections_list)
-        mViewStateHolder.setLoadingView(view.findViewById(R.id.loadingIndicator))
-        mViewStateHolder.setErrorContainer(view.findViewById(R.id.onErrorContainer))
+        connectionListScrollListener = connectionAdapter!!.createOnScrollListener(linearLayoutManager)
+        connections_list.addOnScrollListener(connectionListScrollListener)
+        viewStateHolder.setContentView(connections_list)
+        viewStateHolder.setLoadingView(view.findViewById(R.id.loadingIndicator))
+        viewStateHolder.setErrorContainer(view.findViewById(R.id.onErrorContainer))
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        connections_list?.removeOnScrollListener(mConnectionListScrollListener)
+        connections_list?.removeOnScrollListener(connectionListScrollListener)
     }
 
     @MainThread
     private fun onConnectionsLoaded(page: Int, @NonNull connections: List<Connection>) {
         if (page == 0) {
             // loading finished for the first time/page
-            mViewStateHolder.onSuccess()
+            viewStateHolder.onSuccess()
         }
         if (connectionAdapter != null) {
             connectionAdapter?.setConnections(page, connections.toTypedArray())
@@ -146,13 +146,13 @@ class ConnectionListFragment : Fragment() {
     @AnyThread
     private fun loadConnections(connectionQuery: ConnectionQuery, page: Int) {
         if (page == 0) {
-            mViewStateHolder.onLoading()
+            viewStateHolder.onLoading()
         }
         val disposable = Flowable.just(PageQuery(connectionQuery, page))
                 .observeOn(Schedulers.io())
                 .map { pageQuery: PageQuery ->
                     if (pageQuery.page == 0) {
-                        val id = mQueryHistoryDao.addConnection(QueryHistory(pageQuery.query))
+                        val id = queryHistoryDao.addConnection(QueryHistory(pageQuery.query))
                         pageQuery.historyId = id.toInt()
                     }
                     pageQuery
@@ -162,7 +162,7 @@ class ConnectionListFragment : Fragment() {
                 .subscribe(
                         { page: ConnectionPage -> onConnectionsLoaded(page.pageNumber, page.connections) }
                 ) { throwable: Throwable? -> handleError(R.string.error_failed_to_load_connection, throwable) }
-        mCompositeDisposable.add(disposable)
+        compositeDisposable.add(disposable)
     }
 
     private fun handleError(@StringRes errorMessage: Int, exception: Throwable?) {
@@ -171,7 +171,7 @@ class ConnectionListFragment : Fragment() {
             val errorMessageString = getString(errorMessage)
             Log.e(TAG, errorMessageString, exception)
         }
-        mViewStateHolder.onError(errorMessage)
+        viewStateHolder.onError(errorMessage)
     }
 
     interface OnConnectionListInteractionListener {
@@ -196,8 +196,8 @@ class ConnectionListFragment : Fragment() {
 
     private inner class OnConnectionSelectedCaller : OnConnectionClickListener {
         override fun onConnectionClicked(connection: Connection?) {
-            if (mOnConnectionListInteractionListener != null) {
-                mOnConnectionListInteractionListener!!.onConnectionSelected(connection!!)
+            if (onConnectionListInteractionListener != null) {
+                onConnectionListInteractionListener!!.onConnectionSelected(connection!!)
             }
         }
     }
