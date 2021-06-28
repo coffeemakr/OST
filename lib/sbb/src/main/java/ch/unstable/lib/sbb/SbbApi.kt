@@ -93,7 +93,7 @@ class SbbApi(
 
     private fun getConnectionsFromUrl(pageUri: String): SbbConnectionPageWrapper {
         val url = "$fahrplanServiceBaseUrl/$pageUri"
-        return call(get(url))
+        return SbbConnectionPageWrapper.fromRaw(0, call(get(url)))
     }
 
     companion object {
@@ -110,7 +110,7 @@ class SbbApi(
     }
 }
 
-private inline fun encodeChar(byte: Byte) = "%${byte.toUByte().toString(16).toUpperCase(Locale.US)}"
+private inline fun encodeChar(byte: Byte) = "%${byte.toUByte().toString(16).uppercase(Locale.US)}"
 
 private inline fun asString(byte: Byte) = String(arrayOf(byte).toByteArray())
 

@@ -18,10 +18,9 @@ fun createTrustAllX509TrustManager(): SbbApiFactory.SSLConfig {
     val allTrustManager = @SuppressLint("TrustAllX509TrustManager") object : X509TrustManager {
         override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
 
-        override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
-        }
+        override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
 
-        override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
+        override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
     }
     sslContext.init(null, arrayOf<TrustManager>(allTrustManager), null)
     return SbbApiFactory.SSLConfig(sslContext.socketFactory, allTrustManager)
@@ -43,7 +42,7 @@ class SbbApiTest {
 
     @Test
     fun getConnection() {
-        val departure = getDate(2020, 7, 15, 14, 33)
+        val departure = getDate(2021, 7, 15, 14, 33)
         val connectionPage = sbbApi.getConnections(ConnectionQuery(
                 from = "Zürich Hardbrücke",
                 to = "Zürich HB",
@@ -62,7 +61,7 @@ class SbbApiTest {
 
     @Test
     fun testGetLocation() {
-        val locations: List<SbbStation> = sbbApi.getStations("luz")
+        val locations = sbbApi.getStationsByQuery("luz")
         assertNotNull(locations)
     }
 
