@@ -1,7 +1,6 @@
 package ch.unstable.ost.api.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 /**
@@ -9,8 +8,9 @@ import java.util.*
  *
  * @param sections an array containing the sections
  */
-@Parcelize
-data class Connection(val sections: List<Section>) : Parcelable {
+interface Connection : Parcelable {
+
+    val sections: List<Section>
 
     /**
      * Get the departure time

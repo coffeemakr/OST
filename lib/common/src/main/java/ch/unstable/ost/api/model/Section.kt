@@ -12,4 +12,4 @@ class Section(
         val arrival: TimedCheckpoint,
         val type: SectionType,
         val transportInfo: TransportInfo?,
-        val realtimeInfo: RealtimeInfo) : Parcelable
+        val realtimeInfo: RealtimeInfo?) : Parcelable

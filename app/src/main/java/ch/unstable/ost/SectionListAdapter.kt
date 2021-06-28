@@ -43,21 +43,23 @@ internal class SectionListAdapter : RecyclerView.Adapter<SectionViewHolder>() {
 
     private fun onBindJourneyViewHolder(holder: JourneyViewHolder, section: Section) {
         with(holder.binding) {
-            if (section.realtimeInfo.arrival.actualTime != section.arrival.time) {
-                arrivalTime.paintFlags = arrivalTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                actualArrivalTime.visibility = View.VISIBLE
-                actualArrivalTime.text = TimeDateUtils.formatTime(section.realtimeInfo.arrival.actualTime)
-            } else {
-                actualArrivalTime.visibility = View.GONE
-                arrivalTime.paintFlags = arrivalTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-            }
-            if (section.realtimeInfo.departure.actualTime != section.departure.time) {
-                departureTime.paintFlags = departureTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                departureActual.visibility = View.VISIBLE
-                departureActual.text = TimeDateUtils.formatTime(section.realtimeInfo.departure.actualTime)
-            } else {
-                departureActual.visibility = View.GONE
-                departureTime.paintFlags = departureTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            section.realtimeInfo?.let { realtimeInfo ->
+                if (realtimeInfo.arrival.actualTime != section.arrival.time) {
+                    arrivalTime.paintFlags = arrivalTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    actualArrivalTime.visibility = View.VISIBLE
+                    actualArrivalTime.text = TimeDateUtils.formatTime(realtimeInfo.arrival.actualTime)
+                } else {
+                    actualArrivalTime.visibility = View.GONE
+                    arrivalTime.paintFlags = arrivalTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                }
+                if (realtimeInfo.departure.actualTime != section.departure.time) {
+                    departureTime.paintFlags = departureTime.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    departureActual.visibility = View.VISIBLE
+                    departureActual.text = TimeDateUtils.formatTime(realtimeInfo.departure.actualTime)
+                } else {
+                    departureActual.visibility = View.GONE
+                    departureTime.paintFlags = departureTime.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                }
             }
 
             arrivalStationName.text = section.arrival.station.name

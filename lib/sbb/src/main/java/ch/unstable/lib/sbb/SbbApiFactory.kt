@@ -3,13 +3,6 @@ package ch.unstable.lib.sbb
 import android.content.Context
 import android.util.Log
 import ch.unstable.lib.sbb.auth.AuthInterceptor
-import ch.unstable.lib.sbb.json.*
-import ch.unstable.lib.sbb.model.SbbConnectionPage
-import ch.unstable.lib.sbb.model.StationResponse
-import ch.unstable.ost.api.model.*
-import ch.unstable.ost.api.model.Connection
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.InputStream
 import java.security.KeyStore
@@ -77,17 +70,6 @@ class SbbApiFactory {
         return keyStore
     }
 
-    val gson: Gson
-        get() = GsonBuilder()
-                .registerTypeAdapter(Station::class.java, StationDeserializer())
-                .registerTypeAdapter(StationResponse::class.java, StationResponseDeserializer())
-                .registerTypeAdapter(SbbConnectionPage::class.java, ConnectionPageDeserializer())
-                .registerTypeAdapter(Connection::class.java, ConnectionDeserializer())
-                .registerTypeAdapter(Section::class.java, SectionDeserializer())
-                .registerTypeAdapter(TransportInfo::class.java, TransportInfoDeserializer())
-                .registerTypeAdapter(RealtimeInfo::class.java, RealtimeInfoDeserializer())
-                .create()!!
-
     private fun createTrustManager(certificate: InputStream): SSLConfig {
         val sslContext = SSLContext.getInstance("TLS")
         val trustManager = trustManagerForCertificates(certificate)
@@ -110,7 +92,7 @@ class SbbApiFactory {
                 .addInterceptor(LoggingInterceptor())
                 .sslSocketFactory(sslConfig.sslSocketFactory, sslConfig.trustManager)
                 .build()
-        return SbbApi(client = client, baseUrl = baseUrl, converter = gson)
+        return SbbApi(client = client, baseUrl = baseUrl)
     }
 
     internal class LoggingInterceptor : Interceptor {

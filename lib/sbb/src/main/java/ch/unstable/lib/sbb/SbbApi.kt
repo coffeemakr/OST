@@ -1,13 +1,15 @@
 package ch.unstable.lib.sbb
 
-import ch.unstable.lib.sbb.model.SbbConnectionPage
+import ch.unstable.lib.sbb.model.SbbConnectionPageWrapper
 import ch.unstable.lib.sbb.model.StationResponse
 import ch.unstable.ost.api.ConnectionAPI
 import ch.unstable.ost.api.StationsDAO
 import ch.unstable.ost.api.model.ConnectionPage
 import ch.unstable.ost.api.model.ConnectionQuery
 import ch.unstable.ost.api.model.Station
-import com.google.gson.Gson
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.nio.charset.StandardCharsets
@@ -17,19 +19,22 @@ import java.util.*
 class SbbApi(
         private val client: OkHttpClient,
         val baseUrl: String,
-        val converter: Gson,
         val language: String = "de-de"
 ) : ConnectionAPI, StationsDAO {
 
     private val fahrplanServiceBaseUrl: String = "$baseUrl/unauth/fahrplanservice"
 
     private inline fun <reified T> call(request: Request): T {
+        val classSerializer: KSerializer<T> = serializer()
         val response = client.newCall(request).execute()
         if(!response.isSuccessful) {
             error("Call failed: ${response.code}")
         }
         val reader = response.body?.charStream() ?: error("No response")
-        return converter.fromJson<T>(reader, T::class.java)
+        val jsonText = reader.readText()
+        return Json {
+            ignoreUnknownKeys = true
+        }.decodeFromString(classSerializer, jsonText)
     }
 
     private fun get(url: String) = Request.Builder()
@@ -70,7 +75,7 @@ class SbbApi(
 
         val url = "$fahrplanServiceBaseUrl/v1/verbindungen/s/$from/s/$to/$direction/$date/$time/"
 
-        return call<SbbConnectionPage>(get(url))
+        return SbbConnectionPageWrapper.fromRaw(0, call(get(url)))
     }
 
     private fun formatDate(date: Date): String {
@@ -78,14 +83,14 @@ class SbbApi(
     }
 
     fun getLaterPage(connectionPage: ConnectionPage) =
-            getConnectionsFromUrl((connectionPage as SbbConnectionPage).laterUrl)
+            getConnectionsFromUrl((connectionPage as SbbConnectionPageWrapper).laterUrl)
                     .copy(pageNumber = connectionPage.pageNumber + 1)
 
     fun getEarlierPage(connectionPage: ConnectionPage) =
-            getConnectionsFromUrl((connectionPage as SbbConnectionPage).earlierUrl)
+            getConnectionsFromUrl((connectionPage as SbbConnectionPageWrapper).earlierUrl)
                     .copy(pageNumber = connectionPage.pageNumber - 1)
 
-    private fun getConnectionsFromUrl(pageUri: String): SbbConnectionPage {
+    private fun getConnectionsFromUrl(pageUri: String): SbbConnectionPageWrapper {
         val url = "$fahrplanServiceBaseUrl/$pageUri"
         return call(get(url))
     }
