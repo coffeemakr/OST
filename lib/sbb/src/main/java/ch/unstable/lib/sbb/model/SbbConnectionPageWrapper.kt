@@ -134,7 +134,6 @@ data class SbbConnectionPageWrapper(
         override val pageNumber: Int,
         override val connections: List<Connection>
 ) : ConnectionPage {
-
     companion object {
         fun fromRaw(pageNumber: Int, connectionPage: SbbConnectionPage): SbbConnectionPageWrapper {
             val connections = connectionPage.verbindungen.map { sbbConnection ->

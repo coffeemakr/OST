@@ -113,13 +113,13 @@ private inline fun asString(byte: Byte) = String(arrayOf(byte).toByteArray())
 
 private fun isUrlSafe(byte: Byte): Boolean {
     return when {
-        'A'.toByte() <= byte && byte <= 'Z'.toByte() -> true
-        'a'.toByte() <= byte && byte <= 'z'.toByte() -> true
-        '0'.toByte() <= byte && byte <= '9'.toByte() -> true
-        byte == '-'.toByte() -> true
-        byte == '.'.toByte() -> true
-        byte == '_'.toByte() -> true
-        byte == '~'.toByte() -> true
+        'A'.code.toByte() <= byte && byte <= 'Z'.code.toByte() -> true
+        'a'.code.toByte() <= byte && byte <= 'z'.code.toByte() -> true
+        '0'.code.toByte() <= byte && byte <= '9'.code.toByte() -> true
+        byte == '-'.code.toByte() -> true
+        byte == '.'.code.toByte() -> true
+        byte == '_'.code.toByte() -> true
+        byte == '~'.code.toByte() -> true
         else -> false
     }
 }
