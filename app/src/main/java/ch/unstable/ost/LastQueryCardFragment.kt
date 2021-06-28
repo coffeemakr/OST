@@ -28,7 +28,7 @@ class LastQueryCardFragment : QuickstartCardFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        queryDao = Databases.getCacheDatabase(context).queryHistoryDao()
+        queryDao = Databases.getCacheDatabase(requireContext()).queryHistoryDao()
         compositeDisposable = CompositeDisposable()
     }
 

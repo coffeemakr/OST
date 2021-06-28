@@ -11,7 +11,6 @@ import ch.unstable.ost.utils.NavHelper.startErrorActivity
 import ch.unstable.ost.views.lists.favorite.FavoritesAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class FavoritesActivity : AppCompatActivity() {
@@ -36,10 +35,10 @@ class FavoritesActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val disposable = favoritesDao!!.favoriteConnections
+        val disposable = favoritesDao!!.getFavoriteConnections()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(favoritesAdapter, Consumer { throwable: Throwable? -> startErrorActivity(this@FavoritesActivity, throwable!!) })
+                .subscribe(favoritesAdapter, { throwable: Throwable? -> startErrorActivity(this@FavoritesActivity, throwable!!) })
         compositeDisposable!!.add(disposable)
     }
 

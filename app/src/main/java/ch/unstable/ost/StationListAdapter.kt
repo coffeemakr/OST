@@ -14,7 +14,7 @@ import ch.unstable.ost.api.model.Station
 import ch.unstable.ost.api.model.Station.StationType
 import ch.unstable.ost.theme.ThemeHelper
 
-internal class StationListAdapter @MainThread constructor(context: Context?) : RecyclerView.Adapter<StationListAdapter.ViewHolder>() {
+internal class StationListAdapter @MainThread constructor(context: Context) : RecyclerView.Adapter<StationListAdapter.ViewHolder>() {
     private val mHandler: Handler = Handler()
 
     @DrawableRes

@@ -27,6 +27,8 @@ import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import ch.unstable.ost.api.model.Connection;
 import ch.unstable.ost.api.model.Section;
 import ch.unstable.ost.database.Databases;
@@ -124,7 +126,7 @@ public class ConnectionDetailFragment extends Fragment {
         sectionListAdapter.setOnJourneyClickedListener(sectionClickedListener);
         sectionListAdapter.setSections(connection.getSections());
 
-        favoriteConnectionDao = Databases.getCacheDatabase(getContext()).favoriteConnectionDao();
+        favoriteConnectionDao = Databases.getCacheDatabase(requireContext()).favoriteConnectionDao();
     }
 
     @Override

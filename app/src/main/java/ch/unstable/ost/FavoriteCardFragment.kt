@@ -28,7 +28,7 @@ class FavoriteCardFragment : QuickstartCardFragment() {
     private var disposable: Disposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        favoriteDao = Databases.getCacheDatabase(context).favoriteConnectionDao()
+        favoriteDao = Databases.getCacheDatabase(requireContext()).favoriteConnectionDao()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,7 +59,7 @@ class FavoriteCardFragment : QuickstartCardFragment() {
         Log.d(TAG, "onResume()")
         super.onResume()
         disposable?.dispose()
-        disposable = favoriteDao!!.latestFavorite
+        disposable = favoriteDao!!.getLatestFavorite()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Consumer { favoriteConnection: FavoriteConnection ->
