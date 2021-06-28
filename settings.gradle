@@ -1,3 +1,2 @@
-include ':lib:other'
 include ':lib:common'
 include ':app', ':lib:sbb'
