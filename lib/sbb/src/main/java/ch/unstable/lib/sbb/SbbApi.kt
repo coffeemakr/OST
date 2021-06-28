@@ -2,7 +2,7 @@ package ch.unstable.lib.sbb
 
 import ch.unstable.lib.sbb.model.SbbConnectionPageWrapper
 import ch.unstable.lib.sbb.model.SbbStationsResponse
-import ch.unstable.lib.sbb.model.StationWrapper
+import ch.unstable.lib.sbb.model.convertStation
 import ch.unstable.ost.api.ConnectionAPI
 import ch.unstable.ost.api.StationsDAO
 import ch.unstable.ost.api.model.ConnectionPage
@@ -105,7 +105,7 @@ class SbbApi(
         val encodedQuery = urlEncodePathSegment(query)
         val url = "$fahrplanServiceBaseUrl/v0/standorte/$encodedQuery/?onlyHaltestellen=false"
         return call<SbbStationsResponse>(get(url)).standorte.map {
-            StationWrapper.fromRaw(it)
+            convertStation(it)
         }
     }
 }

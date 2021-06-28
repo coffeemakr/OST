@@ -4,7 +4,7 @@ import android.util.Log
 import ch.unstable.ost.api.model.Coordinates
 import ch.unstable.ost.api.model.Station
 
-fun convertToType(stringType: String): Station.StationType {
+private fun convertToType(stringType: String): Station.StationType {
     return when (stringType) {
         "STATION" -> Station.StationType.TRAIN
         "POI" -> Station.StationType.POI
@@ -16,16 +16,15 @@ fun convertToType(stringType: String): Station.StationType {
     }
 }
 
-object StationWrapper {
-    fun fromRaw(station: SbbStationResponse): Station {
-        return Station(
-                name = station.displayName,
-                type = convertToType(station.type),
-                id = station.externalId,
-                coordinates = Coordinates(
-                        x = station.latitude.div(1000000.0),
-                        y = station.longitude.div(1000000.0),
-                )
-        )
-    }
+fun convertStation(station: SbbStationResponse): Station {
+    return Station(
+            name = station.displayName,
+            type = convertToType(station.type),
+            id = station.externalId,
+            coordinates = Coordinates(
+                    x = station.latitude.div(1000000.0),
+                    y = station.longitude.div(1000000.0),
+            )
+    )
 }
+
