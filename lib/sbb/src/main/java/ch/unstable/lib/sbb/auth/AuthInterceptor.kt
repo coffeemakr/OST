@@ -11,16 +11,10 @@ import javax.crypto.spec.SecretKeySpec
 import kotlin.text.Charsets.UTF_8
 
 
-class AuthInterceptor(private val dateSource: DateSource) : Interceptor {
-
-    constructor() : this(DefaultDateSource())
-
-    private val userAgent = run {
-        val versionName = "10.6.0"
-        val androidVersion = "9"
-        val deviceName = "Google;Android SDK built for x86"
-        "SBBmobile/flavorprodRelease-$versionName-RELEASE Android/$androidVersion ($deviceName)"
-    }
+class AuthInterceptor(
+        private val dateSource: DateSource = DefaultDateSource(),
+        private val userAgent: String = defaultUserAgent
+) : Interceptor {
 
     private val token = UUID.randomUUID().toString()
 
@@ -56,6 +50,15 @@ class AuthInterceptor(private val dateSource: DateSource) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = createNewRequest(chain.request())
         return chain.proceed(request)
+    }
+
+    companion object {
+        val defaultUserAgent = run {
+            val versionName = "10.6.0"
+            val androidVersion = "9"
+            val deviceName = "Google;Android SDK built for x86"
+            "SBBmobile/flavorprodRelease-$versionName-RELEASE Android/$androidVersion ($deviceName)"
+        }
     }
 }
 
