@@ -1,21 +1,9 @@
 package ch.unstable.lib.sbb.model
 
-import android.util.Log
 import ch.unstable.lib.sbb.json.readDateTime
 import ch.unstable.ost.api.model.*
 import kotlinx.android.parcel.Parcelize
 
-fun convertToType(stringType: String): Station.StationType {
-    return when (stringType) {
-        "STATION" -> Station.StationType.TRAIN
-        "POI" -> Station.StationType.POI
-        "ADDRESS" -> Station.StationType.ADDRESS
-        else -> {
-            Log.w("convertToType", "Unknown type: $stringType")
-            Station.StationType.UNKNOWN
-        }
-    }
-}
 
 fun getArrival(sbbSection: SbbSection): TimedCheckpoint {
     return TimedCheckpoint(

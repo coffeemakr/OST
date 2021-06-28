@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class SbbStationResponse(
         val barriereFreiheit: String?,
         val displayName: String,
-        val externalId: String,
+        val externalId: String?,
         val latitude: Long,
         val longitude: Long,
         val type: String,
